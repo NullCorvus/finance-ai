@@ -158,6 +158,13 @@ C4 cheat sheet (valid in Mermaid and C4-PlantUML):
 C4 caveats (official docs): layout follows the **order of statements** (no `direction` keyword);
 no `legend` support yet; styles are fixed. Keep the diagram small (≤ 15 shapes) or it gets hard to read.
 
+**Zed gotcha:** the Zed built-in mermaid preview (and some GitHub configs) don't enable the
+experimental `C4C` diagrams, so `C4Component` blocks won't render there even though the syntax is
+valid. **Use `flowchart` instead** for any component diagram that needs to preview in Zed /
+GitHub (same info, subgraph for the container, plain boxes for components, labeled `-->` arrows).
+You can still keep the C4 version if you want mermaid.live rendering, but only one diagram type
+should live in the project doc to avoid duplication.
+
 ---
 
 ## 7. Data flow — Mermaid (DFD style with `flowchart`)

@@ -43,6 +43,7 @@ Features organized by build phase. Phase 1 is the foundation and must ship first
 | 17 | Spending insights | AI flags unnecessary spending ("you spent $40 on impulse purchases this week") powered by reason/context tracking. |
 | 18 | Chat history | Save past conversations so the AI remembers what you asked before. |
 | 19 | Saved skills | Save a reusable command/preference so you don't repeat yourself. Example: "every month, send me my spending summary" → saved once, agent runs it anytime you ask. Or "I prefer COP" → agent remembers instead of re-explaining. |
+| 20 | Agent write protection | Agent modifications (limits, subcategories) show a confirmation preview before applying — same Confirm/Edit/Discard pattern as expenses. Optional audit/change-log table for undo. |
 
 ## Priority Legend
 - **Phase 1** — Must have at launch. Build first.

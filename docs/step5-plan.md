@@ -68,7 +68,7 @@ Other flows (income, limits) are shorter and similar to journey 1 — not drawn.
 5. User sees a **preview** with editable fields
 6. User chooses one of three:
    - **Confirm** → save to DB
-   - **Edit** → user changes fields, goes back to step 5 (re-preview)
+   - **Edit** → user changes fields **manually (form) or by a subtle natural-language fix** ("make it $12 instead of $15"), goes back to step 5 (re-preview)
    - **Discard** → nothing is saved, flow ends
 7. On confirm: backend saves receipt + expense rows to the DB, image file to file storage (if photo)
 8. User sees a saved confirmation
@@ -77,11 +77,13 @@ Other flows (income, limits) are shorter and similar to journey 1 — not drawn.
 
 1. User sends a question in chat ("how much did I spend on milk?")
 2. Chat module forwards it to the agent
-3. Agent calls the LLM; the LLM decides which tool(s) to use (e.g., query the DB)
-4. Agent executes the tool call → DB query
+3. Agent calls the LLM; the LLM checks the question and **decides whether a tool is needed**
+4. If no tool needed → answer directly. If a tool is needed → agent selects the tool and executes the tool call → DB query
 5. DB returns the rows
 6. Agent builds the answer (text and/or chart data)
 7. User sees the answer in chat
+
+Note: this journey is read-only. Agent writes (create/edit limits, subcategories) are Phase 3 with confirmation preview — see `ALCANCE.md` "Data Protection" and FEATURES 20.
 
 ## Q7 — Open decisions / TBD list
 

@@ -68,8 +68,8 @@ Have these ready before the semester: scope defined, DB designed, mockups drawn,
 - [x] List secondary features (nice-to-have)
 - [x] Prioritize by build phases
 - [x] Cover edge cases (what if AI doesn't understand the receipt?)
-- [ ] Define how spending limits are created — settings UI (MVP) + chat via agent (Phase 3)
-- [ ] Define how spending limits are created — settings UI (MVP) + chat via agent (Phase 3)
+- [x] Define how spending limits are created — settings UI (MVP) + chat via agent (Phase 3)
+- [x] Define how spending limits are created — settings UI (MVP) + chat via agent (Phase 3)
 
 **Estimated time:** 1 day
 
@@ -95,13 +95,13 @@ Have these ready before the semester: scope defined, DB designed, mockups drawn,
 - [x] Validate diagram renders — done via Zed mermaid viewer (zero errors)
 
 #### Stage 4 — Component diagram (guide §6)
-- [ ] C4Component — Auth, Expenses, Income, AI Agent/Tools, Chat, File Storage
-- [ ] Validate in mermaid.live (guide §9)
+- [x] C4Component — Auth, Expenses, Income, AI Agent/Tools, Chat, File Storage → `docs/ARCHITECTURE.md`
+- [x] Validate diagram renders — done via Zed mermaid viewer (zero errors)
 
 #### Stage 5 — Data flow (guide §7 + §4)
-- [ ] DFD 1: register expense — confirm/edit/discard loop (guide §7)
-- [ ] DFD 2: ask the AI — tool calls → DB → answer/chart (guide §7, §4)
-- [ ] Validate in mermaid.live (guide §9)
+- [x] DFD 1: register expense — confirm/edit/discard loop (guide §7) → `docs/ARCHITECTURE.md`
+- [x] DFD 2: ask the AI — tool calls → DB → answer/chart (guide §7, §4) → `docs/ARCHITECTURE.md`
+- [ ] Validate diagrams render — open `docs/ARCHITECTURE.md` in Zed and check both DFDs render (zero errors)
 
 #### Stage 6 — Document
 - [ ] Finalize `docs/ARCHITECTURE.md` — 3 diagrams + pending decisions, marked PROPOSAL (built incrementally from Stage 3; guide §9 checklist)
@@ -152,6 +152,7 @@ Have these ready before the semester: scope defined, DB designed, mockups drawn,
 - [ ] Define the price-source decision (Phase 3 supermarket prices)
 - [ ] Choose the interface (web / Telegram / app) and update the Client container
 - [ ] Write `docs/STACK.md` with final decisions + reasoning
+- [ ] Define data protection details — agent write confirmation + audit log (see `docs/ALCANCE.md` "Data Protection", FEATURES 20)
 
 ---
 

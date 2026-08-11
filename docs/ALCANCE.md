@@ -112,6 +112,12 @@ Two separate roles:
 
 **Data scoping rule:** every query is filtered by `user_id` — the server never returns another user's rows. The auth mechanism (sessions vs tokens) is defined when the stack is decided.
 
+## Data Protection
+
+- **Human-in-the-loop for agent writes:** the AI agent never modifies data without approval. Every agent write (create/edit limits, subcategories, etc.) shows a preview first and goes through the same [Confirm] [Edit] [Discard] menu as expenses (Phase 3).
+- **Undo (optional, Phase 3):** an audit/change-log table records what changed, who, when, old → new value — enables undo of agent or user changes.
+- **Backups:** database backups (e.g., pg_dump) belong to the operations phase, out of pre-semester scope.
+
 ## Out of Scope
 - Bank API integration (auto-import from bank)
 - Investment / debt tracking
