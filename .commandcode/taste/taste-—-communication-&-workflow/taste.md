@@ -7,3 +7,4 @@
 - Prefers features/tasks explicitly prioritized into phases and marked as must-do vs. optional/nice-to-have, and cares that nice-to-haves are not mislabeled as core phase work. Confidence: 0.8
 - Prefers to defer detailed design decisions that depend on not-yet-decided tech choices (e.g., UI format) rather than speculate early. Confidence: 0.7
 - For defining a project idea, prefers an interviewer-style Q&A (assistant asks structured questions, user answers, assistant organizes), ending with a summary the user confirms before it's written to a file. Confidence: 0.6
+- Prefers to be able to review the complete current plan again before approving or requesting revisions. Confidence: 0.8
