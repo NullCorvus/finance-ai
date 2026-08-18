@@ -1,20 +1,21 @@
 # Scope — Finance AI Tracker
 
 ## Core Vision
-A personal finance tracking system powered by AI. Users submit expenses through natural language (receipt photo, audio note, or text) — the AI converts it to structured data, saves it to the database, and can answer queries about spending through chat with tool/function calling for graphs and analysis. Users can also register income to enable balance analysis (spending vs. earnings).
+A personal finance tracking system with a **Flutter app** and a **backend (API + DB) running on a VM**. Users register expenses through the app — either manually or AI-assisted (receipt photo, audio note, or text, where the AI converts the input to structured JSON for the user to confirm). The backend owns the data, computes analytics, and answers dashboard queries. Users can also register income to enable balance analysis (spending vs. earnings).
 
-## AI Agent Vision
+**The AI is used only for input parsing in the core** — one call from the backend to the LLM provider that turns an image/audio/text into structured data. The user always confirms, edits, or retries before anything is saved. Manual entry always works as a fallback. The phone never calls the AI API directly.
 
-The AI is not just an input parser — it is an **agent** that owns the data:
+## Optional "Agent" Vision (Phase 3 — ideas, not core)
 
-- **Answers questions** about spending ("how much did I spend on milk?")
+The AI *acting* on data (or chatting about it) is **not part of the core**. It is an optional, Phase 3 set of ideas that can be skipped entirely:
+
+- **Chat with AI** — answers questions about spending ("how much did I spend on milk?") via read-only tool calls
 - **Acts** on the data: creates spending limits, generates subcategories, edits entries
 - **Simulates scenarios**: "what if I replace rice with pasta?" → shows the difference
 - **Generates charts and HTML reports** from the data
-- **Accessible from the phone** (interface decision pending — Telegram / web / app)
 - **Integrates with external tools** (optional): Google Workspace, e.g. Google Keep shopping lists
 
-Advanced versions of these capabilities (simulation, price reference, Google Keep, chat-created limits, insights) are **Phase 3 features** — see `docs/FEATURES.md`.
+See `docs/FEATURES.md` — Phase 3. The architecture keeps these possible later (the agent would run inside the backend, still not on the phone), but they are explicitly out of the core build.
 
 ## Input Methods
 1. **Receipt photo** — AI vision extracts line items, store, total, date
@@ -25,41 +26,41 @@ Advanced versions of these capabilities (simulation, price reference, Google Kee
 
 ### Confirmation flow
 ```
-User input → AI extracts structured data → Preview → [Confirm] [Edit] [Discard]
-                                                              ↓
-                                                          Save to DB
+User input → AI extracts structured data (JSON) → Preview → [Confirm] [Edit] [Discard]
+                                                                        ↓
+                                                                    Save to DB
 ```
 
 ### Pre-save
-- AI extracts data from the input (photo, audio, or text)
+- AI extracts data from the input (photo, audio, or text) — **one call from the backend to the AI API**
 - User sees a preview with editable fields
 - User can: **Confirm** (saves to DB) / **Edit** (change fields, re-preview) / **Discard** (delete everything, nothing saved)
+- Manual text entry bypasses the AI entirely and saves directly
 - This handles edge cases: blurry receipts, inaudible audio, AI API failures, etc.
 
 ### Post-save
-- Saved expenses can always be edited or deleted
-- Specific edit/delete UI will be designed with the interface (Telegram, web, or app)
+- Saved expenses can always be edited or deleted in the app
 
 ## Design Decisions
 
 ### Categories
 - Main categories are predefined (Food, Transport, Entertainment, etc.)
-- Subcategories are AI-generated on-the-fly based on purchase analysis
-- AI suggests a category; user can override it
+- Subcategories can be AI-suggested on-the-fly, but **the backend sends the user's existing subcategories to the AI in the prompt** so suggestions come from the known list first
+- AI suggests a category/subcategory; user can override or add a new one
 
 ### Currencies
 - Multiple currencies supported (USD + COP minimum)
-- AI handles conversion with current rates
+- AI handles conversion with current rates (Phase 3 — see FEATURES 9)
 - Original amount + currency stored; conversion happens when displaying
 
 ### Spending Limits
-- AI-assisted awareness, not rigid hard limits
+- AI-assisted awareness, not rigid hard limits (Phase 3 — see FEATURES 10)
 - User expresses preferences ("I don't want to spend more than $50 on eating out")
 - AI tracks and reports progress
 
 ### Reason/Context
 - Each expense can capture why it was made (e.g., "was hungry", "impulse buy")
-- Enables behavioral analysis: "Why am I spending so much on food?"
+- Enables behavioral analysis: "Why am I spending so much on food?" (Phase 3 insight)
 
 ### Income Tracking
 - Users register income (salary, freelance, gift...) with an optional description
@@ -73,18 +74,15 @@ User input → AI extracts structured data → Preview → [Confirm] [Edit] [Dis
 - Analytics work at the expense level (total × category), items are bonus drill-down detail
 
 ## Interface Approach
-To be decided with the professor and team. Options:
+**Flutter app** (thin client) + **backend API** (stack: see `docs/STACK.md`):
 
-| Option | Pros | Cons |
-|--------|------|------|
-| Telegram bot + Mini App | Native chat + embedded web app, fast to prototype | Mini apps are less known |
-| Web dashboard | Richer UI, works on any device | More frontend work |
-| Mobile app (React Native/Flutter) | Most polished | Most work |
-| Telegram + web combo | Input via Telegram, analytics via web | Two interfaces to maintain |
+| Piece | Role |
+|-------|------|
+| Flutter app | Sends input, shows previews, Confirm/Edit/Discard, dashboard + charts. Needs internet. |
+| Backend (VM, FastAPI/Python) | Gatekeeper: auth (JWT), owns the data, computes analytics (plain SQL), calls the AI API only for parsing. Holds DB credentials + AI API key. |
+| Database (PostgreSQL) | Lives on the VM next to the backend. The phone never connects to it directly. |
 
-Note: Telegram has Mini Apps (embedded web apps) and inline keyboards, so it can handle more than just text/images — including interactive dashboards.
-
-The architecture is **interface-agnostic** — core (AI + API + DB) is separated from presentation.
+No VM is strictly required for a demo (backend can run on a laptop), but the design targets hosting the backend + DB on a VM so the app works from anywhere.
 
 ## Roles & Permissions
 
@@ -92,11 +90,10 @@ Two separate roles:
 
 ### User
 - Register and log in via email/password
-- Add expenses (receipt photo, audio, text)
+- Add expenses (receipt photo, audio, text — AI-assisted with confirmation)
 - Register income (salary, freelance, gift...) with optional description
-- Chat with AI about their own spending
-- View graphs and analysis of their own data
-- Set personal spending limits
+- View dashboard, graphs, and analysis of their own data
+- Set personal spending limits (Phase 3)
 
 ### Admin
 - Separate from User accounts (not a User with extra permissions)
@@ -110,11 +107,12 @@ Two separate roles:
 - Configure the shared AI API key
 - Admin does NOT view individual user expense data
 
-**Data scoping rule:** every query is filtered by `user_id` — the server never returns another user's rows. The auth mechanism (sessions vs tokens) is defined when the stack is decided.
+**Data scoping rule:** every query is filtered by `user_id` — the server never returns another user's rows. **Auth mechanism decided: JWT** (stateless tokens) — see `docs/STACK.md`.
 
 ## Data Protection
 
-- **Human-in-the-loop for agent writes:** the AI agent never modifies data without approval. Every agent write (create/edit limits, subcategories, etc.) shows a preview first and goes through the same [Confirm] [Edit] [Discard] menu as expenses (Phase 3).
+- **Core:** nothing is saved without the user's confirmation (Confirm/Edit/Discard preview). The AI only *reads* inputs — it never writes to the DB in the core.
+- **Agent writes (Phase 3 only):** if the optional agent features are built, the AI agent never modifies data without approval. Every agent write (create/edit limits, subcategories, etc.) shows a preview first and goes through the same [Confirm] [Edit] [Discard] menu as expenses.
 - **Undo (optional, Phase 3):** an audit/change-log table records what changed, who, when, old → new value — enables undo of agent or user changes.
 - **Backups:** database backups (e.g., pg_dump) belong to the operations phase, out of pre-semester scope.
 
@@ -123,6 +121,9 @@ Two separate roles:
 - Investment / debt tracking
 - Bill splitting
 - Recurring subscription auto-detection
+- Agent/chat features in the core (Phase 3 optional only)
+- Offline mode for the app (it needs internet; caching last-loaded data is a possible future idea)
+- VM provisioning / deployment in the pre-semester phase (design targets a VM, but setup is post-semester)
 
 ## Business Model
 - Self-hosted app (runs on your server or locally)

@@ -1,0 +1,12 @@
+{
+  "permissions": {
+    "allow": [
+      "Shell(latexmk:*)",
+      "Shell(grep:*)",
+      "Shell(pdftotext:*)",
+      "Shell(pdfinfo:*)"
+    ],
+    "deny": [],
+    "defaultMode": "default"
+  }
+}

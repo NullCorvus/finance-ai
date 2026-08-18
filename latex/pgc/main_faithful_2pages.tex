@@ -1,0 +1,203 @@
+% Formato PGC — LaTeX conversion (1:1 from Formato PGC.docx)
+% Build: latexmk -pdf main.tex  or  pdflatex main.tex
+\documentclass[11pt]{article}
+
+\usepackage[letterpaper,top=1.15cm,bottom=2.79cm,left=2.82cm,right=2.79cm,headheight=2.55cm,headsep=0.35cm,footskip=1.45cm,includehead,includefoot]{geometry}
+\usepackage[spanish]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{helvet}
+\renewcommand{\familydefault}{\sfdefault}
+\usepackage{graphicx}
+\usepackage{xcolor}
+\usepackage{array}
+\usepackage{colortbl}
+\usepackage{multirow}
+\usepackage{fancyhdr}
+\usepackage{lastpage}
+\usepackage{eso-pic}
+\usepackage{tikz}
+\usepackage{amssymb}
+\usepackage{hyperref}
+\usepackage{booktabs}
+
+\definecolor{udecgreen}{HTML}{6B8E00}
+\definecolor{udecgreenlight}{HTML}{8BA817}
+\definecolor{udecgold}{HTML}{C5A000}
+
+\pagestyle{fancy}
+\fancyhf{}
+\renewcommand{\headrulewidth}{0pt}
+\renewcommand{\footrulewidth}{0pt}
+
+% Footer: centered "1" + bottom green bar + triangle
+% We use eso-pic for the green bar/triangle so it matches Word's behindDoc anchors
+% and fancyfoot for the centered page number in a white box.
+\fancyfoot[C]{\raisebox{0.35cm}{\colorbox{white}{\makebox[0.95cm][c]{\small\color{black}\thepage}}}}
+% Header: UDeC banner + thin line — only on first page (Word sectPr 1)
+\fancypagestyle{firstpage}{%
+  \fancyhf{}%
+  \fancyhead[C]{%
+    \begin{tikzpicture}[remember picture,overlay]
+      % banner image at top (behindDoc equivalent)
+      \node[anchor=north west,inner sep=0] at ([xshift=0.70cm,yshift=-0.34cm]current page.north west)
+        {\includegraphics[width=7.35cm,height=2.37cm,keepaspectratio]{assets/logo-universidad.jpg}};
+      % thin horizontal line below banner (image2 ~ 7.7cm wide, ~0.7cm tall) — replicate as rule
+      % position: just below header block, spanning content width
+      \draw[udecgreen,line width=0.45pt] ([xshift=0.70cm,yshift=-2.85cm]current page.north west) -- ++(18.05cm,0);
+    \end{tikzpicture}%
+    \vspace{2.05cm}%
+  }%
+  \fancyfoot[C]{\raisebox{0.35cm}{\colorbox{white}{\makebox[0.95cm][c]{\small\color{black}\thepage}}}}%
+  \renewcommand{\headrulewidth}{0pt}%
+  \renewcommand{\footrulewidth}{0pt}%
+}
+
+% Green footer bar (Word footer1 anchor: behindDoc image3 + page-wide rectangle)
+\AddToShipoutPictureBG{%
+  \AtPageLowerLeft{%
+    \begin{tikzpicture}[overlay]
+      % full-width green gradient bar at bottom (~1.15cm tall)
+      \fill[udecgreen] (0,0) rectangle (\paperwidth,1.18cm);
+      % diagonal triangle (image3) at bottom-right — replicate with polygon fill
+      \fill[white] (\paperwidth,0) -- (\paperwidth,1.18cm) -- ({\paperwidth-4.0cm},0) -- cycle;
+      % inner green triangle cut
+      \fill[udecgreen] ({\paperwidth-3.85cm},0) -- (\paperwidth,0) -- (\paperwidth,1.08cm) -- cycle;
+    \end{tikzpicture}%
+  }%
+}
+
+\setlength{\arrayrulewidth}{0.5pt}
+\renewcommand{\arraystretch}{1.0}
+\setlength{\tabcolsep}{5pt}
+\newcolumntype{Y}{>{\raggedright\arraybackslash}X}
+\newcolumntype{C}{>{\centering\arraybackslash}X}
+
+\newcommand{\formlabel}[1]{\textbf{\small #1}}
+\newcommand{\formcell}[1]{\small #1}
+
+\begin{document}
+\thispagestyle{firstpage}
+
+% Title block: matches Word's "Anexo 1. Formato de Propuesta" (indented left) + centered "CICLO"
+\vspace{0.10cm}
+{\small\bfseries\hspace{0.62cm}Anexo\hspace{0.15em}1.\hspace{0.25em}Formato\hspace{0.15em}de\hspace{0.15em}Propuesta\par}
+\vspace{0.20cm}
+{\centering\small\bfseries CICLO II — PROFUNDIZACIÓN\par}
+\vspace{0.18cm}
+{\small\bfseries\hspace{0.62cm}DATOS\hspace{0.15em}GENERALES\par}
+\vspace{0.12cm}
+
+% --- DATOS GENERALES (Table 0) — two-column gridCols 4131+4131 ---
+\noindent
+\begin{tabular}{|p{7.55cm}|p{7.55cm}|}
+\hline
+\formlabel{PROGRAMA} & \formcell{Ingeniería de Sistemas y Computación} \\
+\hline
+\formlabel{SEDE} & \formcell{Facatativá} \\
+\hline
+\formlabel{TIPO DE PROYECTO} & \formcell{Proyecto Tecnológico} \\
+\hline
+\formlabel{CICLO} & \formcell{Ciclo II — Profundización} \\
+\hline
+\multicolumn{2}{|p{15.38cm}|}{\formlabel{INTEGRANTES DEL PROYECTO} \small (Nombres y apellidos de los constructores del conocimiento que conforman el Proyecto de Gestión del Conocimiento, agregue o elimine filas según corresponda)} \\
+\hline
+\formlabel{NOMBRES Y APELLIDOS} & \formlabel{CORREO ELECTRÓNICO INSTITUCIONAL} \\
+\hline
+\formcell{David Fernando Gonzalez Soler} & \formcell{davidfernandogonzalez@ucundinamarca.edu.co} \\
+\hline
+\formcell{Maicol Estiven Fonseca Muñoz} & \formcell{mefonseca@ucundinamarca.edu.co} \\
+\hline
+\formcell{Ivan David Giraldo Garavito} & \formcell{idgiraldo@ucundinamarca.edu.co} \\
+\hline
+\end{tabular}
+
+\vspace{0.22cm}
+{\small\bfseries\hspace{0.62cm}ESTRUCTURA\hspace{0.20em}DEL\hspace{0.20em}PROYECTO\par}
+% Page break to match Word: heading at bottom of page 1, table starts on page 2
+\newpage
+% Word sect 2 margins (pages 2+): top 2.43cm, bottom 0.49cm (README measurements)
+\newgeometry{top=2.43cm,bottom=0.49cm,left=2.82cm,right=2.79cm,headheight=2.55cm,headsep=0.35cm,footskip=1.45cm,includehead,includefoot}
+
+% --- ESTRUCTURA (Table 1) — single column 8262 ---
+\noindent
+\begin{tabular}{|p{15.38cm}|}
+\hline
+\formlabel{TÍTULO DEL PROYECTO:} \\
+\hline
+\rule{0pt}{0.35cm} \\
+\hline
+\formlabel{PLANTEAMIENTO DEL PROBLEMA Y JUSTIFICACIÓN:} \\
+\hline
+\formcell{El control de los gastos personales sigue siendo una tarea manual: registrar cada compra en una libreta, una hoja de cálculo o una aplicación exige disciplina y tiempo, y la mayoría abandona el registro a las pocas semanas.
+
+En Colombia, la vida financiera ocurre cada vez más en el celular: el 66,6 \% de las operaciones monetarias se realiza por canales digitales (Banca de las Oportunidades, 2024). Aun así, las aplicaciones de finanzas personales fracasan: el 62 \% de los usuarios las abandona durante el primer mes (Apptopia, 2024, citado en Elsalaymeh, 2026), mientras que formar un hábito requiere en promedio entre 59 y 66 días (Singh et al., 2024).
+
+Sin registro sistemático, el usuario no sabe cuánto gasta en transporte, comida o suscripciones, no compara su gasto real contra su presupuesto y termina decidiendo a ciegas: sobregiros, crédito costoso o imposibilidad de ahorrar.
+
+¿Cómo puede una aplicación móvil con asistencia de IA facilitar el registro y el análisis de los gastos personales, reduciendo el esfuerzo de captura y ayudando a formar el hábito de control financiero?} \\
+\hline
+\formlabel{OBJETIVOS DEL PROYECTO} \\
+\hline
+\formlabel{OBJETIVO GENERAL:} \\
+\hline
+\rule{0pt}{0.35cm} \\
+\hline
+\formlabel{OBJETIVOS ESPECÍFICOS:} \\
+\hline
+\rule{0pt}{0.35cm} \\
+\hline
+\formlabel{MARCO REFERENCIAL (Opcional):} \\
+\hline
+\rule{0pt}{0.35cm} \\
+\hline
+\formlabel{METODOLOGÍA A UTILIZAR Y CRONOGRAMA DE DESARROLLO:} \\
+\hline
+\rule{0pt}{0.35cm} \\
+\hline
+\formlabel{REFERENCIAS BIBLIOGRÁFICAS (opcional):} \\
+\hline
+\rule{0pt}{0.35cm} \\
+\hline
+\end{tabular}
+
+\vspace{0.10cm}
+% --- PRODUCTOS ESPERADOS (Table 2) — cols 562 + 7701 ---
+\noindent
+\begin{tabular}{|p{0.72cm}|p{14.50cm}|}
+\hline
+\multicolumn{2}{|p{15.38cm}|}{\formlabel{PRODUCTOS ESPERADOS (marque con una X):}} \\
+\hline
+$\square$ & \formcell{Documento síntesis de PGC} \\
+\hline
+$\square$ & \formcell{Software} \\
+\hline
+$\square$ & \formcell{Sistema de información} \\
+\hline
+$\square$ & \formcell{Prototipo} \\
+\hline
+$\square$ & \formcell{Artículo científico} \\
+\hline
+$\square$ & \formcell{Póster- Ponencia} \\
+\hline
+$\square$ & \formcell{Comunidad de práctica y redes de conocimiento} \\
+\hline
+$\square$ & \formcell{Evento científico o académico} \\
+\hline
+$\square$ & \formcell{Ediciones de revista o libro de divulgación} \\
+\hline
+$\square$ & \formcell{Producción de contenidos digitales} \\
+\hline
+$\square$ & \formcell{Publicaciones editoriales no especializadas} \\
+\hline
+$\square$ & \formcell{Desarrollo Web} \\
+\hline
+$\square$ & \formcell{Creación de cursos} \\
+\hline
+$\square$ & \formcell{Emprendimiento e innovación} \\
+\hline
+$\square$ & \formcell{Otro ¿Cuál?} \\
+\hline
+\end{tabular}
+
+\end{document}

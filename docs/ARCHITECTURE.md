@@ -1,16 +1,17 @@
 # Architecture — Finance AI Tracker
 
-> **Status:** PROPOSAL — interface-agnostic. The stack and interface are not decided yet
-> (professor decides); everything here is the contract, not the implementation.
+> **Status:** PROPOSAL — core is the Flutter app + backend (API + DB). The "agent" features
+> (chat, AI acting on data) are optional Phase 3 ideas and are marked as such below.
 > Decisions source: `docs/step5-plan.md` (Q1–Q7). Guide: `docs/guides/architecture-diagrams-guide.md`.
+> Stack decisions: `docs/STACK.md`.
 
 ## Pending decisions (TBD)
 
-- **Interface** — web / Telegram / app (professor decides)
-- **Tech stack** — backend language/framework; DB candidate: PostgreSQL (professor decides)
-- **Price source** — Phase 3 supermarket price feature ("to define")
+- **Interface** — **Flutter app** (team proposal; professor confirmation pending — see `docs/STACK.md`)
+- **Price source** — Phase 3 optional supermarket price feature ("to define"), only if Phase 3 is built
 
-When these are decided, resolve them via TASKS.md **Step 8** (post-stack sweep).
+Stack (backend FastAPI, PostgreSQL, Gemini flash default) is decided in `docs/STACK.md`.
+Anything the professor changes at semester start gets resolved via TASKS.md **Step 8** (post-stack sweep).
 
 ---
 
@@ -21,31 +22,32 @@ One subgraph per layer, `[( )]` databases, labeled arrows, TBD where open.
 ```mermaid
 flowchart TD
     subgraph ClientLayer["Client Layer"]
-        Client["Client<br/>Web / Telegram / App<br/>interface TBD"]
+        Client["Flutter App<br/>thin client — needs internet"]
     end
 
     subgraph APILayer["API Layer"]
-        API["API Server + AI Agent<br/>REST / JSON<br/>stack TBD"]
+        API["Backend (API Server)<br/>FastAPI (Python) on VM — REST / JSON<br/>auth, analytics, AI parsing calls"]
     end
 
     subgraph DataLayer["Data Layer"]
-        DB[("Main DB<br/>TBD — candidate: PostgreSQL")]
+        DB[("Main DB<br/>PostgreSQL<br/>lives on the VM")]
         FS[("File Storage<br/>receipt images — local disk (demo)")]
     end
 
     Client -->|"HTTPS / JSON"| API
-    API -->|"provider API"| LLM["External LLM Provider<br/>OpenAI / Claude"]
+    API -->|"provider API"| LLM["External LLM Provider<br/>Google Gemini flash (default)<br/>parsing only in core"]
     API -->|"SQL / CRUD"| DB
     API -->|"upload / read media"| FS
 ```
 
-> *Technologies TBD — this diagram is the contract, not the implementation.*
+> *Technologies decided in `docs/STACK.md` (Flutter · FastAPI · PostgreSQL · Gemini flash default) — this diagram is the contract.*
 
 Notes:
 
-- The AI agent is **merged inside the API** (Q3 decision) — no separate AI layer.
+- The AI logic is **merged inside the backend** (Q3 decision) — no separate AI layer.
+- In the core, the LLM provider is used **only for input parsing** (photo/audio/text → structured JSON). The phone never calls the LLM directly.
+- The **agent (chat + AI acting on data)** is optional Phase 3 — if built, it lives inside the backend too. Marked optional in the component diagram.
 - LLM provider is external (outside the system boundary, Q2).
-- Agent write-back distinction (limits, subcategories) is shown at module level in the component diagram.
 - No vector DB, no cache (Q5: not needed — structured DB via tool calls).
 - Admin deliberately excluded (Q1 decision).
 
@@ -53,60 +55,65 @@ Notes:
 
 ## Component diagram
 
-The inside view of the API container — the 5 modules and how they relate. The agent→DB arrow here carries the "agent writes limits/subcategories" story (deferred from the layer diagram to this zoom level).
+The inside view of the backend container — the modules and how they relate. The **AI Parsing** module is core; the **Chat / Agent** modules are optional Phase 3 (dashed, marked optional).
 
 > Uses `flowchart` instead of `C4Component` so it renders in Zed / GitHub mermaid preview. See the guide §6 note on the Zed gotcha with experimental C4C diagrams.
 
 ```mermaid
 flowchart TD
-    subgraph API["API Server (stack TBD)"]
-        auth["Auth Module<br/>login, sessions, roles"]
+    subgraph API["Backend on VM (FastAPI, Python)"]
+        auth["Auth Module<br/>JWT login, roles"]
         expenses["Expense Module<br/>register/edit/delete expenses"]
         income["Income Module<br/>register income"]
-        agent["AI Agent / Tools<br/>extraction, queries, actions"]
-        chat["Chat Module<br/>conversational queries"]
+        parsing["AI Parsing Module<br/>input → structured JSON<br/>(core)"]
+        agent["AI Agent / Tools<br/>(OPTIONAL — Phase 3)<br/>chat, read-only queries"]
+        chat["Chat Module<br/>(OPTIONAL — Phase 3)<br/>conversational queries"]
     end
 
-    db[("Main DB (TBD)<br/>users, receipts, expenses, income, limits")]
-    llm["LLM Provider (external)<br/>OpenAI / Claude - pay per call"]
+    db[("Main DB (PostgreSQL)<br/>users, receipts, expenses, income, limits")]
+    llm["LLM Provider (external)<br/>Gemini flash (default) - pay per call"]
 
     auth -->|"validates session"| expenses
-    expenses -->|"requests AI extraction"| agent
-    agent -->|"prompt + context"| llm
-    agent -->|"reads / writes (tool calls)"| db
-    chat -->|"sends natural-language queries"| agent
+    expenses -->|"requests AI parsing"| parsing
+    parsing -->|"prompt + input"| llm
+    parsing -->|"structured JSON"| expenses
     expenses -->|"reads / writes"| db
     income -->|"reads / writes"| db
+    chat -.->|"sends natural-language queries"| agent
+    agent -.->|"prompt + context"| llm
+    agent -.->|"reads (tool calls)"| db
 ```
 
 Legend:
 
-- Box (subgraph) = the API container (its 5 modules inside).
+- Box (subgraph) = the backend container (its modules inside).
 - `[( )]` cylinder = data store (Main DB).
 - Plain box outside the subgraph = external entity (LLM provider).
+- Dashed edges + "(OPTIONAL — Phase 3)" = agent/chat modules, not built in the core.
 
 Notes:
 
-- Only the API is expanded; the Client, DB, and File Storage stay as in the layer diagram.
+- Only the backend is expanded; the Flutter app, DB, and File Storage stay as in the layer diagram.
 - LLM provider is external — outside our system boundary (Q2).
-- The agent → DB edge ("reads / writes (tool calls)") is where the agent acts on data (creates limits, generates subcategories) — the signature feature shown at this zoom level.
-- `TBD` on every technology — stack not decided yet (Step 8 sweep).
+- **Core:** the only LLM interaction is `parsing → llm → structured JSON`. No agent, no writes.
+- **Optional Phase 3:** the agent → DB edge ("reads (tool calls)") is where the chat agent queries data — read-only. Agent *writes* (limits, subcategories) would go through a confirmation preview (ALCANCE.md "Data Protection").
+- Stack decided in `docs/STACK.md` (FastAPI, PostgreSQL, Gemini flash default).
 - Admin deliberately excluded (Q1 decision).
 
 ---
 
 ## Data flow
 
-Two journeys (Q6). Conventions per guide §7: entity = rectangle, process = stadium `([ ])`, store = cylinder `[( )]`, every flow labeled. DFD 2 is read-only — agent writes are Phase 3 (see `docs/ALCANCE.md` "Data Protection").
+Two journeys (Q6). Conventions per guide §7: entity = rectangle, process = stadium `([ ])`, store = cylinder `[( )]`, every flow labeled.
 
-### DFD 1 — Register an expense
+### DFD 1 — Register an expense (CORE)
 
 ```mermaid
 flowchart LR
-    User["External Entity<br/>User"]:::entity
+    User["External Entity<br/>User (Flutter app)"]:::entity
     LLM["External Entity<br/>LLM Provider"]:::entity
     P1(["P1<br/>Submit input (photo / audio / text)"]):::process
-    P2(["P2<br/>AI extracts data"]):::process
+    P2(["P2<br/>AI parses to JSON"]):::process
     P3(["P3<br/>Show in editable format"]):::process
     P4(["P4<br/>Menu: Confirm / Edit / Discard"]):::process
     P5(["P5<br/>Edit: manual form or subtle fix by message"]):::process
@@ -117,8 +124,8 @@ flowchart LR
     User -->|"photo / audio / text"| P1
     P1 -->|"raw input"| P2
     P2 -->|"prompt"| LLM
-    LLM -->|"extracted data"| P2
-    P2 -->|"extracted data"| P3
+    LLM -->|"structured JSON"| P2
+    P2 -->|"structured JSON"| P3
     P3 -->|"formatted view"| P4
     P4 -->|"edit"| P5
     P5 -->|"updated data"| P3
@@ -133,13 +140,13 @@ flowchart LR
     classDef store fill:#efe,stroke:#333;
 ```
 
-Note: **delete** (post-save) exists separately — this diagram covers the pre-save flow; saved expenses can always be edited or deleted (ALCANCE.md).
+Note: **delete** (post-save) exists separately — this diagram covers the pre-save flow; saved expenses can always be edited or deleted (ALCANCE.md). Manual text entry skips P2/LLM entirely.
 
-### DFD 2 — Ask the AI
+### DFD 2 — Ask the AI (OPTIONAL — Phase 3, not built in core)
 
 ```mermaid
 flowchart LR
-    User["External Entity<br/>User"]:::entity
+    User["External Entity<br/>User (Flutter app)"]:::entity
     LLM["External Entity<br/>LLM Provider"]:::entity
     P1(["P1<br/>Ask question"]):::process
     P2(["P2<br/>LLM checks the question"]):::process
@@ -165,4 +172,4 @@ flowchart LR
     classDef store fill:#efe,stroke:#333;
 ```
 
-Note: this journey is **read-only**. Agent writes (create limits, subcategories) are Phase 3 and go through the confirmation preview — see `docs/ALCANCE.md` "Data Protection".
+Note: this journey is **optional (Phase 3) and read-only**. Agent writes (create limits, subcategories) would go through the confirmation preview — see `docs/ALCANCE.md` "Data Protection". The core app gets its analytics from the backend via plain SQL endpoints (the Dashboard), not through this flow.

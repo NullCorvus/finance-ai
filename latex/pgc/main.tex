@@ -1,0 +1,229 @@
+% Formato PGC — LaTeX conversion (1:1 from Formato PGC.docx)
+% Build: latexmk -pdf main.tex  or  pdflatex main.tex
+\documentclass[11pt]{article}
+
+\usepackage[letterpaper,top=1.15cm,bottom=1.30cm,left=2.82cm,right=2.79cm,headheight=2.55cm,headsep=0.35cm,footskip=1.45cm,includehead,includefoot]{geometry}
+\usepackage[spanish]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{helvet}
+\renewcommand{\familydefault}{\sfdefault}
+\usepackage{graphicx}
+\usepackage{xcolor}
+\usepackage{array}
+\usepackage{colortbl}
+\usepackage{multirow}
+\usepackage{fancyhdr}
+\usepackage{lastpage}
+\usepackage{eso-pic}
+\usepackage{tikz}
+\usepackage{amssymb}
+\usepackage{hyperref}
+\usepackage{booktabs}
+\usepackage{longtable}
+
+\definecolor{udecgreen}{HTML}{6B8E00}
+\definecolor{udecgreenlight}{HTML}{8BA817}
+\definecolor{udecgold}{HTML}{C5A000}
+
+\pagestyle{fancy}
+\fancyhf{}
+\renewcommand{\headrulewidth}{0pt}
+\renewcommand{\footrulewidth}{0pt}
+
+% Footer: centered "1" + bottom green bar + triangle
+% We use eso-pic for the green bar/triangle so it matches Word's behindDoc anchors
+% and fancyfoot for the centered page number in a white box.
+\fancyfoot[C]{\raisebox{0.35cm}{\colorbox{white}{\makebox[0.95cm][c]{\small\color{black}\thepage}}}}
+% Header: UDeC banner + thin line — only on first page (Word sectPr 1)
+\fancypagestyle{firstpage}{%
+  \fancyhf{}%
+  \fancyhead[C]{%
+    \begin{tikzpicture}[remember picture,overlay]
+      % banner image at top (behindDoc equivalent)
+      \node[anchor=north west,inner sep=0] at ([xshift=0.70cm,yshift=-0.34cm]current page.north west)
+        {\includegraphics[width=7.35cm,height=2.37cm,keepaspectratio]{assets/logo-universidad.jpg}};
+      % thin horizontal line below banner (image2 ~ 7.7cm wide, ~0.7cm tall) — replicate as rule
+      % position: just below header block, spanning content width
+      \draw[udecgreen,line width=0.45pt] ([xshift=0.70cm,yshift=-2.85cm]current page.north west) -- ++(18.05cm,0);
+    \end{tikzpicture}%
+    \vspace{2.05cm}%
+  }%
+  \fancyfoot[C]{\raisebox{0.35cm}{\colorbox{white}{\makebox[0.95cm][c]{\small\color{black}\thepage}}}}%
+  \renewcommand{\headrulewidth}{0pt}%
+  \renewcommand{\footrulewidth}{0pt}%
+}
+
+% Green footer bar (Word footer1 anchor: behindDoc image3 + page-wide rectangle)
+\AddToShipoutPictureBG{%
+  \AtPageLowerLeft{%
+    \begin{tikzpicture}[overlay]
+      % full-width green gradient bar at bottom (~1.15cm tall)
+      \fill[udecgreen] (0,0) rectangle (\paperwidth,1.18cm);
+      % diagonal triangle (image3) at bottom-right — replicate with polygon fill
+      \fill[white] (\paperwidth,0) -- (\paperwidth,1.18cm) -- ({\paperwidth-4.0cm},0) -- cycle;
+      % inner green triangle cut
+      \fill[udecgreen] ({\paperwidth-3.85cm},0) -- (\paperwidth,0) -- (\paperwidth,1.08cm) -- cycle;
+    \end{tikzpicture}%
+  }%
+}
+
+\setlength{\arrayrulewidth}{0.5pt}
+\renewcommand{\arraystretch}{1.0}
+\setlength{\tabcolsep}{5pt}
+\newcolumntype{Y}{>{\raggedright\arraybackslash}X}
+\newcolumntype{C}{>{\centering\arraybackslash}X}
+
+\newcommand{\formlabel}[1]{\textbf{\small #1}}
+\newcommand{\formcell}[1]{\small #1}
+
+\begin{document}
+\thispagestyle{firstpage}
+
+% Title block: matches Word's "Anexo 1. Formato de Propuesta" (indented left) + centered "CICLO"
+\vspace{0.10cm}
+{\small\bfseries\hspace{0.62cm}Anexo\hspace{0.15em}1.\hspace{0.25em}Formato\hspace{0.15em}de\hspace{0.15em}Propuesta\par}
+\vspace{0.20cm}
+{\centering\small\bfseries CICLO II — PROFUNDIZACIÓN\par}
+\vspace{0.18cm}
+{\small\bfseries\hspace{0.62cm}DATOS\hspace{0.15em}GENERALES\par}
+\vspace{0.12cm}
+
+% --- DATOS GENERALES (Table 0) — two-column gridCols 4131+4131 ---
+\noindent
+\begin{tabular}{|p{7.55cm}|p{7.55cm}|}
+\hline
+\formlabel{PROGRAMA} & \formcell{Ingeniería de Sistemas y Computación} \\
+\hline
+\formlabel{SEDE} & \formcell{Facatativá} \\
+\hline
+\formlabel{TIPO DE PROYECTO} & \formcell{Proyecto Tecnológico} \\
+\hline
+\formlabel{CICLO} & \formcell{Ciclo II — Profundización} \\
+\hline
+\multicolumn{2}{|p{15.38cm}|}{\formlabel{INTEGRANTES DEL PROYECTO}} \\
+\hline
+\formlabel{NOMBRES Y APELLIDOS} & \formlabel{CORREO ELECTRÓNICO INSTITUCIONAL} \\
+\hline
+\formcell{David Fernando Gonzalez Soler} & \formcell{davidfernandogonzalez@ucundinamarca.edu.co} \\
+\hline
+\formcell{Maicol Estiven Fonseca Muñoz} & \formcell{mefonseca@ucundinamarca.edu.co} \\
+\hline
+\formcell{Ivan David Giraldo Garavito} & \formcell{idgiraldo@ucundinamarca.edu.co} \\
+\hline
+\end{tabular}
+
+\vspace{0.22cm}
+{\small\bfseries\hspace{0.62cm}ESTRUCTURA\hspace{0.20em}DEL\hspace{0.20em}PROYECTO\par}
+\vspace{0.14cm}
+
+% --- ESTRUCTURA (Table 1) — single column 8262; longtable so it flows from page 1 (like Word) ---
+\noindent
+\begin{longtable}{|p{15.38cm}|}
+\hline
+\formlabel{TÍTULO DEL PROYECTO:} \\
+\hline
+\formcell{\textbf{Aplicación móvil para el registro y análisis de gastos personales con asistencia de IA para la captura automática de recibos}} \\
+\hline
+\formlabel{PLANTEAMIENTO DEL PROBLEMA Y JUSTIFICACIÓN:} \\
+\hline
+\formcell{\textbf{Problema:} El control de los gastos personales suele hacerse de forma manual, y esa tarea genera fricción: registrar cada compra exige tiempo y disciplina, y el registro se interrumpe con frecuencia. En el ámbito de las aplicaciones de finanzas personales, la retención promedio a 30 días es de solo el 4,2 \%, lo que implica que más del 95 \% de los usuarios las abandona durante el primer mes (Curry, 2026), mientras que, según estudios sobre la formación de hábitos en conductas de salud, la mediana para consolidar un hábito es de 59 a 66 días (Singh et al., 2024). En Colombia, la vida financiera ocurre cada vez más en el celular: el 66,6 \% de las operaciones monetarias se realiza por canales digitales (Banca de las Oportunidades, 2024). Sin registro sistemático, el usuario no sabe en qué gasta y decide sin información: sobregiros, crédito costoso o imposibilidad de ahorrar.
+
+\vspace{0.12cm}
+
+\textbf{Pregunta problema:} ¿Cómo puede una aplicación móvil con asistencia de IA facilitar el registro y el análisis de los gastos personales, reduciendo el esfuerzo de captura y contribuyendo a formar el hábito de control financiero?
+
+\vspace{0.15cm}
+
+\textbf{Justificación:} La presente propuesta se justifica porque las tecnologías de IA para interpretar recibos son hoy maduras y accesibles por API, lo que permite reducir la fricción del registro en un contexto donde la vida financiera ya ocurre de forma digital.
+
+Los estudiantes de la Universidad de Cundinamarca, sede Facatativá, constituyen la población piloto prevista para validar el prototipo; la solución se dirige también a cualquier persona que desee controlar sus gastos desde el celular, y el equipo es además el primer caso de uso.
+
+La propuesta prioriza la captura del gasto por foto, voz o texto: la IA estructura los datos y el usuario los confirma, edita o descarta antes de guardar, conservando el control de su información.
+
+La propuesta es viable como prototipo académico mediante herramientas de bajo costo y servicios con niveles gratuitos o cuotas de prueba, sujetos a las condiciones vigentes de los proveedores.} \\
+\hline
+\formlabel{OBJETIVOS DEL PROYECTO} \\
+\hline
+\formlabel{OBJETIVO GENERAL:} \\
+\hline
+\formcell{Desarrollar una aplicación móvil para el registro, la categorización y el análisis de gastos personales, con asistencia de IA para la captura automática de recibos, aplicando la metodología CDIO, con el fin de reducir el esfuerzo de captura de los gastos y contribuir a la formación del hábito de control financiero en los usuarios.} \\
+\hline
+\formlabel{OBJETIVOS ESPECÍFICOS:} \\
+\hline
+\formcell{1. \textbf{Concebir} — Definir el alcance y los requisitos funcionales y no funcionales de la aplicación móvil, cubriendo el registro de gastos, la captura asistida por IA y el flujo de confirmar, editar o descartar la información capturada.
+
+\vspace{0.12cm}
+
+2. \textbf{Diseñar} — Diseñar la arquitectura del sistema (aplicación móvil, API y base de datos), el modelo de datos y los mockups de las pantallas de captura y confirmación de gastos.
+
+\vspace{0.12cm}
+
+3. \textbf{Implementar} — Implementar la captura de gastos mediante IA por foto, voz o texto, que convierte la entrada en un gasto estructurado (líneas, comercio, fecha, total y categoría) para su confirmación por el usuario.
+
+\vspace{0.12cm}
+
+4. \textbf{Implementar} — Implementar el módulo de analítica que muestre los gastos agrupados por categoría en el período seleccionado.
+
+\vspace{0.12cm}
+
+5. \textbf{Operar} — Validar la aplicación mediante pruebas funcionales y una encuesta de usabilidad aplicada a estudiantes de la Universidad de Cundinamarca, verificando el funcionamiento de los módulos y la aceptación del piloto.} \\
+\hline
+\formlabel{MARCO REFERENCIAL (Opcional):} \\
+\hline
+\rule{0pt}{0.35cm} \\
+\hline
+\formlabel{METODOLOGÍA A UTILIZAR Y CRONOGRAMA DE DESARROLLO:} \\
+\hline
+\rule{0pt}{0.35cm} \\
+\hline
+\formlabel{REFERENCIAS BIBLIOGRÁFICAS (opcional):} \\
+\hline
+\formcell{1. Curry, D. (2026, 7 de enero). \emph{Finance app benchmarks (2026)}. Business of Apps. \url{https://www.businessofapps.com/data/finance-app-benchmarks/}
+
+2. Banca de las Oportunidades. (2024). \emph{Reporte de Inclusión Financiera 2024}. \url{https://www.bancadelasoportunidades.gov.co/sites/default/files/2025-05/BDO_RIF\%202024_COMPLETO\%201.pdf}
+
+3. Singh, B., Murphy, A., Maher, C., \& Smith, A. E. (2024). Time to form a habit: A systematic review and meta-analysis of health behaviour habit formation and its determinants. \emph{Healthcare, 12}(23), 2488. \url{https://doi.org/10.3390/healthcare12232488}} \\
+\hline
+\end{longtable}
+
+\vspace{0.10cm}
+% --- PRODUCTOS ESPERADOS (Table 2) — cols 562 + 7701 ---
+\noindent
+\begin{tabular}{|p{0.72cm}|p{14.50cm}|}
+\hline
+\multicolumn{2}{|p{15.38cm}|}{\formlabel{PRODUCTOS ESPERADOS (marque con una X):}} \\
+\hline
+$\square$ & \formcell{Documento síntesis de PGC} \\
+\hline
+$\boxtimes$ & \formcell{Software} \\
+\hline
+$\square$ & \formcell{Sistema de información} \\
+\hline
+$\boxtimes$ & \formcell{Prototipo} \\
+\hline
+$\square$ & \formcell{Artículo científico} \\
+\hline
+$\square$ & \formcell{Póster- Ponencia} \\
+\hline
+$\square$ & \formcell{Comunidad de práctica y redes de conocimiento} \\
+\hline
+$\square$ & \formcell{Evento científico o académico} \\
+\hline
+$\square$ & \formcell{Ediciones de revista o libro de divulgación} \\
+\hline
+$\square$ & \formcell{Producción de contenidos digitales} \\
+\hline
+$\square$ & \formcell{Publicaciones editoriales no especializadas} \\
+\hline
+$\square$ & \formcell{Desarrollo Web} \\
+\hline
+$\square$ & \formcell{Creación de cursos} \\
+\hline
+$\square$ & \formcell{Emprendimiento e innovación} \\
+\hline
+$\square$ & \formcell{Otro ¿Cuál?} \\
+\hline
+\end{tabular}
+
+\end{document}
