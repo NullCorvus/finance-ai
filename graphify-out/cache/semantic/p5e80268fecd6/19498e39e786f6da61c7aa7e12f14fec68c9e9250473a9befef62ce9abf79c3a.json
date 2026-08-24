@@ -1,0 +1,1 @@
+{"nodes": [{"id": "property_based_testing", "label": "Property-Based Testing Extension", "file_type": "code", "source_file": ".aidlc-rule-details/extensions/testing/property-based/property-based-testing.md", "rationale": "Extension for identifying and testing invariants."}], "edges": [], "hyperedges": []}

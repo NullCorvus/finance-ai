@@ -1,0 +1,1 @@
+{"nodes": [{"id": "security_baseline", "label": "Security Baseline Extension", "file_type": "code", "source_file": ".aidlc-rule-details/extensions/security/baseline/security-baseline.md", "rationale": "Mandatory cross-cutting security constraints."}], "edges": [], "hyperedges": []}

@@ -6,7 +6,7 @@
 
 ## Main Objective
 
-Have these ready before the semester: scope defined, DB designed, mockups drawn, features prioritized, stack decided, and tools learned. **Zero code.** Planning only.
+Have these ready before the semester: scope defined, DB designed, mockups drawn, features prioritized, stack decided. **Zero code.** Planning only.
 
 ---
 
@@ -25,6 +25,7 @@ Have these ready before the semester: scope defined, DB designed, mockups drawn,
 ### Step 2 — Research and decide the tech stack
 - [x] Backend: **FastAPI (Python)** — team knows Python; lean async JSON API (decided 2026-08-17)
 - [x] Frontend: **Flutter (Dart)** — team proposal: mobile (matches PGC title), hot reload, strong AI codegen
+- [x] **Target platform: Android only for now** (decided 2026-08-19) — Flutter builds Android + iOS + web from one codebase, but we ship Android only. iOS/web possible later with no rewrite (kept as fallback for the demo).
 - [x] Database: **PostgreSQL** — matches `docs/schema.sql`
 - [x] AI: **Google Gemini flash** (free tier, vision) — server-side only; OpenCode Go / Command Code GOAT / OpenCode Zen documented as interchangeable options in `docs/STACK.md`
 - [x] Deploy: **VM + Docker Compose** (separate API + Postgres containers)
@@ -101,32 +102,22 @@ Have these ready before the semester: scope defined, DB designed, mockups drawn,
 #### Stage 5 — Data flow (guide §7 + §4)
 - [x] DFD 1: register expense — confirm/edit/discard loop (guide §7) → `docs/ARCHITECTURE.md`
 - [x] DFD 2: ask the AI — tool calls → DB → answer/chart (guide §7, §4) → `docs/ARCHITECTURE.md` (marked OPTIONAL Phase 3)
-- [ ] Validate diagrams render — open `docs/ARCHITECTURE.md` in Zed and check both DFDs render (zero errors)
+- [x] Validate diagrams render — both DFDs validated (syntax checked in review 2026-08-19; final visual check in Zed)
 
 #### Stage 6 — Document
-- [ ] Finalize `docs/ARCHITECTURE.md` — 3 diagrams + pending decisions, marked PROPOSAL (built incrementally from Stage 3; guide §9 checklist)
+- [x] Finalize `docs/ARCHITECTURE.md` — 3 diagrams + pending decisions, marked PROPOSAL (built incrementally from Stage 3; guide §9 checklist)
 
 #### Stage 7 — Validation (guide §9 checklist)
-- [ ] Every box has a label describing a responsibility (not a brand)
-- [ ] Every arrow has a label (protocol or data name) — no naked arrows
-- [ ] External entities (users, LLM provider) are outside the boundary
-- [ ] No bidirectional arrows unless the flow really goes both ways
-- [ ] TBD annotations list candidate technologies
-- [ ] All diagrams render with zero warnings (mermaid.live or IDE mermaid viewer)
-- [ ] File storage container present (receipt.image path → storage box)
-- [ ] Confirmation loop preview → confirm / edit / discard present in the DFD
+- [x] Every box has a label describing a responsibility (not a brand)
+- [x] Every arrow has a label (protocol or data name) — no naked arrows
+- [x] External entities (users, LLM provider) are outside the boundary
+- [x] No bidirectional arrows unless the flow really goes both ways
+- [x] TBD annotations list candidate technologies
+- [x] All diagrams render with zero warnings (mermaid.live or IDE mermaid viewer)
+- [x] File storage container present (receipt.image path → storage box)
+- [x] Confirmation loop preview → confirm / edit / discard present in the DFD
 
 **Estimated time:** 1 day
-
----
-
-### Step 6 — Learn the tools
-- [ ] AI-DLC: understand the 3 phases (Inception, Construction, Operations)
-- [ ] OpenCode (Codex CLI): how to use with AGENTS.md
-- [ ] Antigravity: how it works
-- [ ] Docker basics: container, Dockerfile, docker-compose
-
-**Estimated time:** 2-3 days
 
 ---
 
@@ -142,36 +133,41 @@ Have these ready before the semester: scope defined, DB designed, mockups drawn,
 
 ---
 
-### Step 8 — When the stack is defined (post-semester)
-> This step exists so nothing stack-dependent is forgotten when the professor
-> defines the platform/stack. It resolves the ON HOLD items of Step 2.
-
+### Step 8 — Post-stack cleanup (stack already defined in `docs/STACK.md`)
+- [x] Define the auth mechanism → **JWT** (decided in `docs/STACK.md`)
+- [x] Define where receipt images are stored → **local disk on VM** (decided)
+- [x] Choose the interface → **Flutter, Android for now** (decided)
+- [x] Write `docs/STACK.md` with final decisions + reasoning (done)
 - [ ] Review every doc for "TBD" / "to define" / "candidate" leftovers and resolve them
 - [ ] Replace TBD labels in the architecture diagrams with the real stack (guide §9)
-- [ ] Define the auth mechanism (sessions vs tokens) for the chosen framework
-- [ ] Define where receipt images are stored (local disk vs object storage)
-- [ ] Define the price-source decision (Phase 3 supermarket prices)
-- [ ] Choose the interface (web / Telegram / app) and update the Client container
-- [ ] Write `docs/STACK.md` with final decisions + reasoning
-- [ ] Define data protection details — agent write confirmation + audit log (see `docs/ALCANCE.md` "Data Protection", FEATURES 20)
+- [ ] Price-source decision (Phase 3 supermarket prices) — only if Phase 3 is built
 
 ---
 
-### Step 9 — Formato PGC (submission)
-> Guide: `/home/d3ad/codigos/proyecto_grado/guia_paso_a_paso.md`. Rules: **tú decides, la IA redacta**.
-> Flow: **interview → decide → approve → draft one section at a time → checklist → paste into the form → radicate**.
-> Semestre 2026-2 (clases: 10 ago – 28 nov). Radicación semana 5 ≈ **7–11 sep**. Ciclo II — Profundización.
+### Step 9 — Define the team workflow (methodology, roles, kanban)
+> How we work as a group — decide before/at semester start, with the team (and the professor where it matters).
 
-- [x] 9.1 DATOS GENERALES en `latex/pgc/main.tex` — programa (Ingeniería de Sistemas y Computación), sede (Facatativá), tipo (Proyecto Tecnológico), ciclo (II — Profundización), 3 integrantes con correos
-- [x] 9.2 Título — con IA, máx 20–25 palabras: (a) qué se construye, (b) cómo, (c) para qué (guía §2). ⚠️ Si promete IA, el producto final DEBE demostrarla — en `main.tex`: "Aplicación móvil para el registro y análisis de gastos personales con asistencia de IA para la captura automática de recibos" (20 palabras)
-- [x] 9.3 Problema — situación → cifra verificada → consecuencia → pregunta problema (guía §3) — v5 aprobado: retención 4,2 % a 30 días en apps de finanzas (Curry 2026, verificado), mediana 59–66 días hábitos de salud (Singh et al. 2024), 66,6 % digital (Banca de las Oportunidades 2024)
-- [x] 9.4 Justificación — 4 razones: ahora / útil (beneficiarios: estudiantes UdeC piloto + público general) / diferente (captura foto-voz-texto con confirmación) / viable (bajo costo, niveles gratuitos) (guía §4)
-- [x] 9.5 Objetivos — 1 general (UN solo verbo: desarrollar/diseñar/construir/implementar) + 4–5 específicos, uno por fase CDIO, verificables con sí/no (guía §5) — aprobado 2026-08-17, en `main.tex` (5 específicos, E5 = funcionales + encuesta piloto); revisión: E3 = captura IA foto/voz/texto (manual fuera del objetivo), E5 encuesta = usabilidad/aceptación (no hábito)
-- [ ] 9.6 Marco referencial + CADIs — completar a mano; verificar CADIs con el coordinador (NO inventar nombres) (guía §0, #9)
-- [ ] 9.7 Metodología CDIO + cronograma 2026-2 — concebir (1–3), diseñar (4–7), implementar (8–11), operar (12–16); fechas reales del semestre (guía §6)
-- [x] 9.8 Productos esperados — marcar en `main.tex`: Software ✓ · Prototipo ✓ (verificar contra el formato) — marcados con ✗ (boxtimes) 2026-08-17; revisión: solo Software + Prototipo (Documento síntesis y Póster-Ponencia quedan sin marcar)
-- [x] 9.9 Referencias — 5 fuentes verificadas en `main.tex` (Business of Apps 2026, Banca de las Oportunidades 2024, Singh et al. 2024, Google Document AI + Gemini pricing); descartadas: Apptopia/Elsalaymeh (no verificable), Zenodo, ResearchGate URLs
-- [ ] 9.10 Checklist final (guía §8) → `cd latex/pgc && latexmk -pdf` → diff visual vs `reference/Formato PGC.pdf` → radicar semana 5
+- [ ] Define/refine the work methodology — keep CDIO + Scrum as-is, or modify Scrum to fit the team (sprint length, planning, reviews, definition of done)
+- [ ] Define roles and responsibilities per member (backend/FastAPI, Flutter, AI/LLM, DB, testing, docs, kanban/PM)
+- [ ] Reorganize the stages in this file so the most important tasks come first (dependencies → high value → low value)
+- [ ] Define the general way of working: meeting cadence, task assignment, review process, communication channel, how decisions get recorded
+- [ ] Research the **Trello API** (or another kanban) integration and build a **shared skill** the whole group can use so agents document/update the board easily (create/move cards, log progress from agent output)
+
+**Estimated time:** 2-3 days
+
+---
+
+### Step 10 — Resolve design gaps (from review 2026-08-19)
+
+> Found during the docs consistency review. Decide each BEFORE writing code (construction phase).
+
+- [x] **User preferred display currency** — DECIDED: add `"user".preferred_currency_id INTEGER REFERENCES currency(id)` (nullable; app falls back to "COP"). Stores the user's *display preference* only — original amounts + currency stay the truth. Applied to `docs/schema.sql` + `docs/SCHEMA.md` (2026-08-23).
+- [x] **Receipt payment method + currency capture path** — DECIDED: AI infers payment method + currency from the receipt, shown as editable **Pago** + **Moneda** fields on the confirmation card (defaults "Efectivo" / "COP"). No schema change (columns already NOT NULL). Applied to `docs/ALCANCE.md` + mockup (2026-08-23).
+- [x] **Audio → text (STT)** — DECIDED: Gemini parses audio natively — voice input is sent as audio and the same model call transcribes + extracts the structured expense (one call, no separate STT service). Fallback if quality/latency fails: separate server-side STT feeding the same parse prompt. Verified in construction with a real voice memo. Applied to `docs/STACK.md` (2026-08-23).
+- [x] (Minor) **UNIQUE on `paymentmethod.name` and `incomesource.name`** — DECIDED: add UNIQUE constraints to `docs/schema.sql` (applied 2026-08-23).
+- [x] **Data protection details** — DECIDED: core = confirmation gate only, **no audit table**; audit_log + agent-write confirm flow = Phase 3 only (created in construction only if Phase 3 is built). "Not in scope": deleted-row retention, data export, GDPR-style right-to-be-forgotten. Applied to `docs/ALCANCE.md` (2026-08-23).
+
+**Estimated time:** 1 day (decisions, no code)
 
 ---
 
@@ -183,12 +179,11 @@ Week 1                    Week 2                    Week 3
 │  Step 1      │         │  Step 3      │          │  Step 5      │
 │  Scope       │────→    │  DB schema   │────→     │  Architecture│
 │              │         │              │          │              │
-│  Step 2      │         │  Step 4      │          │  Step 6      │
-│  Stack       │         │  Features    │          │  Tools       │
-└──────────────┘         └──────────────┘          │              │
-                                                    │  Step 7      │
-                                                    │  Mockups     │
-                                                    └──────────────┘
+│  Step 2      │         │  Step 4      │          │  Step 7      │
+│  Stack       │         │  Features    │          │  Mockups     │
+└──────────────┘         └──────────────┘          └──────────────┘
+
+Steps 8–10 (cleanup, workflow, design gaps) are decisions — do them in parallel or as needed.
 ```
 
 ---
@@ -210,7 +205,6 @@ Week 1                    Week 2                    Week 3
 ## What NOT to do before the semester
 
 - ❌ Don't write code (the professor may change the stack or scope)
-- ❌ Don't formally assemble the team (you don't know teammates yet)
 - ❌ Don't use university-specific document formats (each professor has their own)
 - ❌ Don't deploy to production
 
@@ -219,11 +213,11 @@ Week 1                    Week 2                    Week 3
 ## Progress
 
 - [x] Step 1: Scope defined
-- [x] Step 2: Stack decided (PROPOSAL) → `docs/STACK.md` (resolves interface, auth, storage, stack of Step 8)
-- [~] Step 3: DB designed → Stages 1-2 complete + SQL written (`docs/schema.sql`)
+- [x] Step 2: Stack decided (PROPOSAL) → `docs/STACK.md` (Flutter Android-first, FastAPI, PostgreSQL, Gemini flash, JWT, local disk)
+- [x] Step 3: DB designed → 11 entities locked + SQL written (`docs/schema.sql`)
 - [x] Step 4: Features prioritized
-- [ ] Step 5: Architecture drawn
-- [ ] Step 6: Tools learned
+- [x] Step 5: Architecture drawn → `docs/ARCHITECTURE.md` (layer, component, 2 DFDs)
 - [x] Step 7: Mockups ready → `docs/mockups/index.html` (interactive, 3 screens) + `docs/MOCKUPS.md`
-- [~] Step 8: Post-stack sweep → partially resolved by Step 2/`docs/STACK.md` (interface=Flutter, auth=JWT, storage=local disk, stack=FastAPI+Postgres); pending professor confirmation
-- [~] Step 9: Formato PGC → 9.1/9.2/9.3/9.4/9.5/9.8/9.9 done; 9.6 (CADIs) y 9.7 (metodología+cronograma) pendientes; radicación semana 5 ≈ 7–11 sep
+- [~] Step 8: Post-stack cleanup → auth/storage/interface/STACK.md resolved; TBD sweep + price source pending
+- [ ] Step 9: Team workflow to define (methodology/Scrum, roles, stage reorder, Trello API + shared skill) — 2026-08-19
+- [x] Step 10: Design gaps resolved → 5 decisions documented + applied to `schema.sql`, `SCHEMA.md`, `ALCANCE.md`, `STACK.md`, mockup (2026-08-23)

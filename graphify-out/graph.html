@@ -1,0 +1,345 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>graphify - graphify-out/graph.html</title>
+<script src="https://unpkg.com/vis-network@9.1.6/standalone/umd/vis-network.min.js"
+        integrity="sha384-Ux6phic9PEHJ38YtrijhkzyJ8yQlH8i/+buBR8s3mAZOJrP1gwyvAcIYl3GWtpX1"
+        crossorigin="anonymous"></script>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { background: #0f0f1a; color: #e0e0e0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; display: flex; height: 100vh; overflow: hidden; }
+  #graph { flex: 1; }
+  #sidebar { width: 280px; background: #1a1a2e; border-left: 1px solid #2a2a4e; display: flex; flex-direction: column; overflow: hidden; }
+  #search-wrap { padding: 12px; border-bottom: 1px solid #2a2a4e; }
+  #search { width: 100%; background: #0f0f1a; border: 1px solid #3a3a5e; color: #e0e0e0; padding: 7px 10px; border-radius: 6px; font-size: 13px; outline: none; }
+  #search:focus { border-color: #4E79A7; }
+  #search-results { max-height: 140px; overflow-y: auto; padding: 4px 12px; border-bottom: 1px solid #2a2a4e; display: none; }
+  .search-item { padding: 4px 6px; cursor: pointer; border-radius: 4px; font-size: 12px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .search-item:hover { background: #2a2a4e; }
+  #info-panel { padding: 14px; border-bottom: 1px solid #2a2a4e; min-height: 140px; }
+  #info-panel h3 { font-size: 13px; color: #aaa; margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.05em; }
+  #info-content { font-size: 13px; color: #ccc; line-height: 1.6; }
+  #info-content .field { margin-bottom: 5px; }
+  #info-content .field b { color: #e0e0e0; }
+  #info-content .empty { color: #555; font-style: italic; }
+  .neighbor-link { display: block; padding: 2px 6px; margin: 2px 0; border-radius: 3px; cursor: pointer; font-size: 12px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; border-left: 3px solid #333; }
+  .neighbor-link:hover { background: #2a2a4e; }
+  #neighbors-list { max-height: 160px; overflow-y: auto; margin-top: 4px; }
+  #legend-wrap { flex: 1; overflow-y: auto; padding: 12px; }
+  #legend-wrap h3 { font-size: 13px; color: #aaa; margin-bottom: 10px; text-transform: uppercase; letter-spacing: 0.05em; }
+  .legend-item { display: flex; align-items: center; gap: 8px; padding: 4px 0; cursor: pointer; border-radius: 4px; font-size: 12px; }
+  .legend-item:hover { background: #2a2a4e; padding-left: 4px; }
+  .legend-item.dimmed { opacity: 0.35; }
+  .legend-dot { width: 12px; height: 12px; border-radius: 50%; flex-shrink: 0; }
+  .legend-label { flex: 1; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .legend-count { color: #666; font-size: 11px; }
+  #stats { padding: 10px 14px; border-top: 1px solid #2a2a4e; font-size: 11px; color: #555; }
+  #legend-controls { display: flex; align-items: center; gap: 8px; margin-bottom: 8px; padding: 4px 0; }
+  #legend-controls label { display: flex; align-items: center; gap: 6px; cursor: pointer; font-size: 12px; color: #aaa; user-select: none; }
+  #legend-controls label:hover { color: #e0e0e0; }
+  .legend-cb, #select-all-cb { appearance: none; -webkit-appearance: none; width: 14px; height: 14px; border: 1.5px solid #3a3a5e; border-radius: 3px; background: #0f0f1a; cursor: pointer; position: relative; flex-shrink: 0; }
+  .legend-cb:checked, #select-all-cb:checked { background: #4E79A7; border-color: #4E79A7; }
+  .legend-cb:checked::after, #select-all-cb:checked::after { content: ''; position: absolute; left: 3.5px; top: 1px; width: 4px; height: 7px; border: solid #fff; border-width: 0 2px 2px 0; transform: rotate(45deg); }
+  #select-all-cb:indeterminate { background: #4E79A7; border-color: #4E79A7; }
+  #select-all-cb:indeterminate::after { content: ''; position: absolute; left: 2px; top: 5px; width: 8px; height: 2px; background: #fff; border: none; transform: none; }
+</style>
+</head>
+<body>
+<div id="graph"></div>
+<div id="sidebar">
+  <div id="search-wrap">
+    <input id="search" type="text" placeholder="Search nodes..." autocomplete="off">
+    <div id="search-results"></div>
+  </div>
+  <div id="info-panel">
+    <h3>Node Info</h3>
+    <div id="info-content"><span class="empty">Click a node to inspect it</span></div>
+  </div>
+  <div id="legend-wrap">
+    <h3>Communities</h3>
+    <div id="legend-controls">
+      <label><input type="checkbox" id="select-all-cb" checked onchange="toggleAllCommunities(!this.checked)">Select All</label>
+    </div>
+    <div id="legend"></div>
+  </div>
+  <div id="stats">37 nodes &middot; 31 edges &middot; 12 communities</div>
+</div>
+<script>
+const RAW_NODES = [{"id": "fastapi_backend", "label": "FastAPI Backend", "color": {"background": "#F28E2B", "border": "#F28E2B", "highlight": {"background": "#ffffff", "border": "#F28E2B"}}, "size": 30.0, "font": {"size": 12, "color": "#ffffff"}, "title": "FastAPI Backend", "community": 1, "community_name": "Stack \u2014 Finance AI Tracker", "source_file": "docs/STACK.md", "file_type": "concept", "degree": 4}, {"id": "flutter_app", "label": "Flutter App", "color": {"background": "#F28E2B", "border": "#F28E2B", "highlight": {"background": "#ffffff", "border": "#F28E2B"}}, "size": 20.0, "font": {"size": 12, "color": "#ffffff"}, "title": "Flutter App", "community": 1, "community_name": "Stack \u2014 Finance AI Tracker", "source_file": "docs/STACK.md", "file_type": "concept", "degree": 2}, {"id": "llm_provider", "label": "LLM Provider", "color": {"background": "#F28E2B", "border": "#F28E2B", "highlight": {"background": "#ffffff", "border": "#F28E2B"}}, "size": 20.0, "font": {"size": 12, "color": "#ffffff"}, "title": "LLM Provider", "community": 1, "community_name": "Stack \u2014 Finance AI Tracker", "source_file": "docs/STACK.md", "file_type": "concept", "degree": 2}, {"id": "postgresql_db", "label": "PostgreSQL Database", "color": {"background": "#F28E2B", "border": "#F28E2B", "highlight": {"background": "#ffffff", "border": "#F28E2B"}}, "size": 25.0, "font": {"size": 12, "color": "#ffffff"}, "title": "PostgreSQL Database", "community": 1, "community_name": "Stack \u2014 Finance AI Tracker", "source_file": "docs/STACK.md", "file_type": "concept", "degree": 3}, {"id": "docs_architecture", "label": "Architecture \u2014 Finance AI Tracker", "color": {"background": "#F28E2B", "border": "#F28E2B", "highlight": {"background": "#ffffff", "border": "#F28E2B"}}, "size": 20.0, "font": {"size": 12, "color": "#ffffff"}, "title": "Architecture \u2014 Finance AI Tracker", "community": 1, "community_name": "Stack \u2014 Finance AI Tracker", "source_file": "docs/ARCHITECTURE.md", "file_type": "document", "degree": 2}, {"id": "docs_stack", "label": "Stack \u2014 Finance AI Tracker", "color": {"background": "#F28E2B", "border": "#F28E2B", "highlight": {"background": "#ffffff", "border": "#F28E2B"}}, "size": 35.0, "font": {"size": 12, "color": "#ffffff"}, "title": "Stack \u2014 Finance AI Tracker", "community": 1, "community_name": "Stack \u2014 Finance AI Tracker", "source_file": "docs/STACK.md", "file_type": "document", "degree": 5}, {"id": "docs_step5_plan", "label": "Architecture Plan", "color": {"background": "#F28E2B", "border": "#F28E2B", "highlight": {"background": "#ffffff", "border": "#F28E2B"}}, "size": 15.0, "font": {"size": 12, "color": "#ffffff"}, "title": "Architecture Plan", "community": 1, "community_name": "Stack \u2014 Finance AI Tracker", "source_file": "docs/step5-plan.md", "file_type": "document", "degree": 1}, {"id": "docs_context", "label": "Project Context \u2014 Finance AI Tracker", "color": {"background": "#4E79A7", "border": "#4E79A7", "highlight": {"background": "#ffffff", "border": "#4E79A7"}}, "size": 10.0, "font": {"size": 0, "color": "#ffffff"}, "title": "Project Context \u2014 Finance AI Tracker", "community": 10, "community_name": "Project Context \u2014 Finance AI Tracker", "source_file": "docs/CONTEXT.md", "file_type": "document", "degree": 0}, {"id": "docs_pgc_propuesta", "label": "PGC Propuesta \u2014 Borrador", "color": {"background": "#F28E2B", "border": "#F28E2B", "highlight": {"background": "#ffffff", "border": "#F28E2B"}}, "size": 10.0, "font": {"size": 0, "color": "#ffffff"}, "title": "PGC Propuesta \u2014 Borrador", "community": 11, "community_name": "PGC Propuesta \u2014 Borrador", "source_file": "docs/PGC-PROPUESTA.md", "file_type": "document", "degree": 0}, {"id": "concept_pgc_template", "label": "PGC Document Template", "color": {"background": "#E15759", "border": "#E15759", "highlight": {"background": "#ffffff", "border": "#E15759"}}, "size": 20.0, "font": {"size": 12, "color": "#ffffff"}, "title": "PGC Document Template", "community": 2, "community_name": "PGC Main Document", "source_file": "latex/pgc/reference/Formato PGC.pdf", "file_type": "concept", "degree": 2}, {"id": "latex_pgc_main_original", "label": "PGC Main Document", "color": {"background": "#E15759", "border": "#E15759", "highlight": {"background": "#ffffff", "border": "#E15759"}}, "size": 35.0, "font": {"size": 12, "color": "#ffffff"}, "title": "PGC Main Document", "community": 2, "community_name": "PGC Main Document", "source_file": "latex/pgc/main_original.pdf", "file_type": "document", "degree": 5}, {"id": "latex_pgc_reference_formato_pgc", "label": "PGC Format Reference", "color": {"background": "#E15759", "border": "#E15759", "highlight": {"background": "#ffffff", "border": "#E15759"}}, "size": 20.0, "font": {"size": 12, "color": "#ffffff"}, "title": "PGC Format Reference", "community": 2, "community_name": "PGC Main Document", "source_file": "latex/pgc/reference/Formato PGC.pdf", "file_type": "document", "degree": 2}, {"id": "latex_pgc_assets_logo_facultad", "label": "Faculty of Engineering Logo Text", "color": {"background": "#E15759", "border": "#E15759", "highlight": {"background": "#ffffff", "border": "#E15759"}}, "size": 15.0, "font": {"size": 12, "color": "#ffffff"}, "title": "Faculty of Engineering Logo Text", "community": 2, "community_name": "PGC Main Document", "source_file": "latex/pgc/assets/logo-facultad.jpg", "file_type": "image", "degree": 1}, {"id": "latex_pgc_assets_logo_footer", "label": "Green Gradient Footer Graphic", "color": {"background": "#E15759", "border": "#E15759", "highlight": {"background": "#ffffff", "border": "#E15759"}}, "size": 15.0, "font": {"size": 12, "color": "#ffffff"}, "title": "Green Gradient Footer Graphic", "community": 2, "community_name": "PGC Main Document", "source_file": "latex/pgc/assets/logo-footer.png", "file_type": "image", "degree": 1}, {"id": "latex_pgc_assets_logo_universidad", "label": "Universidad de Cundinamarca Institutional Logo", "color": {"background": "#E15759", "border": "#E15759", "highlight": {"background": "#ffffff", "border": "#E15759"}}, "size": 15.0, "font": {"size": 12, "color": "#ffffff"}, "title": "Universidad de Cundinamarca Institutional Logo", "community": 2, "community_name": "PGC Main Document", "source_file": "latex/pgc/assets/logo-universidad.jpg", "file_type": "image", "degree": 1}, {"id": "docs_features", "label": "Features \u2014 Finance AI Tracker", "color": {"background": "#59A14F", "border": "#59A14F", "highlight": {"background": "#ffffff", "border": "#59A14F"}}, "size": 15.0, "font": {"size": 12, "color": "#ffffff"}, "title": "Features \u2014 Finance AI Tracker", "community": 4, "community_name": "Mockups \u2014 Finance AI Tracker", "source_file": "docs/FEATURES.md", "file_type": "document", "degree": 1}, {"id": "docs_mockups", "label": "Mockups \u2014 Finance AI Tracker", "color": {"background": "#59A14F", "border": "#59A14F", "highlight": {"background": "#ffffff", "border": "#59A14F"}}, "size": 20.0, "font": {"size": 12, "color": "#ffffff"}, "title": "Mockups \u2014 Finance AI Tracker", "community": 4, "community_name": "Mockups \u2014 Finance AI Tracker", "source_file": "docs/MOCKUPS.md", "file_type": "document", "degree": 2}, {"id": "docs_schema", "label": "Database Schema \u2014 Finance AI Tracker", "color": {"background": "#59A14F", "border": "#59A14F", "highlight": {"background": "#ffffff", "border": "#59A14F"}}, "size": 20.0, "font": {"size": 12, "color": "#ffffff"}, "title": "Database Schema \u2014 Finance AI Tracker", "community": 4, "community_name": "Mockups \u2014 Finance AI Tracker", "source_file": "docs/SCHEMA.md", "file_type": "document", "degree": 2}, {"id": "docs_alcance", "label": "Scope \u2014 Finance AI Tracker", "color": {"background": "#BAB0AC", "border": "#BAB0AC", "highlight": {"background": "#ffffff", "border": "#BAB0AC"}}, "size": 10.0, "font": {"size": 0, "color": "#ffffff"}, "title": "Scope \u2014 Finance AI Tracker", "community": 9, "community_name": "Scope \u2014 Finance AI Tracker", "source_file": "docs/ALCANCE.md", "file_type": "document", "degree": 0}, {"id": "agents_requirements_analysis", "label": "Requirements Analysis", "color": {"background": "#4E79A7", "border": "#4E79A7", "highlight": {"background": "#ffffff", "border": "#4E79A7"}}, "size": 40.0, "font": {"size": 12, "color": "#ffffff"}, "title": "Requirements Analysis", "community": 0, "community_name": "Requirements Analysis", "source_file": "AGENTS.md", "file_type": "code", "degree": 6}, {"id": "agents_reverse_engineering", "label": "Reverse Engineering", "color": {"background": "#4E79A7", "border": "#4E79A7", "highlight": {"background": "#ffffff", "border": "#4E79A7"}}, "size": 15.0, "font": {"size": 12, "color": "#ffffff"}, "title": "Reverse Engineering", "community": 0, "community_name": "Requirements Analysis", "source_file": "AGENTS.md", "file_type": "code", "degree": 1}, {"id": "agents_user_stories", "label": "User Stories", "color": {"background": "#4E79A7", "border": "#4E79A7", "highlight": {"background": "#ffffff", "border": "#4E79A7"}}, "size": 15.0, "font": {"size": 12, "color": "#ffffff"}, "title": "User Stories", "community": 0, "community_name": "Requirements Analysis", "source_file": "AGENTS.md", "file_type": "code", "degree": 1}, {"id": "agents_workspace_detection", "label": "Workspace Detection", "color": {"background": "#4E79A7", "border": "#4E79A7", "highlight": {"background": "#ffffff", "border": "#4E79A7"}}, "size": 20.0, "font": {"size": 12, "color": "#ffffff"}, "title": "Workspace Detection", "community": 0, "community_name": "Requirements Analysis", "source_file": "AGENTS.md", "file_type": "code", "degree": 2}, {"id": "aidlc_rule_details_extensions_resiliency_baseline_resiliency_baseline", "label": "Resiliency Baseline Extension", "color": {"background": "#4E79A7", "border": "#4E79A7", "highlight": {"background": "#ffffff", "border": "#4E79A7"}}, "size": 15.0, "font": {"size": 12, "color": "#ffffff"}, "title": "Resiliency Baseline Extension", "community": 0, "community_name": "Requirements Analysis", "source_file": ".aidlc-rule-details/extensions/resiliency/baseline/resiliency-baseline.md", "file_type": "code", "degree": 1}, {"id": "aidlc_rule_details_extensions_security_baseline_security_baseline", "label": "Security Baseline Extension", "color": {"background": "#4E79A7", "border": "#4E79A7", "highlight": {"background": "#ffffff", "border": "#4E79A7"}}, "size": 15.0, "font": {"size": 12, "color": "#ffffff"}, "title": "Security Baseline Extension", "community": 0, "community_name": "Requirements Analysis", "source_file": ".aidlc-rule-details/extensions/security/baseline/security-baseline.md", "file_type": "code", "degree": 1}, {"id": "aidlc_rule_details_extensions_testing_property_based_property_based_testing", "label": "Property-Based Testing Extension", "color": {"background": "#4E79A7", "border": "#4E79A7", "highlight": {"background": "#ffffff", "border": "#4E79A7"}}, "size": 15.0, "font": {"size": 12, "color": "#ffffff"}, "title": "Property-Based Testing Extension", "community": 0, "community_name": "Requirements Analysis", "source_file": ".aidlc-rule-details/extensions/testing/property-based/property-based-testing.md", "file_type": "code", "degree": 1}, {"id": "agents_application_design", "label": "Application Design", "color": {"background": "#76B7B2", "border": "#76B7B2", "highlight": {"background": "#ffffff", "border": "#76B7B2"}}, "size": 15.0, "font": {"size": 12, "color": "#ffffff"}, "title": "Application Design", "community": 3, "community_name": "Workflow Planning", "source_file": "AGENTS.md", "file_type": "code", "degree": 1}, {"id": "agents_build_and_test", "label": "Build and Test", "color": {"background": "#76B7B2", "border": "#76B7B2", "highlight": {"background": "#ffffff", "border": "#76B7B2"}}, "size": 15.0, "font": {"size": 12, "color": "#ffffff"}, "title": "Build and Test", "community": 3, "community_name": "Workflow Planning", "source_file": "AGENTS.md", "file_type": "code", "degree": 1}, {"id": "agents_code_generation", "label": "Code Generation", "color": {"background": "#76B7B2", "border": "#76B7B2", "highlight": {"background": "#ffffff", "border": "#76B7B2"}}, "size": 20.0, "font": {"size": 12, "color": "#ffffff"}, "title": "Code Generation", "community": 3, "community_name": "Workflow Planning", "source_file": "AGENTS.md", "file_type": "code", "degree": 2}, {"id": "agents_units_generation", "label": "Units Generation", "color": {"background": "#76B7B2", "border": "#76B7B2", "highlight": {"background": "#ffffff", "border": "#76B7B2"}}, "size": 20.0, "font": {"size": 12, "color": "#ffffff"}, "title": "Units Generation", "community": 3, "community_name": "Workflow Planning", "source_file": "AGENTS.md", "file_type": "code", "degree": 2}, {"id": "agents_workflow_planning", "label": "Workflow Planning", "color": {"background": "#76B7B2", "border": "#76B7B2", "highlight": {"background": "#ffffff", "border": "#76B7B2"}}, "size": 25.0, "font": {"size": 12, "color": "#ffffff"}, "title": "Workflow Planning", "community": 3, "community_name": "Workflow Planning", "source_file": "AGENTS.md", "file_type": "code", "degree": 3}, {"id": "agents_adaptive_workflow_principle", "label": "Adaptive Workflow Principle", "color": {"background": "#EDC948", "border": "#EDC948", "highlight": {"background": "#ffffff", "border": "#EDC948"}}, "size": 15.0, "font": {"size": 12, "color": "#ffffff"}, "title": "Adaptive Workflow Principle", "community": 5, "community_name": "Adaptive Workflow Principle", "source_file": "AGENTS.md", "file_type": "concept", "degree": 1}, {"id": "references_student_operation_guide", "label": "Student Operation Guide", "color": {"background": "#EDC948", "border": "#EDC948", "highlight": {"background": "#ffffff", "border": "#EDC948"}}, "size": 15.0, "font": {"size": 12, "color": "#ffffff"}, "title": "Student Operation Guide", "community": 5, "community_name": "Adaptive Workflow Principle", "source_file": "REFERENCES.md", "file_type": "document", "degree": 1}, {"id": "agents_inception_phase", "label": "Inception Phase", "color": {"background": "#B07AA1", "border": "#B07AA1", "highlight": {"background": "#ffffff", "border": "#B07AA1"}}, "size": 15.0, "font": {"size": 12, "color": "#ffffff"}, "title": "Inception Phase", "community": 6, "community_name": "Inception Phase", "source_file": "AGENTS.md", "file_type": "concept", "degree": 1}, {"id": "tasks_finance_ai_tracker", "label": "Finance AI Tracker", "color": {"background": "#B07AA1", "border": "#B07AA1", "highlight": {"background": "#ffffff", "border": "#B07AA1"}}, "size": 15.0, "font": {"size": 12, "color": "#ffffff"}, "title": "Finance AI Tracker", "community": 6, "community_name": "Inception Phase", "source_file": "TASKS.md", "file_type": "document", "degree": 1}, {"id": "agents_construction_phase", "label": "Construction Phase", "color": {"background": "#FF9DA7", "border": "#FF9DA7", "highlight": {"background": "#ffffff", "border": "#FF9DA7"}}, "size": 10.0, "font": {"size": 0, "color": "#ffffff"}, "title": "Construction Phase", "community": 7, "community_name": "Construction Phase", "source_file": "AGENTS.md", "file_type": "concept", "degree": 0}, {"id": "agents_operations_phase", "label": "Operations Phase", "color": {"background": "#9C755F", "border": "#9C755F", "highlight": {"background": "#ffffff", "border": "#9C755F"}}, "size": 10.0, "font": {"size": 0, "color": "#ffffff"}, "title": "Operations Phase", "community": 8, "community_name": "Operations Phase", "source_file": "AGENTS.md", "file_type": "concept", "degree": 0}];
+const RAW_EDGES = [{"from": "docs_stack", "to": "fastapi_backend", "label": "conceptually_related_to", "title": "conceptually_related_to [EXTRACTED]", "dashes": false, "width": 2, "color": {"opacity": 0.7}, "confidence": "EXTRACTED"}, {"from": "fastapi_backend", "to": "llm_provider", "label": "calls", "title": "calls [EXTRACTED]", "dashes": false, "width": 2, "color": {"opacity": 0.7}, "confidence": "EXTRACTED"}, {"from": "fastapi_backend", "to": "postgresql_db", "label": "shares_data_with", "title": "shares_data_with [EXTRACTED]", "dashes": false, "width": 2, "color": {"opacity": 0.7}, "confidence": "EXTRACTED"}, {"from": "flutter_app", "to": "fastapi_backend", "label": "calls", "title": "calls [EXTRACTED]", "dashes": false, "width": 2, "color": {"opacity": 0.7}, "confidence": "EXTRACTED"}, {"from": "docs_stack", "to": "flutter_app", "label": "conceptually_related_to", "title": "conceptually_related_to [EXTRACTED]", "dashes": false, "width": 2, "color": {"opacity": 0.7}, "confidence": "EXTRACTED"}, {"from": "docs_stack", "to": "llm_provider", "label": "conceptually_related_to", "title": "conceptually_related_to [EXTRACTED]", "dashes": false, "width": 2, "color": {"opacity": 0.7}, "confidence": "EXTRACTED"}, {"from": "docs_schema", "to": "postgresql_db", "label": "references", "title": "references [EXTRACTED]", "dashes": false, "width": 2, "color": {"opacity": 0.7}, "confidence": "EXTRACTED"}, {"from": "docs_stack", "to": "postgresql_db", "label": "conceptually_related_to", "title": "conceptually_related_to [EXTRACTED]", "dashes": false, "width": 2, "color": {"opacity": 0.7}, "confidence": "EXTRACTED"}, {"from": "docs_architecture", "to": "docs_stack", "label": "references", "title": "references [EXTRACTED]", "dashes": false, "width": 2, "color": {"opacity": 0.7}, "confidence": "EXTRACTED"}, {"from": "docs_architecture", "to": "docs_step5_plan", "label": "references", "title": "references [EXTRACTED]", "dashes": false, "width": 2, "color": {"opacity": 0.7}, "confidence": "EXTRACTED"}, {"from": "latex_pgc_main_original", "to": "concept_pgc_template", "label": "implements", "title": "implements [INFERRED]", "dashes": true, "width": 1, "color": {"opacity": 0.35}, "confidence": "INFERRED"}, {"from": "latex_pgc_reference_formato_pgc", "to": "concept_pgc_template", "label": "references", "title": "references [EXTRACTED]", "dashes": false, "width": 2, "color": {"opacity": 0.7}, "confidence": "EXTRACTED"}, {"from": "latex_pgc_main_original", "to": "latex_pgc_assets_logo_facultad", "label": "references", "title": "references [INFERRED]", "dashes": true, "width": 1, "color": {"opacity": 0.35}, "confidence": "INFERRED"}, {"from": "latex_pgc_main_original", "to": "latex_pgc_assets_logo_footer", "label": "references", "title": "references [INFERRED]", "dashes": true, "width": 1, "color": {"opacity": 0.35}, "confidence": "INFERRED"}, {"from": "latex_pgc_main_original", "to": "latex_pgc_assets_logo_universidad", "label": "references", "title": "references [INFERRED]", "dashes": true, "width": 1, "color": {"opacity": 0.35}, "confidence": "INFERRED"}, {"from": "latex_pgc_main_original", "to": "latex_pgc_reference_formato_pgc", "label": "references", "title": "references [INFERRED]", "dashes": true, "width": 1, "color": {"opacity": 0.35}, "confidence": "INFERRED"}, {"from": "docs_mockups", "to": "docs_features", "label": "references", "title": "references [EXTRACTED]", "dashes": false, "width": 2, "color": {"opacity": 0.7}, "confidence": "EXTRACTED"}, {"from": "docs_mockups", "to": "docs_schema", "label": "references", "title": "references [EXTRACTED]", "dashes": false, "width": 2, "color": {"opacity": 0.7}, "confidence": "EXTRACTED"}, {"from": "agents_requirements_analysis", "to": "agents_user_stories", "label": "calls", "title": "calls [EXTRACTED]", "dashes": false, "width": 2, "color": {"opacity": 0.7}, "confidence": "EXTRACTED"}, {"from": "agents_requirements_analysis", "to": "agents_workflow_planning", "label": "calls", "title": "calls [EXTRACTED]", "dashes": false, "width": 2, "color": {"opacity": 0.7}, "confidence": "EXTRACTED"}, {"from": "agents_requirements_analysis", "to": "aidlc_rule_details_extensions_resiliency_baseline_resiliency_baseline", "label": "references", "title": "references [EXTRACTED]", "dashes": false, "width": 2, "color": {"opacity": 0.7}, "confidence": "EXTRACTED"}, {"from": "agents_requirements_analysis", "to": "aidlc_rule_details_extensions_security_baseline_security_baseline", "label": "references", "title": "references [EXTRACTED]", "dashes": false, "width": 2, "color": {"opacity": 0.7}, "confidence": "EXTRACTED"}, {"from": "agents_requirements_analysis", "to": "aidlc_rule_details_extensions_testing_property_based_property_based_testing", "label": "references", "title": "references [EXTRACTED]", "dashes": false, "width": 2, "color": {"opacity": 0.7}, "confidence": "EXTRACTED"}, {"from": "agents_workspace_detection", "to": "agents_requirements_analysis", "label": "calls", "title": "calls [EXTRACTED]", "dashes": false, "width": 2, "color": {"opacity": 0.7}, "confidence": "EXTRACTED"}, {"from": "agents_workspace_detection", "to": "agents_reverse_engineering", "label": "calls", "title": "calls [EXTRACTED]", "dashes": false, "width": 2, "color": {"opacity": 0.7}, "confidence": "EXTRACTED"}, {"from": "agents_workflow_planning", "to": "agents_application_design", "label": "calls", "title": "calls [EXTRACTED]", "dashes": false, "width": 2, "color": {"opacity": 0.7}, "confidence": "EXTRACTED"}, {"from": "agents_code_generation", "to": "agents_build_and_test", "label": "calls", "title": "calls [EXTRACTED]", "dashes": false, "width": 2, "color": {"opacity": 0.7}, "confidence": "EXTRACTED"}, {"from": "agents_units_generation", "to": "agents_code_generation", "label": "calls", "title": "calls [EXTRACTED]", "dashes": false, "width": 2, "color": {"opacity": 0.7}, "confidence": "EXTRACTED"}, {"from": "agents_workflow_planning", "to": "agents_units_generation", "label": "calls", "title": "calls [EXTRACTED]", "dashes": false, "width": 2, "color": {"opacity": 0.7}, "confidence": "EXTRACTED"}, {"from": "references_student_operation_guide", "to": "agents_adaptive_workflow_principle", "label": "references", "title": "references [EXTRACTED]", "dashes": false, "width": 2, "color": {"opacity": 0.7}, "confidence": "EXTRACTED"}, {"from": "tasks_finance_ai_tracker", "to": "agents_inception_phase", "label": "implements", "title": "implements [INFERRED]", "dashes": true, "width": 1, "color": {"opacity": 0.35}, "confidence": "INFERRED"}];
+const LEGEND = [{"cid": 0, "color": "#4E79A7", "label": "Requirements Analysis", "count": 7}, {"cid": 1, "color": "#F28E2B", "label": "Stack \u2014 Finance AI Tracker", "count": 7}, {"cid": 2, "color": "#E15759", "label": "PGC Main Document", "count": 6}, {"cid": 3, "color": "#76B7B2", "label": "Workflow Planning", "count": 5}, {"cid": 4, "color": "#59A14F", "label": "Mockups \u2014 Finance AI Tracker", "count": 3}, {"cid": 5, "color": "#EDC948", "label": "Adaptive Workflow Principle", "count": 2}, {"cid": 6, "color": "#B07AA1", "label": "Inception Phase", "count": 2}, {"cid": 7, "color": "#FF9DA7", "label": "Construction Phase", "count": 1}, {"cid": 8, "color": "#9C755F", "label": "Operations Phase", "count": 1}, {"cid": 9, "color": "#BAB0AC", "label": "Scope \u2014 Finance AI Tracker", "count": 1}, {"cid": 10, "color": "#4E79A7", "label": "Project Context \u2014 Finance AI Tracker", "count": 1}, {"cid": 11, "color": "#F28E2B", "label": "PGC Propuesta \u2014 Borrador", "count": 1}];
+
+// HTML-escape helper — prevents XSS when injecting graph data into innerHTML
+function esc(s) {
+  return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#39;');
+}
+
+// Build vis datasets
+const nodesDS = new vis.DataSet(RAW_NODES.map(n => ({
+  id: n.id, label: n.label, color: n.color, size: n.size,
+  font: n.font, title: n.title,
+  _community: n.community, _community_name: n.community_name,
+  _source_file: n.source_file, _file_type: n.file_type, _degree: n.degree,
+})));
+
+const edgesDS = new vis.DataSet(RAW_EDGES.map((e, i) => ({
+  id: i, from: e.from, to: e.to,
+  label: '',
+  title: e.title,
+  dashes: e.dashes,
+  width: e.width,
+  color: e.color,
+  arrows: { to: { enabled: true, scaleFactor: 0.5 } },
+})));
+
+const container = document.getElementById('graph');
+const network = new vis.Network(container, { nodes: nodesDS, edges: edgesDS }, {
+  physics: {
+    enabled: true,
+    solver: 'forceAtlas2Based',
+    forceAtlas2Based: {
+      gravitationalConstant: -60,
+      centralGravity: 0.005,
+      springLength: 120,
+      springConstant: 0.08,
+      damping: 0.4,
+      avoidOverlap: 0.8,
+    },
+    stabilization: { iterations: 200, fit: true },
+  },
+  interaction: {
+    hover: true,
+    tooltipDelay: 100,
+    hideEdgesOnDrag: true,
+    navigationButtons: false,
+    keyboard: false,
+  },
+  nodes: { shape: 'dot', borderWidth: 1.5 },
+  edges: { smooth: { type: 'continuous', roundness: 0.2 }, selectionWidth: 3 },
+});
+
+network.once('stabilizationIterationsDone', () => {
+  network.setOptions({ physics: { enabled: false } });
+});
+
+function showInfo(nodeId) {
+  const n = nodesDS.get(nodeId);
+  if (!n) return;
+  const neighborIds = network.getConnectedNodes(nodeId);
+  const neighborItems = neighborIds.map(nid => {
+    const nb = nodesDS.get(nid);
+    const color = nb ? nb.color.background : '#555';
+    return `<span class="neighbor-link" style="border-left-color:${esc(color)}" data-nid="${esc(nid)}">${esc(nb ? nb.label : nid)}</span>`;
+  }).join('');
+  document.getElementById('info-content').innerHTML = `
+    <div class="field"><b>${esc(n.label)}</b></div>
+    <div class="field">Type: ${esc(n._file_type || 'unknown')}</div>
+    <div class="field">Community: ${esc(n._community_name)}</div>
+    <div class="field">Source: ${esc(n._source_file || '-')}</div>
+    <div class="field">Degree: ${n._degree}</div>
+    ${neighborIds.length ? `<div class="field" style="margin-top:8px;color:#aaa;font-size:11px">Neighbors (${neighborIds.length})</div><div id="neighbors-list">${neighborItems}</div>` : ''}
+  `;
+}
+
+function focusNode(nodeId) {
+  network.focus(nodeId, { scale: 1.4, animation: true });
+  network.selectNodes([nodeId]);
+  showInfo(nodeId);
+}
+
+// Neighbor links use a data attribute + one delegated listener rather than an
+// inline onclick. A node id/label sourced from a document or a scraped URL
+// (graphify add) can contain a double-quote; dropping the stringified id
+// unescaped into a quoted onclick both broke every link and allowed a hostile
+// source to inject an event handler into the local report (stored XSS, #1838).
+// esc() on data-nid keeps the value inside the attribute; the listener reads it
+// back verbatim. Bound to document so it survives the innerHTML rebuild that
+// recreates #neighbors-list on each showInfo().
+document.addEventListener('click', e => {
+  const el = e.target.closest('.neighbor-link');
+  if (el && el.dataset.nid !== undefined) focusNode(el.dataset.nid);
+});
+
+// Track hovered node — hover detection is more reliable than click params
+let hoveredNodeId = null;
+network.on('hoverNode', params => {
+  hoveredNodeId = params.node;
+  container.style.cursor = 'pointer';
+});
+network.on('blurNode', () => {
+  hoveredNodeId = null;
+  container.style.cursor = 'default';
+});
+container.addEventListener('click', () => {
+  if (hoveredNodeId !== null) {
+    showInfo(hoveredNodeId);
+    network.selectNodes([hoveredNodeId]);
+  }
+});
+network.on('click', params => {
+  if (params.nodes.length > 0) {
+    showInfo(params.nodes[0]);
+  } else if (hoveredNodeId === null) {
+    document.getElementById('info-content').innerHTML = '<span class="empty">Click a node to inspect it</span>';
+  }
+});
+
+const searchInput = document.getElementById('search');
+const searchResults = document.getElementById('search-results');
+searchInput.addEventListener('input', () => {
+  const q = searchInput.value.toLowerCase().trim();
+  searchResults.innerHTML = '';
+  if (!q) { searchResults.style.display = 'none'; return; }
+  const matches = RAW_NODES.filter(n => n.label.toLowerCase().includes(q)).slice(0, 20);
+  if (!matches.length) { searchResults.style.display = 'none'; return; }
+  searchResults.style.display = 'block';
+  matches.forEach(n => {
+    const el = document.createElement('div');
+    el.className = 'search-item';
+    el.textContent = n.label;
+    el.style.borderLeft = `3px solid ${n.color.background}`;
+    el.style.paddingLeft = '8px';
+    el.onclick = () => {
+      network.focus(n.id, { scale: 1.5, animation: true });
+      network.selectNodes([n.id]);
+      showInfo(n.id);
+      searchResults.style.display = 'none';
+      searchInput.value = '';
+    };
+    searchResults.appendChild(el);
+  });
+});
+document.addEventListener('click', e => {
+  if (!searchResults.contains(e.target) && e.target !== searchInput)
+    searchResults.style.display = 'none';
+});
+
+const hiddenCommunities = new Set();
+
+const selectAllCb = document.getElementById('select-all-cb');
+
+function updateSelectAllState() {
+  const total = LEGEND.length;
+  const hidden = hiddenCommunities.size;
+  selectAllCb.checked = hidden === 0;
+  selectAllCb.indeterminate = hidden > 0 && hidden < total;
+}
+
+function toggleAllCommunities(hide) {
+  document.querySelectorAll('.legend-item').forEach(item => {
+    hide ? item.classList.add('dimmed') : item.classList.remove('dimmed');
+  });
+  document.querySelectorAll('.legend-cb').forEach(cb => {
+    cb.checked = !hide;
+  });
+  LEGEND.forEach(c => {
+    if (hide) hiddenCommunities.add(c.cid); else hiddenCommunities.delete(c.cid);
+  });
+  const updates = RAW_NODES.map(n => ({ id: n.id, hidden: hide }));
+  nodesDS.update(updates);
+  updateSelectAllState();
+}
+
+const legendEl = document.getElementById('legend');
+LEGEND.forEach(c => {
+  const item = document.createElement('div');
+  item.className = 'legend-item';
+  const cb = document.createElement('input');
+  cb.type = 'checkbox';
+  cb.className = 'legend-cb';
+  cb.checked = true;
+  cb.addEventListener('change', (e) => {
+    e.stopPropagation();
+    if (cb.checked) {
+      hiddenCommunities.delete(c.cid);
+      item.classList.remove('dimmed');
+    } else {
+      hiddenCommunities.add(c.cid);
+      item.classList.add('dimmed');
+    }
+    const updates = RAW_NODES
+      .filter(n => n.community === c.cid)
+      .map(n => ({ id: n.id, hidden: !cb.checked }));
+    nodesDS.update(updates);
+    updateSelectAllState();
+  });
+  item.innerHTML = `<div class="legend-dot" style="background:${c.color}"></div>
+    <span class="legend-label">${c.label}</span>
+    <span class="legend-count">${c.count}</span>`;
+  item.prepend(cb);
+  item.onclick = (e) => {
+    if (e.target === cb) return;
+    cb.checked = !cb.checked;
+    cb.dispatchEvent(new Event('change'));
+  };
+  legendEl.appendChild(item);
+});
+</script>
+<script>
+// Render hyperedges as shaded regions
+const hyperedges = [{"id": "institutional_branding_assets", "label": "Institutional Branding Assets", "nodes": ["latex_pgc_assets_logo_facultad", "latex_pgc_assets_logo_footer", "latex_pgc_assets_logo_universidad"], "relation": "participate_in", "confidence": "EXTRACTED", "confidence_score": 0.9, "source_file": "latex/pgc/main_original.pdf"}, {"id": "ai_dlc_lifecycle", "label": "AI-DLC Lifecycle Phases", "nodes": ["agents_inception_phase", "agents_construction_phase", "agents_operations_phase"], "relation": "participate_in", "confidence": "EXTRACTED", "confidence_score": 1.0, "source_file": "AGENTS.md"}, {"id": "finance_ai_tracker_core", "label": "Finance AI Tracker Core System", "nodes": ["flutter_app", "fastapi_backend", "postgresql_db", "llm_provider"], "relation": "participate_in", "confidence": "EXTRACTED", "confidence_score": 1.0, "source_file": "docs/ARCHITECTURE.md"}, {"id": "mandatory_inception_stages", "label": "Mandatory Inception Stages", "nodes": ["agents_workspace_detection", "agents_requirements_analysis", "agents_workflow_planning"], "relation": "form", "confidence": "EXTRACTED", "confidence_score": 1.0, "source_file": "AGENTS.md"}, {"id": "cross_cutting_extensions", "label": "Cross-Cutting Extensions", "nodes": ["aidlc_rule_details_extensions_security_baseline_security_baseline", "aidlc_rule_details_extensions_resiliency_baseline_resiliency_baseline", "aidlc_rule_details_extensions_testing_property_based_property_based_testing"], "relation": "participate_in", "confidence": "INFERRED", "confidence_score": 0.85, "source_file": "AGENTS.md"}];
+// afterDrawing passes ctx already transformed to network coordinate space.
+// Draw node positions raw — no manual pan/zoom/DPR math needed.
+
+// Andrew's monotone chain. Returns the hull in counter-clockwise order, which
+// is what the perimeter must be traced in. Collinear and duplicate points
+// collapse to the extremes, so degenerate member sets render as a segment
+// rather than a zero-area crossed path.
+function convexHull(pts) {
+    const p = pts.slice().sort((a, b) => (a.x - b.x) || (a.y - b.y));
+    if (p.length < 3) return p;
+    const cross = (o, a, b) => (a.x - o.x) * (b.y - o.y) - (a.y - o.y) * (b.x - o.x);
+    const build = seq => {
+        const out = [];
+        for (const q of seq) {
+            while (out.length >= 2 && cross(out[out.length - 2], out[out.length - 1], q) <= 0) out.pop();
+            out.push(q);
+        }
+        out.pop();
+        return out;
+    };
+    const hull = build(p).concat(build(p.slice().reverse()));
+    return hull.length >= 3 ? hull : p;
+}
+network.on('afterDrawing', function(ctx) {
+    hyperedges.forEach(h => {
+        const positions = h.nodes
+            .map(nid => network.getPositions([nid])[nid])
+            .filter(p => p !== undefined);
+        if (positions.length < 2) return;
+        ctx.save();
+        ctx.globalAlpha = 0.12;
+        ctx.fillStyle = '#6366f1';
+        ctx.strokeStyle = '#6366f1';
+        ctx.lineWidth = 2;
+        ctx.beginPath();
+        // Centroid and expanded hull in network coordinates.
+        // The perimeter must follow hull order, not h.nodes order: tracing the
+        // raw member order self-intersects whenever the layout does not happen
+        // to place members in angular order, filling as crossed wedges.
+        const cx = positions.reduce((s, p) => s + p.x, 0) / positions.length;
+        const cy = positions.reduce((s, p) => s + p.y, 0) / positions.length;
+        const hull = convexHull(positions);
+        const expanded = hull.map(p => ({
+            x: cx + (p.x - cx) * 1.15,
+            y: cy + (p.y - cy) * 1.15
+        }));
+        ctx.moveTo(expanded[0].x, expanded[0].y);
+        expanded.slice(1).forEach(p => ctx.lineTo(p.x, p.y));
+        ctx.closePath();
+        ctx.fill();
+        ctx.globalAlpha = 0.4;
+        ctx.stroke();
+        // Label
+        ctx.globalAlpha = 0.8;
+        ctx.fillStyle = '#4f46e5';
+        ctx.font = 'bold 11px sans-serif';
+        ctx.textAlign = 'center';
+        ctx.fillText(h.label, cx, cy - 5);
+        ctx.restore();
+    });
+});
+</script>
+</body>
+</html>

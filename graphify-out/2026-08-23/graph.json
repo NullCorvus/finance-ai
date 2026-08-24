@@ -1,0 +1,835 @@
+{
+  "directed": false,
+  "multigraph": false,
+  "graph": {
+    "hyperedges": [
+      {
+        "id": "institutional_branding_assets",
+        "label": "Institutional Branding Assets",
+        "nodes": [
+          "latex_pgc_assets_logo_facultad",
+          "latex_pgc_assets_logo_footer",
+          "latex_pgc_assets_logo_universidad"
+        ],
+        "relation": "participate_in",
+        "confidence": "EXTRACTED",
+        "confidence_score": 0.9,
+        "source_file": "latex/pgc/main_original.pdf"
+      },
+      {
+        "id": "ai_dlc_lifecycle",
+        "label": "AI-DLC Lifecycle Phases",
+        "nodes": [
+          "agents_inception_phase",
+          "agents_construction_phase",
+          "agents_operations_phase"
+        ],
+        "relation": "participate_in",
+        "confidence": "EXTRACTED",
+        "confidence_score": 1.0,
+        "source_file": "AGENTS.md"
+      },
+      {
+        "id": "finance_ai_tracker_core",
+        "label": "Finance AI Tracker Core System",
+        "nodes": [
+          "flutter_app",
+          "fastapi_backend",
+          "postgresql_db",
+          "llm_provider"
+        ],
+        "relation": "participate_in",
+        "confidence": "EXTRACTED",
+        "confidence_score": 1.0,
+        "source_file": "docs/ARCHITECTURE.md"
+      },
+      {
+        "id": "mandatory_inception_stages",
+        "label": "Mandatory Inception Stages",
+        "nodes": [
+          "agents_workspace_detection",
+          "agents_requirements_analysis",
+          "agents_workflow_planning"
+        ],
+        "relation": "form",
+        "confidence": "EXTRACTED",
+        "confidence_score": 1.0,
+        "source_file": "AGENTS.md"
+      },
+      {
+        "id": "cross_cutting_extensions",
+        "label": "Cross-Cutting Extensions",
+        "nodes": [
+          "aidlc_rule_details_extensions_security_baseline_security_baseline",
+          "aidlc_rule_details_extensions_resiliency_baseline_resiliency_baseline",
+          "aidlc_rule_details_extensions_testing_property_based_property_based_testing"
+        ],
+        "relation": "participate_in",
+        "confidence": "INFERRED",
+        "confidence_score": 0.85,
+        "source_file": "AGENTS.md"
+      }
+    ]
+  },
+  "nodes": [
+    {
+      "id": "fastapi_backend",
+      "label": "FastAPI Backend",
+      "author": null,
+      "captured_at": null,
+      "community": 1,
+      "contributor": null,
+      "file_type": "concept",
+      "norm_label": "fastapi backend",
+      "rationale": "Python-based API server handling auth, analytics, and AI orchestration.",
+      "source_file": "docs/STACK.md",
+      "source_location": null,
+      "source_url": null
+    },
+    {
+      "id": "flutter_app",
+      "label": "Flutter App",
+      "author": null,
+      "captured_at": null,
+      "community": 1,
+      "contributor": null,
+      "file_type": "concept",
+      "norm_label": "flutter app",
+      "rationale": "Thin client for user interaction and dashboard visualization.",
+      "source_file": "docs/STACK.md",
+      "source_location": null,
+      "source_url": null
+    },
+    {
+      "id": "llm_provider",
+      "label": "LLM Provider",
+      "author": null,
+      "captured_at": null,
+      "community": 1,
+      "contributor": null,
+      "file_type": "concept",
+      "norm_label": "llm provider",
+      "rationale": "External service (e.g., Gemini Flash) used for parsing receipts and audio.",
+      "source_file": "docs/STACK.md",
+      "source_location": null,
+      "source_url": null
+    },
+    {
+      "id": "postgresql_db",
+      "label": "PostgreSQL Database",
+      "author": null,
+      "captured_at": null,
+      "community": 1,
+      "contributor": null,
+      "file_type": "concept",
+      "norm_label": "postgresql database",
+      "rationale": "Relational database for storing users, expenses, and receipts.",
+      "source_file": "docs/STACK.md",
+      "source_location": null,
+      "source_url": null
+    },
+    {
+      "id": "docs_architecture",
+      "label": "Architecture \u2014 Finance AI Tracker",
+      "author": null,
+      "captured_at": null,
+      "community": 1,
+      "contributor": null,
+      "file_type": "document",
+      "norm_label": "architecture \u2014 finance ai tracker",
+      "rationale": null,
+      "source_file": "docs/ARCHITECTURE.md",
+      "source_location": null,
+      "source_url": null
+    },
+    {
+      "id": "docs_stack",
+      "label": "Stack \u2014 Finance AI Tracker",
+      "author": null,
+      "captured_at": null,
+      "community": 1,
+      "contributor": null,
+      "file_type": "document",
+      "norm_label": "stack \u2014 finance ai tracker",
+      "rationale": null,
+      "source_file": "docs/STACK.md",
+      "source_location": null,
+      "source_url": null
+    },
+    {
+      "id": "docs_step5_plan",
+      "label": "Architecture Plan",
+      "author": null,
+      "captured_at": null,
+      "community": 1,
+      "contributor": null,
+      "file_type": "document",
+      "norm_label": "architecture plan",
+      "rationale": null,
+      "source_file": "docs/step5-plan.md",
+      "source_location": null,
+      "source_url": null
+    },
+    {
+      "id": "docs_context",
+      "label": "Project Context \u2014 Finance AI Tracker",
+      "author": null,
+      "captured_at": null,
+      "community": 10,
+      "contributor": null,
+      "file_type": "document",
+      "norm_label": "project context \u2014 finance ai tracker",
+      "rationale": null,
+      "source_file": "docs/CONTEXT.md",
+      "source_location": null,
+      "source_url": null
+    },
+    {
+      "id": "docs_pgc_propuesta",
+      "label": "PGC Propuesta \u2014 Borrador",
+      "author": null,
+      "captured_at": null,
+      "community": 11,
+      "contributor": null,
+      "file_type": "document",
+      "norm_label": "pgc propuesta \u2014 borrador",
+      "rationale": null,
+      "source_file": "docs/PGC-PROPUESTA.md",
+      "source_location": null,
+      "source_url": null
+    },
+    {
+      "id": "concept_pgc_template",
+      "label": "PGC Document Template",
+      "author": null,
+      "captured_at": null,
+      "community": 2,
+      "contributor": null,
+      "file_type": "concept",
+      "norm_label": "pgc document template",
+      "rationale": "The shared structure and branding requirements for 'Proyecto de Grado' (PGC) documents.",
+      "source_file": "latex/pgc/reference/Formato PGC.pdf",
+      "source_location": null,
+      "source_url": null
+    },
+    {
+      "id": "latex_pgc_main_original",
+      "label": "PGC Main Document",
+      "author": null,
+      "captured_at": null,
+      "community": 2,
+      "contributor": null,
+      "file_type": "document",
+      "norm_label": "pgc main document",
+      "rationale": null,
+      "source_file": "latex/pgc/main_original.pdf",
+      "source_location": null,
+      "source_url": null
+    },
+    {
+      "id": "latex_pgc_reference_formato_pgc",
+      "label": "PGC Format Reference",
+      "author": null,
+      "captured_at": null,
+      "community": 2,
+      "contributor": null,
+      "file_type": "document",
+      "norm_label": "pgc format reference",
+      "rationale": null,
+      "source_file": "latex/pgc/reference/Formato PGC.pdf",
+      "source_location": null,
+      "source_url": null
+    },
+    {
+      "id": "latex_pgc_assets_logo_facultad",
+      "label": "Faculty of Engineering Logo Text",
+      "author": null,
+      "captured_at": null,
+      "community": 2,
+      "contributor": null,
+      "file_type": "image",
+      "norm_label": "faculty of engineering logo text",
+      "rationale": "Visual asset containing the text 'Facultad de Ingenier\u00eda'.",
+      "source_file": "latex/pgc/assets/logo-facultad.jpg",
+      "source_location": null,
+      "source_url": null
+    },
+    {
+      "id": "latex_pgc_assets_logo_footer",
+      "label": "Green Gradient Footer Graphic",
+      "author": null,
+      "captured_at": null,
+      "community": 2,
+      "contributor": null,
+      "file_type": "image",
+      "norm_label": "green gradient footer graphic",
+      "rationale": "Decorative visual element used for document branding.",
+      "source_file": "latex/pgc/assets/logo-footer.png",
+      "source_location": null,
+      "source_url": null
+    },
+    {
+      "id": "latex_pgc_assets_logo_universidad",
+      "label": "Universidad de Cundinamarca Institutional Logo",
+      "author": null,
+      "captured_at": null,
+      "community": 2,
+      "contributor": null,
+      "file_type": "image",
+      "norm_label": "universidad de cundinamarca institutional logo",
+      "rationale": "Official institutional logo including the 30th-anniversary seal.",
+      "source_file": "latex/pgc/assets/logo-universidad.jpg",
+      "source_location": null,
+      "source_url": null
+    },
+    {
+      "id": "docs_features",
+      "label": "Features \u2014 Finance AI Tracker",
+      "author": null,
+      "captured_at": null,
+      "community": 4,
+      "contributor": null,
+      "file_type": "document",
+      "norm_label": "features \u2014 finance ai tracker",
+      "rationale": null,
+      "source_file": "docs/FEATURES.md",
+      "source_location": null,
+      "source_url": null
+    },
+    {
+      "id": "docs_mockups",
+      "label": "Mockups \u2014 Finance AI Tracker",
+      "author": null,
+      "captured_at": null,
+      "community": 4,
+      "contributor": null,
+      "file_type": "document",
+      "norm_label": "mockups \u2014 finance ai tracker",
+      "rationale": null,
+      "source_file": "docs/MOCKUPS.md",
+      "source_location": null,
+      "source_url": null
+    },
+    {
+      "id": "docs_schema",
+      "label": "Database Schema \u2014 Finance AI Tracker",
+      "author": null,
+      "captured_at": null,
+      "community": 4,
+      "contributor": null,
+      "file_type": "document",
+      "norm_label": "database schema \u2014 finance ai tracker",
+      "rationale": null,
+      "source_file": "docs/SCHEMA.md",
+      "source_location": null,
+      "source_url": null
+    },
+    {
+      "id": "docs_alcance",
+      "label": "Scope \u2014 Finance AI Tracker",
+      "author": null,
+      "captured_at": null,
+      "community": 9,
+      "contributor": null,
+      "file_type": "document",
+      "norm_label": "scope \u2014 finance ai tracker",
+      "rationale": null,
+      "source_file": "docs/ALCANCE.md",
+      "source_location": null,
+      "source_url": null
+    },
+    {
+      "id": "agents_requirements_analysis",
+      "label": "Requirements Analysis",
+      "community": 0,
+      "file_type": "code",
+      "norm_label": "requirements analysis",
+      "rationale": "Always executes with adaptive depth based on request complexity.",
+      "source_file": "AGENTS.md"
+    },
+    {
+      "id": "agents_reverse_engineering",
+      "label": "Reverse Engineering",
+      "community": 0,
+      "file_type": "code",
+      "norm_label": "reverse engineering",
+      "rationale": "Conditional stage for brownfield projects to analyze existing codebases.",
+      "source_file": "AGENTS.md"
+    },
+    {
+      "id": "agents_user_stories",
+      "label": "User Stories",
+      "community": 0,
+      "file_type": "code",
+      "norm_label": "user stories",
+      "rationale": "Conditional stage for new features or complex business requirements.",
+      "source_file": "AGENTS.md"
+    },
+    {
+      "id": "agents_workspace_detection",
+      "label": "Workspace Detection",
+      "community": 0,
+      "file_type": "code",
+      "norm_label": "workspace detection",
+      "rationale": "Always executes to analyze workspace state and project type.",
+      "source_file": "AGENTS.md"
+    },
+    {
+      "id": "aidlc_rule_details_extensions_resiliency_baseline_resiliency_baseline",
+      "label": "Resiliency Baseline Extension",
+      "community": 0,
+      "file_type": "code",
+      "norm_label": "resiliency baseline extension",
+      "rationale": "Mandatory cross-cutting resiliency constraints.",
+      "source_file": ".aidlc-rule-details/extensions/resiliency/baseline/resiliency-baseline.md"
+    },
+    {
+      "id": "aidlc_rule_details_extensions_security_baseline_security_baseline",
+      "label": "Security Baseline Extension",
+      "community": 0,
+      "file_type": "code",
+      "norm_label": "security baseline extension",
+      "rationale": "Mandatory cross-cutting security constraints.",
+      "source_file": ".aidlc-rule-details/extensions/security/baseline/security-baseline.md"
+    },
+    {
+      "id": "aidlc_rule_details_extensions_testing_property_based_property_based_testing",
+      "label": "Property-Based Testing Extension",
+      "community": 0,
+      "file_type": "code",
+      "norm_label": "property-based testing extension",
+      "rationale": "Extension for identifying and testing invariants.",
+      "source_file": ".aidlc-rule-details/extensions/testing/property-based/property-based-testing.md"
+    },
+    {
+      "id": "agents_application_design",
+      "label": "Application Design",
+      "community": 3,
+      "file_type": "code",
+      "norm_label": "application design",
+      "rationale": "Conditional stage for defining new components and service layers.",
+      "source_file": "AGENTS.md"
+    },
+    {
+      "id": "agents_build_and_test",
+      "label": "Build and Test",
+      "community": 3,
+      "file_type": "code",
+      "norm_label": "build and test",
+      "rationale": "Always executes after all units are complete to verify the system.",
+      "source_file": "AGENTS.md"
+    },
+    {
+      "id": "agents_code_generation",
+      "label": "Code Generation",
+      "community": 3,
+      "file_type": "code",
+      "norm_label": "code generation",
+      "rationale": "Always executes per unit; consists of Planning and Generation parts.",
+      "source_file": "AGENTS.md"
+    },
+    {
+      "id": "agents_units_generation",
+      "label": "Units Generation",
+      "community": 3,
+      "file_type": "code",
+      "norm_label": "units generation",
+      "rationale": "Conditional stage for decomposing systems into units of work.",
+      "source_file": "AGENTS.md"
+    },
+    {
+      "id": "agents_workflow_planning",
+      "label": "Workflow Planning",
+      "community": 3,
+      "file_type": "code",
+      "norm_label": "workflow planning",
+      "rationale": "Always executes to determine which phases and depth levels to apply.",
+      "source_file": "AGENTS.md"
+    },
+    {
+      "id": "agents_adaptive_workflow_principle",
+      "label": "Adaptive Workflow Principle",
+      "community": 5,
+      "file_type": "concept",
+      "norm_label": "adaptive workflow principle",
+      "rationale": "The workflow adapts to the work based on intent, state, complexity, and risk.",
+      "source_file": "AGENTS.md"
+    },
+    {
+      "id": "references_student_operation_guide",
+      "label": "Student Operation Guide",
+      "community": 5,
+      "file_type": "document",
+      "norm_label": "student operation guide",
+      "rationale": "Manual for students on how to orchestrate AI-DLC projects.",
+      "source_file": "REFERENCES.md"
+    },
+    {
+      "id": "agents_inception_phase",
+      "label": "Inception Phase",
+      "community": 6,
+      "file_type": "concept",
+      "norm_label": "inception phase",
+      "rationale": "Planning, requirements gathering, and architectural decisions (WHAT and WHY).",
+      "source_file": "AGENTS.md"
+    },
+    {
+      "id": "tasks_finance_ai_tracker",
+      "label": "Finance AI Tracker",
+      "community": 6,
+      "file_type": "document",
+      "norm_label": "finance ai tracker",
+      "rationale": "Project scope and planning document for a student AI-DLC project.",
+      "source_file": "TASKS.md"
+    },
+    {
+      "id": "agents_construction_phase",
+      "label": "Construction Phase",
+      "community": 7,
+      "file_type": "concept",
+      "norm_label": "construction phase",
+      "rationale": "Detailed design, NFR implementation, and code generation (HOW).",
+      "source_file": "AGENTS.md"
+    },
+    {
+      "id": "agents_operations_phase",
+      "label": "Operations Phase",
+      "community": 8,
+      "file_type": "concept",
+      "norm_label": "operations phase",
+      "rationale": "Placeholder for future deployment and monitoring workflows.",
+      "source_file": "AGENTS.md"
+    }
+  ],
+  "links": [
+    {
+      "source": "agents_code_generation",
+      "target": "agents_build_and_test",
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "AGENTS.md"
+    },
+    {
+      "source": "agents_requirements_analysis",
+      "target": "agents_user_stories",
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "AGENTS.md"
+    },
+    {
+      "source": "agents_requirements_analysis",
+      "target": "agents_workflow_planning",
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "AGENTS.md"
+    },
+    {
+      "source": "agents_units_generation",
+      "target": "agents_code_generation",
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "AGENTS.md"
+    },
+    {
+      "source": "agents_workflow_planning",
+      "target": "agents_application_design",
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "AGENTS.md"
+    },
+    {
+      "source": "agents_workflow_planning",
+      "target": "agents_units_generation",
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "AGENTS.md"
+    },
+    {
+      "source": "agents_workspace_detection",
+      "target": "agents_requirements_analysis",
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "AGENTS.md"
+    },
+    {
+      "source": "agents_workspace_detection",
+      "target": "agents_reverse_engineering",
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "AGENTS.md"
+    },
+    {
+      "source": "fastapi_backend",
+      "target": "llm_provider",
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "docs/ARCHITECTURE.md"
+    },
+    {
+      "source": "flutter_app",
+      "target": "fastapi_backend",
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "docs/ARCHITECTURE.md"
+    },
+    {
+      "source": "docs_stack",
+      "target": "fastapi_backend",
+      "relation": "conceptually_related_to",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "docs/STACK.md"
+    },
+    {
+      "source": "docs_stack",
+      "target": "flutter_app",
+      "relation": "conceptually_related_to",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "docs/STACK.md"
+    },
+    {
+      "source": "docs_stack",
+      "target": "llm_provider",
+      "relation": "conceptually_related_to",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "docs/STACK.md"
+    },
+    {
+      "source": "docs_stack",
+      "target": "postgresql_db",
+      "relation": "conceptually_related_to",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "docs/STACK.md"
+    },
+    {
+      "source": "agents_requirements_analysis",
+      "target": "aidlc_rule_details_extensions_resiliency_baseline_resiliency_baseline",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "AGENTS.md"
+    },
+    {
+      "source": "agents_requirements_analysis",
+      "target": "aidlc_rule_details_extensions_security_baseline_security_baseline",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "AGENTS.md"
+    },
+    {
+      "source": "agents_requirements_analysis",
+      "target": "aidlc_rule_details_extensions_testing_property_based_property_based_testing",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "AGENTS.md"
+    },
+    {
+      "source": "docs_architecture",
+      "target": "docs_stack",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "docs/ARCHITECTURE.md"
+    },
+    {
+      "source": "docs_architecture",
+      "target": "docs_step5_plan",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "docs/ARCHITECTURE.md"
+    },
+    {
+      "source": "docs_mockups",
+      "target": "docs_features",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "docs/MOCKUPS.md"
+    },
+    {
+      "source": "docs_mockups",
+      "target": "docs_schema",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "docs/MOCKUPS.md"
+    },
+    {
+      "source": "docs_schema",
+      "target": "postgresql_db",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "docs/SCHEMA.md"
+    },
+    {
+      "source": "latex_pgc_reference_formato_pgc",
+      "target": "concept_pgc_template",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "latex/pgc/reference/Formato PGC.pdf",
+      "source_location": null,
+      "weight": 1.0
+    },
+    {
+      "source": "references_student_operation_guide",
+      "target": "agents_adaptive_workflow_principle",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "REFERENCES.md"
+    },
+    {
+      "source": "fastapi_backend",
+      "target": "postgresql_db",
+      "relation": "shares_data_with",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "docs/ARCHITECTURE.md"
+    },
+    {
+      "source": "latex_pgc_main_original",
+      "target": "concept_pgc_template",
+      "relation": "implements",
+      "confidence": "INFERRED",
+      "confidence_score": 0.85,
+      "source_file": "latex/pgc/main_original.pdf",
+      "source_location": null,
+      "weight": 1.0
+    },
+    {
+      "source": "tasks_finance_ai_tracker",
+      "target": "agents_inception_phase",
+      "relation": "implements",
+      "confidence": "INFERRED",
+      "confidence_score": 0.9,
+      "source_file": "TASKS.md"
+    },
+    {
+      "source": "latex_pgc_main_original",
+      "target": "latex_pgc_reference_formato_pgc",
+      "relation": "references",
+      "confidence": "INFERRED",
+      "confidence_score": 0.9,
+      "source_file": "latex/pgc/main_original.pdf",
+      "source_location": null,
+      "weight": 1.0
+    },
+    {
+      "source": "latex_pgc_main_original",
+      "target": "latex_pgc_assets_logo_facultad",
+      "relation": "references",
+      "confidence": "INFERRED",
+      "confidence_score": 0.95,
+      "source_file": "latex/pgc/main_original.pdf",
+      "source_location": null,
+      "weight": 1.0
+    },
+    {
+      "source": "latex_pgc_main_original",
+      "target": "latex_pgc_assets_logo_footer",
+      "relation": "references",
+      "confidence": "INFERRED",
+      "confidence_score": 0.95,
+      "source_file": "latex/pgc/main_original.pdf",
+      "source_location": null,
+      "weight": 1.0
+    },
+    {
+      "source": "latex_pgc_main_original",
+      "target": "latex_pgc_assets_logo_universidad",
+      "relation": "references",
+      "confidence": "INFERRED",
+      "confidence_score": 0.95,
+      "source_file": "latex/pgc/main_original.pdf",
+      "source_location": null,
+      "weight": 1.0
+    }
+  ],
+  "hyperedges": [
+    {
+      "id": "institutional_branding_assets",
+      "label": "Institutional Branding Assets",
+      "nodes": [
+        "latex_pgc_assets_logo_facultad",
+        "latex_pgc_assets_logo_footer",
+        "latex_pgc_assets_logo_universidad"
+      ],
+      "relation": "participate_in",
+      "confidence": "EXTRACTED",
+      "confidence_score": 0.9,
+      "source_file": "latex/pgc/main_original.pdf"
+    },
+    {
+      "id": "ai_dlc_lifecycle",
+      "label": "AI-DLC Lifecycle Phases",
+      "nodes": [
+        "agents_inception_phase",
+        "agents_construction_phase",
+        "agents_operations_phase"
+      ],
+      "relation": "participate_in",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "AGENTS.md"
+    },
+    {
+      "id": "finance_ai_tracker_core",
+      "label": "Finance AI Tracker Core System",
+      "nodes": [
+        "flutter_app",
+        "fastapi_backend",
+        "postgresql_db",
+        "llm_provider"
+      ],
+      "relation": "participate_in",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "docs/ARCHITECTURE.md"
+    },
+    {
+      "id": "mandatory_inception_stages",
+      "label": "Mandatory Inception Stages",
+      "nodes": [
+        "agents_workspace_detection",
+        "agents_requirements_analysis",
+        "agents_workflow_planning"
+      ],
+      "relation": "form",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "AGENTS.md"
+    },
+    {
+      "id": "cross_cutting_extensions",
+      "label": "Cross-Cutting Extensions",
+      "nodes": [
+        "aidlc_rule_details_extensions_security_baseline_security_baseline",
+        "aidlc_rule_details_extensions_resiliency_baseline_resiliency_baseline",
+        "aidlc_rule_details_extensions_testing_property_based_property_based_testing"
+      ],
+      "relation": "participate_in",
+      "confidence": "INFERRED",
+      "confidence_score": 0.85,
+      "source_file": "AGENTS.md"
+    }
+  ],
+  "built_at_commit": "ce724def74137dc8c5a857a39fe8cdaacaf0d18c"
+}

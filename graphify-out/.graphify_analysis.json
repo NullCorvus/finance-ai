@@ -1,0 +1,210 @@
+{
+  "communities": {
+    "0": [
+      "agents_requirements_analysis",
+      "agents_reverse_engineering",
+      "agents_user_stories",
+      "agents_workspace_detection",
+      "aidlc_rule_details_extensions_resiliency_baseline_resiliency_baseline",
+      "aidlc_rule_details_extensions_security_baseline_security_baseline",
+      "aidlc_rule_details_extensions_testing_property_based_property_based_testing"
+    ],
+    "1": [
+      "docs_architecture",
+      "docs_stack",
+      "docs_step5_plan",
+      "fastapi_backend",
+      "flutter_app",
+      "llm_provider",
+      "postgresql_db"
+    ],
+    "2": [
+      "concept_pgc_template",
+      "latex_pgc_assets_logo_facultad",
+      "latex_pgc_assets_logo_footer",
+      "latex_pgc_assets_logo_universidad",
+      "latex_pgc_main_original",
+      "latex_pgc_reference_formato_pgc"
+    ],
+    "3": [
+      "agents_application_design",
+      "agents_build_and_test",
+      "agents_code_generation",
+      "agents_units_generation",
+      "agents_workflow_planning"
+    ],
+    "4": [
+      "docs_features",
+      "docs_mockups",
+      "docs_schema"
+    ],
+    "5": [
+      "agents_adaptive_workflow_principle",
+      "references_student_operation_guide"
+    ],
+    "6": [
+      "agents_inception_phase",
+      "tasks_finance_ai_tracker"
+    ],
+    "7": [
+      "agents_construction_phase"
+    ],
+    "8": [
+      "agents_operations_phase"
+    ],
+    "9": [
+      "docs_alcance"
+    ],
+    "10": [
+      "docs_context"
+    ],
+    "11": [
+      "docs_pgc_propuesta"
+    ]
+  },
+  "cohesion": {
+    "0": 0.2857142857142857,
+    "1": 0.42857142857142855,
+    "2": 0.4,
+    "3": 0.4,
+    "4": 0.6666666666666666,
+    "5": 1.0,
+    "6": 1.0,
+    "7": 1.0,
+    "8": 1.0,
+    "9": 1.0,
+    "10": 1.0,
+    "11": 1.0
+  },
+  "gods": [
+    {
+      "id": "agents_requirements_analysis",
+      "label": "Requirements Analysis",
+      "degree": 6
+    },
+    {
+      "id": "docs_stack",
+      "label": "Stack — Finance AI Tracker",
+      "degree": 5
+    },
+    {
+      "id": "latex_pgc_main_original",
+      "label": "PGC Main Document",
+      "degree": 5
+    },
+    {
+      "id": "fastapi_backend",
+      "label": "FastAPI Backend",
+      "degree": 4
+    },
+    {
+      "id": "postgresql_db",
+      "label": "PostgreSQL Database",
+      "degree": 3
+    },
+    {
+      "id": "agents_workflow_planning",
+      "label": "Workflow Planning",
+      "degree": 3
+    },
+    {
+      "id": "flutter_app",
+      "label": "Flutter App",
+      "degree": 2
+    },
+    {
+      "id": "llm_provider",
+      "label": "LLM Provider",
+      "degree": 2
+    },
+    {
+      "id": "docs_architecture",
+      "label": "Architecture — Finance AI Tracker",
+      "degree": 2
+    },
+    {
+      "id": "concept_pgc_template",
+      "label": "PGC Document Template",
+      "degree": 2
+    }
+  ],
+  "surprises": [
+    {
+      "source": "PGC Main Document",
+      "target": "Faculty of Engineering Logo Text",
+      "source_files": [
+        "latex/pgc/main_original.pdf",
+        "latex/pgc/assets/logo-facultad.jpg"
+      ],
+      "confidence": "INFERRED",
+      "relation": "references",
+      "why": "inferred connection - not explicitly stated in source; crosses file types (paper ↔ image); peripheral node `Faculty of Engineering Logo Text` unexpectedly reaches hub `PGC Main Document`"
+    },
+    {
+      "source": "PGC Main Document",
+      "target": "Green Gradient Footer Graphic",
+      "source_files": [
+        "latex/pgc/main_original.pdf",
+        "latex/pgc/assets/logo-footer.png"
+      ],
+      "confidence": "INFERRED",
+      "relation": "references",
+      "why": "inferred connection - not explicitly stated in source; crosses file types (paper ↔ image); peripheral node `Green Gradient Footer Graphic` unexpectedly reaches hub `PGC Main Document`"
+    },
+    {
+      "source": "PGC Main Document",
+      "target": "Universidad de Cundinamarca Institutional Logo",
+      "source_files": [
+        "latex/pgc/main_original.pdf",
+        "latex/pgc/assets/logo-universidad.jpg"
+      ],
+      "confidence": "INFERRED",
+      "relation": "references",
+      "why": "inferred connection - not explicitly stated in source; crosses file types (paper ↔ image); peripheral node `Universidad de Cundinamarca Institutional Logo` unexpectedly reaches hub `PGC Main Document`"
+    },
+    {
+      "source": "Requirements Analysis",
+      "target": "Resiliency Baseline Extension",
+      "source_files": [
+        "AGENTS.md",
+        ".aidlc-rule-details/extensions/resiliency/baseline/resiliency-baseline.md"
+      ],
+      "confidence": "EXTRACTED",
+      "relation": "references",
+      "why": "connects across different repos/directories; peripheral node `Resiliency Baseline Extension` unexpectedly reaches hub `Requirements Analysis`"
+    },
+    {
+      "source": "Requirements Analysis",
+      "target": "Security Baseline Extension",
+      "source_files": [
+        "AGENTS.md",
+        ".aidlc-rule-details/extensions/security/baseline/security-baseline.md"
+      ],
+      "confidence": "EXTRACTED",
+      "relation": "references",
+      "why": "connects across different repos/directories; peripheral node `Security Baseline Extension` unexpectedly reaches hub `Requirements Analysis`"
+    }
+  ],
+  "questions": [
+    {
+      "type": "bridge_node",
+      "question": "Why does `Requirements Analysis` connect `Requirements Analysis` to `Workflow Planning`?",
+      "why": "High betweenness centrality (0.070) - this node is a cross-community bridge."
+    },
+    {
+      "type": "bridge_node",
+      "question": "Why does `Workflow Planning` connect `Workflow Planning` to `Requirements Analysis`?",
+      "why": "High betweenness centrality (0.049) - this node is a cross-community bridge."
+    },
+    {
+      "type": "verify_inferred",
+      "question": "Are the 5 inferred relationships involving `PGC Main Document` (e.g. with `PGC Document Template` and `Faculty of Engineering Logo Text`) actually correct?",
+      "why": "`PGC Main Document` has 5 INFERRED edges - model-reasoned connections that need verification."
+    },
+    {
+      "type": "isolated_nodes",
+      "question": "What connects `Architecture Plan`, `Project Context — Finance AI Tracker`, `PGC Propuesta — Borrador` to the rest of the system?",
+      "why": "21 weakly-connected nodes found - possible documentation gaps or missing edges."
+    }
+  ]
+}

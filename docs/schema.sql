@@ -13,7 +13,8 @@ CREATE TABLE "user" (
     id            SERIAL PRIMARY KEY,
     email         VARCHAR(255) NOT NULL UNIQUE,
     password_hash VARCHAR(255) NOT NULL,
-    role_id       INTEGER NOT NULL REFERENCES role(id)
+    role_id       INTEGER NOT NULL REFERENCES role(id),
+    preferred_currency_id INTEGER REFERENCES currency(id)  -- display preference only; fallback 'COP'
 );
 
 -- 3. CATEGORY
@@ -38,7 +39,7 @@ CREATE TABLE currency (
 -- 6. PAYMENTMETHOD
 CREATE TABLE paymentmethod (
     id   SERIAL PRIMARY KEY,
-    name VARCHAR(50) NOT NULL  -- 'Cash', 'Card', 'Transfer', 'Nequi'
+    name VARCHAR(50) NOT NULL UNIQUE  -- 'Cash', 'Card', 'Transfer', 'Nequi'
 );
 
 -- 7. RECEIPT
@@ -87,7 +88,7 @@ CREATE TABLE spendinglimit (
 -- 10. INCOMESOURCE
 CREATE TABLE incomesource (
     id   SERIAL PRIMARY KEY,
-    name VARCHAR(100) NOT NULL  -- 'Work', 'Freelance', 'Gift'
+    name VARCHAR(100) NOT NULL UNIQUE  -- 'Work', 'Freelance', 'Gift'
 );
 
 -- 11. INCOME

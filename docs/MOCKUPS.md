@@ -16,7 +16,9 @@
   expense and income mode. Same input methods; for income, voice/text are the natural path
   (photo less likely). Income card = Monto · Fecha · Fuente (Salario/Freelance/Regalo…) · Nota.
 - **Confirmation card shows ALL receipt items** (product, qty, price, category — editable
-  line by line) + Monto total, Fecha, Categoría, Subcategoría. No "Nota" field (expenses).
+  line by line) + Monto total, Fecha, Categoría, Subcategoría, **Pago** (Efectivo/Tarjeta...)
+  and **Moneda** (COP/USD) — the AI infers these from the receipt and the user confirms/edits
+  them (defaults "Efectivo" / "COP"). No "Nota" field (expenses).
   Buttons: Confirmar / Editar / Descartar. Nothing is saved until Confirmar.
 - **Reason (motivo) is optional and conversational:** tap the card or "💬 Agregar motivo"
   → input bar enters reply mode ("Respondiendo a: recibo $12.500 ✕") → audio/text →

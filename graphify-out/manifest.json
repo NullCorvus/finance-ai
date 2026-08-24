@@ -1,0 +1,128 @@
+{
+  ".commandcode/settings.json": {
+    "mtime": 1786828765.309214,
+    "seen": 1787531780.0107605,
+    "ast_hash": "4a23289c3773b53454172f569fc6c6a1",
+    "semantic_hash": "4a23289c3773b53454172f569fc6c6a1"
+  },
+  ".aidlc-rule-details/extensions/resiliency/baseline/resiliency-baseline.md": {
+    "mtime": 1784941859.7143917,
+    "seen": 1787531780.010765,
+    "ast_hash": "52458e5d66c93a46017e6c463b945733",
+    "semantic_hash": "52458e5d66c93a46017e6c463b945733"
+  },
+  ".aidlc-rule-details/extensions/security/baseline/security-baseline.md": {
+    "mtime": 1784941859.714038,
+    "seen": 1787531780.0107675,
+    "ast_hash": "ebbafc68cc470304d680d0392e115346",
+    "semantic_hash": "ebbafc68cc470304d680d0392e115346"
+  },
+  ".aidlc-rule-details/extensions/testing/property-based/property-based-testing.md": {
+    "mtime": 1784941859.7137356,
+    "seen": 1787531780.0107684,
+    "ast_hash": "67865b9feb5805adfb8ccc56440e71d3",
+    "semantic_hash": "67865b9feb5805adfb8ccc56440e71d3"
+  },
+  "AGENTS.md": {
+    "mtime": 1784941850.1145542,
+    "seen": 1787531780.0107694,
+    "ast_hash": "270eb59bf15f97422e5550ca26b5c4ce",
+    "semantic_hash": "270eb59bf15f97422e5550ca26b5c4ce"
+  },
+  "REFERENCES.md": {
+    "mtime": 1785513730.1260142,
+    "seen": 1787531780.01077,
+    "ast_hash": "0748fb4b3966048753f528a826227df4",
+    "semantic_hash": "0748fb4b3966048753f528a826227df4"
+  },
+  "TASKS.md": {
+    "mtime": 1787500527.715582,
+    "seen": 1787531780.0107713,
+    "ast_hash": "9a1ea6c893c586618cdc489e7d2695f4",
+    "semantic_hash": "9a1ea6c893c586618cdc489e7d2695f4"
+  },
+  "docs/ALCANCE.md": {
+    "mtime": 1787500506.473821,
+    "seen": 1787531780.010772,
+    "ast_hash": "546f1c95c793cf0337e757eb3985a8f1",
+    "semantic_hash": "546f1c95c793cf0337e757eb3985a8f1"
+  },
+  "docs/ARCHITECTURE.md": {
+    "mtime": 1786991964.5994246,
+    "seen": 1787531780.0107727,
+    "ast_hash": "a0b9c09f3d8df5b584b7d1f878a3dd90",
+    "semantic_hash": "a0b9c09f3d8df5b584b7d1f878a3dd90"
+  },
+  "docs/CONTEXT.md": {
+    "mtime": 1786830170.8964624,
+    "seen": 1787531780.0107734,
+    "ast_hash": "26d821528ff465a23b16ceecf8179095",
+    "semantic_hash": "26d821528ff465a23b16ceecf8179095"
+  },
+  "docs/FEATURES.md": {
+    "mtime": 1786829991.4245214,
+    "seen": 1787531780.0107744,
+    "ast_hash": "eb31983e35d4efa33afd233848f74312",
+    "semantic_hash": "eb31983e35d4efa33afd233848f74312"
+  },
+  "docs/MOCKUPS.md": {
+    "mtime": 1787500436.5903273,
+    "seen": 1787531780.010775,
+    "ast_hash": "c9754c076effbd2c0d31ccd8e89537d3",
+    "semantic_hash": "c9754c076effbd2c0d31ccd8e89537d3"
+  },
+  "docs/PGC-PROPUESTA.md": {
+    "mtime": 1786988557.152619,
+    "seen": 1787531780.0107758,
+    "ast_hash": "275af210824f4bb8231ffc139859ee70",
+    "semantic_hash": "275af210824f4bb8231ffc139859ee70"
+  },
+  "docs/SCHEMA.md": {
+    "mtime": 1787500430.9661272,
+    "seen": 1787531780.0107763,
+    "ast_hash": "1a28d9967abf5e02e02371b86ff0f21d",
+    "semantic_hash": "1a28d9967abf5e02e02371b86ff0f21d"
+  },
+  "docs/STACK.md": {
+    "mtime": 1787500511.3439953,
+    "seen": 1787531780.0107772,
+    "ast_hash": "63f4d26c691567706d69acf56816b728",
+    "semantic_hash": "63f4d26c691567706d69acf56816b728"
+  },
+  "docs/step5-plan.md": {
+    "mtime": 1786829992.7195694,
+    "seen": 1787531780.010778,
+    "ast_hash": "045e4baa97992078ff85292667d15e4e",
+    "semantic_hash": "045e4baa97992078ff85292667d15e4e"
+  },
+  "latex/pgc/main_original.pdf": {
+    "mtime": 1786834454.4528935,
+    "seen": 1787531780.0107787,
+    "ast_hash": "2031981932ee40535674a08ba6af08e0",
+    "semantic_hash": "2031981932ee40535674a08ba6af08e0"
+  },
+  "latex/pgc/reference/Formato PGC.pdf": {
+    "mtime": 1786826182.9187646,
+    "seen": 1787531780.0107794,
+    "ast_hash": "2e7ff9cc3ee15f14ed3d71567d04dd3d",
+    "semantic_hash": "2e7ff9cc3ee15f14ed3d71567d04dd3d"
+  },
+  "latex/pgc/assets/logo-facultad.jpg": {
+    "mtime": 1786826182.9117644,
+    "seen": 1787531780.0107799,
+    "ast_hash": "abe5d7ef7572ab8d6bacefaf361b6d74",
+    "semantic_hash": "abe5d7ef7572ab8d6bacefaf361b6d74"
+  },
+  "latex/pgc/assets/logo-footer.png": {
+    "mtime": 1786826182.9137645,
+    "seen": 1787531780.0107806,
+    "ast_hash": "ad952866893ae85235656316522fa4b1",
+    "semantic_hash": "ad952866893ae85235656316522fa4b1"
+  },
+  "latex/pgc/assets/logo-universidad.jpg": {
+    "mtime": 1786826182.9097643,
+    "seen": 1787531780.0107815,
+    "ast_hash": "8d02ae6f44cd8ec38891bc39cb9a2ac0",
+    "semantic_hash": "8d02ae6f44cd8ec38891bc39cb9a2ac0"
+  }
+}

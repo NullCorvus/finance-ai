@@ -46,6 +46,7 @@ erDiagram
         string email UK
         string password_hash
         number role_id FK
+        number preferred_currency_id FK
     }
     ROLE {
         number id PK
@@ -137,6 +138,7 @@ erDiagram
 | `email` | string | unique, required |
 | `password_hash` | string | hashed, required |
 | `role_id` | FK → Role | required |
+| `preferred_currency_id` | FK → Currency | optional — display preference only; falls back to "COP" |
 
 ### Role (✅ locked)
 
@@ -181,7 +183,7 @@ erDiagram
 | Attribute | Type | Rules |
 |-----------|------|-------|
 | `id` | number | PK, auto-generated |
-| `name` | string | required — "Work", "Freelance", "Gift" |
+| `name` | string | required, unique — "Work", "Freelance", "Gift" |
 
 ### Receipt (✅ locked)
 
@@ -202,7 +204,7 @@ erDiagram
 | Attribute | Type | Rules |
 |-----------|------|-------|
 | `id` | number | PK, auto-generated |
-| `name` | string | required — "Cash", "Card", "Transfer", "Nequi"... |
+| `name` | string | required, unique — "Cash", "Card", "Transfer", "Nequi"... |
 
 ### Subcategory (✅ locked)
 
@@ -278,7 +280,7 @@ erDiagram
 - **Total is stored**: `total` = the printed total from the receipt (the truth). It may differ from the sum of items (taxes, discounts, roundings). Items are detail; total is what the store charged.
 - **Payment methods**: Separate entity (PaymentMethod — Cash, Card, Transfer, Nequi...) for scalability — adding a new method needs no code change.
 - **Flexible model**: Handles both simple expenses ("spent $15 on lunch") and detailed receipts (individual items extracted by AI from photo)
-- **Currency**: Master list of supported currencies. The Receipt stores the purchase currency (`currency_id` — one purchase = one currency). The User sets a preferred display currency; conversion happens on-the-fly for display only, never stored. Original amount is always kept as the truth.
+- **Currency**: Master list of supported currencies. The Receipt stores the purchase currency (`currency_id` — one purchase = one currency). The User sets a preferred display currency (`preferred_currency_id`), stored on the User row; conversion happens on-the-fly for display only, never stored (if unset, the app falls back to COP). Original amount and original currency are always kept as the truth.
 - **Category hierarchy**: Expense links to Subcategory (required, "No subcategory" default per category). Category is derived through the subcategory's parent. No direct category link on Expense.
 - **Reason (hybrid approach)**: Receipt has `purchase_reason` (applies to the whole purchase, e.g., "weekly groceries"). Expense has `item_reason` (optional, specific to that item, e.g., "it was on discount"). If `item_reason` is null, the expense inherits `purchase_reason` from the receipt.
 - **Income**: Registered separately from expenses, with its own source list (IncomeSource — Work, Freelance, Gift...). Optional `description` instead of a reason. Currency follows the same rule as receipts (store original, convert on display). Enables balance analysis ("am I spending more than I earn?").

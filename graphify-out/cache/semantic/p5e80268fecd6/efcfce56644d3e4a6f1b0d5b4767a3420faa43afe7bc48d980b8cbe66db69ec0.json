@@ -1,0 +1,1 @@
+{"nodes": [{"id": "resiliency_baseline", "label": "Resiliency Baseline Extension", "file_type": "code", "source_file": ".aidlc-rule-details/extensions/resiliency/baseline/resiliency-baseline.md", "rationale": "Mandatory cross-cutting resiliency constraints."}], "edges": [], "hyperedges": []}

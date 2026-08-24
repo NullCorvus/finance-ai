@@ -33,6 +33,7 @@ User input → AI extracts structured data (JSON) → Preview → [Confirm] [Edi
 
 ### Pre-save
 - AI extracts data from the input (photo, audio, or text) — **one call from the backend to the AI API**
+- Structured data includes the purchase facts: store, date, **payment method**, **currency**, total, and line items (when the receipt has them). The AI infers payment method + currency from the receipt; the *user* confirms or corrects them on the confirmation card (defaults "Efectivo" / "COP" if the input doesn't expose them).
 - User sees a preview with editable fields
 - User can: **Confirm** (saves to DB) / **Edit** (change fields, re-preview) / **Discard** (delete everything, nothing saved)
 - Manual text entry bypasses the AI entirely and saves directly
@@ -111,9 +112,10 @@ Two separate roles:
 
 ## Data Protection
 
-- **Core:** nothing is saved without the user's confirmation (Confirm/Edit/Discard preview). The AI only *reads* inputs — it never writes to the DB in the core.
-- **Agent writes (Phase 3 only):** if the optional agent features are built, the AI agent never modifies data without approval. Every agent write (create/edit limits, subcategories, etc.) shows a preview first and goes through the same [Confirm] [Edit] [Discard] menu as expenses.
-- **Undo (optional, Phase 3):** an audit/change-log table records what changed, who, when, old → new value — enables undo of agent or user changes.
+- **Core (now):** the confirmation gate. Nothing is saved without the user's explicit action (Confirm/Edit/Discard preview). The AI only *reads* inputs — it never writes to the DB in the core. Post-save edits/deletes are normal user actions. **No audit/change-log table in core** — data is personal, single-account; undo = delete + re-enter.
+- **Agent writes (Phase 3 only):** if the optional agent features are built, the AI agent never modifies data without approval. Every agent write (create/edit limits, subcategories, etc.) shows a preview first and goes through the same Confirm/Edit/Discard menu as expenses.
+- **Undo (Phase 3 only):** if agent features are built, an `audit_log` table records what changed, who (agent vs user), when, and the old → new value — enables undo of agent or user changes. Created in construction *only if* Phase 3 is actually built.
+- **Not in scope:** deleted-row retention, data export, GDPR-style right-to-be-forgotten — out of scope for this prototype.
 - **Backups:** database backups (e.g., pg_dump) belong to the operations phase, out of pre-semester scope.
 
 ## Out of Scope

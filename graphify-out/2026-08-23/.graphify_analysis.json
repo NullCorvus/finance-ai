@@ -1,0 +1,192 @@
+{
+  "communities": {
+    "0": [
+      "agents_requirements_analysis",
+      "agents_reverse_engineering",
+      "agents_user_stories",
+      "agents_workspace_detection",
+      "aidlc_rule_details_extensions_resiliency_baseline_resiliency_baseline",
+      "aidlc_rule_details_extensions_security_baseline_security_baseline",
+      "aidlc_rule_details_extensions_testing_property_based_property_based_testing"
+    ],
+    "1": [
+      "docs_architecture",
+      "docs_stack",
+      "docs_step5_plan",
+      "fastapi_backend",
+      "flutter_app",
+      "llm_provider",
+      "postgresql_db"
+    ],
+    "2": [
+      "concept_pgc_template",
+      "latex_pgc_assets_logo_facultad",
+      "latex_pgc_assets_logo_footer",
+      "latex_pgc_assets_logo_universidad",
+      "latex_pgc_main_original",
+      "latex_pgc_reference_formato_pgc"
+    ],
+    "3": [
+      "agents_application_design",
+      "agents_build_and_test",
+      "agents_code_generation",
+      "agents_units_generation",
+      "agents_workflow_planning"
+    ],
+    "4": [
+      "docs_features",
+      "docs_mockups",
+      "docs_schema"
+    ],
+    "5": [
+      "agents_adaptive_workflow_principle",
+      "references_student_operation_guide"
+    ],
+    "6": [
+      "agents_inception_phase",
+      "tasks_finance_ai_tracker"
+    ],
+    "7": [
+      "agents_construction_phase"
+    ],
+    "8": [
+      "agents_operations_phase"
+    ],
+    "9": [
+      "docs_alcance"
+    ],
+    "10": [
+      "docs_context"
+    ],
+    "11": [
+      "docs_pgc_propuesta"
+    ]
+  },
+  "cohesion": {
+    "0": 0.2857142857142857,
+    "1": 0.42857142857142855,
+    "2": 0.4,
+    "3": 0.4,
+    "4": 0.6666666666666666,
+    "5": 1.0,
+    "6": 1.0,
+    "7": 1.0,
+    "8": 1.0,
+    "9": 1.0,
+    "10": 1.0,
+    "11": 1.0
+  },
+  "gods": [
+    {
+      "id": "agents_requirements_analysis",
+      "label": "Requirements Analysis",
+      "degree": 6
+    },
+    {
+      "id": "docs_stack",
+      "label": "Stack \u2014 Finance AI Tracker",
+      "degree": 5
+    },
+    {
+      "id": "latex_pgc_main_original",
+      "label": "PGC Main Document",
+      "degree": 5
+    },
+    {
+      "id": "fastapi_backend",
+      "label": "FastAPI Backend",
+      "degree": 4
+    },
+    {
+      "id": "agents_workflow_planning",
+      "label": "Workflow Planning",
+      "degree": 3
+    },
+    {
+      "id": "postgresql_db",
+      "label": "PostgreSQL Database",
+      "degree": 3
+    },
+    {
+      "id": "agents_workspace_detection",
+      "label": "Workspace Detection",
+      "degree": 2
+    },
+    {
+      "id": "agents_units_generation",
+      "label": "Units Generation",
+      "degree": 2
+    },
+    {
+      "id": "agents_code_generation",
+      "label": "Code Generation",
+      "degree": 2
+    },
+    {
+      "id": "docs_architecture",
+      "label": "Architecture \u2014 Finance AI Tracker",
+      "degree": 2
+    }
+  ],
+  "surprises": [
+    {
+      "source": "PGC Main Document",
+      "target": "Faculty of Engineering Logo Text",
+      "source_files": [
+        "latex/pgc/main_original.pdf",
+        "latex/pgc/assets/logo-facultad.jpg"
+      ],
+      "confidence": "INFERRED",
+      "relation": "references",
+      "why": "inferred connection - not explicitly stated in source; crosses file types (paper \u2194 image); peripheral node `Faculty of Engineering Logo Text` unexpectedly reaches hub `PGC Main Document`"
+    },
+    {
+      "source": "PGC Main Document",
+      "target": "Green Gradient Footer Graphic",
+      "source_files": [
+        "latex/pgc/main_original.pdf",
+        "latex/pgc/assets/logo-footer.png"
+      ],
+      "confidence": "INFERRED",
+      "relation": "references",
+      "why": "inferred connection - not explicitly stated in source; crosses file types (paper \u2194 image); peripheral node `Green Gradient Footer Graphic` unexpectedly reaches hub `PGC Main Document`"
+    },
+    {
+      "source": "PGC Main Document",
+      "target": "Universidad de Cundinamarca Institutional Logo",
+      "source_files": [
+        "latex/pgc/main_original.pdf",
+        "latex/pgc/assets/logo-universidad.jpg"
+      ],
+      "confidence": "INFERRED",
+      "relation": "references",
+      "why": "inferred connection - not explicitly stated in source; crosses file types (paper \u2194 image); peripheral node `Universidad de Cundinamarca Institutional Logo` unexpectedly reaches hub `PGC Main Document`"
+    },
+    {
+      "source": "Finance AI Tracker",
+      "target": "Inception Phase",
+      "source_files": [
+        "TASKS.md",
+        "AGENTS.md"
+      ],
+      "confidence": "INFERRED",
+      "relation": "implements",
+      "why": "inferred connection - not explicitly stated in source; connects across different repos/directories"
+    },
+    {
+      "source": "Requirements Analysis",
+      "target": "Resiliency Baseline Extension",
+      "source_files": [
+        "AGENTS.md",
+        ".aidlc-rule-details/extensions/resiliency/baseline/resiliency-baseline.md"
+      ],
+      "confidence": "EXTRACTED",
+      "relation": "references",
+      "why": "connects across different repos/directories; peripheral node `Resiliency Baseline Extension` unexpectedly reaches hub `Requirements Analysis`"
+    }
+  ],
+  "tokens": {
+    "input": 108647,
+    "output": 4883
+  }
+}
