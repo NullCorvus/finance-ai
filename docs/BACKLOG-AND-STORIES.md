@@ -31,18 +31,14 @@
 **Story:**
 > As a new user, I want to create an account so that I can start using the app.
 
-**Tech decisions:**
-- Register creates the account and redirects to Login (does NOT return JWT automatically)
-- New users get role "user" and `preferred_currency_id` = COP by default
-- Minimum password: 8 characters
-
 **Acceptance Criteria:**
 - I enter email + password (min 8 chars) + confirm password → account is created
-- After success → I see a confirmation message and am redirected to Login
+- After success → I see a confirmation message and am redirected to Login (not logged in automatically)
 - If the email is already taken → I see an error message
 - If the password is too short (< 8 chars) → I see an error message
 - If passwords don't match → I see an error message
 - My password is never shown or stored in plain text
+- My account is created with default settings without asking me
 
 **Checklist: Setup**
 - [ ] Docker Compose (api + postgres)
@@ -68,20 +64,15 @@
 **Story:**
 > As a returning user, I want to log in so that I can access my expense data.
 
-**Tech decisions:**
-- JWT duration: 30 days (configurable via .env)
-- On expiry → redirect to Login screen (frontend checks token expiry)
-- Logout = delete local token (no backend endpoint needed)
-
 **Acceptance Criteria:**
 - I enter email + password → I'm logged in and see the chat screen
 - If the password is wrong → I see "Invalid email or password"
-- If my token expires → I'm redirected to login automatically
-- I stay logged in until I log out or the token expires
-- Logout clears the token locally and returns me to the login screen
+- If my session expires after a long time → I'm redirected to login automatically
+- I stay logged in between app restarts until my session expires
+- Logout clears my session and returns me to the login screen
 
 **Checklist: API**
-- [ ] POST /login endpoint (find user → verify hash → return JWT with 24h expiry)
+- [ ] POST /login endpoint (find user → verify hash → return JWT with 30 day expiry)
 - [ ] GET /me endpoint (validate token → return current user)
 
 **Checklist: UI**

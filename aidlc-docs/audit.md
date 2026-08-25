@@ -213,3 +213,13 @@ puedes revisar esto pls con docs y guides que tenemos y ver tambien las task si 
 **AI Response:** Explained that the `user` table references `currency(id)` before the `currency` table is created, which can cause PostgreSQL schema initialization to fail. No schema file was changed in this interaction.
 
 **Context:** Clarification of a pre-existing database schema ordering issue.
+
+---
+
+## Backlog Classification Clarification
+**Timestamp**: 2026-08-25T00:00:00Z
+**User Input:** "uan duda esto que cambia: contraseña mínima de 8 caracteres; Register devuelve JWT o redirige a Login; duración y expiración del JWT; logout borrando el token local; nuevo usuario con rol user y moneda COP. ¿Esto va como acceptance, user story o task?"
+
+**AI Response:** Classified the listed items as decisions that refine existing user stories: acceptance criteria for observable behavior, non-functional/security requirements where applicable, and implementation/setup tasks for the technical work. No new feature story is required.
+
+**Context:** Clarification of where authentication decisions belong in the backlog.
