@@ -15,7 +15,7 @@
 
 ## 1. Título (máx 20–25 palabras, con IA — aprobado 2026-08-17)
 
-> **Aplicación móvil para el registro y análisis de gastos personales con asistencia de IA para la captura automática de recibos**
+> **Aplicación móvil para el registro y análisis de gastos personales con asistencia de IA para la captura automática de gastos**
 >
 > 20 palabras (límite 20–25). Promete IA → el producto DEBE demostrarla (foto/voz/texto con confirmación). ✅ en `main.tex`.
 
@@ -27,7 +27,7 @@
 
 ### Justificación (aprobada 2026-08-15, v4 — población piloto suavizada)
 
-> La presente propuesta se justifica porque las tecnologías de IA para interpretar recibos son hoy maduras y accesibles por API, lo que permite reducir la fricción del registro en un contexto donde la vida financiera ya ocurre de forma digital.
+> La presente propuesta se justifica porque las tecnologías de IA para interpretar gastos son hoy accesibles y están consolidadas en el mercado, lo que permite reducir la fricción del registro en un contexto donde la vida financiera ya ocurre de forma digital.
 >
 > Los estudiantes de la Universidad de Cundinamarca, sede Facatativá, constituyen la población piloto prevista para validar el prototipo; la solución se dirige también a cualquier persona que desee controlar sus gastos desde el celular, y el equipo es además el primer caso de uso.
 >
@@ -39,7 +39,7 @@
 
 ### Objetivo general (UN verbo — aprobado 2026-08-17)
 
-> Desarrollar una aplicación móvil para el registro, la categorización y el análisis de gastos personales, con asistencia de IA para la captura automática de recibos, aplicando la metodología CDIO, con el fin de reducir el esfuerzo de captura de los gastos y contribuir a la formación del hábito de control financiero en los usuarios.
+> Desarrollar una aplicación móvil para el registro, la categorización y el análisis de gastos personales, con asistencia de IA para la captura automática de gastos, aplicando la metodología CDIO, con el fin de reducir el esfuerzo de captura de los gastos y contribuir a la formación del hábito de control financiero en los usuarios.
 >
 > 1 verbo (*desarrollar*) + qué/cómo (del título) + para qué (reducir esfuerzo Y formar hábito).
 
@@ -63,7 +63,7 @@
 |---|---|---|
 | Concebir | Necesidades, alcance, requisitos | 1–3 |
 | Diseñar | Arquitectura, BD, casos de uso, mockups | 4–7 |
-| Implementar | App móvil, API, IA (recibos), analítica | 8–11 |
+| Implementar | App móvil, API, IA (gastos), analítica | 8–11 |
 | Operar | Pruebas, despliegue, docs, sustentación | 12–16 |
 
 <!-- cronograma semanal con fechas reales 2026-2 -->
