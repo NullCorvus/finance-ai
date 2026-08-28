@@ -14,8 +14,9 @@
   professor proposal promises ("captura por foto, voz o texto con confirmación"). Text is
   a capture channel, NOT a chat: whatever goes in goes through ONE AI parse → ONE
   confirmation card. Placeholder: "gasté 15 mil en almuerzo en Subway…".
-- **Manual entry lives in the same screen:** "Agregar gasto manual" opens the form
-  (HU-005a); ✏️ edit opens the SAME form pre-filled (HU-005b) — one form for create + edit.
+- **Manual entry is ALWAYS visible:** a ✍️ button sits permanently in the capture bar
+  (next to 📷 and 🎤) — it opens the form (HU-005a); ✏️ edit opens the SAME form
+  pre-filled (HU-005b) — one form for create + edit. It never gets buried or lost.
 - **"Mis gastos" is hidden until you search:** a 🔍 button in the header toggles the
   search + category chips + receipt list (HU-005b/005c). The screen starts clean on the
   capture flow.
