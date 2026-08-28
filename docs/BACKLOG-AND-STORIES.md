@@ -176,3 +176,46 @@
 | Sprint 2 | Photo → AI (HU-003) |
 | Sprint 3 | Audio (HU-004) + CRUD (HU-005) |
 | Sprint 4 | Dashboard (HU-006) + Testing + Survey |
+
+---
+
+## Pending Decisions — HU-005 foundation (manual-first)
+
+> Locked so far: manual-first (HU-005 before AI stories) · vertical splits, no FE/BE · one backlog (this file).
+> Decide in order (1 blocks the rest), then write the HU-005 split.
+
+1. **Receipt required?** `expense.receipt_id` NOT NULL → every expense needs a receipt row (store, date, total: NOT NULL).
+   A) no quick-add, schema unchanged · B) quick-add without receipt → make `receipt_id` NULLable (schema change)
+
+   [Decision]:
+
+2. **Split shape.** Current HU-005 has 10 ACs (create + edit + delete + isolation + validation).
+   A) 2 stories: create / edit+delete · B) 3 stories: create / edit+delete / "only mine" · C) keep one story
+
+   [Decision]:
+
+3. **List gap.** No story lets the user SEE their expenses to edit/delete (dashboard = analytics, not a list).
+   A) basic "my expenses" list in HU-005 · B) edit from dashboard table (couples with HU-006) · C) other
+
+   [Decision]:
+
+4. **Delete cleanup.** Delete is permanent (ALCANCE: retention out of scope). What happens to the image file? Is the receipt row (1:1) deleted too?
+
+   [Decision]:
+
+5. **Validation.** 5a future dates allowed/rejected? · 5b expense `name` (NOT NULL): default to store name or typed? · 5c store always required? · 5d purchase_reason (receipt) / item_reason (expense) — confirm wording
+
+   [Decision 5a]:  [5b]:  [5c]:  [5d]:
+
+6. **Form defaults.** Currency COP + payment Efectivo: pre-selected and changeable, or empty required fields?
+
+   [Decision]:
+
+### Parked — HU-003a/b/c/d (after HU-005 is defined)
+
+- [ ] failure paths (AI can't read / backend fails / camera permission denied)
+- [ ] orphan temp image when there is no confirm and no discard
+- [ ] post-save feedback (where the user lands)
+- [ ] 003b: items added later to a saved receipt vs. one single confirm flow
+- [ ] 003d (AI suggests subcategory) — story now or Phase 2
+- [ ] numbering (003a/b/c suffixes vs new numbers) · AC person ("I" vs "User") · checklist sections consistency
