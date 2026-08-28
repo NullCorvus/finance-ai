@@ -86,6 +86,46 @@
 
 ---
 
+### HU-005: Expense registration & management (CRUD) — EPIC
+
+**Feature:** PB-004
+
+> Split into (manual-first foundation):
+> - **HU-005a** — Create expense manually ✅ defined
+> - **HU-005b** — Edit & delete my expenses *(pending — will decide the "my expenses" list screen & what happens to image/receipt on delete)*
+>
+> "Only mine" isolation lives as acceptance criteria inside both.
+
+---
+
+### HU-005a: Create expense manually
+
+**Feature:** PB-004 · **Split of:** HU-005 · **Depends on:** — (foundation story)
+
+**Story:**
+> As a user, I want to register an expense manually filling only the essentials so that I can save my spending quickly without typing everything.
+
+**Acceptance Criteria:**
+- The form has all the fields the database requires (store, date, currency, payment method, total, and each item's name/amount/subcategory) because the AI will fill them later
+- For a single-item expense I only type: amount, store, and subcategory (picked from the existing list)
+- I can add several items (name, amount, subcategory each) under the same receipt with an "add item" action
+- The receipt total is auto-calculated as the sum of the item amounts
+- Date defaults to today, currency defaults to COP, and payment method defaults to Efectivo — I can change them
+- Photo, purchase_reason, and item_reason are optional and live in a collapsed "Additional fields" menu
+- For a single item, the item name is auto-filled with the store text I typed, and I can edit it (I never type it twice)
+- The app validates before saving to the DB: every item amount > 0 and required fields present → otherwise I see an error message
+- Future dates are allowed
+- On save, the receipt and all its items are created together in one action (1 receipt + N item expenses)
+- Everything is associated with my account — I cannot create data for another user
+
+> **Note (technical):** one save creates a `receipt` row (store, date, currency, payment method, total, photo, purchase_reason) + one `expense` row per item (name, amount, subcategory, item_reason), linked via `receipt_id`. The AI photo/audio stories later pre-fill this same form and item list.
+
+**Tasks:** *(to be defined in Sprint Planning)*
+
+**Story Points:** *(to be estimated)*
+
+---
+
 ### HU-003: Receipt photo → AI extraction + categorization
 
 **Feature:** PB-002
@@ -129,31 +169,6 @@
 
 ---
 
-### HU-005: Expense registration & management (CRUD)
-
-**Feature:** PB-004
-
-**Story:**
-> As a user, I want to register expenses manually and manage them (create, edit, delete) to have full control over my information.
-
-**Acceptance Criteria:**
-- I can create an expense with amount, date, merchant, currency, payment method, and category/subcategory
-- I can optionally add purchase_reason or item_reason
-- The expense is associated with the authenticated user
-- I can edit my own expense
-- I can delete my own expense
-- I cannot view/edit/delete another user's expenses
-- Categories and subcategories are saved correctly
-- I can save a receipt with data and an optional image
-- Manual expenses can be saved without an image
-- Invalid amounts or missing required fields are rejected
-
-**Tasks:** *(to be defined)*
-
-**Story Points:** *(to be estimated)*
-
----
-
 ### HU-006: Dashboard by category + date filter
 
 **Feature:** PB-005
@@ -181,35 +196,35 @@
 
 ## Pending Decisions — HU-005 foundation (manual-first)
 
-> Locked so far: manual-first (HU-005 before AI stories) · vertical splits, no FE/BE · one backlog (this file).
+> Locked so far: manual-first (HU-005 before AI stories) · vertical splits, no FE/BE · one backlog (this file) · HU-005a: multiple items per receipt, total = auto-sum · expense name = store text (editable).
 > Decide in order (1 blocks the rest), then write the HU-005 split.
 
 1. **Receipt required?** `expense.receipt_id` NOT NULL → every expense needs a receipt row (store, date, total: NOT NULL).
    A) no quick-add, schema unchanged · B) quick-add without receipt → make `receipt_id` NULLable (schema change)
 
-   [Decision]:
+   [Decision]: A — complete form, minimal UX (no quick-add, schema unchanged)
 
 2. **Split shape.** Current HU-005 has 10 ACs (create + edit + delete + isolation + validation).
    A) 2 stories: create / edit+delete · B) 3 stories: create / edit+delete / "only mine" · C) keep one story
 
-   [Decision]:
+   [Decision]: A — 2 stories (HU-005a create / HU-005b edit+delete); "only mine" as ACs inside both
 
 3. **List gap.** No story lets the user SEE their expenses to edit/delete (dashboard = analytics, not a list).
    A) basic "my expenses" list in HU-005 · B) edit from dashboard table (couples with HU-006) · C) other
 
-   [Decision]:
+   [Decision]: *(pending — decide when defining HU-005b)*
 
 4. **Delete cleanup.** Delete is permanent (ALCANCE: retention out of scope). What happens to the image file? Is the receipt row (1:1) deleted too?
 
-   [Decision]:
+   [Decision]: *(pending — decide when defining HU-005b)*
 
 5. **Validation.** 5a future dates allowed/rejected? · 5b expense `name` (NOT NULL): default to store name or typed? · 5c store always required? · 5d purchase_reason (receipt) / item_reason (expense) — confirm wording
 
-   [Decision 5a]:  [5b]:  [5c]:  [5d]:
+   [Decision 5a]: future dates allowed (for now) · [5b]: name = store text, editable · [5c]: store always required · [5d]: purchase_reason on receipt · item_reason on expense — confirmed
 
 6. **Form defaults.** Currency COP + payment Efectivo: pre-selected and changeable, or empty required fields?
 
-   [Decision]:
+   [Decision]: pre-selected (COP / Efectivo), changeable
 
 ### Parked — HU-003a/b/c/d (after HU-005 is defined)
 
