@@ -92,7 +92,7 @@
 
 > Split into (manual-first foundation):
 > - **HU-005a** — Create expense manually ✅ defined
-> - **HU-005b** — Edit & delete my expenses *(pending — will decide the "my expenses" list screen & what happens to image/receipt on delete)*
+> - **HU-005b** — Edit & delete my expenses ✅ defined
 >
 > "Only mine" isolation lives as acceptance criteria inside both.
 
@@ -119,6 +119,30 @@
 - Everything is associated with my account — I cannot create data for another user
 
 > **Note (technical):** one save creates a `receipt` row (store, date, currency, payment method, total, photo, purchase_reason) + one `expense` row per item (name, amount, subcategory, item_reason), linked via `receipt_id`. The AI photo/audio stories later pre-fill this same form and item list.
+
+**Tasks:** *(to be defined in Sprint Planning)*
+
+**Story Points:** *(to be estimated)*
+
+---
+
+### HU-005b: Edit & delete my expenses
+
+**Feature:** PB-004 · **Split of:** HU-005 · **Depends on:** HU-005a (needs the saved expense form and data)
+
+**Story:**
+> As a user, I want to see, edit, and delete my saved expenses so that I can keep my records correct and under control.
+
+**Acceptance Criteria:**
+- I can see a "My expenses" list showing each item as: name · amount · date · photo indicator, newest first
+- I can open an item from the list and edit its fields (name, amount, subcategory, Additional fields) with the same validation as HU-005a (every amount > 0, required fields present)
+- I can delete a single item — the receipt stays and its total is re-calculated (auto-sum)
+- If I delete the last remaining item of a receipt, the receipt is deleted too (the DB does not allow a receipt with a total of 0)
+- I can delete a whole receipt (ticket) with all its items in one action
+- The image file is deleted from storage together with the receipt
+- I always see a confirmation dialog before deleting — for items and for receipts
+- I can only see, edit, and delete MY expenses — I cannot access another user's expenses
+- Deleted data is permanently removed (per `ALCANCE.md`: no deleted-row retention)
 
 **Tasks:** *(to be defined in Sprint Planning)*
 
@@ -212,11 +236,11 @@
 3. **List gap.** No story lets the user SEE their expenses to edit/delete (dashboard = analytics, not a list).
    A) basic "my expenses" list in HU-005 · B) edit from dashboard table (couples with HU-006) · C) other
 
-   [Decision]: *(pending — decide when defining HU-005b)*
+   [Decision]: A — basic "My expenses" list inside HU-005b (name · amount · date · photo indicator, newest first)
 
 4. **Delete cleanup.** Delete is permanent (ALCANCE: retention out of scope). What happens to the image file? Is the receipt row (1:1) deleted too?
 
-   [Decision]: *(pending — decide when defining HU-005b)*
+   [Decision]: both granularities — delete single item (receipt stays, total re-summed) AND delete whole receipt · last item deleted → receipt auto-deleted (DB CHECK total > 0) · image file deleted with the receipt · confirmation dialog always
 
 5. **Validation.** 5a future dates allowed/rejected? · 5b expense `name` (NOT NULL): default to store name or typed? · 5c store always required? · 5d purchase_reason (receipt) / item_reason (expense) — confirm wording
 
