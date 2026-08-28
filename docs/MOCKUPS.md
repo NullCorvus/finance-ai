@@ -1,7 +1,7 @@
 # Mockups — Finance AI Tracker
 
 > **Status:** PROPOSAL — interactive mockup built as a single self-contained HTML file.
-> Open it in any browser: `docs/mockups/index.html` (3 screens, clickable tabs).
+> Open it in any browser: `docs/mockups/index.html` (4 tabs · 5 screens, clickable).
 > UI in Spanish, mockup documentation in English. No frameworks, no dependencies.
 
 ## Design decisions (decided 2026-08-17)
@@ -29,6 +29,17 @@
   recent movements table (income/gasto chips).
 - **Ajustes with real actions:** "+ Agregar categoría" and "+ Agregar límite" buttons.
   Limits can also be requested conversationally via chat (Phase 3). Subcategory counts shown.
+- **Gastos tab (manual management — HU-005a/005b):** "Mis gastos" list grouped by
+  receipt — store + date + Pago/Moneda + total, with 🧾 foto chip — and item rows
+  (name · subcategory · amount) with ✏️ edit / 🗑 delete. Manual form ("Agregar gasto
+  manual"): the user only types **monto, tienda y subcategoría**; Fecha (hoy), Pago
+  (Efectivo) y Moneda (COP) come defaulted and editable; **"Agregar item"** adds item
+  rows under the same receipt (1 recibo → N items, per schema 1:N) and the
+  **total is auto-calculated** as the sum of item amounts; single-item name auto-fills
+  from the store text; "Campos adicionales" (collapsed): foto, motivo de la compra,
+  motivo del item. Delete **always confirms**: item delete keeps the receipt and
+  re-sums the total (deleting the last item deletes its receipt too — DB CHECK
+  `total > 0`); ticket delete removes receipt + items + photo file.
 - **Colors:** clean/light — background `#F5F6F8`, white cards, UdeC green `#6B8E00` primary,
   income green `#0E9F6E`, confirm `#16A34A`, discard `#DC2626`.
   **Dark theme included:** toggle (sun/moon) in the chat header switches the whole mockup
@@ -43,6 +54,9 @@
 2. **Dashboard** — Balance del mes, trend, bar chart with subcategory drill-down, recent movements.
 3. **Ajustes** — categories (with subcategory counts), "+ Agregar categoría", limits
    (FASE 3 / optional) with "+ Agregar límite", currency COP/USD.
+4. **Gastos** — "Mis gastos" list grouped by receipt (tap ✏️ to edit, 🗑 to delete with
+   confirmation sheet) + "Nuevo gasto" manual form (back button; multi-item rows,
+   auto-sum total, collapsed additional fields).
 
 ## Not represented (deferred)
 
