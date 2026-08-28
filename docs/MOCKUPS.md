@@ -18,9 +18,10 @@
 - **Manual entry is ALWAYS visible:** a ✍️ button sits permanently in the capture bar
   (next to 📷 and 🎤) — it opens the form (HU-005a); ✏️ edit opens the SAME form
   pre-filled (HU-005b) — one form for create + edit. It never gets buried or lost.
-- **"Mis gastos" is hidden until you search:** a 🔍 button in the header toggles the
-  search + category chips + receipt list (HU-005b/005c). The screen starts clean on the
-  capture flow.
+- **"Mis gastos" opens as a sub-screen (not inline):** tapping 🔍 in the header hides
+  the hub and shows the search screen with a back arrow (←) to return. The search + chips
+  + receipt list live there; the hub stays clean for capture. Delete confirmations still
+  work in the list.
 - **Interactive capture flow (like the original chat menu):** send photo/voice/text →
   the AI card menu appears with items marked "editable" + Confirmar / Editar / Descartar
   + the motivo reply bar. Confirmar → "✅ Gasto guardado"; Editar → the pre-filled form;
