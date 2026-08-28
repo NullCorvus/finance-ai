@@ -10,10 +10,11 @@
   confirmation, manual entry and the list all live in the same screen. There is NO chat:
   the conversational parts (reply mode, chat history, agent) are Phase 3 and are not
   mocked up (`ALCANCE.md`: chat is optional and can be skipped entirely).
-- **Capture bar (bottom):** **photo · voice · text** — exactly the three channels the
-  professor proposal promises ("captura por foto, voz o texto con confirmación"). Text is
-  a capture channel, NOT a chat: whatever goes in goes through ONE AI parse → ONE
-  confirmation card. Placeholder: "gasté 15 mil en almuerzo en Subway…".
+- **Capture bar by priority (📷 > 🎤 > ✍️ > texto):** the camera is the HERO — a large
+  centered shutter button (72px, green ring, subtle glow) that communicates \"this is the
+  main action\". Below it in a compact secondary row: audio 🎤 · manual ✍️ · a text field
+  — all three at the same visual weight, subordinate to the photo. The placeholder says
+  \"escribe un gasto…\" (not a chat prompt). Four paths, one clear hierarchy.
 - **Manual entry is ALWAYS visible:** a ✍️ button sits permanently in the capture bar
   (next to 📷 and 🎤) — it opens the form (HU-005a); ✏️ edit opens the SAME form
   pre-filled (HU-005b) — one form for create + edit. It never gets buried or lost.
