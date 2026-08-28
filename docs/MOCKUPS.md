@@ -16,8 +16,13 @@
   confirmation card. Placeholder: "gasté 15 mil en almuerzo en Subway…".
 - **Manual entry lives in the same screen:** "Agregar gasto manual" opens the form
   (HU-005a); ✏️ edit opens the SAME form pre-filled (HU-005b) — one form for create + edit.
-- **"Mis gastos" section (same screen, below capture):** live search + category chips +
-  list grouped by receipt (HU-005b/005c).
+- **"Mis gastos" is hidden until you search:** a 🔍 button in the header toggles the
+  search + category chips + receipt list (HU-005b/005c). The screen starts clean on the
+  capture flow.
+- **Interactive capture flow (like the original chat menu):** send photo/voice/text →
+  the AI card menu appears with items marked "editable" + Confirmar / Editar / Descartar
+  + the motivo reply bar. Confirmar → "✅ Gasto guardado"; Editar → the pre-filled form;
+  Descartar → back to the empty state.
 - **Confirmation card shows ALL receipt items** (product, qty, price, category — editable
   line by line) + Monto total, Fecha, Categoría, Subcategoría, **Pago** (Efectivo/Tarjeta...)
   and **Moneda** (COP/USD) — the AI infers these from the receipt and the user confirms/edits
