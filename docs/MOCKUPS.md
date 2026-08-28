@@ -1,29 +1,34 @@
 # Mockups — Finance AI Tracker
 
 > **Status:** PROPOSAL — interactive mockup built as a single self-contained HTML file.
-> Open it in any browser: `docs/mockups/index.html` (4 tabs · 5 screens, clickable).
+> Open it in any browser: `docs/mockups/index.html` (3 tabs · 4 screens, clickable).
 > UI in Spanish, mockup documentation in English. No frameworks, no dependencies.
 
-## Design decisions (decided 2026-08-17)
+## Design decisions (2026-08-17, revised 2026-08-28: single hub, no chat)
 
-- **The app IS a chat.** There is no separate home screen, no separate Chat tab, and no
-  separate review screen. The Inicio tab opens the chat — capture and confirmation live
-  in the same conversation (WhatsApp-style).
-- **Capture-first, minimum friction:** "Gastaste → registra → listo". Photo is the hero:
-  input bar priority **photo > voice > text** (big round shutter button, mic, text field —
-  all visible, 1 tap, no hidden gestures).
-- **Gasto / Ingreso toggle:** a stretched oval toggle above the input row switches between
-  expense and income mode. Same input methods; for income, voice/text are the natural path
-  (photo less likely). Income card = Monto · Fecha · Fuente (Salario/Freelance/Regalo…) · Nota.
+- **ONE hub screen — "Gastos"** (3 tabs: Gastos · Dashboard · Ajustes). Capture,
+  confirmation, manual entry and the list all live in the same screen. There is NO chat:
+  the conversational parts (reply mode, chat history, agent) are Phase 3 and are not
+  mocked up (`ALCANCE.md`: chat is optional and can be skipped entirely).
+- **Capture bar (bottom):** **photo · voice · text** — exactly the three channels the
+  professor proposal promises ("captura por foto, voz o texto con confirmación"). Text is
+  a capture channel, NOT a chat: whatever goes in goes through ONE AI parse → ONE
+  confirmation card. Placeholder: "gasté 15 mil en almuerzo en Subway…".
+- **Manual entry lives in the same screen:** "Agregar gasto manual" opens the form
+  (HU-005a); ✏️ edit opens the SAME form pre-filled (HU-005b) — one form for create + edit.
+- **"Mis gastos" section (same screen, below capture):** live search + category chips +
+  list grouped by receipt (HU-005b/005c).
 - **Confirmation card shows ALL receipt items** (product, qty, price, category — editable
   line by line) + Monto total, Fecha, Categoría, Subcategoría, **Pago** (Efectivo/Tarjeta...)
   and **Moneda** (COP/USD) — the AI infers these from the receipt and the user confirms/edits
   them (defaults "Efectivo" / "COP"). No "Nota" field (expenses).
   Buttons: Confirmar / Editar / Descartar. Nothing is saved until Confirmar.
-- **Reason (motivo) is optional and conversational:** tap the card or "💬 Agregar motivo"
-  → input bar enters reply mode ("Respondiendo a: recibo $12.500 ✕") → audio/text →
-  simple phrase = general reason (`purchase_reason`); phrase with a product = that item's
-  reason (`item_reason`). No reply = confirm with no reason.
+- **Reasons are optional FIELDS, not conversation:** motivo de la compra / motivo del
+  item live in "Campos adicionales" (form) and on the card — the old reply-mode flow was
+  removed together with the chat.
+- **Income capture deferred:** the Gasto/Ingreso toggle was removed until income stories
+  exist (income registration is a candidate backlog item; proposal E4 keeps analytics
+  category-only).
 - **Dashboard:** Balance del mes (Ingresos − Gastos = Balance, green/red) + monthly trend
   (gastos vs ingresos) + bar chart by category with **subcategory drill-down** (tap a bar) +
   recent movements table (income/gasto chips).
@@ -48,15 +53,17 @@
 
 ## Screens
 
-1. **Inicio = Chat** — the first thing seen. Conversation area + input bar with photo/mic/text
-   + Gasto/Ingreso oval toggle. Sample: receipt photo → AI editable card (all items) → reply
-   bar → income message → income card (source, no line items).
-2. **Dashboard** — Balance del mes, trend, bar chart with subcategory drill-down, recent movements.
-3. **Ajustes** — categories (with subcategory counts), "+ Agregar categoría", limits
+1. **Gastos (single hub)** — capture bar (photo · voice · text) + AI confirmation card
+   sample (all items, Confirmar/Editar/Descartar) + "Agregar gasto manual" button +
+   "Mis gastos": live search, category chips, list grouped by receipt (✏️ edit opens the
+   same form pre-filled, 🗑 delete with confirmation sheet).
+2. **Nuevo gasto** — manual form (back button; multi-item rows, auto-sum total, collapsed
+   additional fields). The same form, pre-filled, is used for EDIT.
+3. **Dashboard** — Balance del mes, trend, bar chart with subcategory drill-down, recent
+   movements. ⚠️ proposal E4 = analytics by category ONLY (no trends/balance) — trim the
+   balance/trend sections before the demo.
+4. **Ajustes** — categories (with subcategory counts), "+ Agregar categoría", limits
    (FASE 3 / optional) with "+ Agregar límite", currency COP/USD.
-4. **Gastos** — "Mis gastos" list grouped by receipt (tap ✏️ to edit, 🗑 to delete with
-   confirmation sheet) + "Nuevo gasto" manual form (back button; multi-item rows,
-   auto-sum total, collapsed additional fields).
 
 ## Not represented (deferred)
 

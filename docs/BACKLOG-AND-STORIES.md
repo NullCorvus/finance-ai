@@ -65,7 +65,7 @@
 > As a returning user, I want to log in so that I can access my expense data.
 
 **Acceptance Criteria:**
-- I enter email + password → I'm logged in and see the chat screen
+- I enter email + password → I'm logged in and see the Gastos screen (capture + manual entry + my expenses)
 - If the password is wrong → I see "Invalid email or password"
 - If my session expires after a long time → I'm redirected to login automatically
 - I stay logged in between app restarts until my session expires
@@ -93,6 +93,7 @@
 > Split into (manual-first foundation):
 > - **HU-005a** — Create expense manually ✅ defined
 > - **HU-005b** — Edit & delete my expenses ✅ defined
+> - **HU-005c** — Find my expenses (search & filters) ✅ defined
 >
 > "Only mine" isolation lives as acceptance criteria inside both.
 
@@ -143,6 +144,27 @@
 - I always see a confirmation dialog before deleting — for items and for receipts
 - I can only see, edit, and delete MY expenses — I cannot access another user's expenses
 - Deleted data is permanently removed (per `ALCANCE.md`: no deleted-row retention)
+
+**Tasks:** *(to be defined in Sprint Planning)*
+
+**Story Points:** *(to be estimated)*
+
+---
+
+### HU-005c: Find my expenses (search & filters)
+
+**Feature:** PB-004 · **Split of:** HU-005 · **Depends on:** HU-005b (needs the expenses list)
+
+**Story:**
+> As a user, I want to search and filter my expenses so that I can quickly find any of them.
+
+**Acceptance Criteria:**
+- I can search by item name or store — results filter live as I type, ignoring case
+- I can filter by category (chips: Todas · Comida · Transporte · …)
+- I can filter by date range
+- Search and filters combine with each other and with the newest-first order
+- If nothing matches, I see a clear "sin resultados" message
+- Search/filter runs in the backend with plain SQL (ILIKE) — no AI involved
 
 **Tasks:** *(to be defined in Sprint Planning)*
 
@@ -220,7 +242,7 @@
 
 ## Pending Decisions — HU-005 foundation (manual-first)
 
-> Locked so far: manual-first (HU-005 before AI stories) · vertical splits, no FE/BE · one backlog (this file) · HU-005a: multiple items per receipt, total = auto-sum · expense name = store text (editable).
+> Locked so far: manual-first (HU-005 before AI stories) · vertical splits, no FE/BE · one backlog (this file) · HU-005a: multiple items per receipt, total = auto-sum · expense name = store text (editable) · Single hub "Gastos": no chat — photo/voice/text are capture channels (proposal promises foto/voz/texto), reasons = optional fields.
 > Decide in order (1 blocks the rest), then write the HU-005 split.
 
 1. **Receipt required?** `expense.receipt_id` NOT NULL → every expense needs a receipt row (store, date, total: NOT NULL).

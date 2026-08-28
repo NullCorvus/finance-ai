@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <!--
   Finance AI Tracker — Interactive mockup (single self-contained file).
-  Capture-first chat app: the app IS a chat. Open docs/mockups/index.html in a browser.
+  Capture-first single hub: photo/voice/text → one AI parse → one confirmation card; manual form; list with search. Open docs/mockups/index.html in a browser.
   UI: Spanish. Code comments: English. No external dependencies.
 -->
 <html lang="es">
@@ -154,32 +154,11 @@
     justify-content:center;
   }
 
-  /* reply-to-message bar (modo responder) */
-  .replybar{
-    flex:0 0 auto;display:flex;align-items:center;gap:10px;
-    background:var(--card);border-top:1px solid var(--line);padding:7px 12px;
-    font-size:12px;color:var(--muted);
-  }
-  .replybar .tag{font-size:10px;font-weight:700;color:var(--primary);background:var(--primary-soft);padding:3px 7px;border-radius:6px;}
-  .replybar .close{margin-left:auto;background:none;border:none;color:var(--muted);cursor:pointer;font-size:14px;line-height:1;}
-
   /* input area: oval Gasto/Ingreso toggle on top + photo(mic,text) row below */
   .inputbar{
     flex:0 0 auto;display:flex;flex-direction:column;gap:10px;
     background:var(--card);border-top:1px solid var(--line);padding:10px 12px 12px;
   }
-  /* stretched oval toggle */
-  .type-toggle{
-    align-self:center;display:flex;border-radius:999px;overflow:hidden;
-    background:var(--soft);border:1px solid var(--line);padding:3px;
-  }
-  .type-toggle button{
-    border:none;background:none;padding:7px 34px;border-radius:999px;
-    font-size:13px;font-weight:600;color:var(--muted);cursor:pointer;
-    transition:background .15s,color .15s;
-  }
-  .type-toggle button.on-expense{background:var(--primary);color:#fff;}
-  .type-toggle button.on-income{background:var(--income);color:#fff;}
   .input-row{display:flex;align-items:center;gap:10px;}
   .shutter{
     width:56px;height:56px;border-radius:50%;flex:0 0 56px;
@@ -250,6 +229,11 @@
   .modal .m-title{font-size:15px;font-weight:700;color:var(--text);margin-bottom:6px;}
   .modal .m-text{font-size:13px;color:var(--muted);margin-bottom:14px;line-height:1.5;}
   .modal .card-actions{margin-top:0;}
+
+  /* search & filter chips (Mis gastos) */
+  .chips{display:flex;gap:6px;flex-wrap:wrap;margin:8px 0 12px;}
+  .fchip{border:1px solid var(--line);background:var(--card);color:var(--muted);font-size:11.5px;font-weight:600;padding:6px 12px;border-radius:999px;cursor:pointer;}
+  .fchip.on{background:var(--primary);border-color:var(--primary);color:#fff;}
 
   /* ---------- NAV ---------- */
   .nav{
@@ -339,12 +323,12 @@
     </span>
   </div>
 
-  <!-- ============ SCREEN 1: CHAT (INICIO) ============ -->
-  <div class="screen active" id="screen-inicio">
+  <!-- ============ SCREEN: GASTOS (single hub: capture + manual + list) ============ -->
+  <div class="screen active" id="screen-gastos">
     <div class="chat-header">
       <div>
-        <div class="title">Finance AI Tracker</div>
-        <div class="sub">registra y confirma en el chat</div>
+        <div class="title">Gastos</div>
+        <div class="sub">foto · voz · texto → la IA arma el gasto y tú lo confirmas</div>
       </div>
       <div class="actions">
         <button class="theme-toggle" id="theme-toggle" title="Tema claro/oscuro">
@@ -402,69 +386,22 @@
         </button>
       </div>
 
-      <!-- user message: income via voice/text (INGRESO) -->
-      <div class="msg user income">
-        <span>Recibí $500.000 de salario</span>
-      </div>
-
-      <!-- AI confirmation card (INGRESO): no line items, source + note -->
-      <div class="card income">
-        <div class="head">
-          <span class="ai">IA · ¿esto es correcto?</span>
-          <span class="tag">ingreso · listo para guardar</span>
-        </div>
-
-        <div class="field"><span class="label">Monto</span><span class="val">$ 500.000</span></div>
-        <div class="field"><span class="label">Fecha</span><span class="val">Hoy</span></div>
-        <div class="field"><span class="label">Fuente</span><span class="val">Salario</span></div>
-        <div class="field"><span class="label">Nota (opcional)</span><span class="val">Sueldo de agosto</span></div>
-
-        <div class="card-actions">
-          <button class="btn btn-confirm">Confirmar</button>
-          <button class="btn btn-edit">Editar</button>
-          <button class="btn btn-discard">Descartar</button>
-        </div>
-      </div>
-    </div>
-
-    <!-- reply-to-message bar (modo responder, muestra el estado) -->
-    <div class="replybar">
-      <span class="tag">Respondiendo</span>
-      <span>Recibo $ 12.500 · di o escribe el motivo</span>
-      <button class="close">✕</button>
-    </div>
-
-    <!-- input area: oval Gasto/Ingreso toggle + photo(mic,text) row -->
-    <div class="inputbar">
-      <div class="type-toggle">
-        <button id="t-expense" class="on-expense">Gasto</button>
-        <button id="t-income">Ingreso</button>
-      </div>
-      <div class="input-row">
-        <button class="shutter" title="Tomar foto">
-          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg>
-        </button>
-        <button class="mic-btn" title="Dictar">
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2M12 19v4"/></svg>
-        </button>
-        <input class="textfield" id="capture-field" type="text" placeholder="Escribe…">
-      </div>
-      <div class="input-hint" id="input-hint">foto &gt; voz &gt; texto · el mismo chat para gastos e ingresos</div>
-    </div>
-  </div>
-
-  <!-- ============ SCREEN: GASTOS (Mis gastos, HU-005b) ============ -->
-  <div class="screen" id="screen-gastos">
-    <div class="gastos">
-      <h2>Mis gastos</h2>
-      <div class="greet">Agosto 2026 · ✏️ editar · 🗑 eliminar (siempre pide confirmación)</div>
-
+      <!-- manual add (HU-005a): same form for create and edit -->
       <button class="addrow" id="btn-open-form" style="margin-bottom:12px;">
         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg>
         Agregar gasto manual
         <small>solo escribes monto, tienda y subcategoría</small>
       </button>
 
+      <div class="f-label">Mis gastos</div>
+      <input class="f-input" id="search-input" type="text" placeholder="🔍 Buscar gasto o tienda…">
+      <div class="chips" id="cat-chips">
+        <button class="fchip on" data-cat="">Todas</button>
+        <button class="fchip" data-cat="comida">Comida</button>
+        <button class="fchip" data-cat="transporte">Transporte</button>
+        <button class="fchip" data-cat="suscripciones">Suscripciones</button>
+      </div>
+      <div id="mg-list">
       <!-- multi-item receipt (with photo) -->
       <div class="receipt-group">
         <div class="rg-head">
@@ -529,6 +466,21 @@
           <button class="iconbtn del exp-del" title="Eliminar gasto"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M3 6h18M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2m3 0v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6h14z"/></svg></button>
         </div>
       </div>
+      </div>
+    </div>
+
+    <!-- capture bar: photo · voice · text (one AI parse, one confirmation card — NOT a chat) -->
+    <div class="inputbar">
+      <div class="input-row">
+        <button class="shutter" title="Tomar foto">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg>
+        </button>
+        <button class="mic-btn" title="Dictar">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2M12 19v4"/></svg>
+        </button>
+        <input class="textfield" id="capture-field" type="text" placeholder="gasté 15 mil en almuerzo en Subway…">
+      </div>
+      <div class="input-hint" id="input-hint">foto · voz · texto → la IA arma el gasto y tú lo confirmas</div>
     </div>
   </div>
 
@@ -713,11 +665,7 @@
 
   <!-- ============ NAV ============ -->
   <div class="nav">
-    <button class="tab active" data-screen="screen-inicio">
-      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
-      Inicio
-    </button>
-    <button class="tab" data-screen="screen-gastos">
+    <button class="tab active" data-screen="screen-gastos">
       <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 3h14v18l-2.3-1.5L14.4 21l-2.4-1.5L9.6 21l-2.3-1.5L5 21V3z"/><path d="M9 8h6M9 12h6"/></svg>
       Gastos
     </button>
@@ -755,22 +703,6 @@
       tab.classList.add('active');
       document.getElementById(tab.dataset.screen).classList.add('active');
     });
-  });
-
-  // Gasto / Ingreso toggle (oval) — switches placeholder + hint.
-  var field = document.getElementById('capture-field');
-  var hint = document.getElementById('input-hint');
-  document.getElementById('t-expense').addEventListener('click', function(){
-    this.className = 'on-expense';
-    document.getElementById('t-income').className = '';
-    field.placeholder = 'Escribe…';
-    hint.textContent = 'foto > voz > texto · el mismo chat para gastos e ingresos';
-  });
-  document.getElementById('t-income').addEventListener('click', function(){
-    this.className = 'on-income';
-    document.getElementById('t-expense').className = '';
-    field.placeholder = '¿Cuánto recibiste?…';
-    hint.textContent = 'ingreso · voz o texto, foto poco usada';
   });
 
   // Category bars → subcategory drill-down (clean: detail on demand).
@@ -880,6 +812,31 @@
       pendingEl.remove();
     }
     modal.classList.remove('show');
+  });
+
+  // search & filters (HU-005c): live text + category chips, combined
+  var searchInput=document.getElementById('search-input');
+  function applyFilters(){
+    var q=(searchInput.value||'').toLowerCase();
+    var chip=document.querySelector('.fchip.on');
+    var cat=chip?chip.dataset.cat:'';
+    document.querySelectorAll('#mg-list .receipt-group').forEach(function(g){
+      var visible=false;
+      g.querySelectorAll('.exp-row').forEach(function(r){
+        var txt=r.textContent.toLowerCase();
+        var show=(!q||txt.indexOf(q)!==-1)&&(!cat||txt.indexOf(cat)!==-1);
+        r.style.display=show?'flex':'none';
+        if(show)visible=true;
+      });
+      g.style.display=visible?'block':'none';
+    });
+  }
+  searchInput.addEventListener('input',applyFilters);
+  document.querySelectorAll('.fchip').forEach(function(c){
+    c.addEventListener('click',function(){
+      document.querySelectorAll('.fchip').forEach(function(x){x.classList.remove('on');});
+      c.classList.add('on');applyFilters();
+    });
   });
 </script>
 
