@@ -32,9 +32,12 @@
 - **Reasons are optional FIELDS, not conversation:** motivo de la compra / motivo del
   item live in "Campos adicionales" (form) and on the card — the old reply-mode flow was
   removed together with the chat.
-- **Income capture deferred:** the Gasto/Ingreso toggle was removed until income stories
-  exist (income registration is a candidate backlog item; proposal E4 keeps analytics
-  category-only).
+- **Gasto/Ingreso selection lives in the form, not the capture bar:** a segmented
+  toggle at the top of the manual form swaps between the expense form and the income
+  form (monto · fecha · fuente · nota — income form is UI-ready, its stories are still
+  pending). On capture paths (photo/voice/text) the AI infers the type and the card tag
+  shows it; a misdetection is fixed via Editar → toggle. Income stories are still
+  pending (proposal E4 keeps analytics category-only).
 - **Dashboard:** Balance del mes (Ingresos − Gastos = Balance, green/red) + monthly trend
   (gastos vs ingresos) + bar chart by category with **subcategory drill-down** (tap a bar) +
   recent movements table (income/gasto chips).

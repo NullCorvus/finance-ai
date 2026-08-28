@@ -178,7 +178,6 @@
     font-size:14px;color:var(--text);outline:none;
   }
   .textfield::placeholder{color:var(--ph);}
-  .input-hint{font-size:10.5px;color:var(--muted);text-align:center;}
 
   /* ---------- GASTOS (list) & NUEVO GASTO (manual form) ---------- */
   .gastos{padding:8px 16px 16px;overflow-y:auto;flex:1;}
@@ -340,7 +339,7 @@
     <div class="chat-header">
       <div>
         <div class="title">Gastos</div>
-        <div class="sub">foto · voz · texto → la IA lo arma · ✍️ manual · 🔍 buscar arriba</div>
+        <div class="sub">registra gastos e ingresos — la IA te ayuda</div>
       </div>
       <div class="actions">
         <button class="theme-toggle" id="btn-search-toggle" title="Buscar gastos">
@@ -355,7 +354,7 @@
 
     <div class="chat-body">
     <div class="chat-body">
-      <div class="empty-hint" id="empty-hint">📷 Toma una foto del recibo · 🎤 dicta lo que gastaste · ✍️ agrégalo manual — la IA arma el gasto y tú lo confirmas</div>
+      <div class="empty-hint" id="empty-hint">📷 foto · 🎤 voz · ✍️ manual — la IA arma el gasto y tú lo confirmas</div>
       <div id="search-section" style="display:none;">
       <input class="f-input" id="search-input" type="text" placeholder="🔍 Buscar gasto o tienda…">
       <div class="chips" id="cat-chips">
@@ -512,7 +511,6 @@
         </button>
         <input class="textfield" id="capture-field" type="text" placeholder="gasté 15 mil en almuerzo en Subway…">
       </div>
-      <div class="input-hint" id="input-hint">foto · voz · texto → la IA arma el gasto y tú lo confirmas</div>
     </div>
   </div>
 
@@ -524,6 +522,11 @@
         <h2 id="form-title">Nuevo gasto</h2>
       </div>
 
+      <div class="seg" style="margin:10px 0 2px;">
+        <button class="on" id="seg-gasto">Gasto</button>
+        <button id="seg-ingreso">Ingreso</button>
+      </div>
+      <div id="f-gasto">
       <div class="f-label">Tienda</div>
       <input class="f-input" id="f-store" type="text" placeholder="¿Dónde compraste?">
 
@@ -568,6 +571,23 @@
         <input class="f-input" type="text" placeholder="📷 Foto del recibo (opcional)">
         <input class="f-input" type="text" placeholder="Motivo de la compra (opcional)">
         <input class="f-input" type="text" placeholder="Motivo del item (opcional)" style="margin-bottom:0;">
+      </div>
+      </div>
+      <div id="f-ingreso" style="display:none;">
+        <div class="f-label">Monto</div>
+        <input class="f-input" type="text" placeholder="$ 0">
+        <div class="f-grid">
+          <div>
+            <div class="f-label">Fecha</div>
+            <input class="f-input" type="text" value="Hoy · 28 ago">
+          </div>
+          <div>
+            <div class="f-label">Fuente</div>
+            <input class="f-input" type="text" placeholder="Salario / Freelance / Regalo…">
+          </div>
+        </div>
+        <div class="f-label">Nota (opcional)</div>
+        <input class="f-input" type="text" placeholder="ej. sueldo de agosto">
       </div>
     </div>
     <div class="savebar"><button class="btn-save" id="btn-save">Guardar gasto</button></div>
@@ -943,6 +963,19 @@
   document.querySelector('.shutter').addEventListener('click',showAiDemo);
   document.querySelector('.mic-btn').addEventListener('click',showAiDemo);
   document.getElementById('capture-field').addEventListener('keydown',function(e){ if(e.key==='Enter') showAiDemo(); });
+  // Gasto/Ingreso selection lives in the form (AI infers it on capture paths)
+  document.getElementById('seg-gasto').addEventListener('click',function(){
+    this.classList.add('on');
+    document.getElementById('seg-ingreso').classList.remove('on');
+    document.getElementById('f-gasto').style.display='block';
+    document.getElementById('f-ingreso').style.display='none';
+  });
+  document.getElementById('seg-ingreso').addEventListener('click',function(){
+    this.classList.add('on');
+    document.getElementById('seg-gasto').classList.remove('on');
+    document.getElementById('f-gasto').style.display='none';
+    document.getElementById('f-ingreso').style.display='block';
+  });
 </script>
 
 </body>
