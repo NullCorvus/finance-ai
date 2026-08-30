@@ -122,11 +122,11 @@ Have these ready before the semester: scope defined, DB designed, mockups drawn,
 ---
 
 ### Step 7 — Mockups / visual prototype
-> Interactive mockup: `docs/mockups/index.html` (autocontenido, abre en navegador, tabs clicables). Rediseño: la app ES un chat (Inicio=chat, no hay tab Chat ni pantalla de revisión aparte). Prioridad de captura: foto > voz > texto. Confirmar/Editar/Descartar con todos los items del recibo. Motivo (opcional) vía modo "Respondiendo a…".
-- [x] Expense upload screen (photo, audio, text) — en el chat (Inicio): botón obturador 📷 + 🎙 + campo texto
+> Interactive mockup: `docs/mockups/index.html` (autocontenido, abre en navegador, tabs clicables). Rediseño: la app usa un hub único de Gastos (no hay chat en el core ni pantalla de revisión separada). Prioridad de captura: foto > voz > texto. Las vías foto, voz y texto natural usan AI para devolver JSON y mostrar Confirmar/Editar/Descartar; el formulario manual bypasses AI y guarda directamente tras validar. Los motivos son campos opcionales.
+- [x] Expense capture screen (photo, audio, natural-language text) — en el hub Gastos: botón obturador 📷 + 🎙 + campo texto
 - [x] Expense review/confirmation screen — tarjeta IA editable con todos los items + Confirmar/Editar/Descartar
 - [x] Dashboard with expenses (graphs, table) — cards + gráfica de barras + tabla
-- [x] Chat with AI — fusionado en Inicio (el chat ES la captura/confirmación); conversación libre = Phase 3
+- [x] AI-assisted capture — fusionado en Gastos (la captura devuelve JSON y usa Confirmar/Editar/Descartar); conversación libre con el agente = Phase 3
 - [x] Settings (categories, spending limits) — categorías; límites marcados FASE 3/opcional
 
 **Estimated time:** 1-2 days

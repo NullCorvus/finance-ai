@@ -93,26 +93,33 @@ SECRET_KEY=tu_secret_key_aqui
 
 ## Sprints
 
-### Sprint 1
-| Tarea/HU | Prioridad |
-|----------|-----------|
-| Setup infraestructura | Técnica |
-| HU-001: Auth multi-usuario | Alta |
+> This schedule is synchronized with `docs/BACKLOG-AND-STORIES.md` as of 2026-08-30.
+> Infrastructure setup is pre-Sprint 1 work, not a user story.
 
-### Sprint 2
+### Sprint 1 — Authentication
 | Tarea/HU | Prioridad |
 |----------|-----------|
-| HU-002: Photo → AI extraction + categorization | Alta |
+| HU-001: Register | Alta |
+| HU-002: Login | Alta |
 
-### Sprint 3
+### Sprint 2 — Manual expense foundation
 | Tarea/HU | Prioridad |
 |----------|-----------|
-| HU-003: Audio → AI parsing + categorization | Media |
-| HU-004: Text/Manual input | Media |
+| HU-003: Create expense manually | Media |
+| HU-004: Edit & delete my expenses | Media |
+| HU-005: Find my expenses | Media |
 
-### Sprint 4
+### Sprint 3 — AI-assisted capture
 | Tarea/HU | Prioridad |
 |----------|-----------|
-| HU-005: Dashboard por categoría + filtro período | Media |
+| HU-006: Photo receipt happy path | Alta |
+| HU-007: Photo capture failure paths | Alta |
+| HU-008: Natural-language text → AI parse | Media |
+
+### Sprint 4 — Future scope (definitions pending)
+| Tarea/HU | Prioridad |
+|----------|-----------|
+| HU-009: Audio → AI parsing + categorization | Media — pendiente de definición |
+| HU-010: Dashboard by category + date filter | Media — pendiente de definición |
 | Pruebas funcionales | Tarea |
 | Encuesta de usabilidad | Tarea |

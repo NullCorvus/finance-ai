@@ -3,7 +3,7 @@
 ## Core Vision
 A personal finance tracking system with a **Flutter app** and a **backend (API + DB) running on a VM**. Users register expenses through the app — either manually or AI-assisted (receipt photo, audio note, or text, where the AI converts the input to structured JSON for the user to confirm). The backend owns the data, computes analytics, and answers dashboard queries. Users can also register income to enable balance analysis (spending vs. earnings).
 
-**The AI is used only for input parsing in the core** — one call from the backend to the LLM provider that turns an image/audio/text into structured data. The user always confirms, edits, or retries before anything is saved. Manual entry always works as a fallback. The phone never calls the AI API directly.
+**The AI is used only for input parsing in the core** — one call from the backend to the LLM provider that turns a photo/audio/natural-language text input into structured data. The user always confirms, edits, or retries before anything is saved. Manual form entry always works as a direct fallback. The phone never calls the AI API directly.
 
 ## Optional "Agent" Vision (Phase 3 — ideas, not core)
 
@@ -19,8 +19,9 @@ See `docs/FEATURES.md` — Phase 3. The architecture keeps these possible later 
 
 ## Input Methods
 1. **Receipt photo** — AI vision extracts line items, store, total, date
-2. **Audio** — short sentence or voice memo describing an expense
-3. **Text** — manual entry
+2. **Audio** — short sentence or voice memo describing an expense; AI parsing is planned for HU-009
+3. **Manual form** — direct entry that bypasses AI and saves after validation
+4. **Natural-language text** — a sentence typed in the capture bar; AI converts it into structured data for confirmation
 
 ## Processing Flow
 
@@ -32,11 +33,11 @@ User input → AI extracts structured data (JSON) → Preview → [Confirm] [Edi
 ```
 
 ### Pre-save
-- AI extracts data from the input (photo, audio, or text) — **one call from the backend to the AI API**
+- AI extracts data from AI-assisted input (photo, audio, or natural-language text) — **one call from the backend to the AI API**
 - Structured data includes the purchase facts: store, date, **payment method**, **currency**, total, and line items (when the receipt has them). The AI infers payment method + currency from the receipt; the *user* confirms or corrects them on the confirmation card (defaults "Efectivo" / "COP" if the input doesn't expose them).
 - User sees a preview with editable fields
 - User can: **Confirm** (saves to DB) / **Edit** (change fields, re-preview) / **Discard** (delete everything, nothing saved)
-- Manual text entry bypasses the AI entirely and saves directly
+- Manual form entry bypasses the AI entirely and saves directly after validation; typed natural-language text in the capture bar uses AI and requires confirmation
 - This handles edge cases: blurry receipts, inaudible audio, AI API failures, etc.
 
 ### Post-save
@@ -71,7 +72,7 @@ User input → AI extracts structured data (JSON) → Preview → [Confirm] [Edi
 
 ### Receipt Items
 - Full line-item extraction when available from receipts
-- When input is audio/text, only the total + description is stored
+- When AI-assisted input is audio/natural-language text, only the total + description is stored; the manual form may contain multiple receipt items
 - Analytics work at the expense level (total × category), items are bonus drill-down detail
 
 ## Interface Approach
@@ -91,12 +92,17 @@ Two separate roles:
 
 ### User
 - Register and log in via email/password
-- Add expenses (receipt photo, audio, text — AI-assisted with confirmation)
+- Add expenses (receipt photo, audio, natural-language text — AI-assisted with confirmation; manual form direct-save)
 - Register income (salary, freelance, gift...) with optional description
 - View dashboard, graphs, and analysis of their own data
 - Set personal spending limits (Phase 3)
 
-### Admin
+### Admin (future scope — excluded from the current core)
+
+> The admin role is documented as a future capability, but it is not part of the current
+> MVP and is deliberately excluded from the current architecture. The current build targets
+> regular users; admin UI, endpoints, and operational permissions remain undefined.
+
 - Separate from User accounts (not a User with extra permissions)
 - View system stats dashboard:
   - Total registered users

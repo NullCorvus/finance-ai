@@ -247,3 +247,59 @@ puedes revisar esto pls con docs y guides que tenemos y ver tambien las task si 
 **User Input:** "QUE ES EL DIAGRAMA DE CLASES Class Diagram"
 **AI Response:** Explained what a UML class diagram is (structural/static view: classes, attributes, methods, relationships), the notation (3 compartments, visibility symbols, multiplicities), relationship types, the three levels (domain/analysis/design), the difference vs ER, and how it applies to the project's docs/UML.md class diagram (data model level, no methods until code exists). No files changed.
 **Context:** Educational clarification question.
+
+---
+
+## HU-003 Family Redefinition (Happy Path / Failure Path / Text Parse)
+**Timestamp**: 2026-08-30T00:00:00Z
+**User Input:** "q1. A / q2. A / q3. but how wee know if the recipt is blurry ?? / q4. I think a retro is enought / q5. C is best option / q6. A / q7I think is ok" — then "I think is all right save that vercion i think is good"
+**AI Response:** Defined the HU-003 family per SPIDR Path split (guide §9): HU-003 photo happy path (photo-only scope; Editar opens the HU-005a form; post-save "✅ Gasto guardado" + clean hub; technical fields locked; optional reasons), HU-003a failure paths (unreadable = AI reports status:unreadable, no blur detection; partial extraction shown; backend fail → Reintentar; permission denied → settings shortcut + manual fallback; temp image cleanup 24h; atomic rollback), HU-003b text → AI parse (text field confirmed as AI-parse channel from mockup evidence — placeholder 'gasté 15 mil en almuerzo en Subway…', Enter triggers the same AI card; minimal receipt, no image). Fixed Sprint Plan to match locked manual-first decision (Sprint 2 = CRUD 005a/b/c, Sprint 3 = photo+text, Sprint 4 = audio+dashboard). Updated story count note (8 fully defined) and parked section (4 items resolved, 4 remaining). Cross-checked against ALCANCE.md, FEATURES.md, step5-plan.md, mockups, schema — no other files needed changes.
+**Context:** docs/BACKLOG-AND-STORIES.md — user-story definition session, decisions logged with [Answer] format.
+
+---
+
+## Story Renumbering to Build Order
+**Timestamp**: 2026-08-30T00:00:00Z
+**User Input:** "but organize the numbers in order i mean like is it but with 1 2 3 login manual image"
+**AI Response:** Renumbered all stories so codes follow build order: HU-001 Register · HU-002 Login · HU-003 Create manually (was 005a) · HU-004 Edit & delete (was 005b) · HU-005 Find/search (was 005c) · HU-006 Photo happy path (was 003) · HU-007 Photo failures (was 003a) · HU-008 Text parse (was 003b) · HU-009 Audio (was 004) · HU-010 Dashboard (was 006) — exactly 10 stories, meeting the teacher requirement. Applied via two-pass placeholder rename (no code collisions) to BACKLOG-AND-STORIES.md, MOCKUPS.md, FEATURES.md, mockups/index.html, menu-variants.html, input-variants.html. Replaced the old HU-005 epic block with a CRUD note, fixed all "Split of:" lines, rewrote top note with the old→new mapping, updated sprint plan/parked/decisions headers. Verified 0 stale references remain. Left untouched: audit.md (historical), index-backup.html (backup), docs/SPRINT-PLAN.md (older doc with its own numbering scheme — flagged to user as a separate cleanup task).
+**Context:** docs/BACKLOG-AND-STORIES.md — numbering consistency pass across all docs.
+
+---
+
+## Requirements Analysis / Backlog and User Stories Review
+**Timestamp**: 2026-08-30T20:58:11Z
+**User Input**: "check if the backlog makes sense and the user histories are god based on the guide and all the other info in the repo"
+**AI Response**: Began a brownfield documentation review of the backlog and user stories against the repository guides, architecture, schema, features, mockups, sprint plan, tasks, and project context. The review will assess story quality, consistency, missing definitions, dependencies, and Scrum Poker readiness.
+**Context:** Requirements analysis and backlog refinement review.
+
+---
+
+## Requirements Analysis / Review Findings
+**Timestamp**: 2026-08-30T21:02:02Z
+**User Input**: "check if the backlog makes sense and the user histories are god based on the guide and all the other info in the repo"
+**AI Response**: Reviewed the current backlog and stories against the Scrum guide, repository scope, features, architecture, schema, mockups, tasks, sprint plans, and project context. Findings: HU-001 through HU-008 have a useful user-centered structure, vertical dependencies, confirmation/error paths, and ownership rules, but HU-009 and HU-010 are still placeholders. The backlog is not ready as a complete Poker package because the Product Goal, Definition of Done, team/capacity assumptions, story estimates, and a single authoritative sprint plan are missing. Blocking consistency issues include manual/text input being defined both as AI parsing and direct manual save, and receipt totals being defined both as item auto-sums and as printed totals that may differ. The repository also contains a stale `docs/SPRINT-PLAN.md`, a schema creation-order defect where `user.preferred_currency_id` references `currency` before it is created, no seed-data file despite the backlog requiring seed data, and missing `docs/api-spec.yaml`. Income is in the scope/schema/mockup but has no user story, while dashboard scope is inconsistent between category-only analytics and income/balance/trend analytics. No backlog or application-code files were changed; only the required audit and state tracking were updated.
+**Context:** Requirements analysis completed for a documentation/backlog readiness review; implementation is not authorized.
+
+---
+
+## Documentation Refinement / Implementation Request
+**Timestamp**: 2026-08-30T21:33:18Z
+**User Input**: "Implement the plan."
+**AI Response**: Implemented the approved documentation refinement plan: synchronized the sprint plan with the current backlog, clarified manual versus AI-assisted text capture, documented source-dependent receipt totals, refined the active expense stories, and removed stale core-chat wording. Deferred database/API setup, Scrum preparation, audio definition, and dashboard definition as requested.
+**Context:** Documentation-only backlog and user-story refinement.
+
+---
+
+## Documentation Refinement / Completion
+**Timestamp**: 2026-08-30T21:48:04Z
+**User Input**: "Implement the plan."
+**AI Response:** Completed the approved documentation refinement. Sprints now match the active backlog; manual-form and AI-assisted text paths are distinct; receipt totals are source-dependent; HU-003 through HU-008 contain the selected behavior, failure, editing, contract, and upload decisions; core chat wording is removed; and admin is explicitly future scope outside the current core. Validation passed for story/sprint consistency, mockup JavaScript syntax, Mermaid architecture/schema diagrams, and `git diff --check`.
+**Context:** Implementation and verification of the documentation-only backlog refinement; database/API setup, Scrum preparation, HU-009 audio definition, and HU-010 dashboard definition were intentionally deferred.
+
+---
+
+## User Story Task Checklists and Mockup / Completion
+**Timestamp**: 2026-08-30T22:38:50Z
+**User Input**: "Implement the plan."
+**AI Response:** Added API, UI, Tests, and Mockup checklists for HU-003 through HU-008 in `docs/BACKLOG-AND-STORIES.md`. Updated `docs/mockups/index.html` and `docs/MOCKUPS.md` to cover manual direct-save validation, source-specific photo/text AI previews, edit-before-confirm, printed versus item-sum totals, date filtering, deletion feedback, and representative AI failure states. Normalized edited totals and validated the interactive flows with a headless browser smoke suite.
+**Context:** Implementation of the approved task-definition and mockup-verification plan. HU-009 audio and HU-010 dashboard task definitions remain intentionally deferred; no application backend or frontend source code was added.

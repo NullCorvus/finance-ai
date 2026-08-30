@@ -45,7 +45,7 @@ flowchart TD
 Notes:
 
 - The AI logic is **merged inside the backend** (Q3 decision) — no separate AI layer.
-- In the core, the LLM provider is used **only for input parsing** (photo/audio/text → structured JSON). The phone never calls the LLM directly.
+- In the core, the LLM provider is used **only for AI-assisted input parsing** (photo/audio/natural-language text → structured JSON). The manual form bypasses AI, and the phone never calls the LLM directly.
 - The **agent (chat + AI acting on data)** is optional Phase 3 — if built, it lives inside the backend too. Marked optional in the component diagram.
 - LLM provider is external (outside the system boundary, Q2).
 - No vector DB, no cache (Q5: not needed — structured DB via tool calls).
@@ -112,16 +112,16 @@ Two journeys (Q6). Conventions per guide §7: entity = rectangle, process = stad
 flowchart LR
     User["External Entity<br/>User (Flutter app)"]:::entity
     LLM["External Entity<br/>LLM Provider"]:::entity
-    P1(["P1<br/>Submit input (photo / audio / text)"]):::process
+    P1(["P1<br/>Submit input (photo / audio / natural-language text)"]):::process
     P2(["P2<br/>AI parses to JSON"]):::process
     P3(["P3<br/>Show in editable format"]):::process
     P4(["P4<br/>Menu: Confirm / Edit / Discard"]):::process
-    P5(["P5<br/>Edit: manual form or subtle fix by message"]):::process
+    P5(["P5<br/>Edit: manual form"]):::process
     P6(["P6<br/>Save to DB"]):::process
     D1[("Data Store<br/>Receipts + Expenses")]:::store
     D2[("Data Store<br/>Image file")]:::store
 
-    User -->|"photo / audio / text"| P1
+    User -->|"photo / audio / natural-language text"| P1
     P1 -->|"raw input"| P2
     P2 -->|"prompt"| LLM
     LLM -->|"structured JSON"| P2
@@ -140,7 +140,7 @@ flowchart LR
     classDef store fill:#efe,stroke:#333;
 ```
 
-Note: **delete** (post-save) exists separately — this diagram covers the pre-save flow; saved expenses can always be edited or deleted (ALCANCE.md). Manual text entry skips P2/LLM entirely.
+Note: **delete** (post-save) exists separately — this diagram covers the pre-save flow; saved expenses can always be edited or deleted (ALCANCE.md). Manual form entry skips P2/LLM entirely.
 
 ### DFD 2 — Ask the AI (OPTIONAL — Phase 3, not built in core)
 

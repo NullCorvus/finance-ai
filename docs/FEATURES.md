@@ -24,13 +24,13 @@ Features organized by build phase. Phase 1 is the foundation and must ship first
 | 4 | Registro manual y gestión de gastos (CRUD) | Crear, editar, eliminar gastos con monto, fecha, comercio, moneda, método de pago, categoría/subcategoría y purchase_reason/item_reason. Guardar recibos con imagen opcional. Aislamiento por usuario. Base para todas las capturas. |
 | 5b | Income registration | Register income (salary, freelance, gift...) with source and optional description. Enables balance analysis ("am I spending more than I earn?"). |
 | 8 | Dashboard | Overview of expenses: table of recent transactions, summary cards, graphs (spending by category/subcategory, trends over time, balance vs income). **Computed by the backend with plain SQL — no AI involved.** Low priority — build after capture features work. |
-| 21 | Expense search & filters | Find expenses by item/store name (live text search) + filter by category and date range. Plain SQL (ILIKE), no AI. Part of expense management (HU-005c). |
-| 18 | Chat history | Save past conversations so the AI remembers what you asked before. Low priority — build last in this phase. |
+| 21 | Expense search & filters | Find expenses by item/store name (live text search) + filter by category and date range. Plain SQL (ILIKE), no AI. Part of expense management (HU-005). |
 
 ### Input path (AI-assisted, with fallback)
 
-- Manual text entry always works — AI is not required to register an expense.
-- AI-assisted path: input (photo/audio) → backend calls AI API once → AI returns structured JSON + category → preview with editable fields → **Confirm / Edit / Discard**. Nothing is saved until the user confirms.
+- Manual form entry always works — AI is not required to register an expense.
+- Manual form path: the user enters the required expense fields directly; the form bypasses AI and saves after validation.
+- AI-assisted path: natural-language text, photo, or audio → backend calls AI API once → AI returns structured JSON + category → preview with editable fields → **Confirm / Edit / Discard**. Nothing is saved until the user confirms.
 - Auto-categorization is integrated into the AI prompt: the backend passes the user's existing subcategories, so suggestions come from the existing list first. User can override or add a new one.
 
 ## Phase 2 — Extras (easy wins from Phase 3)
@@ -58,10 +58,11 @@ These are the "agent" features: they add natural-language chat and AI that *acts
 | 17 | Spending insights | AI flags unnecessary spending ("you spent $40 on impulse purchases this week") powered by reason/context tracking. |
 | 19 | Saved skills | Save a reusable command/preference so you don't repeat yourself. Example: "every month, send me my spending summary" → saved once, agent runs it anytime you ask. |
 | 20 | Agent write protection | Agent modifications (limits, subcategories) show a confirmation preview before applying — same Confirm/Edit/Discard pattern as expenses. Optional audit/change-log table for undo. |
+| 18 | Chat history | Save past agent conversations so the AI remembers what you asked before. Optional Phase 3 feature. |
 
 ## Priority Legend
 
 - **Phase 0** — Infrastructure. Must be done before anything else.
-- **Phase 1** — Must have at launch. Build first. Includes capture (photo/audio/text), income, dashboard (low priority), and chat history (low priority).
+- **Phase 1** — Must have at launch. Build first. Includes capture (photo/audio/natural-language text), income, and dashboard (low priority).
 - **Phase 2** — Easy extras. Build once Phase 1 is stable. Spending limits, export, reason tracking.
 - **Phase 3** — Optional ideas ("agent" features). Nice-to-have; can be skipped without affecting the core.
