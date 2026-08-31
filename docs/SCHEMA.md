@@ -169,7 +169,19 @@ Optional evidence for an Expense.
 | content_type | Supported image type |
 | created_at | Upload timestamp |
 
-A manual Expense never requires this entity.
+- **Receipt is required**: Every expense belongs to a receipt. Even simple expenses (e.g., "I spent $15 on lunch") create a minimal receipt (store = "Manual", image = null). The receipt belongs to a user directly (`user_id`) — this matches the index on `receipt.user_id`.
+- **Ownership consistency**: `Expense.user_id` and `Receipt.user_id` must always reference the same user. Enforced by the application, not a DB constraint (checked during review).
+- **Image is a file path**: `receipt.image` stores a path/URL (`TEXT`), not the binary itself — keeps the DB light; the image file lives on disk/object storage.
+- **Total is stored**: for a photographed receipt, `total` is the printed receipt total (the truth) and may differ from the sum of items because of taxes, discounts, or rounding. For manual multi-item entry, `total` is the sum of item amounts; for AI-assisted text/audio, the single parsed amount is both the item amount and receipt total.
+- **Payment methods**: Separate entity (PaymentMethod — Cash, Card, Transfer, Nequi...) for scalability — adding a new method needs no code change.
+- **Flexible model**: Handles both simple expenses ("spent $15 on lunch") and detailed receipts (individual items extracted by AI from photo)
+- **Currency**: Master list of supported currencies. The Receipt stores the purchase currency (`currency_id` — one purchase = one currency). The User sets a preferred display currency (`preferred_currency_id`), stored on the User row; conversion happens on-the-fly for display only, never stored (if unset, the app falls back to COP). Original amount and original currency are always kept as the truth.
+- **Category hierarchy**: Expense links to Subcategory (required, "No subcategory" default per category). Category is derived through the subcategory's parent. No direct category link on Expense.
+- **Reason (hybrid approach)**: Receipt has `purchase_reason` (applies to the whole purchase, e.g., "weekly groceries"). Expense has `item_reason` (optional, specific to that item, e.g., "it was on discount"). If `item_reason` is null, the expense inherits `purchase_reason` from the receipt.
+- **Income**: Registered separately from expenses, with its own source list (IncomeSource — Work, Freelance, Gift...). Optional `description` instead of a reason. Currency follows the same rule as receipts (store original, convert on display). Enables balance analysis ("am I spending more than I earn?").
+- **SpendingLimit target (XOR rule)**: A limit is one rule with one target. Both `subcategory_id` and `category_id` set would make it ambiguous (e.g., Food + Eating out could mean "all Food", "Eating out only", or double-count Eating out) — so the UI prevents it and the database enforces exactly one via a CHECK constraint.
+- **SpendingLimit currency**: Limit amounts are in the user's preferred currency — a limit is a personal target, not a purchase, so no per-limit currency.
+- **SpendingLimit**: Phase 3 feature, included in domain design for completeness
 
 ### Income
 

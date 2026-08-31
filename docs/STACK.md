@@ -6,21 +6,16 @@ Approved proposal for the manual-first university prototype. Exact supported ver
 
 ## Decisions
 
-| Layer | Decision | Reason |
-|---|---|---|
-| Client interface | Flutter / Dart | One shared Android/Windows codebase with responsive native forms and later optional assistant entry points |
-| Backend | Python / FastAPI | Team familiarity, typed API schemas, OpenAPI support, and a good fit for modular financial services |
-| Persistence model | SQLAlchemy | Explicit model/transaction layer for user ownership and financial operations |
-| Migrations | Alembic | Versioned database evolution; replaces manual `schema.sql` execution as authority |
-| Database | PostgreSQL | Relational integrity, transactions, numeric money values, and reporting queries |
-| API | Versioned REST/JSON with OpenAPI contract | Stable frontend/backend integration and testable errors |
-| Authentication | Short-lived access credential plus revocable renewable credential | Native client session restoration with meaningful logout |
-| Password storage | Maintained adaptive hashing implementation, Argon2 preferred | Avoid plaintext and non-adaptive hashes |
-| Receipt files | Backend-controlled local storage for the prototype | Optional attachments without storing image binaries in PostgreSQL |
-| Local infrastructure | Docker Compose for API and PostgreSQL | Repeatable development environment with database health checks |
-| Backend testing | Pytest plus Hypothesis for selected invariants | Example tests for stories and property tests for transfers/currency/budgets/serialization |
-| Flutter testing | Flutter unit, widget, and integration tests as appropriate | Continuous story-level verification |
-| Product AI | Provider adapter — deferred and configurable | AI is optional and cannot become a manual-MVP dependency |
+| # | Layer | Decision | Rationale |
+|---|---|---|---|
+| 1 | **Interface** | **Flutter (Dart)** | Mobile — matches the PGC title "aplicación móvil". One codebase → Android + iOS + web (web build = free demo fallback). Hot reload → fast iteration for a 16-week prototype. Strong AI-assistant codegen support. |
+| 2 | **Backend** | **Python + FastAPI** | Team already knows Python → zero language ramp-up. Lean, async JSON API with auto OpenAPI docs. Fits the pattern: one AI call per receipt + plain-SQL analytics. |
+| 3 | **Database** | **PostgreSQL** | `docs/schema.sql` is already PostgreSQL. Runs on the VM. JSONB available for AI output if needed. |
+| 4 | **Product AI** | **OpenAI-compatible LLM gateway (vision model)** — see Providers below | AI is used ONLY for AI-assisted input parsing (photo/voice/natural-language text → structured JSON), server-side. The manual form bypasses AI. The phone never calls the LLM directly. In the same parse step it handles **voice → text (STT)**: voice input is sent as audio to the model, which **transcribes and extracts the structured expense in one call**. No separate STT service. Verified during construction with a real voice memo; if accuracy/latency is unacceptable, fall back to a separate STT step (server-side) feeding the same parse prompt. Provider swappable via env config (baseURL + API key + model id). |
+| 5 | **Auth** | **JWT (stateless tokens)** | Mobile app + REST API → stateless is standard, no session storage. Resolves the "sessions vs tokens" marker in `ALCANCE.md`. |
+| 6 | **File storage** | **Local disk on VM** | Receipt images stored as file paths (DB stays light). Already the design decision in `docs/ARCHITECTURE.md`. |
+| 7 | **Deploy** | **VM + Docker Compose** | Separate containers: `api` + `postgres` (and optional Flutter web build). Matches the VM commitment; the mobile app is installed on phones, not deployed on the VM. |
+| 8 | **Languages ("glue")** | Dart (UI) · Python 3.12 (API) · SQL (DB) · Docker/bash (tooling) | The languages that stitch the project together — no extra services. |
 
 ## Repository Layout — Construction Target
 

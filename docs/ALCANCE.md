@@ -2,7 +2,7 @@
 
 ## Core Vision
 
-Finance AI is a personal budgeting application with one shared Flutter client targeting Android and Windows, plus a FastAPI/PostgreSQL backend. Its first complete version is a normal manual budget app: users manage accounts, expenses, income, transfers, catalogs, budgets, activity, and dashboards without depending on AI.
+**The AI is used only for input parsing in the core** — one call from the backend to the LLM provider that turns a photo/audio/natural-language text input into structured data. The user always confirms, edits, or retries before anything is saved. Manual form entry always works as a direct fallback. The phone never calls the AI API directly.
 
 AI is integrated only after the manual MVP is complete. It acts as an optional input assistant that proposes values for existing forms.
 
@@ -16,7 +16,11 @@ AI is integrated only after the manual MVP is complete. It acts as an optional i
 - Secure user-data isolation
 - No Admin role or admin dashboard in the approved MVP
 
-### Financial Accounts
+## Input Methods
+1. **Receipt photo** — AI vision extracts line items, store, total, date
+2. **Audio** — short sentence or voice memo describing an expense; AI parsing is planned for HU-009
+3. **Manual form** — direct entry that bypasses AI and saves after validation
+4. **Natural-language text** — a sentence typed in the capture bar; AI converts it into structured data for confirmation
 
 A financial account represents a place where the user holds money.
 
@@ -146,7 +150,13 @@ Open normal form
 → Update activity, account balance, budgets, and dashboard
 ```
 
-### Transfer
+### Pre-save
+- AI extracts data from AI-assisted input (photo, audio, or natural-language text) — **one call from the backend to the AI API**
+- Structured data includes the purchase facts: store, date, **payment method**, **currency**, total, and line items (when the receipt has them). The AI infers payment method + currency from the receipt; the *user* confirms or corrects them on the confirmation card (defaults "Efectivo" / "COP" if the input doesn't expose them).
+- User sees a preview with editable fields
+- User can: **Confirm** (saves to DB) / **Edit** (change fields, re-preview) / **Discard** (delete everything, nothing saved)
+- Manual form entry bypasses the AI entirely and saves directly after validation; typed natural-language text in the capture bar uses AI and requires confirmation
+- This handles edge cases: blurry receipts, inaudible audio, AI API failures, etc.
 
 ```text
 Select source and destination accounts
@@ -177,12 +187,10 @@ Optional input
 
 AI rules:
 
-- AI output is untrusted input.
-- AI does not receive database credentials.
-- The Android and Windows clients do not contain provider credentials.
-- AI cannot bypass ownership, validation, atomicity, or currency rules.
-- AI cannot save or modify data without explicit user confirmation.
-- Provider failure never disables the normal manual forms.
+### Receipt Items
+- Full line-item extraction when available from receipts
+- When AI-assisted input is audio/natural-language text, only the total + description is stored; the manual form may contain multiple receipt items
+- Analytics work at the expense level (total × category), items are bonus drill-down detail
 
 ## Interface Approach
 
@@ -207,18 +215,29 @@ The initial home is a recognizable budget-app dashboard or activity screen with 
 - Archived catalog values preserve history.
 - Product AI proposals are never persisted until confirmed.
 
-## Deferred or Out of Scope
+### User
+- Register and log in via email/password
+- Add expenses (receipt photo, audio, natural-language text — AI-assisted with confirmation; manual form direct-save)
+- Register income (salary, freelance, gift...) with optional description
+- View dashboard, graphs, and analysis of their own data
+- Set personal spending limits (Phase 3)
 
-- Product AI before the complete manual MVP
-- Automatic bank transaction import or bank API integration
-- Live exchange-rate conversion and combined converted totals
-- Dedicated calendar screen
-- Recurring transactions
-- Admin dashboard and user administration
-- Investments, debt, bill splitting, and subscription/payment processing
-- Offline-first synchronization
-- Autonomous agent writes
-- Production-grade high availability, cloud monitoring, and disaster recovery
+### Admin (future scope — excluded from the current core)
+
+> The admin role is documented as a future capability, but it is not part of the current
+> MVP and is deliberately excluded from the current architecture. The current build targets
+> regular users; admin UI, endpoints, and operational permissions remain undefined.
+
+- Separate from User accounts (not a User with extra permissions)
+- View system stats dashboard:
+  - Total registered users
+  - Total expenses in the system (aggregated)
+  - Expenses grouped by category (all users combined)
+  - Expenses over time (aggregated trend)
+  - AI API usage (how many calls made)
+- Manage users: list, create, disable accounts
+- Configure the shared AI API key
+- Admin does NOT view individual user expense data
 
 ## Delivery Boundary
 

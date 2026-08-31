@@ -36,47 +36,33 @@ HU-001 is the first product story. Its implementation depends on foundations tha
 - EN-005 supplies the Flutter route, theme, and common form states.
 - EN-006 makes checks repeatable from the beginning.
 
-These enablers can be divided across the team and demonstrated through a clean setup plus a thin end-to-end registration path. They are not added to HU-001's story points.
+> This schedule is synchronized with `docs/BACKLOG-AND-STORIES.md` as of 2026-08-30.
+> Infrastructure setup is pre-Sprint 1 work, not a user story.
 
-## HU-001 Planning Slice
+### Sprint 1 — Authentication
+| Tarea/HU | Prioridad |
+|----------|-----------|
+| HU-001: Register | Alta |
+| HU-002: Login | Alta |
 
-The first vertical story should include only:
+### Sprint 2 — Manual expense foundation
+| Tarea/HU | Prioridad |
+|----------|-----------|
+| HU-003: Create expense manually | Media |
+| HU-004: Edit & delete my expenses | Media |
+| HU-005: Find my expenses | Media |
 
-- Register screen and validation states
-- Versioned registration request/response behavior
-- Normalized-email uniqueness
-- Adaptive password hashing
-- Atomic creation of user plus owned default catalogs
-- Success message and redirect to Login
-- Failure, duplicate-submit, ownership, and secret-handling tests
+### Sprint 3 — AI-assisted capture
+| Tarea/HU | Prioridad |
+|----------|-----------|
+| HU-006: Photo receipt happy path | Alta |
+| HU-007: Photo capture failure paths | Alta |
+| HU-008: Natural-language text → AI parse | Media |
 
-Login/session behavior begins in HU-002.
-
-## Suggested Team Planning Session
-
-1. Confirm sprint length, capacity, roles, and Definition of Done.
-2. Review EN-001–EN-006 and split ownership without creating separate identifier systems.
-3. Verify HU-001 meets Definition of Ready.
-4. Estimate enablers and HU-001 with Planning Poker.
-5. Commit only work that fits demonstrated team capacity.
-6. Put remaining ready items back in the ordered backlog.
-
-## Risks to Watch
-
-| Risk | Planning response |
-|---|---|
-| Foundation work hides inside HU-001 | Track EN work separately and keep HU-001 outcome-focused |
-| Flutter/API work diverges | Approve EN-004 contract before parallel implementation |
-| Seed creation partially fails | Require one database transaction and rollback tests |
-| Sessions are oversimplified | Treat login, renewal, revocation, and logout as HU-002 |
-| Currency totals become misleading | Preserve currency and group incompatible totals |
-| AI distracts from the MVP | Do not configure or schedule product AI before the manual release gate |
-
-## Milestone Demonstrations
-
-- Identity: register, log in, restore session, log out, change preference.
-- Financial structure: create/archive accounts and owned catalogs.
-- Manual movements: expense, income, and transfer update the correct balances.
-- Detail/history: edit/archive behavior and filters preserve history and currencies.
-- Planning/overview: budget progress and dashboard calculations are deterministic.
-- Optional AI: provider output is an editable proposal; manual flows still work when it fails.
+### Sprint 4 — Future scope (definitions pending)
+| Tarea/HU | Prioridad |
+|----------|-----------|
+| HU-009: Audio → AI parsing + categorization | Media — pendiente de definición |
+| HU-010: Dashboard by category + date filter | Media — pendiente de definición |
+| Pruebas funcionales | Tarea |
+| Encuesta de usabilidad | Tarea |
