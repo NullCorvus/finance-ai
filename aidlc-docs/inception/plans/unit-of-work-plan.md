@@ -33,7 +33,7 @@ The first unit contains the technical foundations plus HU-001 because registrati
 
 ## Code Organization Strategy
 
-The future monorepo retains:
+The three-repository project retains:
 
 - backend/ for the FastAPI modular monolith, organized by feature modules and shared infrastructure boundaries.
 - frontend/ for Flutter, organized by features plus shared API/navigation/theme components.
@@ -51,7 +51,7 @@ Each unit extends these same deployables. Units never create separate services, 
 | Team alignment | Unit boundaries are shared integration boundaries; individual assignment remains a team sprint decision |
 | Technical considerations | One modular monolith; no per-unit scaling/deployment difference |
 | Business domain | Units follow identity, financial structure, movements, history, planning/analytics, and deferred assistance |
-| Greenfield code organization | One monorepo with backend/frontend roots, not one directory per unit |
+| Greenfield code organization | One backend repository and one shared Android/Windows frontend repository, not one directory or repository per unit |
 
 No new user question is required because every decomposition choice follows the approved backlog, architecture, and explicit request to avoid unnecessary planning. A change to deployable boundaries, team structure, or story scope would require user/team input later.
 

@@ -311,3 +311,19 @@ puedes revisar esto pls con docs y guides que tenemos y ver tambien las task si 
 **User Input:** "go it , can you make a commit to the git hub in the cloud, or this branches to accept (i dono t remember the name of them, could you)"
 **AI Response:** Created `feat/identity-foundation`, committed the complete UOW-01/UOW-02 implementation, merged the newest `origin/master` documentation changes, excluded local secrets and generated artifacts, and prepared the branch for a GitHub pull request.
 **Context:** The requested review mechanism is a pull request rather than a direct push to `master`.
+
+---
+
+## Repository Separation Authorized
+**Timestamp**: 2026-08-31T22:31:14.5918342Z
+**User Input:** "so go ahead sweetheart"
+**AI Response:** Accepted authorization to split the approved identity implementation into private `finance-ai-backend` and `finance-ai-frontend` repositories while retaining `finance-ai` as the documentation and project-coordination hub. The split will preserve history, independent CI, safe local orchestration, and a reviewable GitHub workflow.
+**Context:** PR #1 remains a recoverable checkpoint until both new repositories and the documentation-only replacement are verified.
+
+---
+
+## Repository Separation / Local Completion
+**Timestamp**: 2026-08-31T23:06:57.9560510Z
+**User Input:** "so go ahead sweetheart"
+**AI Response:** Preserved the backend and frontend subtree histories in standalone sibling worktrees, added independent CI and repository-specific agent guidance, verified backend quality and Flutter shared/native Windows tests, and converted the original branch into the documentation/orchestration hub. Updated active repository, stack, session, diagnostics, and local Compose guidance while retaining earlier monorepo answers as historical evidence. GitHub creation of `NullCorvus/finance-ai-backend` and `NullCorvus/finance-ai-frontend` remains pending because the authenticated `Maicol2363` account cannot create repositories in the `NullCorvus` owner.
+**Context:** Local separation is complete and recoverable. The existing hub pull request can be updated now; publishing the two standalone histories requires the empty private remotes to be created by an owner with permission.

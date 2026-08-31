@@ -28,7 +28,7 @@
 
 | ID | Enabler | Completion outcome |
 |---|---|---|
-| EN-001 | Monorepo and quality baseline | Clearly separated backend, frontend, documentation, formatting, linting, review, and pinned toolchain conventions |
+| EN-001 | Repository separation and quality baseline | Separate documentation, backend, and frontend repositories with formatting, linting, review, and pinned toolchain conventions |
 | EN-002 | Local infrastructure | API and PostgreSQL start repeatably with service health checks and documented environment configuration |
 | EN-003 | Database migration and seed baseline | Alembic creates the approved schema; repeatable seeds provide currencies and per-user default templates |
 | EN-004 | API contract baseline | Versioned OpenAPI contract defines Register, Login, session renewal/logout, and current-user behavior before integration |

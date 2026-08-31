@@ -148,6 +148,8 @@ X) Other (please describe after the [A]: tag below)
 
 [A]: ok, let's create a monorepo BUT clearlly diferenciate pls, i want to konw when the things are and wheren the code is... pretty clear not merge of folders of documentation and then aside code
 
+> Superseded on 2026-08-31 by the later user-authorized three-repository split. The original answer remains above as historical decision evidence.
+
 ## Question 11
 How should the foundation work currently inside HU-001 be tracked and estimated?
 
@@ -225,4 +227,3 @@ B) **Apply them partially (Recommended):** use them later for currency, budget-p
 C) Skip property-based testing for this project
 
 X) Other (please describe after the [A]: tag below)
-

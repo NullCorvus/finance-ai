@@ -2,105 +2,94 @@
 
 ## Status
 
-Approved proposal for the manual-first university prototype. Exact supported versions are pinned during EN-001/EN-006 and confirmed with the team/professor before construction.
+Implemented foundation for the manual-first university prototype. Exact dependencies are pinned in the repository that owns each codebase. AI remains deferred until the manual budgeting workflow is complete and stable.
 
-## Decisions
+## Current decisions
 
-| # | Layer | Decision | Rationale |
-|---|---|---|---|
-| 1 | **Interface** | **Flutter (Dart)** | Mobile — matches the PGC title "aplicación móvil". One codebase → Android + iOS + web (web build = free demo fallback). Hot reload → fast iteration for a 16-week prototype. Strong AI-assistant codegen support. |
-| 2 | **Backend** | **Python + FastAPI** | Team already knows Python → zero language ramp-up. Lean, async JSON API with auto OpenAPI docs. Fits the pattern: one AI call per receipt + plain-SQL analytics. |
-| 3 | **Database** | **PostgreSQL** | `docs/schema.sql` is already PostgreSQL. Runs on the VM. JSONB available for AI output if needed. |
-| 4 | **Product AI** | **OpenAI-compatible LLM gateway (vision model)** — see Providers below | AI is used ONLY for AI-assisted input parsing (photo/voice/natural-language text → structured JSON), server-side. The manual form bypasses AI. The phone never calls the LLM directly. In the same parse step it handles **voice → text (STT)**: voice input is sent as audio to the model, which **transcribes and extracts the structured expense in one call**. No separate STT service. Verified during construction with a real voice memo; if accuracy/latency is unacceptable, fall back to a separate STT step (server-side) feeding the same parse prompt. Provider swappable via env config (baseURL + API key + model id). |
-| 5 | **Auth** | **JWT (stateless tokens)** | Mobile app + REST API → stateless is standard, no session storage. Resolves the "sessions vs tokens" marker in `ALCANCE.md`. |
-| 6 | **File storage** | **Local disk on VM** | Receipt images stored as file paths (DB stays light). Already the design decision in `docs/ARCHITECTURE.md`. |
-| 7 | **Deploy** | **VM + Docker Compose** | Separate containers: `api` + `postgres` (and optional Flutter web build). Matches the VM commitment; the mobile app is installed on phones, not deployed on the VM. |
-| 8 | **Languages ("glue")** | Dart (UI) · Python 3.12 (API) · SQL (DB) · Docker/bash (tooling) | The languages that stitch the project together — no extra services. |
+| Layer | Decision | Rationale |
+|---|---|---|
+| Client | Flutter 3.47.2 / Dart 3.13.2, shared Android and Windows source | One feature implementation with fast desktop testing and a supported mobile target |
+| Backend | CPython 3.14.7, FastAPI, Pydantic, SQLAlchemy 2, Alembic, and uv | Typed API, explicit transaction boundaries, reproducible dependencies, and automatic contract generation |
+| Database | PostgreSQL 18.6 | Relational integrity, transactional financial data, and a mature migration path |
+| Authentication | Opaque short-lived access credentials plus rotating renewable credentials backed by hash-only server sessions | Supports device revocation, rotation/replay detection, bounded idle/absolute lifetimes, and no persisted plaintext credentials |
+| Local orchestration | Docker Compose in the project hub | Reproducible API/database and cross-repository integration without exposing PostgreSQL by default |
+| Product AI | Deferred backend adapter using an OpenAI-compatible structured-output boundary | AI will propose form data only; manual input and deterministic validation remain authoritative |
+| File storage | Deferred until receipt-image implementation | Storage and retention must be approved when the corresponding manual/AI story is designed |
+| Deployment | Not yet selected | Local development is implemented; hosted networking, TLS, secrets, monitoring, backup, and recovery require a deployment decision |
 
-## Repository Layout — Construction Target
-
-No application folders are created during documentation reconciliation. EN-001 will create a structure similar to:
+## Repository layout
 
 ```text
-finance-ai/
-├── backend/
-├── frontend/
-├── docs/
-├── aidlc-docs/
-├── compose.yaml
-└── README.md
+Finance App/
+├── finance-ai/             # docs, backlog, decisions, orchestration
+├── finance-ai-backend/     # FastAPI, PostgreSQL, OpenAPI, backend CI
+└── finance-ai-frontend/    # Flutter Android/Windows client, frontend CI
 ```
 
-Backend and frontend remain visibly separate while sharing one repository, issue history, API contract, and review workflow.
+The code repositories have independent histories and quality gates. The hub composes sibling checkouts for end-to-end testing. Detailed ownership rules are in [`REPOSITORIES.md`](REPOSITORIES.md).
 
-## Backend Organization Direction
+## Backend organization
 
-Use feature modules inside one FastAPI service:
+Use feature modules inside one modular FastAPI service:
 
-- auth
-- users/preferences
-- accounts/currencies
-- catalogs
-- expenses/receipt detail
-- income
-- transfers
+- identity and preferences
+- accounts and currencies
+- categories, payment methods, and income sources
+- expenses and optional receipt detail
+- income and transfers
 - budgets
-- activity/dashboard
-- ai_assistant — deferred
+- activity and dashboard
+- optional AI input assistance — deferred
 
-Avoid a microservice split for the MVP.
+Application services control transactions. Persistence repositories do not commit independently. Alembic migrations are executable schema history; `finance-ai-backend/openapi.json` is the client-facing API authority.
 
-## Flutter Organization Direction
+## Flutter organization
 
-Use clear UI and data boundaries:
+Android and Windows share feature, domain, API, state-management, routing, diagnostics, and validation code. Platform-specific code is limited to actual operating-system integration such as secure storage and runner behavior.
 
-- Feature views/screens
-- View models or equivalent presentation logic
-- Repositories as application-data sources
-- Services for API/platform access
-- Shared domain/API models
+The client uses:
 
-Manual forms remain reusable when AI is later added.
+- feature screens and controllers
+- repositories as application-data sources
+- services/adapters for API and platform access
+- shared immutable models and typed failures
+- one copyable, privacy-safe diagnostic contract
 
-## Database Authority
+Manual forms remain the primary workflow when optional AI assistance is introduced.
+
+## Database authority
 
 - SQLAlchemy models: application persistence definition
-- Alembic migrations: executable/versioned schema history
+- Alembic migrations: executable and ordered schema history
 - Seed process: shared currencies and new-user catalog defaults
 - `docs/SCHEMA.md`: approved design explanation
 - `docs/schema.sql`: non-authoritative review snapshot
 
-## Environment and Secrets
+The normal Compose network keeps PostgreSQL private. Explicit DBeaver mode publishes loopback access only for a read-only role whose views exclude password and credential hashes.
 
-Manual MVP variables include database and session configuration. Product AI configuration is absent until the deferred AI unit begins.
+## Environments and secrets
 
-Rules:
+- Commit `.env.example`; never commit a real `.env`.
+- Never use disposable `change-me-*` credentials outside local/test environments.
+- Pin dependencies, CI actions, SDK archives/checksums, and container images.
+- Keep access credentials in client memory and renewable credentials only in approved native secure storage.
+- Keep future AI provider credentials only in backend configuration.
+- Copyable errors and logs are allow-listed and exclude entered values, credentials, raw exceptions, request bodies, SQL, and environment values.
 
-- Commit `.env.example`, never real `.env`.
-- Do not use default database credentials outside disposable local development.
-- Pin dependencies through lock files or exact approved versions.
-- Pin container images; do not rely on `latest`.
-- Run dependency/security checks in CI.
-- Keep provider keys only in backend configuration when AI is introduced.
-
-## AI Provider Boundary — Deferred
-
-The exact provider/model is not a construction prerequisite for the manual MVP.
+## AI boundary — deferred
 
 When the AI phase begins:
 
-- Implement one backend adapter interface.
-- Validate provider support with representative receipt/audio samples.
-- Require structured output matching existing API form schemas.
-- Treat responses as untrusted input.
-- Keep a manual fallback.
-- Make provider selection configurable without changing domain modules.
+1. Define one backend provider adapter and a versioned structured proposal contract.
+2. Feed proposals into the same validation/application services used by manual forms.
+3. Treat provider output as untrusted and require user review where the story specifies it.
+4. Preserve a complete manual fallback.
+5. Validate representative receipt, audio, and natural-language samples before choosing a provider/model.
+6. Revalidate privacy, cost, latency, retention, and provider availability at that future decision point.
 
-Provider pricing and free tiers must be revalidated at that future decision point rather than frozen in current product documentation.
+## Pending decisions
 
-## Still Pending
-
-- Professor/team confirmation of the Flutter project type and deployment expectations
-- Exact supported runtime/dependency versions during EN-001
-- Hosted environment only when deployment is authorized
-- AI provider only when the complete manual MVP is stable
+- Team/professor confirmation of deployment expectations
+- Hosted infrastructure, TLS, secrets, monitoring, backup, and recovery
+- Receipt-image storage and retention when that story begins
+- AI provider/model only after the manual MVP is stable

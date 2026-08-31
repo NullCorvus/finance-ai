@@ -6,19 +6,26 @@
 Every user-visible failure added to this project must be easy to identify and safe to copy into a bug report.
 
 - Use a stable machine-readable error code and a plain-language user message.
-- Flutter failures must use the shared diagnostic contract and copy UI under `frontend/lib/core/diagnostics/`; extend that foundation instead of creating feature-specific raw-error banners.
+- Flutter failures must use the shared diagnostic contract and copy UI in the sibling `finance-ai-frontend/lib/core/diagnostics/`; extend that foundation instead of creating feature-specific raw-error banners.
 - Copyable reports should include the operation, UTC time, client platform, sanitized API location, request/correlation ID, and a bounded safe technical reason when applicable.
 - Backend failures must preserve the same request/correlation ID in the safe response and structured logs so a copied client report can be matched to server output.
 - Never place passwords, password confirmations, email addresses, tokens, request bodies, URL credentials/query values, stack traces, SQL, environment values, or raw exceptions in UI diagnostics, clipboard reports, logs, screenshots, or tests.
 - Each new error path must test its stable code, safe message/report, correlation propagation when applicable, and absence of secrets or entered form values.
-- Flutter Windows integration tests replace the shared debug bundle with a test harness. Before handing the `.exe` to a user, always run a normal Windows build afterward; prefer `frontend/tool/test_windows_and_restore.ps1`, which restores the application in a `finally` block even when tests fail.
+- Flutter Windows integration tests replace the shared debug bundle with a test harness. Before handing the `.exe` to a user, always run a normal Windows build afterward; prefer the sibling `finance-ai-frontend/tool/test_windows_and_restore.ps1`, which restores the application in a `finally` block even when tests fail.
 - Keep the user-facing convention and implementation checklist current in `aidlc-docs/construction/cross-cutting-error-diagnostics.md`.
+
+## MANDATORY: Repository Boundaries
+
+- This `finance-ai` repository owns documentation, product decisions, delivery records, and cross-repository local orchestration. Do not add application source or language dependency locks here.
+- FastAPI, PostgreSQL application infrastructure, migrations, seeds, OpenAPI, and backend tests belong in the sibling `finance-ai-backend` repository.
+- Flutter source, Android/Windows runners, client diagnostics/storage, and frontend tests belong in the sibling `finance-ai-frontend` repository.
+- Follow `docs/REPOSITORIES.md` for cross-repository change order. Historical construction documents may retain their former monorepo paths as historical evidence.
 
 ## MANDATORY: Finance AI Local Network Boundary
 
 - PostgreSQL must remain attached only to the `private` Compose network, which stays `internal: true`, with no host `ports` declaration.
 - The API joins both `private` for database access and `client-access` for the Windows/Android development clients. Its published port remains bound to `127.0.0.1`; never change it to `0.0.0.0` without an approved TLS/authenticated deployment design.
-- The only approved local database-access exception is the explicit `compose.dbeaver.yaml` override invoked by `tool/local_stack.ps1 viewer-start`. It must remain loopback-only, off by default, reversible with `viewer-stop`, and restricted to the `finance_ai_viewer` role and password-hash-free `finance_ai_view` schema. Never give DBeaver the application-owner credentials.
+- The only approved local database-access exception is the explicit `compose.dbeaver.yaml` override invoked by `tool/local_stack.ps1 viewer-start`. It must remain loopback-only, off by default, reversible with `viewer-stop`, and restricted to the `finance_ai_viewer` role and password-hash-free `finance_ai_view` schema owned by `finance-ai-backend`. Never give DBeaver the application-owner credentials.
 - Use `tool/local_stack.ps1` for local start/status/stop workflows. Its stable bracketed errors are intended to be copied into diagnostic reports.
 - Default network verification must prove API readiness through `127.0.0.1:8000` and prove PostgreSQL is not host-reachable. Viewer-mode verification must prove loopback-only connectivity, viewer authentication, safe-view SELECT access, and denied access to the password-bearing base table.
 

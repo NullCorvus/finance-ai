@@ -10,7 +10,7 @@ I interpreted the following decisions from the first questionnaire and your expl
 - Remove Admin from the MVP and reintroduce it only if later approved.
 - Use a normal budget-app home before adding the optional assistant.
 - Use email/password registration with default user settings and redirect to Login.
-- Keep one clearly separated monorepo.
+- Keep documentation, backend, and frontend clearly separated. The original monorepo decision was superseded by the user-authorized three-repository split on 2026-08-31.
 - Separate technical enablers from HU-001.
 - Use SQLAlchemy models plus Alembic migrations as the executable database source of truth.
 - Make `BACKLOG-AND-STORIES.md` own PB/HU identifiers; make `SPRINT-PLAN.md` reference them.

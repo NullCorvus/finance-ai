@@ -1,1 +1,0 @@
-"""Versioned local application resources."""

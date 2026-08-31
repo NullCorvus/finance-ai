@@ -124,7 +124,7 @@ Future application code uses shared roots:
 
 - backend: feature modules plus shared configuration, database, errors, and tests.
 - frontend: feature folders plus shared navigation, theme, API, and test support.
-- root: Compose and repository-wide quality configuration.
+- project hub: cross-repository Compose orchestration; each code repository owns its own quality configuration.
 
 Unit names are planning identifiers only. They do not create folders such as uow-01 or duplicate application shells.
 

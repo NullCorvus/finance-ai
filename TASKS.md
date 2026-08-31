@@ -4,6 +4,8 @@
 
 UOW-01 and UOW-02 are executable and verified: the shared Android/Windows Flutter client now supports registration, login, secure session restoration, protected Home, and logout through FastAPI and PostgreSQL. The approved direction remains a complete manual budgeting application followed by optional AI assistance that pre-fills the same forms.
 
+The project now uses three repositories: this documentation/orchestration hub, `finance-ai-backend`, and `finance-ai-frontend`. Each code repository has independent CI while this hub retains the cross-repository integration stack.
+
 Personal defaults and all financial/AI stories remain unimplemented. HU-003 is the next dependency-ordered unit and keeps its own design and implementation gate.
 
 ## Documentation Baseline
@@ -31,7 +33,7 @@ Personal defaults and all financial/AI stories remain unimplemented. HU-003 is t
 
 ### Foundation
 
-- [x] EN-001 — Monorepo and quality baseline
+- [x] EN-001 — Repository separation and quality baseline
 - [x] EN-002 — Local infrastructure
 - [x] EN-003 — Database migration and seed baseline
 - [x] EN-004 — API contract baseline

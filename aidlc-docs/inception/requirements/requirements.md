@@ -114,7 +114,7 @@ Product AI must not be introduced into the production feature flow until stages 
 
 | ID | Requirement |
 |---|---|
-| TR-01 | Use the existing `finance-ai` repository as a clearly separated monorepo. Documentation remains under `docs/` and `aidlc-docs/`; application code later belongs in distinct backend and frontend roots. |
+| TR-01 | Use three clearly owned repositories: `finance-ai` for documentation/orchestration, `finance-ai-backend` for FastAPI/PostgreSQL/OpenAPI, and `finance-ai-frontend` for the shared Android/Windows Flutter client. |
 | TR-02 | Use a modular monolith: Flutter client, FastAPI backend, and PostgreSQL database. Do not introduce microservices for the MVP. |
 | TR-03 | SQLAlchemy models and Alembic migrations are the executable source of truth for database creation and evolution. `SCHEMA.md` is explanatory documentation; the current `schema.sql` becomes a reference snapshot or is retired to avoid dual authority. |
 | TR-04 | Database reference/default data is created through repeatable seed logic separated from schema migrations where practical. |

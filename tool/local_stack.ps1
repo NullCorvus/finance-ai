@@ -66,6 +66,39 @@ function Resolve-LocalPort(
     return $port
 }
 
+function Resolve-RepositoryPath(
+    [string]$WorkspaceRoot,
+    [string]$SettingName,
+    [string]$DefaultRelativePath,
+    [string]$RequiredFile,
+    [string]$MissingErrorCode
+) {
+    $configuredPath = [Environment]::GetEnvironmentVariable($SettingName)
+    $environmentFile = Join-Path $WorkspaceRoot ".env"
+    if ([string]::IsNullOrWhiteSpace($configuredPath) -and (Test-Path -LiteralPath $environmentFile)) {
+        foreach ($line in Get-Content -LiteralPath $environmentFile) {
+            $settingPattern = '^\s*' + [regex]::Escape($SettingName) + '\s*=\s*(.+?)\s*$'
+            if ($line -match $settingPattern) {
+                $configuredPath = $Matches[1].Trim().Trim('"').Trim("'")
+                break
+            }
+        }
+    }
+
+    if ([string]::IsNullOrWhiteSpace($configuredPath)) {
+        $configuredPath = $DefaultRelativePath
+    }
+    if (-not [System.IO.Path]::IsPathRooted($configuredPath)) {
+        $configuredPath = Join-Path $WorkspaceRoot $configuredPath
+    }
+
+    $resolvedPath = [System.IO.Path]::GetFullPath($configuredPath)
+    if (-not (Test-Path -LiteralPath (Join-Path $resolvedPath $RequiredFile))) {
+        throw "[$MissingErrorCode] Expected $RequiredFile under '$resolvedPath'. Clone the sibling repository or set $SettingName in .env."
+    }
+    return $resolvedPath
+}
+
 function Test-DatabasePortPublished([string]$DockerCli) {
     $serviceLines = & $DockerCli compose ps --format json database
     if ($LASTEXITCODE -ne 0) {
@@ -87,6 +120,7 @@ function Test-DatabasePortPublished([string]$DockerCli) {
 }
 
 $workspaceRoot = (Resolve-Path (Join-Path $PSScriptRoot "..")).Path
+$backendRepository = Resolve-RepositoryPath $workspaceRoot "FINANCE_AI_BACKEND_PATH" "..\finance-ai-backend" "Dockerfile" "LOCAL_STACK_BACKEND_MISSING"
 $docker = Resolve-DockerCli
 $apiPort = Resolve-LocalPort $workspaceRoot "API_PORT" 8000
 $viewerPort = Resolve-LocalPort $workspaceRoot "POSTGRES_VIEWER_PORT" 55432
@@ -143,7 +177,7 @@ try {
                 throw "[LOCAL_STACK_VIEWER_START_FAILED] The DBeaver access mode did not start successfully (exit $LASTEXITCODE)."
             }
 
-            $viewerSql = Get-Content -LiteralPath (Join-Path $workspaceRoot "infrastructure\postgres\dbeaver-readonly.sql") -Raw
+            $viewerSql = Get-Content -LiteralPath (Join-Path $backendRepository "infrastructure\postgres\dbeaver-readonly.sql") -Raw
             $viewerSql | & $docker compose exec -T database sh -c 'psql -v ON_ERROR_STOP=1 -U "$POSTGRES_USER" -d "$POSTGRES_DB" -v viewer_password="$POSTGRES_VIEWER_PASSWORD"'
             if ($LASTEXITCODE -ne 0) {
                 throw "[LOCAL_STACK_VIEWER_ROLE_FAILED] The read-only DBeaver account could not be prepared (exit $LASTEXITCODE)."

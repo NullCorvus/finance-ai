@@ -4,7 +4,7 @@
 
 | Identifier | Unit | Outcome |
 |---|---|---|
-| EN-001 | UOW-01 | Monorepo and quality baseline |
+| EN-001 | UOW-01 | Repository separation and quality baseline |
 | EN-002 | UOW-01 | Local API/PostgreSQL infrastructure |
 | EN-003 | UOW-01 | Migration and seed baseline |
 | EN-004 | UOW-01 | Versioned API contract baseline |

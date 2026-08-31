@@ -8,7 +8,7 @@ These are technical enablers, not user stories:
 
 | ID | Enabler | Outcome |
 |---|---|---|
-| EN-001 | Monorepo and quality baseline | Clearly separated documentation, backend, and frontend areas with pinned tools, formatting, linting, and review conventions |
+| EN-001 | Repository separation and quality baseline | Separate documentation, backend, and frontend repositories with pinned tools, formatting, linting, and review conventions |
 | EN-002 | Local infrastructure | FastAPI and PostgreSQL start repeatably with database health checks |
 | EN-003 | Migration and seed baseline | SQLAlchemy/Alembic database creation plus repeatable currency and default-catalog setup |
 | EN-004 | API contract baseline | Versioned OpenAPI contract for identity and initial resources |

@@ -1,38 +1,18 @@
 # AI-DLC local setup (downloaded release)
 .aidlc/
 .tools/
+.cache/
 
 # Local environment and secrets
 .env
-backend/.env
-frontend/.env
 !.env.example
-!backend/.env.example
 
-# Python / uv
+# Documentation tooling
 .coverage
+.hypothesis/
 .mypy_cache/
-.pytest_cache/
 .ruff_cache/
-backend/.venv/
-backend/.uv-cache/
-backend/.pytest_cache/
-backend/.mypy_cache/
-backend/.ruff_cache/
-backend/.coverage
-backend/htmlcov/
-backend/**/__pycache__/
-backend/**/*.py[cod]
-
-# Flutter / Dart
-frontend/.dart_tool/
-frontend/.flutter-plugins
-frontend/.flutter-plugins-dependencies
-frontend/.packages
-frontend/build/
-frontend/coverage/
-frontend/android/.gradle/
-frontend/android/local.properties
+graphify-out/
 
 # IDE and operating-system files
 .idea/
