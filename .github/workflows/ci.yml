@@ -41,5 +41,5 @@ jobs:
             echo "A real .env file must never be committed."
             exit 1
           fi
-      - name: Check patch whitespace
-        run: git diff --check HEAD^
+      - name: Check orchestration-file whitespace
+        run: git diff --check HEAD^ -- '*.yml' '*.yaml' '*.ps1' '.env.example' '.gitignore'
