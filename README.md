@@ -9,8 +9,8 @@ This repository is the project hub. It owns product documentation, architecture 
 | Repository | Responsibility |
 |---|---|
 | [`NullCorvus/finance-ai`](https://github.com/NullCorvus/finance-ai) | Documentation, backlog, architecture, decisions, and cross-repository local stack |
-| [`NullCorvus/finance-ai-backend`](https://github.com/NullCorvus/finance-ai-backend) | FastAPI, PostgreSQL models/migrations/seeds, OpenAPI contract, and backend tests |
-| [`NullCorvus/finance-ai-frontend`](https://github.com/NullCorvus/finance-ai-frontend) | Shared Flutter client for Android and Windows, secure local storage, and client tests |
+| [`Maicol2363/finance-ai-backend`](https://github.com/Maicol2363/finance-ai-backend) | FastAPI, PostgreSQL models/migrations/seeds, OpenAPI contract, and backend tests |
+| [`Maicol2363/finance-ai-frontend`](https://github.com/Maicol2363/finance-ai-frontend) | Shared Flutter client for Android and Windows, secure local storage, and client tests |
 
 Keep the three repositories beside one another so the orchestration defaults work without configuration:
 

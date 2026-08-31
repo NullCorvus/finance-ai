@@ -3,7 +3,7 @@
 ## Project Information
 - **Project Type**: Brownfield multi-repository application
 - **Start Date**: 2026-08-30T20:58:11Z
-- **Current Stage**: CONSTRUCTION - UOW-02 complete; repository separation in progress
+- **Current Stage**: CONSTRUCTION - UOW-02 complete; three repositories published
 
 ## Workspace State
 - **Existing Code**: Yes — identity backend and shared Android/Windows client
@@ -35,6 +35,6 @@ No extension choices have been recorded for this review.
 
 ## Current Status
 - **Lifecycle Phase**: CONSTRUCTION
-- **Current Stage**: UOW-02 identity implementation complete; three-repository separation being published
-- **Next Step**: Publish the standalone backend/frontend remotes, then design HU-003 personal defaults
-- **Status**: Registration, login, secure restoration, protected Home, logout, safe diagnostics, and Android/Windows builds are implemented and verified; later budgeting and AI stories remain pending
+- **Current Stage**: UOW-02 identity implementation and three-repository separation complete
+- **Next Step**: Design and implement HU-003 personal defaults through normal feature branches and pull requests
+- **Status**: The `NullCorvus/finance-ai` hub and `Maicol2363` backend/frontend repositories are published. Registration, login, secure restoration, protected Home, logout, safe diagnostics, and Android/Windows builds are implemented and verified; later budgeting and AI stories remain pending

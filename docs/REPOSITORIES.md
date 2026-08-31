@@ -1,12 +1,12 @@
 # Repository Ownership
 
-Finance AI uses three private repositories with one responsibility each.
+Finance AI uses three private repositories with one responsibility each. The project hub is owned by `NullCorvus`; the two code repositories are owned by `Maicol2363`. This split ownership does not affect Git or CI, but collaborators need access to each private repository separately.
 
 | Repository | Owns | Does not own |
 |---|---|---|
-| `finance-ai` | Product documentation, backlog, architecture, AI-DLC records, decisions, and cross-repository Compose orchestration | Application source code or language dependency locks |
-| `finance-ai-backend` | FastAPI application, persistence, migrations, seeds, OpenAPI contract, backend infrastructure, and backend CI | Flutter UI or product-planning authority |
-| `finance-ai-frontend` | Flutter application shared by Android and Windows, client diagnostics/storage, platform runners, and frontend CI | Server persistence or product-planning authority |
+| [`NullCorvus/finance-ai`](https://github.com/NullCorvus/finance-ai) | Product documentation, backlog, architecture, AI-DLC records, decisions, and cross-repository Compose orchestration | Application source code or language dependency locks |
+| [`Maicol2363/finance-ai-backend`](https://github.com/Maicol2363/finance-ai-backend) | FastAPI application, persistence, migrations, seeds, OpenAPI contract, backend infrastructure, and backend CI | Flutter UI or product-planning authority |
+| [`Maicol2363/finance-ai-frontend`](https://github.com/Maicol2363/finance-ai-frontend) | Flutter application shared by Android and Windows, client diagnostics/storage, platform runners, and frontend CI | Server persistence or product-planning authority |
 
 ## Change rules
 
