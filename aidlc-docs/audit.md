@@ -343,3 +343,19 @@ puedes revisar esto pls con docs y guides que tenemos y ver tambien las task si 
 **User Input:** "what do i tell to my teammate? to create this two repos, right? why dont we just create that repos by my name? is that a problem? the documentation with the name of my teammate and the front and back over my name , there is no trouble"
 **AI Response:** Created private `Maicol2363/finance-ai-backend` and `Maicol2363/finance-ai-frontend`, published the history-preserving standalone branches to `main`, corrected active ownership links, configured local branches to track their respective remotes, and verified both independent GitHub Actions workflows. Backend CI passed; frontend shared tests/coverage/Android build and native Windows tests/build passed. The `NullCorvus/finance-ai` hub remains the documentation and orchestration authority.
 **Context:** The three-repository separation is fully published. The remaining team-administration action is inviting each teammate to both private code repositories.
+
+---
+
+## Repository Collaboration / Teammates Identified
+**Timestamp**: 2026-08-31T23:36:36.3103938Z
+**User Input:** "the first username of one of my teammates is \"NullCorvus\" and of my other teammate \"deibid1\""
+**AI Response:** Verified the canonical GitHub users `NullCorvus` and `Deibid1` and began granting both write access to the private backend and frontend repositories owned by `Maicol2363`.
+**Context:** Each invite must be accepted by the corresponding GitHub user before private-repository access becomes active.
+
+---
+
+## Repository Collaboration / Username Confirmed
+**Timestamp**: 2026-08-31T23:37:19.8759136Z
+**User Input:** "`Deibid1`"
+**AI Response:** Confirmed that `Deibid1` is the canonical GitHub capitalization already used for the invitations. Verified four pending write-access invitations: `NullCorvus` and `Deibid1` on both `Maicol2363/finance-ai-backend` and `Maicol2363/finance-ai-frontend`.
+**Context:** Both teammates must accept two invitations each. No additional repository creation or permission change is required from the user.
