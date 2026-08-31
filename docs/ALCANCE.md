@@ -1,134 +1,234 @@
-# Scope — Finance AI Tracker
+# Scope — Finance AI
 
 ## Core Vision
-A personal finance tracking system with a **Flutter app** and a **backend (API + DB) running on a VM**. Users register expenses through the app — either manually or AI-assisted (receipt photo, audio note, or text, where the AI converts the input to structured JSON for the user to confirm). The backend owns the data, computes analytics, and answers dashboard queries. Users can also register income to enable balance analysis (spending vs. earnings).
 
-**The AI is used only for input parsing in the core** — one call from the backend to the LLM provider that turns an image/audio/text into structured data. The user always confirms, edits, or retries before anything is saved. Manual entry always works as a fallback. The phone never calls the AI API directly.
+Finance AI is a personal budgeting application with one shared Flutter client targeting Android and Windows, plus a FastAPI/PostgreSQL backend. Its first complete version is a normal manual budget app: users manage accounts, expenses, income, transfers, catalogs, budgets, activity, and dashboards without depending on AI.
 
-## Optional "Agent" Vision (Phase 3 — ideas, not core)
+AI is integrated only after the manual MVP is complete. It acts as an optional input assistant that proposes values for existing forms.
 
-The AI *acting* on data (or chatting about it) is **not part of the core**. It is an optional, Phase 3 set of ideas that can be skipped entirely:
+## Manual MVP
 
-- **Chat with AI** — answers questions about spending ("how much did I spend on milk?") via read-only tool calls
-- **Acts** on the data: creates spending limits, generates subcategories, edits entries
-- **Simulates scenarios**: "what if I replace rice with pasta?" → shows the difference
-- **Generates charts and HTML reports** from the data
-- **Integrates with external tools** (optional): Google Workspace, e.g. Google Keep shopping lists
+### Identity and Preferences
 
-See `docs/FEATURES.md` — Phase 3. The architecture keeps these possible later (the agent would run inside the backend, still not on the phone), but they are explicitly out of the core build.
+- Register with email and password
+- Login, session restoration, and logout
+- Default preferred currency: COP
+- Secure user-data isolation
+- No Admin role or admin dashboard in the approved MVP
 
-## Input Methods
-1. **Receipt photo** — AI vision extracts line items, store, total, date
-2. **Audio** — short sentence or voice memo describing an expense
-3. **Text** — manual entry
+### Financial Accounts
 
-## Processing Flow
+A financial account represents a place where the user holds money.
 
-### Confirmation flow
+Examples:
+
+- Cash
+- Bank account
+- Digital wallet
+- Savings account or savings product
+- Other user-defined account type
+
+Each account has:
+
+- Owner
+- Name
+- Type
+- Currency
+- Opening balance
+- Active/archived state
+
+Account balance is derived consistently from the opening balance and active money movements.
+
+### Expenses
+
+A manual expense is a spending transaction and can be saved without AI, a receipt image, or receipt items.
+
+Core fields:
+
+- Account
+- Amount
+- Date
+- Merchant or description
+- Category
+- Optional subcategory
+- Optional payment method
+- Optional reason/context
+
+An expense can optionally include:
+
+- A receipt image/attachment
+- Zero or more item-detail rows
+
+The expense total is authoritative. Item totals may differ because of taxes, discounts, tips, or rounding.
+
+### Income
+
+Income records money entering one account.
+
+Core fields:
+
+- Account
+- Income source
+- Amount
+- Date
+- Optional description
+
+### Transfers
+
+A transfer moves money between two accounts owned by the same user.
+
+Examples:
+
+- Bank account → Cash after an ATM withdrawal
+- Digital wallet → Bank account
+- Checking → Savings
+
+Rules:
+
+- A transfer is neither income nor expense.
+- Source and destination accounts must be different.
+- Both sides are saved atomically.
+- Same-currency transfers use the same amount on both sides.
+- Cross-currency transfers preserve the actual source and destination amounts.
+- No live exchange-rate service is required in the manual MVP.
+
+### User-Owned Catalogs
+
+Currencies are shared reference data. The initial supported list includes COP and USD.
+
+The following catalogs belong to each user:
+
+- Categories
+- Subcategories
+- Payment methods
+- Income sources
+
+Registration copies common editable defaults for the new user. Archived catalog values remain attached to historical records but cannot be selected for new entries.
+
+### Budgets
+
+The manual MVP includes simple spending budgets:
+
+- Target one category or one subcategory
+- Weekly or monthly period
+- Positive amount
+- Explicit currency
+- Progress calculated from qualifying active expenses
+
+A budget never targets both a category and a subcategory. Progress is calculated, not manually edited.
+
+### Activity and Dashboard
+
+The manual MVP provides:
+
+- Unified activity containing expenses, income, and transfers
+- Weekly, monthly, and custom date filters
+- Account and movement-type filters
+- Account balances
+- Income-versus-expense summaries
+- Spending by category/subcategory
+- Budget progress
+- Recent movements
+
+Transfers affect account balances but not income/expense totals.
+
+Until automatic conversion is explicitly added, amounts from unlike currencies are displayed separately and are never silently summed.
+
+## Manual Data Flow
+
+### Expense or Income
+
+```text
+Open normal form
+→ Enter or select fields
+→ Validate on client and server
+→ Save atomically
+→ Update activity, account balance, budgets, and dashboard
 ```
-User input → AI extracts structured data (JSON) → Preview → [Confirm] [Edit] [Discard]
-                                                                        ↓
-                                                                    Save to DB
+
+### Transfer
+
+```text
+Select source and destination accounts
+→ Enter source/destination amount
+→ Validate ownership, currencies, and distinct accounts
+→ Save both sides atomically
+→ Update account balances and activity
 ```
 
-### Pre-save
-- AI extracts data from the input (photo, audio, or text) — **one call from the backend to the AI API**
-- Structured data includes the purchase facts: store, date, **payment method**, **currency**, total, and line items (when the receipt has them). The AI infers payment method + currency from the receipt; the *user* confirms or corrects them on the confirmation card (defaults "Efectivo" / "COP" if the input doesn't expose them).
-- User sees a preview with editable fields
-- User can: **Confirm** (saves to DB) / **Edit** (change fields, re-preview) / **Discard** (delete everything, nothing saved)
-- Manual text entry bypasses the AI entirely and saves directly
-- This handles edge cases: blurry receipts, inaudible audio, AI API failures, etc.
+## Optional AI Assistance — After Manual MVP
 
-### Post-save
-- Saved expenses can always be edited or deleted in the app
+AI may later accept:
 
-## Design Decisions
+1. Receipt photo
+2. Audio description
+3. Natural-language text
 
-### Categories
-- Main categories are predefined (Food, Transport, Entertainment, etc.)
-- Subcategories can be AI-suggested on-the-fly, but **the backend sends the user's existing subcategories to the AI in the prompt** so suggestions come from the known list first
-- AI suggests a category/subcategory; user can override or add a new one
+The backend sends supported input to the selected provider. The provider returns proposed data matching an existing manual expense, income, or transfer form.
 
-### Currencies
-- Multiple currencies supported (USD + COP minimum)
-- AI handles conversion with current rates (Phase 3 — see FEATURES 9)
-- Original amount + currency stored; conversion happens when displaying
+```text
+Optional input
+→ Backend AI adapter
+→ Proposed normal form values
+→ Review / Edit / Retry / Discard
+→ Explicit Confirm
+→ Normal validation and save path
+```
 
-### Spending Limits
-- AI-assisted awareness, not rigid hard limits (Phase 3 — see FEATURES 10)
-- User expresses preferences ("I don't want to spend more than $50 on eating out")
-- AI tracks and reports progress
+AI rules:
 
-### Reason/Context
-- Each expense can capture why it was made (e.g., "was hungry", "impulse buy")
-- Enables behavioral analysis: "Why am I spending so much on food?" (Phase 3 insight)
-
-### Income Tracking
-- Users register income (salary, freelance, gift...) with an optional description
-- Income sources are a separate list from expense categories (Work, Freelance, Gift...)
-- Enables balance analysis: "This month I earned 2M COP, spent 1.2M — balance 800k"
-- Same currency rules as expenses: original currency stored, converted on display
-
-### Receipt Items
-- Full line-item extraction when available from receipts
-- When input is audio/text, only the total + description is stored
-- Analytics work at the expense level (total × category), items are bonus drill-down detail
+- AI output is untrusted input.
+- AI does not receive database credentials.
+- The Android and Windows clients do not contain provider credentials.
+- AI cannot bypass ownership, validation, atomicity, or currency rules.
+- AI cannot save or modify data without explicit user confirmation.
+- Provider failure never disables the normal manual forms.
 
 ## Interface Approach
-**Flutter app** (thin client) + **backend API** (stack: see `docs/STACK.md`):
 
-| Piece | Role |
-|-------|------|
-| Flutter app | Sends input, shows previews, Confirm/Edit/Discard, dashboard + charts. Needs internet. |
-| Backend (VM, FastAPI/Python) | Gatekeeper: auth (JWT), owns the data, computes analytics (plain SQL), calls the AI API only for parsing. Holds DB credentials + AI API key. |
-| Database (PostgreSQL) | Lives on the VM next to the backend. The phone never connects to it directly. |
+| Component | Responsibility |
+|---|---|
+| Flutter app | Manual forms, account/activity/dashboard screens, validation feedback, later optional assistant entry points |
+| FastAPI backend | Authentication, authorization, financial rules, API contracts, analytics, persistence, and later AI-provider calls |
+| PostgreSQL | Users, accounts, catalogs, expenses, items, receipt attachments, income, transfers, and budgets |
+| Local file storage — prototype | Optional receipt images; accessed only through the backend |
+| External AI provider — deferred | Produces proposals only; not required by the manual MVP |
 
-No VM is strictly required for a demo (backend can run on a laptop), but the design targets hosting the backend + DB on a VM so the app works from anywhere.
+The initial home is a recognizable budget-app dashboard or activity screen with clear Add Expense, Add Income, and Transfer actions. A chat interface is not required for the manual MVP.
 
-## Roles & Permissions
+## Security and Data Protection
 
-Two separate roles:
+- All financial routes require authentication unless explicitly public.
+- Every owned resource is checked against the authenticated user.
+- Passwords use adaptive hashing and are never logged.
+- Renewable session credentials can be revoked on logout.
+- Errors do not expose stack traces, queries, tokens, or secrets.
+- Multi-record financial operations roll back on failure.
+- Archived catalog values preserve history.
+- Product AI proposals are never persisted until confirmed.
 
-### User
-- Register and log in via email/password
-- Add expenses (receipt photo, audio, text — AI-assisted with confirmation)
-- Register income (salary, freelance, gift...) with optional description
-- View dashboard, graphs, and analysis of their own data
-- Set personal spending limits (Phase 3)
+## Deferred or Out of Scope
 
-### Admin
-- Separate from User accounts (not a User with extra permissions)
-- View system stats dashboard:
-  - Total registered users
-  - Total expenses in the system (aggregated)
-  - Expenses grouped by category (all users combined)
-  - Expenses over time (aggregated trend)
-  - AI API usage (how many calls made)
-- Manage users: list, create, disable accounts
-- Configure the shared AI API key
-- Admin does NOT view individual user expense data
+- Product AI before the complete manual MVP
+- Automatic bank transaction import or bank API integration
+- Live exchange-rate conversion and combined converted totals
+- Dedicated calendar screen
+- Recurring transactions
+- Admin dashboard and user administration
+- Investments, debt, bill splitting, and subscription/payment processing
+- Offline-first synchronization
+- Autonomous agent writes
+- Production-grade high availability, cloud monitoring, and disaster recovery
 
-**Data scoping rule:** every query is filtered by `user_id` — the server never returns another user's rows. **Auth mechanism decided: JWT** (stateless tokens) — see `docs/STACK.md`.
+## Delivery Boundary
 
-## Data Protection
+The approved build order is:
 
-- **Core (now):** the confirmation gate. Nothing is saved without the user's explicit action (Confirm/Edit/Discard preview). The AI only *reads* inputs — it never writes to the DB in the core. Post-save edits/deletes are normal user actions. **No audit/change-log table in core** — data is personal, single-account; undo = delete + re-enter.
-- **Agent writes (Phase 3 only):** if the optional agent features are built, the AI agent never modifies data without approval. Every agent write (create/edit limits, subcategories, etc.) shows a preview first and goes through the same Confirm/Edit/Discard menu as expenses.
-- **Undo (Phase 3 only):** if agent features are built, an `audit_log` table records what changed, who (agent vs user), when, and the old → new value — enables undo of agent or user changes. Created in construction *only if* Phase 3 is actually built.
-- **Not in scope:** deleted-row retention, data export, GDPR-style right-to-be-forgotten — out of scope for this prototype.
-- **Backups:** database backups (e.g., pg_dump) belong to the operations phase, out of pre-semester scope.
+1. Technical foundation
+2. Identity and preferences
+3. Accounts, currencies, and user catalogs
+4. Manual expenses, income, and transfers
+5. Activity, budgets, and dashboard
+6. Optional AI assistance
 
-## Out of Scope
-- Bank API integration (auto-import from bank)
-- Investment / debt tracking
-- Bill splitting
-- Recurring subscription auto-detection
-- Agent/chat features in the core (Phase 3 optional only)
-- Offline mode for the app (it needs internet; caching last-loaded data is a possible future idea)
-- VM provisioning / deployment in the pre-semester phase (design targets a VM, but setup is post-semester)
-
-## Business Model
-- Self-hosted app (runs on your server or locally)
-- Shared AI API key configured once in the backend — you pay for API usage
-- No subscription, no payment system
-- Not a SaaS product — a project demo
+A time-boxed AI experiment may test provider feasibility earlier, but it is not a production feature and does not alter this dependency order.

@@ -3,6 +3,10 @@
 > Regla: **tú decides, la IA redacta**. Una sección a la vez, español formal académico.
 > Guía: `/home/d3ad/codigos/proyecto_grado/guia_paso_a_paso.md`. Formato final: `latex/pgc/main.tex` (radicar semana 5 ≈ 7–11 sep).
 
+## Alineación con la línea base del producto
+
+Esta propuesta describe el resultado académico completo, incluida la asistencia de IA que se demostrará al final. No define el orden del backlog ni convierte la IA en dependencia de la aplicación. La construcción comienza con una aplicación presupuestal manual completa; después se integra la IA como ayuda opcional que precarga los mismos formularios y siempre exige revisión y confirmación. Para alcance, historias y secuencia vigentes, prevalecen `docs/ALCANCE.md`, `docs/BACKLOG-AND-STORIES.md` y `docs/SPRINT-PLAN.md`.
+
 ## Datos generales (✅ en `latex/pgc/main.tex`)
 
 | Campo | Valor |
@@ -51,7 +55,7 @@
 > 4. **Implementar** — Implementar el módulo de analítica que muestre los gastos agrupados por categoría en el período seleccionado.
 > 5. **Operar** — Validar la aplicación mediante pruebas funcionales y una encuesta de usabilidad aplicada a estudiantes de la Universidad de Cundinamarca, verificando el funcionamiento de los módulos y la aceptación del piloto.
 
-**Decisiones:** E2 incluye mockups (opción B) · E3 = captura IA foto/voz/texto (revisión 2026-08-17: alineado con justificación; "registro manual" fuera del objetivo, queda como respaldo implícito en metodología) · E4 SOLO por categoría (recorta FEATURES.md:38: sin tendencias ni balance vs ingresos — objetivos siguen el problema, no el wishlist) · E5 funcionales + encuesta de usabilidad/aceptación del piloto — NO como evidencia de hábito formado (revisión: la encuesta mide usabilidad, no hábito) · Metodología = CDIO + Scrum en implementación.
+**Decisiones:** E2 incluye mockups (opción B) · E3 mantiene la captura IA foto/voz/texto como resultado académico diferenciador, pero el registro manual completo es su prerrequisito explícito y su alternativa permanente · E4 se concentra en analítica por categoría para la evidencia académica, sin invalidar la línea base funcional del producto · E5 usa pruebas funcionales + encuesta de usabilidad/aceptación del piloto, no como evidencia de hábito formado · Metodología = CDIO + Scrum en implementación.
 
 ## 4. Marco referencial (opcional) — completo a mano
 
@@ -63,7 +67,7 @@
 |---|---|---|
 | Concebir | Necesidades, alcance, requisitos | 1–3 |
 | Diseñar | Arquitectura, BD, casos de uso, mockups | 4–7 |
-| Implementar | App móvil, API, IA (gastos), analítica | 8–11 |
+| Implementar | Base manual de la app y API, analítica y, después, asistencia de IA para captura | 8–11 |
 | Operar | Pruebas, despliegue, docs, sustentación | 12–16 |
 
 <!-- cronograma semanal con fechas reales 2026-2 -->

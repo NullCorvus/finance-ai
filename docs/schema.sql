@@ -1,116 +1,244 @@
--- Finance AI Tracker — Database Schema (PostgreSQL)
--- Source of truth for the ER diagram in docs/SCHEMA.md
--- Paste into dbdiagram.io (Import → PostgreSQL) to generate a clean diagram
+-- Finance AI — PostgreSQL design/reference snapshot
+--
+-- STATUS: NON-AUTHORITATIVE DOCUMENTATION.
+-- During construction, SQLAlchemy models + Alembic migrations are the executable
+-- source of truth. This file exists for design review and diagram import.
+--
+-- Manual-first model: accounts, expenses, income, transfers, budgets, optional
+-- receipt detail, and user-owned catalogs. Product AI requires no schema table.
 
--- 1. ROLE
-CREATE TABLE role (
-    id   SERIAL PRIMARY KEY,
-    name VARCHAR(50) NOT NULL UNIQUE  -- 'user', 'admin'
-);
+BEGIN;
 
--- 2. USER (quoted: 'user' is a reserved word in PostgreSQL)
-CREATE TABLE "user" (
-    id            SERIAL PRIMARY KEY,
-    email         VARCHAR(255) NOT NULL UNIQUE,
-    password_hash VARCHAR(255) NOT NULL,
-    role_id       INTEGER NOT NULL REFERENCES role(id),
-    preferred_currency_id INTEGER REFERENCES currency(id)  -- display preference only; fallback 'COP'
-);
-
--- 3. CATEGORY
-CREATE TABLE category (
-    id   SERIAL PRIMARY KEY,
-    name VARCHAR(100) NOT NULL UNIQUE  -- 'Food', 'Transport', 'Entertainment'
-);
-
--- 4. SUBCATEGORY
-CREATE TABLE subcategory (
-    id          SERIAL PRIMARY KEY,
-    category_id INTEGER NOT NULL REFERENCES category(id),
-    name        VARCHAR(100) NOT NULL  -- 'Groceries', 'Eating out', 'No subcategory'
-);
-
--- 5. CURRENCY
 CREATE TABLE currency (
-    id   SERIAL PRIMARY KEY,
-    code VARCHAR(10) NOT NULL UNIQUE  -- 'USD', 'COP', 'EUR'
+    id         BIGSERIAL PRIMARY KEY,
+    code       VARCHAR(10) NOT NULL UNIQUE,
+    name       VARCHAR(100) NOT NULL,
+    decimals   SMALLINT NOT NULL DEFAULT 2 CHECK (decimals >= 0),
+    is_active  BOOLEAN NOT NULL DEFAULT TRUE
 );
 
--- 6. PAYMENTMETHOD
-CREATE TABLE paymentmethod (
-    id   SERIAL PRIMARY KEY,
-    name VARCHAR(50) NOT NULL UNIQUE  -- 'Cash', 'Card', 'Transfer', 'Nequi'
+CREATE TABLE app_user (
+    id                    BIGSERIAL PRIMARY KEY,
+    email                 VARCHAR(320) NOT NULL UNIQUE,
+    password_hash         VARCHAR(255) NOT NULL,
+    preferred_currency_id BIGINT NOT NULL REFERENCES currency(id),
+    is_active             BOOLEAN NOT NULL DEFAULT TRUE,
+    created_at            TIMESTAMPTZ NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    updated_at            TIMESTAMPTZ NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
 
--- 7. RECEIPT
-CREATE TABLE receipt (
-    id               SERIAL PRIMARY KEY,
-    user_id          INTEGER NOT NULL REFERENCES "user"(id),
-    store            VARCHAR(150) NOT NULL,
-    date             DATE NOT NULL,
-    currency_id      INTEGER NOT NULL REFERENCES currency(id),
-    purchase_reason  TEXT,
-    total            NUMERIC(12, 2) NOT NULL CHECK (total > 0),
-    payment_method_id INTEGER NOT NULL REFERENCES paymentmethod(id),
-    image            TEXT  -- file path/URL; NULL when no photo
+CREATE TABLE account (
+    id              BIGSERIAL PRIMARY KEY,
+    user_id         BIGINT NOT NULL REFERENCES app_user(id),
+    name            VARCHAR(100) NOT NULL,
+    account_type    VARCHAR(30) NOT NULL CHECK (
+        account_type IN ('cash', 'bank', 'digital_wallet', 'savings', 'other')
+    ),
+    currency_id     BIGINT NOT NULL REFERENCES currency(id),
+    opening_balance NUMERIC(14, 2) NOT NULL DEFAULT 0,
+    is_active       BOOLEAN NOT NULL DEFAULT TRUE,
+    created_at      TIMESTAMPTZ NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    updated_at      TIMESTAMPTZ NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    UNIQUE (id, user_id)
 );
 
--- 8. EXPENSE
+CREATE UNIQUE INDEX uq_account_active_name
+    ON account (user_id, LOWER(name))
+    WHERE is_active = TRUE;
+
+CREATE TABLE category (
+    id         BIGSERIAL PRIMARY KEY,
+    user_id    BIGINT NOT NULL REFERENCES app_user(id),
+    name       VARCHAR(100) NOT NULL,
+    is_active  BOOLEAN NOT NULL DEFAULT TRUE,
+    created_at TIMESTAMPTZ NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMPTZ NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    UNIQUE (id, user_id)
+);
+
+CREATE UNIQUE INDEX uq_category_active_name
+    ON category (user_id, LOWER(name))
+    WHERE is_active = TRUE;
+
+CREATE TABLE subcategory (
+    id          BIGSERIAL PRIMARY KEY,
+    user_id     BIGINT NOT NULL REFERENCES app_user(id),
+    category_id BIGINT NOT NULL,
+    name        VARCHAR(100) NOT NULL,
+    is_active   BOOLEAN NOT NULL DEFAULT TRUE,
+    created_at  TIMESTAMPTZ NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    updated_at  TIMESTAMPTZ NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (category_id, user_id) REFERENCES category(id, user_id),
+    UNIQUE (id, user_id),
+    UNIQUE (id, category_id, user_id)
+);
+
+CREATE UNIQUE INDEX uq_subcategory_active_name
+    ON subcategory (user_id, category_id, LOWER(name))
+    WHERE is_active = TRUE;
+
+CREATE TABLE payment_method (
+    id         BIGSERIAL PRIMARY KEY,
+    user_id    BIGINT NOT NULL REFERENCES app_user(id),
+    name       VARCHAR(100) NOT NULL,
+    is_active  BOOLEAN NOT NULL DEFAULT TRUE,
+    created_at TIMESTAMPTZ NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMPTZ NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    UNIQUE (id, user_id)
+);
+
+CREATE UNIQUE INDEX uq_payment_method_active_name
+    ON payment_method (user_id, LOWER(name))
+    WHERE is_active = TRUE;
+
+CREATE TABLE income_source (
+    id         BIGSERIAL PRIMARY KEY,
+    user_id    BIGINT NOT NULL REFERENCES app_user(id),
+    name       VARCHAR(100) NOT NULL,
+    is_active  BOOLEAN NOT NULL DEFAULT TRUE,
+    created_at TIMESTAMPTZ NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMPTZ NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    UNIQUE (id, user_id)
+);
+
+CREATE UNIQUE INDEX uq_income_source_active_name
+    ON income_source (user_id, LOWER(name))
+    WHERE is_active = TRUE;
+
 CREATE TABLE expense (
-    id              SERIAL PRIMARY KEY,
-    user_id         INTEGER NOT NULL REFERENCES "user"(id),
-    receipt_id      INTEGER NOT NULL REFERENCES receipt(id),
-    subcategory_id  INTEGER NOT NULL REFERENCES subcategory(id),
-    name            VARCHAR(200) NOT NULL,
-    amount          NUMERIC(12, 2) NOT NULL CHECK (amount > 0),
-    item_reason     TEXT
+    id                BIGSERIAL PRIMARY KEY,
+    user_id           BIGINT NOT NULL REFERENCES app_user(id),
+    account_id        BIGINT NOT NULL,
+    category_id       BIGINT NOT NULL,
+    subcategory_id    BIGINT,
+    payment_method_id BIGINT,
+    amount            NUMERIC(14, 2) NOT NULL CHECK (amount > 0),
+    date              DATE NOT NULL,
+    merchant          VARCHAR(150),
+    description       VARCHAR(200) NOT NULL,
+    reason            TEXT,
+    is_archived       BOOLEAN NOT NULL DEFAULT FALSE,
+    created_at        TIMESTAMPTZ NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    updated_at        TIMESTAMPTZ NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (account_id, user_id) REFERENCES account(id, user_id),
+    FOREIGN KEY (category_id, user_id) REFERENCES category(id, user_id),
+    FOREIGN KEY (subcategory_id, category_id, user_id)
+        REFERENCES subcategory(id, category_id, user_id),
+    FOREIGN KEY (payment_method_id, user_id)
+        REFERENCES payment_method(id, user_id),
+    UNIQUE (id, user_id)
 );
 
--- Ownership consistency rule: expense.user_id must always match receipt.user_id.
--- Enforced by the application (and checked in review); not a DB constraint by design.
-
--- 9. SPENDINGLIMIT
-CREATE TABLE spendinglimit (
-    id             SERIAL PRIMARY KEY,
-    user_id        INTEGER NOT NULL REFERENCES "user"(id),
-    name           VARCHAR(100) NOT NULL,
-    amount         NUMERIC(12, 2) NOT NULL CHECK (amount > 0),
-    period         VARCHAR(10) NOT NULL CHECK (period IN ('weekly', 'monthly')),
-    subcategory_id INTEGER REFERENCES subcategory(id),
-    category_id    INTEGER REFERENCES category(id),
-    -- XOR rule: exactly one target — never both, never neither
-    CONSTRAINT spendinglimit_xor_target CHECK (
-        (subcategory_id IS NOT NULL AND category_id IS NULL)
-        OR (subcategory_id IS NULL AND category_id IS NOT NULL)
-    )
+CREATE TABLE expense_item (
+    id         BIGSERIAL PRIMARY KEY,
+    expense_id BIGINT NOT NULL REFERENCES expense(id),
+    name       VARCHAR(200) NOT NULL,
+    quantity   NUMERIC(12, 3) NOT NULL DEFAULT 1 CHECK (quantity > 0),
+    amount     NUMERIC(14, 2) NOT NULL CHECK (amount >= 0),
+    reason     TEXT,
+    created_at TIMESTAMPTZ NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
 
--- 10. INCOMESOURCE
-CREATE TABLE incomesource (
-    id   SERIAL PRIMARY KEY,
-    name VARCHAR(100) NOT NULL UNIQUE  -- 'Work', 'Freelance', 'Gift'
+CREATE TABLE receipt_attachment (
+    id           BIGSERIAL PRIMARY KEY,
+    expense_id   BIGINT NOT NULL UNIQUE REFERENCES expense(id),
+    file_path    TEXT NOT NULL,
+    content_type VARCHAR(100) NOT NULL,
+    created_at   TIMESTAMPTZ NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
 
--- 11. INCOME
 CREATE TABLE income (
-    id               SERIAL PRIMARY KEY,
-    user_id          INTEGER NOT NULL REFERENCES "user"(id),
-    income_source_id INTEGER NOT NULL REFERENCES incomesource(id),
-    currency_id      INTEGER NOT NULL REFERENCES currency(id),
-    amount           NUMERIC(12, 2) NOT NULL CHECK (amount > 0),
+    id               BIGSERIAL PRIMARY KEY,
+    user_id          BIGINT NOT NULL REFERENCES app_user(id),
+    account_id       BIGINT NOT NULL,
+    income_source_id BIGINT NOT NULL,
+    amount           NUMERIC(14, 2) NOT NULL CHECK (amount > 0),
     date             DATE NOT NULL,
-    description      TEXT
+    description      TEXT,
+    is_archived      BOOLEAN NOT NULL DEFAULT FALSE,
+    created_at       TIMESTAMPTZ NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    updated_at       TIMESTAMPTZ NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (account_id, user_id) REFERENCES account(id, user_id),
+    FOREIGN KEY (income_source_id, user_id)
+        REFERENCES income_source(id, user_id),
+    UNIQUE (id, user_id)
 );
 
--- INDEXES (quick-reference sheets for fast lookups)
-CREATE INDEX idx_user_email        ON "user" (email);          -- automatic via UNIQUE; listed for clarity
-CREATE INDEX idx_expense_user_id   ON expense (user_id);
-CREATE INDEX idx_expense_receipt   ON expense (receipt_id);
-CREATE INDEX idx_expense_subcat    ON expense (subcategory_id);
-CREATE INDEX idx_receipt_user_id   ON receipt (user_id);
-CREATE INDEX idx_receipt_date      ON receipt (date);
-CREATE INDEX idx_receipt_payment   ON receipt (payment_method_id);
-CREATE INDEX idx_income_user_id    ON income (user_id);
-CREATE INDEX idx_income_date       ON income (date);
-CREATE INDEX idx_income_source     ON income (income_source_id);
-CREATE INDEX idx_limit_user_id     ON spendinglimit (user_id);
+CREATE TABLE transfer (
+    id                     BIGSERIAL PRIMARY KEY,
+    user_id                BIGINT NOT NULL REFERENCES app_user(id),
+    source_account_id      BIGINT NOT NULL,
+    destination_account_id BIGINT NOT NULL,
+    source_amount          NUMERIC(14, 2) NOT NULL CHECK (source_amount > 0),
+    destination_amount     NUMERIC(14, 2) NOT NULL CHECK (destination_amount > 0),
+    date                   DATE NOT NULL,
+    description            TEXT,
+    is_archived            BOOLEAN NOT NULL DEFAULT FALSE,
+    created_at             TIMESTAMPTZ NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    updated_at             TIMESTAMPTZ NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    CHECK (source_account_id <> destination_account_id),
+    FOREIGN KEY (source_account_id, user_id)
+        REFERENCES account(id, user_id),
+    FOREIGN KEY (destination_account_id, user_id)
+        REFERENCES account(id, user_id),
+    UNIQUE (id, user_id)
+);
+
+CREATE TABLE budget (
+    id             BIGSERIAL PRIMARY KEY,
+    user_id        BIGINT NOT NULL REFERENCES app_user(id),
+    currency_id    BIGINT NOT NULL REFERENCES currency(id),
+    amount         NUMERIC(14, 2) NOT NULL CHECK (amount > 0),
+    period         VARCHAR(10) NOT NULL CHECK (period IN ('weekly', 'monthly')),
+    category_id    BIGINT,
+    subcategory_id BIGINT,
+    is_active      BOOLEAN NOT NULL DEFAULT TRUE,
+    created_at     TIMESTAMPTZ NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    updated_at     TIMESTAMPTZ NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (category_id, user_id) REFERENCES category(id, user_id),
+    FOREIGN KEY (subcategory_id, user_id)
+        REFERENCES subcategory(id, user_id),
+    CONSTRAINT budget_xor_target CHECK (
+        (category_id IS NOT NULL AND subcategory_id IS NULL)
+        OR (category_id IS NULL AND subcategory_id IS NOT NULL)
+    ),
+    UNIQUE (id, user_id)
+);
+
+CREATE INDEX idx_account_user_active
+    ON account (user_id, is_active);
+
+CREATE INDEX idx_expense_user_date
+    ON expense (user_id, date);
+
+CREATE INDEX idx_expense_account_date
+    ON expense (account_id, date);
+
+CREATE INDEX idx_expense_category_date
+    ON expense (category_id, date);
+
+CREATE INDEX idx_income_user_date
+    ON income (user_id, date);
+
+CREATE INDEX idx_income_account_date
+    ON income (account_id, date);
+
+CREATE INDEX idx_transfer_user_date
+    ON transfer (user_id, date);
+
+CREATE INDEX idx_transfer_source_date
+    ON transfer (source_account_id, date);
+
+CREATE INDEX idx_transfer_destination_date
+    ON transfer (destination_account_id, date);
+
+CREATE INDEX idx_budget_user_active
+    ON budget (user_id, is_active);
+
+INSERT INTO currency (code, name, decimals)
+VALUES
+    ('COP', 'Colombian Peso', 2),
+    ('USD', 'United States Dollar', 2)
+ON CONFLICT (code) DO NOTHING;
+
+COMMIT;

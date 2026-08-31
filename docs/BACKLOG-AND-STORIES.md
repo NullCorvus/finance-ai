@@ -1,178 +1,100 @@
-# Product Backlog & User Stories — Finance AI Tracker
+# Product Backlog and Story Registry — Finance AI
 
----
+## Status and Authority
 
-> **Note:** Teacher requires at least **10 user stories**. Current: 2 (HU-001, HU-002).
-> The remaining 8+ will come from splitting future stories (receipt photo, audio, CRUD, dashboard)
-> into frontend/backend pairs and adding income tracking + spending limits.
+This file owns the stable PB, HU, and EN identifiers used by repository documents and the team board. The detailed acceptance scenarios and invariants live in `aidlc-docs/inception/user-stories/stories.md`; they must keep the identifiers and story statements registered here.
 
----
+Rules:
 
-## Product Backlog
+- HU-001 through HU-014 are the complete manual MVP.
+- HU-015 and HU-016 are optional, deferred AI assistance.
+- EN identifiers describe technical foundations and are not user stories.
+- Story points are assigned by the team through Planning Poker only after Definition of Ready is met.
+- A later AI story may prefill an existing form, but it cannot create a second financial-write path.
 
-| Code | Feature | Priority | Status | Notes |
-|------|---------|----------|--------|-------|
-| PB-001 | Auth multi-user | High | Not started | Sprint 1 — Register + Login |
-| PB-002 | Photo → AI extraction + categorization | High | Not started | Sprint 2 |
-| PB-003 | Audio → AI parsing + categorization | Medium | Not started | Sprint 3 |
-| PB-004 | Expense registration & management (CRUD) | Medium | Not started | Sprint 3 |
-| PB-005 | Dashboard by category + date filter | Medium | Not started | Sprint 4 |
+## Product Backlog Domains
 
----
+| ID | Domain | Release |
+|---|---|---|
+| PB-001 | Identity and access | Manual MVP |
+| PB-002 | Preferences | Manual MVP |
+| PB-003 | Accounts and currencies | Manual MVP |
+| PB-004 | User catalogs | Manual MVP |
+| PB-005 | Expenses and receipts | Manual MVP |
+| PB-006 | Income | Manual MVP |
+| PB-007 | Transfers | Manual MVP |
+| PB-008 | Activity and filters | Manual MVP |
+| PB-009 | Budgets | Manual MVP |
+| PB-010 | Dashboard | Manual MVP |
+| PB-011 | Optional AI assistance | Deferred |
 
-## User Stories
+## Technical Enablers
 
----
+| ID | Enabler | Completion outcome |
+|---|---|---|
+| EN-001 | Monorepo and quality baseline | Backend/frontend boundaries, supported toolchains, formatting, linting, and review conventions are established |
+| EN-002 | Local infrastructure | API and PostgreSQL start repeatably through Docker Compose with health checks |
+| EN-003 | Migration and seed baseline | Alembic creates the approved schema and repeatable seeds provide shared currencies and new-user catalog defaults |
+| EN-004 | API contract baseline | Versioned OpenAPI contracts define registration, login, renewal/logout, current-user behavior, and common errors |
+| EN-005 | Flutter application foundation | Theme, navigation, loading/error patterns, and authentication route structure are ready |
+| EN-006 | Continuous quality baseline | Automated tests, formatting, linting, dependency checks, and clean-setup verification run consistently |
 
-### HU-001: Register
+## Canonical User Stories
 
-**Feature:** PB-001
+| ID | PB | Story | Release | Dependencies |
+|---|---|---|---|---|
+| HU-001 | PB-001 | As a new user, I want to create an account so that I can begin managing my finances. | Manual MVP | EN-001–EN-006 |
+| HU-002 | PB-001 | As a returning user, I want a secure session so that I can access my financial data without signing in on every app launch. | Manual MVP | HU-001 |
+| HU-003 | PB-002 | As a user, I want to manage simple preferences so that new financial entries begin with sensible defaults. | Manual MVP | HU-002 |
+| HU-004 | PB-003 | As a user, I want accounts for cash, banks, wallets, or savings products so that I know where my money is held. | Manual MVP | HU-002, currency seed |
+| HU-005 | PB-004 | As a user, I want customizable spending categories so that my expenses reflect how I understand my money. | Manual MVP | HU-001, HU-002 |
+| HU-006 | PB-004 | As a user, I want editable payment methods and income sources so that entries use terms that match my finances. | Manual MVP | HU-001, HU-002 |
+| HU-007 | PB-005 | As a user, I want to record an expense manually so that spending can always be tracked without AI or a receipt. | Manual MVP | HU-004, HU-005; HU-006 optional |
+| HU-008 | PB-005 | As a user, I want optional receipt evidence and item detail so that important purchases can be recorded more precisely without burdening simple expenses. | Manual MVP | HU-007 |
+| HU-009 | PB-005 | As a user, I want to correct or archive my expenses so that mistakes do not permanently damage my financial history. | Manual MVP | HU-007 |
+| HU-010 | PB-006 | As a user, I want to record income into an account so that balances and income-versus-expense summaries are complete. | Manual MVP | HU-004, HU-006 |
+| HU-011 | PB-007 | As a user, I want to transfer money between my accounts so that internal movements do not look like income or spending. | Manual MVP | HU-004 |
+| HU-012 | PB-008 | As a user, I want one history of expenses, income, and transfers so that I can understand what happened to my money. | Manual MVP | HU-007, HU-010, HU-011 |
+| HU-013 | PB-009 | As a user, I want a category or subcategory budget so that I can compare actual spending with a weekly or monthly target. | Manual MVP | HU-005, HU-007 |
+| HU-014 | PB-010 | As a user, I want a dashboard of balances and spending so that I can understand my current financial position. | Manual MVP | HU-012, HU-013 |
+| HU-015 | PB-011 | As a user, I want optional receipt-photo assistance so that I can start from proposed expense values instead of typing every field. | Deferred AI | Complete manual MVP; HU-007, HU-008 |
+| HU-016 | PB-011 | As a user, I want optional audio/text assistance so that a description can prefill the correct existing financial form. | Deferred AI | Complete manual MVP; HU-007, HU-010, HU-011 |
 
-**Story:**
-> As a new user, I want to create an account so that I can start using the app.
+## Current First Story — HU-001 Register
 
-**Acceptance Criteria:**
-- I enter email + password (min 8 chars) + confirm password → account is created
-- After success → I see a confirmation message and am redirected to Login (not logged in automatically)
-- If the email is already taken → I see an error message
-- If the password is too short (< 8 chars) → I see an error message
-- If passwords don't match → I see an error message
-- My password is never shown or stored in plain text
-- My account is created with default settings without asking me
+HU-001 creates an application user; it does not own repository setup, infrastructure, schema creation, or the Flutter project foundation. Those are EN-001 through EN-006 and may be worked in the same iteration by different team members.
 
-**Checklist: Setup**
-- [ ] Docker Compose (api + postgres)
-- [ ] Run schema.sql + seed data (roles, currencies, payment methods)
-- [ ] Create FastAPI project structure
-- [ ] Create Flutter project + apply mockup theme
-- [ ] Write `docs/api-spec.yaml` (register + login + me endpoints)
+### Acceptance Summary
 
-**Checklist: API**
-- [ ] POST /register endpoint (validate → hash → insert user with role="user", currency="COP" → return success)
+1. A normalized, unused email plus valid matching passwords creates the user and default catalogs atomically.
+2. Success shows confirmation and redirects to Login without automatic login.
+3. Duplicate email comparison is case-insensitive and ignores surrounding spaces.
+4. Invalid email, insufficient password, or mismatched confirmation blocks the request with field-level feedback.
+5. In-progress submission prevents accidental duplicate requests.
+6. Passwords are adaptively hashed and never stored or logged in plaintext.
+7. Failures do not expose internal details or leave a partially initialized user.
 
-**Checklist: UI**
-- [ ] RegisterScreen (email + password + confirm password + register button)
+### Not Part of HU-001
 
-**Story Points:** *(to be estimated)*
+- Docker Compose and project scaffolding
+- The complete schema migration
+- Login/session behavior
+- Accounts, movements, budgets, dashboard, or AI
 
----
+## Definition of Ready
 
-### HU-002: Login
+A story is ready for estimation when:
 
-**Feature:** PB-001
+- Its identifier, persona, outcome, acceptance criteria, dependencies, and out-of-scope boundary are understood.
+- Required UX and API contracts are available at the level needed for the story.
+- Relevant schema support and ownership rules are agreed.
+- Open questions that could materially change the estimate are resolved.
+- The team agrees it can be demonstrated within one sprint or splits it vertically.
 
-**Story:**
-> As a returning user, I want to log in so that I can access my expense data.
+## Definition of Done Direction
 
-**Acceptance Criteria:**
-- I enter email + password → I'm logged in and see the chat screen
-- If the password is wrong → I see "Invalid email or password"
-- If my session expires after a long time → I'm redirected to login automatically
-- I stay logged in between app restarts until my session expires
-- Logout clears my session and returns me to the login screen
+A construction story is done only when its accepted UI/API/data behavior works together, ownership/security rules are verified, relevant automated tests pass, documentation is updated, and another team member has reviewed it. The team must finalize this definition before construction.
 
-**Checklist: API**
-- [ ] POST /login endpoint (find user → verify hash → return JWT with 30 day expiry)
-- [ ] GET /me endpoint (validate token → return current user)
+## Estimation
 
-**Checklist: UI**
-- [ ] LoginScreen (email + password + login button)
-- [ ] Token storage (flutter_secure_storage)
-- [ ] Protected routes — redirect to login if no valid token
-- [ ] Logout — clear token and redirect to login
-- [ ] Connect to API
-
-**Story Points:** *(to be estimated)*
-
----
-
-### HU-003: Receipt photo → AI extraction + categorization
-
-**Feature:** PB-002
-
-**Story:**
-> As a user, I want to upload a photo of my receipt so that the AI automatically extracts the data — merchant, date, currency, payment method, total, and each item with its name, amount, and subcategory — and I can confirm, edit, or discard before saving.
-
-**Acceptance Criteria:**
-- The app opens the camera and captures the image
-- The image is temporarily sent to the backend
-- AI returns: merchant, date, currency, payment method, total
-- AI returns each item: name, amount, subcategory
-- purchase_reason and item_reason are optional
-- User sees a confirmation card with receipt data
-- User sees the list of extracted items
-- User can edit business fields (merchant, date, total, items, etc.)
-- User CANNOT edit technical fields (user_id, receipt_id, etc.)
-- User can add or remove items
-- User can Confirm / Edit / Discard
-- If discarded, the temporary image is deleted
-- On confirm, everything saves atomically (receipt + items + image + relations)
-- On failure, nothing is saved (rollback)
-
-**Tasks:** *(to be defined in Sprint Planning)*
-
-**Story Points:** *(to be estimated)*
-
----
-
-### HU-004: Audio → AI parsing + categorization
-
-**Feature:** PB-003
-
-**Story:** *(to be defined)*
-
-**Acceptance Criteria:** *(to be defined)*
-
-**Tasks:** *(to be defined)*
-
-**Story Points:** *(to be estimated)*
-
----
-
-### HU-005: Expense registration & management (CRUD)
-
-**Feature:** PB-004
-
-**Story:**
-> As a user, I want to register expenses manually and manage them (create, edit, delete) to have full control over my information.
-
-**Acceptance Criteria:**
-- I can create an expense with amount, date, merchant, currency, payment method, and category/subcategory
-- I can optionally add purchase_reason or item_reason
-- The expense is associated with the authenticated user
-- I can edit my own expense
-- I can delete my own expense
-- I cannot view/edit/delete another user's expenses
-- Categories and subcategories are saved correctly
-- I can save a receipt with data and an optional image
-- Manual expenses can be saved without an image
-- Invalid amounts or missing required fields are rejected
-
-**Tasks:** *(to be defined)*
-
-**Story Points:** *(to be estimated)*
-
----
-
-### HU-006: Dashboard by category + date filter
-
-**Feature:** PB-005
-
-**Story:** *(to be defined)*
-
-**Acceptance Criteria:** *(to be defined)*
-
-**Tasks:** *(to be defined)*
-
-**Story Points:** *(to be estimated)*
-
----
-
-## Sprint Plan
-
-| Sprint | Features |
-|--------|----------|
-| Sprint 1 | Register (HU-001) + Login (HU-002) |
-| Sprint 2 | Photo → AI (HU-003) |
-| Sprint 3 | Audio (HU-004) + CRUD (HU-005) |
-| Sprint 4 | Dashboard (HU-006) + Testing + Survey |
+No story points are assigned in documentation by an individual. The team estimates ready stories using Planning Poker and records the agreed value on the board and here if the repository becomes the chosen reporting source.

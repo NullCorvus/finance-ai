@@ -1,61 +1,169 @@
-# Mockups — Finance AI Tracker
+# Mockup Direction — Finance AI
 
-> **Status:** PROPOSAL — interactive mockup built as a single self-contained HTML file.
-> Open it in any browser: `docs/mockups/index.html` (3 screens, clickable tabs).
-> UI in Spanish, mockup documentation in English. No frameworks, no dependencies.
+## Status
 
-## Design decisions (decided 2026-08-17)
+The existing `docs/mockups/index.html` is a historical chat-first concept. It is retained as design history but is no longer the source of truth for the approved manual MVP and is not modified during this documentation-only pass.
 
-- **The app IS a chat.** There is no separate home screen, no separate Chat tab, and no
-  separate review screen. The Inicio tab opens the chat — capture and confirmation live
-  in the same conversation (WhatsApp-style).
-- **Capture-first, minimum friction:** "Gastaste → registra → listo". Photo is the hero:
-  input bar priority **photo > voice > text** (big round shutter button, mic, text field —
-  all visible, 1 tap, no hidden gestures).
-- **Gasto / Ingreso toggle:** a stretched oval toggle above the input row switches between
-  expense and income mode. Same input methods; for income, voice/text are the natural path
-  (photo less likely). Income card = Monto · Fecha · Fuente (Salario/Freelance/Regalo…) · Nota.
-- **Confirmation card shows ALL receipt items** (product, qty, price, category — editable
-  line by line) + Monto total, Fecha, Categoría, Subcategoría, **Pago** (Efectivo/Tarjeta...)
-  and **Moneda** (COP/USD) — the AI infers these from the receipt and the user confirms/edits
-  them (defaults "Efectivo" / "COP"). No "Nota" field (expenses).
-  Buttons: Confirmar / Editar / Descartar. Nothing is saved until Confirmar.
-- **Reason (motivo) is optional and conversational:** tap the card or "💬 Agregar motivo"
-  → input bar enters reply mode ("Respondiendo a: recibo $12.500 ✕") → audio/text →
-  simple phrase = general reason (`purchase_reason`); phrase with a product = that item's
-  reason (`item_reason`). No reply = confirm with no reason.
-- **Dashboard:** Balance del mes (Ingresos − Gastos = Balance, green/red) + monthly trend
-  (gastos vs ingresos) + bar chart by category with **subcategory drill-down** (tap a bar) +
-  recent movements table (income/gasto chips).
-- **Ajustes with real actions:** "+ Agregar categoría" and "+ Agregar límite" buttons.
-  Limits can also be requested conversationally via chat (Phase 3). Subcategory counts shown.
-- **Colors:** clean/light — background `#F5F6F8`, white cards, UdeC green `#6B8E00` primary,
-  income green `#0E9F6E`, confirm `#16A34A`, discard `#DC2626`.
-  **Dark theme included:** toggle (sun/moon) in the chat header switches the whole mockup
-  to a dark palette (background `#101318`, cards `#1A2027`, brighter green `#8FB42C`).
-  Choice persists via `localStorage`.
+New mockups must represent the normal budgeting experience first. Optional AI entry points are added only after the same manual forms exist.
 
-## Screens
+## Experience Principles
 
-1. **Inicio = Chat** — the first thing seen. Conversation area + input bar with photo/mic/text
-   + Gasto/Ingreso oval toggle. Sample: receipt photo → AI editable card (all items) → reply
-   bar → income message → income card (source, no line items).
-2. **Dashboard** — Balance del mes, trend, bar chart with subcategory drill-down, recent movements.
-3. **Ajustes** — categories (with subcategory counts), "+ Agregar categoría", limits
-   (FASE 3 / optional) with "+ Agregar límite", currency COP/USD.
+- Recognizable budget-app navigation
+- Dashboard or activity as the authenticated home
+- Clear Add Expense, Add Income, and Transfer actions
+- Accounts are visible because money location is a core concept
+- Manual forms work without AI
+- Currency code is visible beside amounts
+- Transfers are visually distinct from income and expenses
+- Color is never the only type indicator
+- Errors preserve recoverable form input
+- AI later pre-fills existing forms rather than introducing a separate data model
 
-## Not represented (deferred)
+## Required Manual-MVP Screens
 
-- **Login/register (auth, Phase 0)** — deliberately out for now (infrastructure, not capture UX).
-- Free AI conversation (Phase 3) — the chat tab is merged into Inicio; free talk is optional Phase 3.
+### 1. Register
 
-## Files
+- Email
+- Password
+- Confirm password
+- Password visibility controls
+- Field validation
+- Loading/disabled submit state
+- Duplicate-email and generic failure state
+- Success message and navigation to Login
 
-- `docs/mockups/index.html` — the interactive mockup (source of truth for the visual).
-- This file — the short design-summary (ASCII/plain version if needed later).
+### 2. Login
 
-## Related
+- Email and password
+- Invalid-credential state
+- Loading state
+- Session-expired state
+- Navigation to Register
 
-- Feature list: `docs/FEATURES.md` (Phase 1 capture flow, Phase 2 dashboard).
-- Schema (reason fields): `docs/SCHEMA.md` — `purchase_reason` / `item_reason`.
-- Pending: user visual review of `index.html` in a browser (I can't view images).
+### 3. Home / Dashboard
+
+- Account balances grouped by currency
+- Income and expenses for selected period
+- Recent movements
+- Spending by category/subcategory
+- Budget progress
+- Clear shortcuts: Add Expense, Add Income, Transfer
+- Empty and retry states
+
+### 4. Activity
+
+- Unified expense, income, and transfer rows
+- Visible type label/icon
+- Currency code on every amount
+- Weekly/monthly/custom date filters
+- Account and movement-type filters
+- Entry-detail navigation
+
+### 5. Accounts
+
+- Account list with name, type, currency, and balance
+- Create/edit/archive account
+- Opening balance input
+- Account detail/history
+- Archived-state explanation
+
+### 6. Manual Expense Form
+
+- Account
+- Amount and account currency
+- Date
+- Merchant/description
+- Category and optional subcategory
+- Optional payment method and reason
+- Optional receipt attachment/items entry point
+- Validation and retry state
+
+### 7. Manual Income Form
+
+- Account
+- Amount and account currency
+- Date
+- Income source
+- Optional description
+- Validation and retry state
+
+### 8. Transfer Form
+
+- Source account
+- Destination account
+- Source amount
+- Destination amount when currencies differ
+- Date and optional description
+- Explanation that transfers are not income or expenses
+- Atomic failure/retry state
+
+### 9. Expense Detail
+
+- Expense header
+- Optional receipt image
+- Optional item rows
+- Edit/archive actions
+- Historical/archived state
+
+### 10. Budgets
+
+- Budget list and progress
+- Category or subcategory target
+- Weekly/monthly period
+- Currency
+- Create/edit/deactivate actions
+- Empty and exceeded-target states
+
+### 11. Catalogs and Preferences
+
+- Categories/subcategories
+- Payment methods
+- Income sources
+- Preferred currency
+- Archive behavior
+- Logout
+
+## Navigation Direction
+
+Recommended bottom navigation:
+
+1. Home
+2. Activity
+3. Accounts
+4. Budgets
+5. Settings
+
+Creation actions may use a central add button or clearly visible actions on Home/Activity. The team should validate the final navigation with the professor and usability testers.
+
+## Deferred AI Experience
+
+After the manual MVP:
+
+- Add optional photo, microphone, and natural-language entry points.
+- Open the existing Expense, Income, or Transfer form with proposed values.
+- Mark uncertain fields visibly.
+- Offer Review/Edit/Retry/Discard/Confirm.
+- Never save on provider response alone.
+- Retain every manual screen and action.
+
+A conversational surface may exist later, but chat is not the required application shell.
+
+## Visual Direction
+
+Retain useful visual choices from the historical prototype where appropriate:
+
+- Clean light and dark themes
+- UdeC-inspired green accent
+- Clear positive/negative movement treatment
+- Accessible contrast and readable cards
+- Large mobile touch targets
+
+Visual reuse does not override the approved screen structure.
+
+## Prototype Follow-Up
+
+A later design task should create a new manual-first prototype. Until then:
+
+- `MOCKUPS.md` is the approved UX specification.
+- `mockups/index.html` is historical/non-authoritative.
+- Auth and manual financial screens must be designed before Flutter implementation.

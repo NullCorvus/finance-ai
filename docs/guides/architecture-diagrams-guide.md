@@ -3,7 +3,7 @@
 > How to draw the three architecture diagrams (layer, component, data flow) in Mermaid,
 > when the technology stack is **not defined yet**.
 > Time budget: 1 day. Output: 3 Mermaid files, versioned in the repo.
-> Project: **Finance AI Tracker** — examples in sections 5–7 are adapted to this project.
+> Historical reference status: the examples in sections 5–7 predate the manual-first decision and are not current Finance AI requirements. Use `docs/ARCHITECTURE.md` and `docs/step5-plan.md` as the approved project diagrams.
 
 ---
 
@@ -72,7 +72,7 @@ Key questions that change the diagram:
 2. Does it need retrieval (vector DB) or is the context in the prompt?
 3. What does the AI layer write back to the DB? Label that arrow explicitly.
 
-**Finance AI Tracker:** single agent inside the API; the agent calls the external LLM provider and executes tool calls against the DB (query spending, create limits, generate subcategories). No vector DB / RAG — data is structured in a relational DB.
+**Current Finance AI decision:** no AI layer is required by the manual MVP. A later optional backend adapter may request structured form proposals from an external provider, but it does not write directly to the database or execute autonomous tools. No vector DB/RAG is planned.
 
 ---
 
