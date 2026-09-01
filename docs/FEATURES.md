@@ -20,7 +20,7 @@ Features organized by build phase. Phase 1 is the foundation and must ship first
 | # | Feature | Description |
 |---|---------|-------------|
 | 1 | Receipt photo → AI extraction + categorization | Upload receipt photo, AI with vision extracts line items (name, amount, subcategory), store, date, total, payment method, currency. purchase_reason and item_reason are optional. User confirms or corrects before saving. Image stored temporarily until confirmation. Atomic save (receipt + items + image + relationships). |
-| 2 | Audio input → AI parsing + categorization | Say "spent $15 on lunch at Subway" — AI parses to structured expense AND categorizes. Supports both short sentences and longer voice memos. |
+| 2 | Audio input → AI parsing + categorization | Say "spent $15 on lunch at Subway" — AI parses to structured expense AND categorizes. Supports short sentences and voice memos up to 60 s (M4A/WAV). |
 | 4 | Registro manual y gestión de gastos (CRUD) | Crear, editar, eliminar gastos con monto, fecha, comercio, moneda, método de pago, categoría/subcategoría y purchase_reason/item_reason. Guardar recibos con imagen opcional. Aislamiento por usuario. Base para todas las capturas. |
 | 5b | Income registration | Register income (salary, freelance, gift...) with source and optional description. Enables balance analysis ("am I spending more than I earn?"). |
 | 8 | Dashboard | Overview of expenses: table of recent transactions, summary cards, graphs (spending by category/subcategory, trends over time, balance vs income). **Computed by the backend with plain SQL — no AI involved.** Low priority — build after capture features work. |

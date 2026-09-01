@@ -2,10 +2,13 @@
 
 ---
 
-> **Note:** Teacher requires at least **10 user stories**. Current: **10 numbered stories** —
-> 8 fully defined (HU-001…HU-008) + HU-009 audio / HU-010 dashboard pending definition.
-> Renumbered 2026-08-30 so codes follow build order (old → new: 005a→003 · 005b→004 ·
-> 005c→005 · 003→006 · 003a→007 · 003b→008 · 004→009 · 006→010).
+> **Note:** Teacher requires at least **10 user stories**. Current: **11 numbered stories** —
+> all fully defined (HU-001…HU-011).
+> Renumbered 2026-08-30 so HU codes follow build order (old → new: 005a→003 · 005b→004 ·
+> 005c→005 · 003→006 · 003a→007 · 003b→008 · 004→009 · 006→010). PB codes renumbered
+> 2026-08-31 to match build/sprint order: PB-002 CRUD · PB-003 AI capture (photo + text) ·
+> PB-004 audio · PB-005 dashboard (HU codes unchanged).
+> **Estimation scale:** Story Points — standard **Fibonacci** (1, 2, 3, 5, 8, 13…).
 
 ---
 
@@ -14,10 +17,10 @@
 | Code | Feature | Priority | Status | Notes |
 |------|---------|----------|--------|-------|
 | PB-001 | Auth multi-user | High | Not started | Sprint 1 — Register + Login |
-| PB-002 | AI-assisted capture: photo + natural-language text | High | Not started | Sprint 3 |
-| PB-003 | Audio → AI parsing + categorization | Medium | Not started | Sprint 4 — definition pending |
-| PB-004 | Expense registration & management (CRUD) | Medium | Not started | Sprint 2 — manual-first foundation |
-| PB-005 | Dashboard by category + date filter | Medium | Not started | Sprint 4 — definition pending |
+| PB-002 | Expense registration & management (CRUD) | High | Not started | Sprint 2 — manual-first foundation |
+| PB-003 | AI-assisted capture: photo + natural-language text | High | Not started | Sprint 3 |
+| PB-004 | Audio → AI parsing + categorization | Medium | Not started | Sprint 4 — happy path (HU-009) + failure paths (HU-011) |
+| PB-005 | Dashboard by category + date filter | Medium | Not started | Sprint 4 |
 
 ---
 
@@ -54,7 +57,7 @@
 **Checklist: UI**
 - [ ] RegisterScreen (email + password + confirm password + register button)
 
-**Story Points:** *(to be estimated)*
+**Story Points:** 3
 
 ---
 
@@ -83,7 +86,7 @@
 - [ ] Logout — clear token and redirect to login
 - [ ] Connect to API
 
-**Story Points:** *(to be estimated)*
+**Story Points:** 2
 
 ---
 
@@ -96,7 +99,7 @@
 
 ### HU-003: Create expense manually
 
-**Feature:** PB-004 · **Depends on:** — (foundation story)
+**Feature:** PB-002 · **Depends on:** — (foundation story)
 
 **Story:**
 > As a user, I want to register an expense manually by filling only the essentials so that I can save my spending quickly without typing everything.
@@ -156,7 +159,7 @@
 
 ### HU-004: Edit & delete my expenses
 
-**Feature:** PB-004 · **Depends on:** HU-003 (needs the saved expense form and data)
+**Feature:** PB-002 · **Depends on:** HU-003 (needs the saved expense form and data)
 
 **Story:**
 > As a user, I want to see, edit, and delete my saved expenses so that I can keep my records correct and under control.
@@ -217,7 +220,7 @@
 
 ### HU-005: Find my expenses (search & filters)
 
-**Feature:** PB-004 · **Depends on:** HU-004 (needs the expenses list)
+**Feature:** PB-002 · **Depends on:** HU-004 (needs the expenses list)
 
 **Story:**
 > As a user, I want to search and filter my expenses so that I can quickly find any of them.
@@ -271,7 +274,7 @@
 
 ### HU-006: Register an expense by photographing the receipt (happy path)
 
-**Feature:** PB-002 · SPIDR **Path** split (guide §9): happy path (this) / failure paths (HU-007) · **Depends on:** HU-003 (Editar opens its form)
+**Feature:** PB-003 · SPIDR **Path** split (guide §9): happy path (this) / failure paths (HU-007) · **Depends on:** HU-003 (Editar opens its form)
 
 **Story:**
 > As a user, I want to photograph a receipt so that the AI fills in the whole expense for me and I only have to confirm it before anything is saved.
@@ -362,7 +365,7 @@ Invalid AI responses are rejected before the confirmation card is shown.
 
 ### HU-007: The capture fails or the AI can't read my receipt
 
-**Feature:** PB-002 · **Split of:** HU-006 (SPIDR Path: error paths) · **Depends on:** HU-006
+**Feature:** PB-003 · **Split of:** HU-006 (SPIDR Path: error paths) · **Depends on:** HU-006
 
 **Story:**
 > As a user, when capture or AI parsing fails, I want a clear message and a way forward so that nothing is saved by mistake and I can retry or fall back to manual entry.
@@ -427,7 +430,7 @@ Invalid AI responses are rejected before the confirmation card is shown.
 
 ### HU-008: Register an expense by typing what I spent (text → AI parse)
 
-**Feature:** PB-002 · SPIDR Path family: photo (HU-006) · text (this) · audio (HU-009) · **Depends on:** HU-003 (Editar opens its form)
+**Feature:** PB-003 · SPIDR Path family: photo (HU-006) · text (this) · audio (HU-009) · **Depends on:** HU-003 (Editar opens its form)
 
 **Story:**
 > As a user, I want to type what I spent in my own words in the capture bar so that the AI turns it into an expense and I only have to confirm it before anything is saved.
@@ -500,15 +503,71 @@ Invalid AI responses are rejected before the confirmation card is shown.
 
 ---
 
-### HU-009: Audio → AI parsing + categorization
+### HU-009: Record a voice expense (happy path)
 
-**Feature:** PB-003
+**Feature:** PB-004 · SPIDR **Path** split (guide §9): happy path (this) / failure paths (HU-011) · **Depends on:** HU-003 (Editar opens its form)
 
-**Story:** *(to be defined)*
+**Story:**
+> As a user, I want to record a voice note of what I spent so that the AI fills in the expense for me and I only have to confirm it before anything is saved.
 
-**Acceptance Criteria:** *(to be defined)*
+**Acceptance Criteria:**
+- From the Gastos hub I tap the mic button in the capture bar → recording starts with a visible indicator; I tap again to stop
+- The recording is sent to the backend as a temporary upload — nothing is saved to the DB yet
+- Recordings are capped at **60 seconds** — recording stops automatically at the limit and is sent
+- Accepted formats: **M4A or WAV**, max 60 s; invalid recordings are rejected with a clear message before parsing
+- The backend sends the audio to the AI model, which transcribes and extracts the structured expense **in one call** (per STACK.md — no separate STT service; a separate STT step is only a fallback), using the same strict normalized contract as photo/text with `source: audio` — nothing is saved yet
+- The AI returns: store, date, total, and a description for the item; currency and payment method if I mention them — otherwise defaults **Efectivo / COP**
+- I see the confirmation card with the parsed data editable (same card shape as text — no line-item list and no photo; confirmation creates one description item)
+- **Editar** opens the same pre-filled manual form as HU-003; saving returns me to the updated card
+- Nothing is saved until I tap **Confirmar**
+- On **Confirmar**: one minimal receipt (store, date, total — no image) + its item are saved together, atomically
+- The single description item's amount is the parsed or corrected total
+- I can tap **Descartar** → nothing is saved and the temporary audio is deleted
+- On success I see "✅ Gasto guardado" and land back on the clean hub
+- I CANNOT edit technical fields (user_id, receipt_id, etc.)
+- Everything is associated with my account — I cannot create data for another user
 
-**Tasks:** *(to be defined)*
+**Scenarios:**
+
+| Scenario | Criteria |
+|---|---|
+| Record → confirm | **Given** the AI card with parsed data, **When** I tap Confirmar, **Then** receipt + item are saved and I see "✅ Gasto guardado" on the clean hub |
+| Record → edit → confirm | **Given** the AI card, **When** I tap Editar, correct a value in the form and save, **Then** the card shows the corrected values and Confirmar saves them |
+| Record → discard | **Given** the AI card, **When** I tap Descartar, **Then** nothing is saved and the temporary audio is deleted |
+
+> **Note (technical):** voice follows the same shape as photo/text (see HU-006 contract) with `source: audio`; the minimum facts are store + total — otherwise the AI reports `status: unreadable` (see HU-011).
+
+**Checklist: API**
+- [ ] Implement temporary recording upload
+- [ ] Validate M4A/WAV formats and the 60 s limit
+- [ ] Send the temporary audio to the AI parsing service (STT handled in the same model call per STACK.md)
+- [ ] Validate the normalized AI response contract with `source: audio`
+- [ ] Return parsed receipt data, item, and optional reasons
+- [ ] Keep the database unchanged until confirmation
+- [ ] Save receipt + item atomically after confirmation
+- [ ] Delete the temporary audio after discard
+
+**Checklist: UI**
+- [ ] Add the mic button to the capture bar with a recording indicator
+- [ ] Stop recording automatically at 60 s
+- [ ] Show recording and AI-processing states
+- [ ] Display the audio confirmation card with editable parsed data
+- [ ] Add Confirmar, Editar, and Descartar actions
+- [ ] Open the HU-003 manual form from Editar
+- [ ] Show success feedback and return to the clean hub
+
+**Checklist: Tests**
+- [ ] Test accepted formats and the 60 s limit
+- [ ] Test normalized AI response validation (`source: audio`)
+- [ ] Test confirmation without changing parsed data
+- [ ] Test editing before confirmation
+- [ ] Test discard and temporary-audio deletion
+- [ ] Test atomic receipt + item saving
+
+**Checklist: Mockup**
+- [ ] Demonstrate the mic button and recording state
+- [ ] Demonstrate the audio confirmation card with editable data
+- [ ] Demonstrate Confirmar, Editar, and Descartar
 
 **Story Points:** *(to be estimated)*
 
@@ -518,11 +577,110 @@ Invalid AI responses are rejected before the confirmation card is shown.
 
 **Feature:** PB-005
 
-**Story:** *(to be defined)*
+**Story:**
+> As a user, I want to see my spending by category for a period so that I can understand where my money goes.
 
-**Acceptance Criteria:** *(to be defined)*
+**Acceptance Criteria:**
+- I open the Dashboard tab and see my spending for a selected period
+- Period presets: **Hoy / Esta semana / Este mes** — switching presets recalculates everything shown
+- I see the **total spent** in the period and **per-category totals** (top categories first)
+- Totals are shown as a **pie chart + a category table** (category name · amount · share of the total)
+- The dashboard is read-only analytics: I cannot edit or delete anything from here (editing lives in the HU-004 "My expenses" list)
+- Totals include every expense of mine in the period regardless of how it was registered — manual (HU-003), photo (HU-006), text (HU-008), or voice (HU-009)
+- I only ever see MY data — the dashboard is scoped to my user
+- If I have no expenses in the selected period → friendly empty state ("No hay gastos en este período") instead of an empty chart
 
-**Tasks:** *(to be defined)*
+> **Note (technical):** analytics are computed by the backend (GROUP BY category over the authenticated user's expenses in the period), per ALCANCE.md — the backend owns the data and answers dashboard queries.
+
+**Scenarios:**
+
+| Scenario | Criteria |
+|---|---|
+| Switch period | **Given** the dashboard, **When** I tap "Esta semana", **Then** the total, category totals, and chart recalculate for the week |
+| Mixed sources | **Given** expenses registered manually, by photo, by text, and by voice, **When** I open the dashboard, **Then** all of them are included in the totals |
+| Empty period | **Given** I have no expenses in the selected period, **When** the dashboard loads, **Then** I see the empty state instead of an empty chart |
+
+**Checklist: API**
+- [ ] Implement the dashboard endpoint: totals per category for the authenticated user and period
+- [ ] Compute analytics on the backend (GROUP BY category, filtered by period)
+- [ ] Return total spent, per-category amounts, and shares
+- [ ] Enforce ownership scoping
+- [ ] Handle empty result sets
+
+**Checklist: UI**
+- [ ] Build the Dashboard screen with period preset chips (Hoy / Esta semana / Este mes)
+- [ ] Render the pie chart (per-category shares)
+- [ ] Render the category table (name · amount · share), top categories first
+- [ ] Show the total spent for the period
+- [ ] Implement the empty state
+- [ ] Handle loading and error states
+
+**Checklist: Tests**
+- [ ] Test period preset filtering
+- [ ] Test per-category sums including all capture sources
+- [ ] Test share calculations
+- [ ] Test ownership isolation
+- [ ] Test empty-state behavior
+
+**Checklist: Mockup**
+- [ ] Demonstrate the dashboard with chart + category table
+- [ ] Demonstrate period switching
+- [ ] Demonstrate the empty state
+
+**Story Points:** *(to be estimated)*
+
+---
+
+### HU-011: Voice capture fails or the AI can't hear me
+
+**Feature:** PB-004 · **Split of:** HU-009 (SPIDR Path: error paths) · **Depends on:** HU-009
+
+**Story:**
+> As a user, when voice capture or AI parsing fails, I want a clear message and a way forward so that nothing is saved by mistake and I can retry or fall back to typing.
+
+**Acceptance Criteria:**
+- If the AI can't extract the minimum (store + total) from the audio → I see "No pudimos escuchar el audio" + **Reintentar** (record again) + the manual ✍️ option — nothing is saved
+- If the AI extracts **partial** data (e.g., total but no store) → the card shows what it got, marks missing required fields, and keeps Confirmar disabled until I complete valid data through Editar
+- If the backend or the AI model (STT + parsing in one call) fails / times out → error message + **Reintentar**; nothing is saved
+- If mic permission is denied → an explanation of why it's needed + a shortcut to system settings; manual ✍️ entry always stays available
+- On any failure, the temporary audio is deleted — no orphans from failed attempts
+- Temp audio never confirmed is cleaned by the backend after **24h** (same scheduled cleanup as temp images)
+- A failure never creates receipt or expense rows (save is all-or-nothing)
+
+**Scenarios:**
+
+| Scenario | Criteria |
+|---|---|
+| Unintelligible audio | **Given** audio the AI can't parse to store + total, **When** parsing returns `unreadable`, **Then** I see "No pudimos escuchar el audio" with Reintentar and manual ✍️ — nothing is saved |
+| Partial data | **Given** an AI result with missing required fields, **When** the card is shown, **Then** Confirmar is disabled until I complete valid data via Editar |
+| Mic permission denied | **Given** mic permission is denied, **When** I tap the mic button, **Then** I see the explanation + settings shortcut, and manual ✍️ stays available |
+| Timeout | **Given** the backend or STT/LLM fails or times out, **When** I retry, **Then** nothing was saved and the temporary audio was deleted |
+
+**Checklist: API**
+- [ ] Handle `unreadable` results with a clear error response
+- [ ] Handle partial results (mark missing required fields)
+- [ ] Handle backend/AI-model failures and timeouts
+- [ ] Delete the temporary audio on every failure
+- [ ] Scheduled cleanup of temp audio after 24h
+- [ ] Ensure failures never create receipt or expense rows
+
+**Checklist: UI**
+- [ ] Show failure messages with Reintentar and manual ✍️ fallback
+- [ ] Show partial data with missing fields marked and Confirmar disabled
+- [ ] Show mic-permission explanation + system settings shortcut
+- [ ] Show retry and processing states
+
+**Checklist: Tests**
+- [ ] Test unreadable-audio handling
+- [ ] Test partial-data completion flow
+- [ ] Test timeout and retry behavior
+- [ ] Test mic-permission-denied flow
+- [ ] Test temp-audio deletion on failure and 24h cleanup
+- [ ] Test no rows are created on failure
+
+**Checklist: Mockup**
+- [ ] Demonstrate the failure message with Reintentar + manual ✍️
+- [ ] Demonstrate partial data with Confirmar disabled
 
 **Story Points:** *(to be estimated)*
 
@@ -535,7 +693,7 @@ Invalid AI responses are rejected before the confirmation card is shown.
 | Sprint 1 | Register (HU-001) + Login (HU-002) |
 | Sprint 2 | CRUD foundation (HU-003 + HU-004 + HU-005) — manual-first (locked decision) |
 | Sprint 3 | Photo capture (HU-006 + HU-007) + Text capture (HU-008) |
-| Sprint 4 | Audio capture (HU-009) + Dashboard (HU-010) + Testing + Survey |
+| Sprint 4 | Audio capture (HU-009 + HU-011) + Dashboard (HU-010) + Testing + Survey |
 
 ---
 
@@ -591,6 +749,18 @@ Invalid AI responses are rejected before the confirmation card is shown.
 
    [Decision]: one strict normalized response with `status` (`ok`, `partial`, `unreadable`, `error`), `source`, receipt data, item data, optional reasons, and a machine-readable error; accept JPEG/PNG/HEIC up to 10 MB and reject invalid files before parsing.
 
+12. **Audio input and limits.** How does the user capture voice — in-app recording or file upload? Duration/format limits?
+
+   [Decision]: in-app mic button in the capture bar · max 60 s · M4A/WAV · server-side STT reusing the HU-006 normalized contract with `source: audio` (2026-08-31)
+
+13. **Audio split.** One audio story, or split happy path from failure paths like photo?
+
+   [Decision]: B — split like photo (SPIDR Path, guide §9): HU-009 happy path / HU-011 failure paths (2026-08-31)
+
+14. **Dashboard scope.** Period filter style, metrics, and scope of HU-010?
+
+   [Decision]: period presets (Hoy / Esta semana / Este mes) · total spent + per-category totals as pie chart + category table · read-only analytics (no editing, no expense list — that is HU-004) · friendly empty state · backend computes the analytics · estimation scale restored to standard Fibonacci (2026-08-31)
+
 ### Parked — capture stories: resolved & remaining
 
 Resolved via the HU-006 happy-path / failure-path split (SPIDR Path, guide §9) and decisions of 2026-08-30:
@@ -601,5 +771,5 @@ Resolved via the HU-006 happy-path / failure-path split (SPIDR Path, guide §9) 
 - [x] numbering → 2026-08-30 renumber to build order: HU-006 photo · HU-007 photo failures · HU-008 text · HU-009 audio · HU-010 dashboard
 - [ ] items added later to a saved receipt vs. one single confirm flow (was "003b" under the old numbering)
 - [ ] AI suggests subcategory on the fly (was "003d") — story now or Phase 2
-- [ ] HU-009 (voice) needs its own failure ACs when defined — reuse the HU-007 shape
+- [x] HU-009 (voice) failure ACs → split like photo: HU-009 happy path / HU-011 failure paths (2026-08-31)
 - [ ] AC person ("I" vs "User") · checklist sections consistency

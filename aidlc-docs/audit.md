@@ -303,3 +303,43 @@ puedes revisar esto pls con docs y guides que tenemos y ver tambien las task si 
 **User Input**: "Implement the plan."
 **AI Response:** Added API, UI, Tests, and Mockup checklists for HU-003 through HU-008 in `docs/BACKLOG-AND-STORIES.md`. Updated `docs/mockups/index.html` and `docs/MOCKUPS.md` to cover manual direct-save validation, source-specific photo/text AI previews, edit-before-confirm, printed versus item-sum totals, date filtering, deletion feedback, and representative AI failure states. Normalized edited totals and validated the interactive flows with a headless browser smoke suite.
 **Context:** Implementation of the approved task-definition and mockup-verification plan. HU-009 audio and HU-010 dashboard task definitions remain intentionally deferred; no application backend or frontend source code was added.
+
+---
+
+## Backlog Renumbering — PB codes aligned to build order
+**Timestamp**: 2026-08-31T00:00:00Z
+**User Input**: "can you help organizene this better pls thi sway:PB-001 Auth multi-usuario / PB-002 Registro manual y gestión de gastos (CRUD) / PB-003 Photo → AI extraction + categorization / PB-004 Audio → AI parsing + categorization / PB-005 Dashboard por categoría + filtro período — in this order the backlog is like that ??"
+**AI Response**: Confirmed the proposed order matches build/sprint order and dependency order. Updated `docs/BACKLOG-AND-STORIES.md`: backlog table reordered to PB-001 Auth (Sprint 1) · PB-002 CRUD (Sprint 2, priority raised to High) · PB-003 AI capture photo+text (Sprint 3) · PB-004 audio (Sprint 4) · PB-005 dashboard (Sprint 4). Updated the header renumbering note and all `**Feature:**` references (HU-003/004/005 → PB-002 · HU-006/007/008 → PB-003 · HU-009 → PB-004 · HU-010 → PB-005, HU codes unchanged). Verified no other docs reference PB codes (SPRINT-PLAN.md, UML.md, TASKS.md use HU codes only).
+**Context:** Documentation-only backlog renumbering approved by user ("ok"); no application code changed.
+
+---
+
+## Estimation Scale and Story Points (HU-001/HU-002)
+**Timestamp**: 2026-08-31T00:00:00Z
+**User Input**: "Ok primero que todo pon que la escala de esto es por dias y ponle a register y login done y story point 3 register y login 2" then "actually wait dont put that to done again only the points"
+**AI Response**: Added "**Estimation scale:** Story Points = days of work (not Fibonacci)" to the header note of `docs/BACKLOG-AND-STORIES.md`. Set HU-001 Register → 3 (days) and HU-002 Login → 2 (days); normalized the remaining 8 stories to *(days — to be estimated)*. Per the user's correction, the Done status was NOT applied — PB-001 remains "Not started" in the Product Backlog table.
+**Context:** Story-point scale definition and partial estimation; HU-009/HU-010 definitions and remaining estimates still pending.
+
+---
+
+## HU-009 Audio Story Definition (Option B split)
+**Timestamp**: 2026-08-31T00:00:00Z
+**User Input**: "I prefer b" (split audio into happy path + failure paths like photo, SPIDR Path guide §9)
+**AI Response**: Fully defined HU-009 "Record a voice expense (happy path)" (Story, 15 ACs, 3 scenarios, technical note on the shared AI contract with source: audio, API/UI/Tests/Mockup checklists) and added new HU-011 "Voice capture fails or the AI can't hear me" (Story, 7 failure ACs, 4 scenarios, checklists) mirroring the HU-006/HU-007 pattern. Assumptions applied per recommendation: in-app mic button in the capture bar, max 60 s, M4A/WAV, server-side STT. Recorded decisions #12 (audio input/limits) and #13 (audio split) in Pending Decisions; marked the parked item about HU-009 failure ACs as resolved; updated header note (11 numbered stories, 10 defined), PB-004 row note, and Sprint Plan Sprint 4 row. HU-010 dashboard remains the only pending definition.
+**Context:** Documentation-only backlog refinement; story points for HU-009/HU-011 left *(days — to be estimated)* pending user estimation.
+
+---
+
+## Cross-Doc Consistency Check — Audio Stories vs Guides and Other Docs
+**Timestamp**: 2026-08-31T00:00:00Z
+**User Input**: "ok I think is good both of these check guide and all the other docs if it makes sense"
+**AI Response**: Verified HU-009/HU-011 against ALCANCE.md, FEATURES.md, STACK.md, SCHEMA.md/schema.sql, ARCHITECTURE.md, UML.md, MOCKUPS.md/mockups, SPRINT-PLAN.md, and the Scrum guide. Consistent: audio as an AI-assisted channel with confirm-before-save; schema supports audio receipts (image nullable); single parsed amount = item + receipt total; mockups already include mic button and 'Nota de voz' card; UML diagrams already cover audio; SPIDR Path split matches guide §9; 11 stories satisfies the ≥10 requirement. Fixed 4 inconsistencies: (1) HU-009/HU-011 wording now matches STACK.md one-call STT (no separate STT service, fallback only); (2) FEATURES.md audio feature now states the 60 s M4A/WAV cap; (3) SPRINT-PLAN.md Sprint 4 retitled with HU-009 + HU-011 rows marked defined and sync date bumped to 2026-08-31; (4) added `record` Flutter dependency for mic capture. Noted (not changed): Scrum guide recommends Fibonacci for story points while the project uses a days scale per user decision.
+**Context:** Documentation-only consistency review; HU-010 dashboard remains the only pending story definition.
+
+---
+
+## HU-010 Dashboard Definition and Fibonacci Restoration
+**Timestamp**: 2026-08-31T00:00:00Z
+**User Input**: "ok write that and restore fibonacci pls" then "ok writte"
+**AI Response**: Fully defined HU-010 "Dashboard by category + date filter" (Story, 8 ACs, technical note on backend-computed analytics, 3 scenarios, API/UI/Tests/Mockup checklists) using the recommended decisions: period presets Hoy/Esta semana/Este mes, total spent + per-category totals as pie chart + category table, read-only analytics with empty state, ownership scoping, all capture sources included. Restored the standard Fibonacci estimation scale: header note updated, HU-001 → 3 / HU-002 → 2 (valid Fibonacci points), all other stories back to *(to be estimated)*. Updated header note to "all 11 stories fully defined", PB-005 backlog row note to "Sprint 4", SPRINT-PLAN.md HU-010 row to "defined (2026-08-31)", and added decision #14 (dashboard scope + Fibonacci restoration) to Pending Decisions. Verified no "to be defined", "pendiente de definición", or "days" references remain.
+**Context:** Documentation-only backlog refinement; the backlog is now fully defined — only story-point estimation for HU-003…HU-011 remains open.

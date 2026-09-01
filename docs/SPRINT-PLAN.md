@@ -29,7 +29,7 @@
 
 ### Frontend (Flutter)
 - [ ] Crear proyecto Flutter
-- [ ] Dependencias: http, provider, camera, image_picker
+- [ ] Dependencias: http, provider, camera, image_picker, record
 - [ ] Estructura de carpetas:
   ```
   frontend/
@@ -93,7 +93,7 @@ SECRET_KEY=tu_secret_key_aqui
 
 ## Sprints
 
-> This schedule is synchronized with `docs/BACKLOG-AND-STORIES.md` as of 2026-08-30.
+> This schedule is synchronized with `docs/BACKLOG-AND-STORIES.md` as of 2026-08-31.
 > Infrastructure setup is pre-Sprint 1 work, not a user story.
 
 ### Sprint 1 — Authentication
@@ -116,10 +116,11 @@ SECRET_KEY=tu_secret_key_aqui
 | HU-007: Photo capture failure paths | Alta |
 | HU-008: Natural-language text → AI parse | Media |
 
-### Sprint 4 — Future scope (definitions pending)
+### Sprint 4 — Audio capture + Dashboard
 | Tarea/HU | Prioridad |
 |----------|-----------|
-| HU-009: Audio → AI parsing + categorization | Media — pendiente de definición |
-| HU-010: Dashboard by category + date filter | Media — pendiente de definición |
+| HU-009: Voice expense happy path | Media — defined (2026-08-31) |
+| HU-011: Voice capture failure paths | Media — defined (2026-08-31) |
+| HU-010: Dashboard by category + date filter | Media — defined (2026-08-31) |
 | Pruebas funcionales | Tarea |
 | Encuesta de usabilidad | Tarea |
