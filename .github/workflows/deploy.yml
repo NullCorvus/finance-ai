@@ -9,9 +9,9 @@ name: Deploy to Azure VM
 
 on:
   push:
-    branches: [main]
+    branches: [master]
   pull_request:
-    branches: [main]
+    branches: [master]
 
 env:
   BACKEND_DIR: finance-ai-backend
@@ -73,7 +73,7 @@ jobs:
   deploy:
     name: Deploy to Azure VM
     needs: test
-    if: github.ref == 'refs/heads/main'
+    if: github.ref == 'refs/heads/master'
     runs-on: ubuntu-latest
     concurrency: deploy-group  # Prevents concurrent deployments
 
