@@ -86,6 +86,12 @@ The separate seeded PostgreSQL query-plan test also passed and verifies index-ba
 - `performance-test-instructions.md`
 - `build-and-test-summary.md`
 
+## Pull Requests and CI
+
+- Backend: `https://github.com/Maicol2363/finance-ai-backend/pull/1` — quality passed.
+- Frontend: `https://github.com/Maicol2363/finance-ai-frontend/pull/1` — shared/Android and Windows jobs passed.
+- Documentation: `https://github.com/NullCorvus/finance-ai/pull/2` — repository-boundary check passed; intentionally stacked on the existing repository-split branch.
+
 ## Remaining Scope
 
 Move-history and advanced delete-all workflows remain deliberately deferred until expenses, income, transfers, receipts, budgets, and reporting define their dependency graph. Production TLS, hosting, monitoring, availability, backup/restore objectives, and deployment approval belong to a future Operations stage.

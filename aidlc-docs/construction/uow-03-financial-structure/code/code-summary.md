@@ -89,4 +89,4 @@ Important behavior:
 
 HU-003 does not guess how to rewrite future receipts, transfers, expenses, income, budgets, reports, or AI-derived records. When those dependency graphs exist, the product can add an explicit move-history workflow and, if still desired, a separately confirmed delete-all workflow. Until then, deactivation is the correct history-preserving action for a used account.
 
-No commit or push was performed as part of this revision. Publication remains a separate authorized action.
+The user authorized publication after Build and Test. The verified changes are committed and available in linked backend PR 1, frontend PR 1, and documentation PR 2; every independent CI job passes.

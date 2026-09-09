@@ -16,8 +16,8 @@ Treat the approved financial-accounts slice, including staged permanent deletion
 - [x] Execute the Flutter release-candidate gates: format, analyze, full shared coverage, Android debug build, Windows native smoke tests, and normal bundle restoration.
 - [x] Verify live API readiness, the DELETE OpenAPI contract, normal Windows client health, repository boundaries, diagnostic privacy, and absence of temporary dependency overrides or duplicate implementations.
 - [x] Generate and validate `build-and-test-summary.md` with observed results, artifacts, extension compliance, limitations, and reproducible commands.
-- [ ] Commit the scoped HU-003 backend, frontend, and documentation changes; push their branches; open or update the required linked pull requests; and record CI status.
-- [ ] Update plan/state/audit checkboxes from observed evidence and present the mandatory Build and Test review gate.
+- [x] Commit the scoped HU-003 backend, frontend, and documentation changes; push their branches; open or update the required linked pull requests; and record CI status.
+- [x] Update plan/state/audit checkboxes from observed evidence and present the mandatory Build and Test review gate.
 
 ## Completion Criteria
 
