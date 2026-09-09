@@ -25,6 +25,8 @@ The current identity implementation lives in:
 
 Future features must extend or reuse this shared foundation rather than display raw exceptions or feature-specific diagnostic formats.
 
+HU-003 account deletion uses the stable `account_delete_blocked` code when any financial movement prevents permanent deletion. Its safe guidance recommends deactivation and deliberately excludes the account name, opening/current balance, movement values, owner identity, and entered data. Flutter renders it through the same shared diagnostic panel and clipboard contract.
+
 ## Copyable Report Contract
 
 The safe report contains only:

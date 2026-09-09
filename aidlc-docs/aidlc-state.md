@@ -3,7 +3,7 @@
 ## Project Information
 - **Project Type**: Brownfield multi-repository application
 - **Start Date**: 2026-08-30T20:58:11Z
-- **Current Stage**: CONSTRUCTION - UOW-02 complete; three repositories published
+- **Current Stage**: CONSTRUCTION - UOW-03 / HU-003 Code Generation
 
 ## Workspace State
 - **Existing Code**: Yes — identity backend and shared Android/Windows client
@@ -18,7 +18,9 @@
 - **Documentation**: aidlc-docs/ only for AI-DLC artifacts; existing project docs remain under docs/
 
 ## Extension Configuration
-No extension choices have been recorded for this review.
+- **Security Baseline**: Enabled proportionally for credential and personal-financial-data controls.
+- **Property-Based Testing**: Partial mode for backend domain rules and serialization/invariants.
+- **Resiliency Baseline**: Disabled for the prototype; lightweight atomicity, recovery, readiness, and cleanup requirements remain enforced.
 
 ## Stage Progress
 
@@ -32,9 +34,15 @@ No extension choices have been recorded for this review.
 ### CONSTRUCTION PHASE
 - [x] Code Generation — UOW-01 and UOW-02
 - [x] Build and Test — UOW-01 and UOW-02
+- [x] Functional Design — UOW-03 / HU-003 Financial Accounts
+- [x] NFR Requirements — UOW-03 / HU-003 Financial Accounts
+- [x] NFR Design — UOW-03 / HU-003 Financial Accounts
+- [x] Code Generation Planning — UOW-03 / HU-003 plan approved
+- [x] Code Generation — UOW-03 / HU-003 implementation complete and awaiting review
+- [x] Build and Test — UOW-03 / HU-003 complete and awaiting review
 
 ## Current Status
 - **Lifecycle Phase**: CONSTRUCTION
-- **Current Stage**: UOW-02 identity implementation and three-repository separation complete
-- **Next Step**: Design and implement HU-003 personal defaults through normal feature branches and pull requests
-- **Status**: The `NullCorvus/finance-ai` hub and `Maicol2363` backend/frontend repositories are published. Registration, login, secure restoration, protected Home, logout, safe diagnostics, and Android/Windows builds are implemented and verified; later budgeting and AI stories remain pending
+- **Current Stage**: UOW-03 / HU-003 Build and Test review gate
+- **Next Step**: Publish the user-authorized linked pull requests, observe their CI, then present Build and Test for approval toward the placeholder Operations stage.
+- **Status**: Formal Build and Test passes across backend packaging, 122 backend tests at 90.41% coverage, 17 real-PostgreSQL integration tests, authenticated E2E, the local 10-client performance profile, 70 Flutter tests at 86.10% coverage, Android, and four native Windows tests with normal bundle restoration. A duplicate backend resource packaging defect was corrected and added to CI. The verified local API and Windows app are running; both platform artifacts exist. Publication is now explicitly authorized.
