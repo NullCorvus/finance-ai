@@ -15,7 +15,7 @@ HU-001 is implemented as the first executable vertical slice. A user can enter e
 
 - Registration normalizes email, requires an 8–128 character confirmed password, rejects the vendored common-password corpus, and stores only Argon2id hashes.
 - Success returns public ID, normalized email, COP, and a Login direction; it returns no password, hash, token, session, or catalog internals.
-- One transaction creates exactly 3 categories (`Needs`, `Wants`, `Other`), 3 payment methods (`Cash`, `Card`, `Transfer`), and 2 income sources (`Salary`, `Other`).
+- One transaction creates exactly 3 categories (`Needs`, `Wants`, `Other`) and 2 income sources (`Salary`, `Other`). Accounts are the only representation of where money is held or spent from.
 - COP and USD are repeatable shared seeds; COP is the initial preference.
 - Login/sessions, accounts, movements, budgets, calendars, and AI are explicitly outside UOW-01.
 - Registration observability uses bounded process-local counters and secret-free final outcomes: success, validation failure, duplicate conflict, throttle, configuration failure, or unexpected failure.
@@ -30,12 +30,12 @@ HU-001 is implemented as the first executable vertical slice. A user can enter e
 - Generated OpenAPI: unchanged after regeneration; SHA-256 `77751FB5351D0AF25AC7C715D603738B1520FAAF086744A72AF33517E88468E3`.
 - Python dependency audit: no known vulnerabilities; the local package is correctly reported as not present on PyPI.
 - Live API: liveness/readiness 200; registration 201; duplicate 409 with `email_already_registered`; safe correlation returned; no authentication created.
-- Controlled live API persistence: 1 user, 3 categories, 3 payment methods, and 2 income sources.
+- Controlled live API persistence originally included payment-method starter rows. Migration `0005_remove_legacy_payment_method` later removed that unused catalog and current registrations create only categories and income sources.
 - API runtime: UID/GID 10001, no pytest installed.
 - Flutter format/analyze: passed with no changes/issues.
 - Flutter unit/widget/contract/configuration/diagnostic tests: 23 passed; 91.76% coverage.
 - Flutter → live API → PostgreSQL headless integration: 1 passed, including form submission, success feedback, and single Login navigation.
-- Post-integration persistence totals: 2 users, 6 categories, 6 payment methods, and 4 income sources, confirming the second flow added one complete 1/3/3/2 aggregate.
+- Current registration persistence expects 2 users, 6 categories, and 4 income sources for two complete registration aggregates.
 - Android debug build: passed; `app-debug.apk` size 191,497,044 bytes.
 - Windows native smoke tests: 2 passed in the generated desktop runner, covering registration success and copyable connection failure UI.
 - Windows debug build: passed; `finance_ai.exe` size 575,488 bytes with `Finance AI` product metadata.

@@ -61,7 +61,6 @@ Argon2 is preferred through a maintained library. Its exact dependency/version i
 | UserRepository.add(new_user) | New user entity | Staged user with identifier |
 | CurrencyRepository.require_by_code(code) | ISO currency code | Shared currency or configuration failure |
 | CategoryRepository.add_many(user_id, templates) | Owner plus templates | Staged categories |
-| PaymentMethodRepository.add_many(user_id, templates) | Owner plus templates | Staged payment methods |
 | IncomeSourceRepository.add_many(user_id, templates) | Owner plus templates | Staged income sources |
 | CatalogTemplateProvider.registration_defaults() | None | Immutable catalog template |
 | UnitOfWork.commit() | Current staged transaction | Successful commit |

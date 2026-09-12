@@ -25,7 +25,7 @@ The Registration Application Service performs this sequence:
 7. Check whether the normalized email already exists for a fast conflict response.
 8. Stage the new user with COP as preferred currency and no role.
 9. Load the versioned smallest English catalog template.
-10. Stage the user's categories, payment methods, and income sources.
+10. Stage the user's categories and income sources.
 11. Flush as required so database constraints are checked.
 12. Commit exactly once.
 13. Return public user data and a safe confirmation message.

@@ -72,8 +72,7 @@ One successful transaction creates:
 
 1. One app_user with a normalized unique email, adaptive password hash, and preferred COP currency.
 2. Three owned categories: Needs, Wants, and Other.
-3. Three owned payment methods: Cash, Card, and Transfer.
-4. Two owned income sources: Salary and Other.
+3. Two owned income sources: Salary and Other.
 
 It creates no subcategories, financial accounts, session credentials, or AI records.
 

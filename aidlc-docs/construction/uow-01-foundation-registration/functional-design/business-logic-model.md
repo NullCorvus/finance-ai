@@ -98,7 +98,7 @@ These properties are carried into code-generation planning. They complement the 
 | Email normalization | Idempotence | Normalizing an already normalized valid email produces the same result |
 | Email equivalence | Invariant | Letter-case and surrounding-space variants of the same valid email produce one normalized identity |
 | Password validation | Invariant | Accepted passwords always have lengths within the inclusive 8–128 boundary; rejected values never reach hashing or persistence |
-| Catalog initialization | Invariant | Every successful registration creates exactly 3 categories, 3 payment methods, and 2 income sources, all owned by the created user and active |
+| Catalog initialization | Invariant | Every successful registration creates exactly 3 categories and 2 income sources, all owned by the created user and active |
 | Atomic registration | Business invariant | Observable persisted state is either the complete registration set or none of it |
 | Public result/problem mapping | Invariant | No output contains the password or password hash for any generated command or failure |
 | Registration state machine | Invariant | A submit event cannot produce authenticated state, and repeated taps during Submitting cannot create an additional client submission intent |

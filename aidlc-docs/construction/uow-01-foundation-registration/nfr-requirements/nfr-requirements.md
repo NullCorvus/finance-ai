@@ -42,7 +42,7 @@ No uptime percentage or disaster-recovery SLA applies to the local prototype.
 |---|---|
 | NFR-REL-001 | API liveness and readiness are separate: liveness shows the process is running; readiness fails while required database connectivity or seed prerequisites are unavailable. |
 | NFR-REL-002 | After required images/dependencies already exist locally, the API and database become ready within 90 seconds on the reference environment. |
-| NFR-REL-003 | The user plus 3 categories, 3 payment methods, and 2 income sources commit atomically. Every pre-commit error rolls back all registration rows. |
+| NFR-REL-003 | The user plus 3 categories and 2 income sources commit atomically. Every pre-commit error rolls back all registration rows. |
 | NFR-REL-004 | Restarting the API or rerunning repeatable currency/template seed logic does not duplicate or corrupt shared reference data. |
 | NFR-REL-005 | Database connections and transactions are released on success, validation failure, conflict, timeout, and unexpected failure. |
 | NFR-REL-006 | A documented clean setup and teardown process can be followed by another team member without editing committed secrets. |

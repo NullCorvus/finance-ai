@@ -15,7 +15,7 @@ This design describes the modular monolith and the first vertical product slice,
 | Password Hasher | Produce and later verify adaptive password hashes | Hash/verify interface | Log or return plaintext |
 | Catalog Template Provider | Supply immutable initial English catalog definitions | Versioned default template | Query user data |
 | User Repository | Query normalized email and stage a new user | User persistence interface | Commit independently |
-| Catalog Repositories | Stage owned categories, payment methods, and income sources | Catalog persistence interfaces | Commit independently or create an account |
+| Catalog Repositories | Stage owned categories and income sources | Catalog persistence interfaces | Commit independently or create an account |
 | Currency Repository | Resolve seeded COP for the new user's preference | Shared-currency lookup | Create arbitrary currency codes during registration |
 | Unit of Work | Bound repository work to one commit or rollback | Transaction context | Contain product validation |
 | Error Mapper | Convert known failures to the approved safe API problem shape | Problem response mapping | Expose stack traces, SQL, or secrets |
