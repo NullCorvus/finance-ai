@@ -1,234 +1,90 @@
-# Mockup Direction — Finance AI
+# Screen and Prototype Direction — Finance AI
 
-> **Status:** PROPOSAL — interactive mockup built as a single self-contained HTML file.
-> Open it in any browser: `docs/mockups/index.html` (3 tabs · 4 screens, clickable).
-> UI in Spanish, mockup documentation in English. No frameworks, no dependencies.
+## Status
 
-## Design decisions (2026-08-17, revised 2026-08-28: single hub, no chat)
+The existing `docs/mockups/index.html` prototype is historical evidence of the original capture-first concept. Its fast photo/voice/text entry and compact confirmation interaction remain valuable, but its receipt-centric data model and old HU numbering are not current requirements.
 
-- **ONE hub screen — "Gastos"** (3 tabs: Gastos · Dashboard · Ajustes). Capture,
-  confirmation, manual entry and the list all live in the same screen. There is NO chat:
-  the conversational parts (reply mode, chat history, agent) are Phase 3 and are not
-  mocked up (`ALCANCE.md`: chat is optional and can be skipped entirely).
-- **Capture bar by priority (📷 > 🎤 > ✍️ > texto):** the camera is the HERO — a large
-  centered shutter button (72px, green ring, subtle glow) that communicates \"this is the
-  main action\". Below it in a compact secondary row: audio 🎤 · manual ✍️ · a text field
-  — all three at the same visual weight, subordinate to the photo. The placeholder says
-  \"escribe un gasto…\" (not a chat prompt). Four paths, one clear hierarchy.
-- **Manual entry is ALWAYS visible:** a ✍️ button sits permanently in the capture bar
-  (next to 📷 and 🎤) — it opens the form (HU-003); ✏️ edit opens the SAME form
-  pre-filled (HU-004) — one form for create + edit. It never gets buried or lost.
-- **"Mis gastos" opens as a sub-screen (not inline):** tapping 🔍 in the header hides
-  the hub and shows the search screen with a back arrow (←) to return. The search + chips
-  + date range + receipt list live there; the hub stays clean for capture. Delete
-  confirmations still work in the list.
-- **Interactive capture flow (like the original chat menu):** send photo/voice/natural-language
-  text → the AI card menu appears with items marked "editable" + Confirmar / Editar /
-  Descartar. Confirmar → "✅ Gasto guardado"; Editar → the pre-filled form; Descartar →
-  back to the empty state. Natural-language text shows one description item and no photo;
-  the manual form is a separate direct-save path with validation. The core has no
-  conversational chat.
-- **Failure states are demonstrable in the prototype:** compact Demo controls expose
-  partial extraction, unreadable receipt, timeout, and camera-permission-denied states;
-  each keeps saving blocked and offers retry or manual fallback as appropriate.
-- **Confirmation card shows ALL receipt items** (product, qty, price, category — editable
-  line by line) + Monto total, Fecha, Categoría, Subcategoría, **Pago** (Efectivo/Tarjeta...)
-  and **Moneda** (COP/USD) — the AI infers these from the receipt and the user confirms/edits
-  them (defaults "Efectivo" / "COP"). For photos, the printed receipt total is preserved even
-  when it differs from the item sum; manual multi-item forms calculate the total from items.
-  No "Nota" field (expenses).
-  Buttons: Confirmar / Editar / Descartar. Nothing is saved until Confirmar.
-- **Reasons are optional FIELDS, not conversation:** motivo de la compra / motivo del
-  item live in "Campos adicionales" (form) and on the card — the old reply-mode flow was
-  removed together with the chat.
-- **Gasto/Ingreso selection lives in the form, not the capture bar:** a segmented
-  toggle at the top of the manual form swaps between the expense form and the income
-  form (monto · fecha · fuente · nota — income form is UI-ready, its stories are still
-  pending). On capture paths (photo/voice/natural-language text) the AI infers the type and the card tag
-  shows it; a misdetection is fixed via Editar → toggle. Income stories are still
-  pending (proposal E4 keeps analytics category-only).
-- **Dashboard:** Balance del mes (Ingresos − Gastos = Balance, green/red) + monthly trend
-  (gastos vs ingresos) + bar chart by category with **subcategory drill-down** (tap a bar) +
-  recent movements table (income/gasto chips).
-- **Ajustes with real actions:** "+ Agregar categoría" and "+ Agregar límite" buttons.
-  Limits can also be requested conversationally via chat (Phase 3). Subcategory counts shown.
-- **Gastos tab (manual management — HU-003/HU-004):** "Mis gastos" list grouped by
-  receipt — store + date + Pago/Moneda + total, with 🧾 foto chip — and item rows
-  (name · subcategory · amount) with ✏️ edit / 🗑 delete. Manual form ("Agregar gasto
-  manual"): the user only types **monto, tienda y subcategoría**; Fecha (hoy), Pago
-  (Efectivo) y Moneda (COP) come defaulted and editable; **"Agregar item"** adds item
-  rows under the same receipt (1 recibo → N items, per schema 1:N) and the
-  **manual total is auto-calculated** as the sum of item amounts; single-item name auto-fills
-  from the store text; "Campos adicionales" (collapsed): foto, motivo de la compra,
-  motivo del item. Delete **always confirms**: item delete keeps a manual receipt and
-  re-sums its total; for a photo receipt, the printed total is preserved unless the user
-  explicitly edits it (deleting the last item deletes its receipt too — DB CHECK
-  `total > 0`); ticket delete removes receipt + items + photo file.
-- **Colors:** clean/light — background `#F5F6F8`, white cards, UdeC green `#6B8E00` primary,
-  income green `#0E9F6E`, confirm `#16A34A`, discard `#DC2626`.
-  **Dark theme included:** toggle (sun/moon) in the app header switches the whole mockup
-  to a dark palette (background `#101318`, cards `#1A2027`, brighter green `#8FB42C`).
-  Choice persists via `localStorage`.
+A replacement prototype should follow this document and the canonical HU registry.
 
-## Experience Principles
+## Experience Principle
 
-1. **Gastos (single hub)** — capture bar (photo · voice · text) + AI confirmation card
-   sample (all items, Confirmar/Editar/Descartar) + "Agregar gasto manual" button +
-   "Mis gastos": live search, category chips, list grouped by receipt (✏️ edit opens the
-   same form pre-filled, 🗑 delete with confirmation sheet).
-2. **Nuevo gasto** — manual form (back button; multi-item rows, auto-sum total, collapsed
-   additional fields). The same form, pre-filled, is used for EDIT.
-3. **Dashboard** — Balance del mes, trend, bar chart with subcategory drill-down, recent
-   movements. ⚠️ proposal E4 = analytics by category ONLY (no trends/balance) — trim the
-   balance/trend sections before the demo.
-4. **Ajustes** — categories (with subcategory counts), "+ Agregar categoría", limits
-   (FASE 3 / optional) with "+ Agregar límite", currency COP/USD.
+The deterministic foundation makes financial operations correct. The AI layer makes them fast.
 
-## Required Manual-MVP Screens
+The main capture surface should make these actions immediately available:
 
-### 1. Register
+- Take a receipt photo
+- Speak naturally
+- Type naturally
+- Add an expense manually
+- Add income manually
+- Transfer manually
 
-- Email
-- Password
-- Confirm password
-- Password visibility controls
-- Field validation
-- Loading/disabled submit state
-- Duplicate-email and generic failure state
-- Success message and navigation to Login
+AI-assisted capture produces a compact card:
 
-### 2. Login
+> This is what I understood.
 
-- Email and password
-- Invalid-credential state
-- Loading state
-- Session-expired state
-- Navigation to Register
+For a high-confidence result, the whole happy path is capture → glance → Accept. Edit, Retry, and Discard remain visible but secondary. Missing or low-confidence fields receive focused attention without forcing the user through every field.
 
-### 3. Home / Dashboard
+## Required Foundation Screens
+
+1. Registration and login, including loading, validation, error, success, restoration, and logout
+2. Accounts and account detail, including explicit currency
+3. Category management with permanent-delete confirmation
+4. Store and income-source management
+5. Fast manual expense form with optional fields collapsed
+6. Optional receipt attachment and item-detail editor
+7. Expense detail/edit/delete
+8. Manual income form and management
+9. Manual transfer form
+10. Searchable transaction history and filters
+11. Basic dashboard with period and category views
+
+Category deletion must explain that existing expenses remain as Uncategorized and dependent budgets are removed.
+
+## AI Speed-Layer Screens
+
+### Natural Text
+
+- One natural-language input surface
+- Assistant infers expense, income, or transfer
+- Compact proposed transaction with visible type
+- Short clarification only when required data or intent is ambiguous
+- Accept, Edit, Retry, and Discard
+
+### Audio
+
+- Immediately discoverable microphone action
+- Visible recording state and automatic stop at 60 seconds
+- Permission-denied explanation with a direct path to device settings
+- Processing state followed by the shared editable proposal card
+- Clear partial/unintelligible/timeout states with Retry, Type instead, and Manual options
+- Temporary audio cleanup on discard, failure, or expiry
+
+### Receipt Photo
+
+- Capture or choose image
+- Processing feedback
+- Compact proposed expense
+- Receipt items available as detail, not mandatory review clutter
+- Uncertain values highlighted
+- Accept, Edit, Retry, and Discard
+
+Editing preserves the original capture and updates the proposal in place.
+
+## Basic Dashboard
 
 - Account balances grouped by currency
-- Income and expenses for selected period
-- Recent movements
-- Spending by category/subcategory
-- Budget progress
-- Clear shortcuts: Add Expense, Add Income, Transfer
-- Empty and retry states
+- Income versus expenses for a selected period
+- Recent activity
+- Category spending
+- Today, This week, This month, and custom period selection
+- Useful empty, loading, and retry states
 
-### 4. Activity
+## Budgets
 
-- Unified expense, income, and transfer rows
-- Visible type label/icon
-- Currency code on every amount
-- Weekly/monthly/custom date filters
-- Account and movement-type filters
-- Entry-detail navigation
+- Flexible recurring or one-time overall/category budgets
+- Budget progress added to the existing dashboard
 
-### 5. Accounts
+## Navigation
 
-- Account list with name, type, currency, and balance
-- Create/edit/archive account
-- Opening balance input
-- Account detail/history
-- Archived-state explanation
-
-### 6. Manual Expense Form
-
-- Account
-- Amount and account currency
-- Date
-- Merchant/description
-- Category and optional subcategory
-- Optional payment method and reason
-- Optional receipt attachment/items entry point
-- Validation and retry state
-
-### 7. Manual Income Form
-
-- Account
-- Amount and account currency
-- Date
-- Income source
-- Optional description
-- Validation and retry state
-
-### 8. Transfer Form
-
-- Source account
-- Destination account
-- Source amount
-- Destination amount when currencies differ
-- Date and optional description
-- Explanation that transfers are not income or expenses
-- Atomic failure/retry state
-
-### 9. Expense Detail
-
-- Expense header
-- Optional receipt image
-- Optional item rows
-- Edit/archive actions
-- Historical/archived state
-
-### 10. Budgets
-
-- Budget list and progress
-- Category or subcategory target
-- Weekly/monthly period
-- Currency
-- Create/edit/deactivate actions
-- Empty and exceeded-target states
-
-### 11. Catalogs and Preferences
-
-- Categories/subcategories
-- Payment methods
-- Income sources
-- Preferred currency
-- Archive behavior
-- Logout
-
-## Navigation Direction
-
-Recommended bottom navigation:
-
-1. Home
-2. Activity
-3. Accounts
-4. Budgets
-5. Settings
-
-Creation actions may use a central add button or clearly visible actions on Home/Activity. The team should validate the final navigation with the professor and usability testers.
-
-## Deferred AI Experience
-
-After the manual MVP:
-
-- Add optional photo, microphone, and natural-language entry points.
-- Open the existing Expense, Income, or Transfer form with proposed values.
-- Mark uncertain fields visibly.
-- Offer Review/Edit/Retry/Discard/Confirm.
-- Never save on provider response alone.
-- Retain every manual screen and action.
-
-A conversational surface may exist later, but chat is not the required application shell.
-
-## Visual Direction
-
-Retain useful visual choices from the historical prototype where appropriate:
-
-- Clean light and dark themes
-- UdeC-inspired green accent
-- Clear positive/negative movement treatment
-- Accessible contrast and readable cards
-- Large mobile touch targets
-
-Visual reuse does not override the approved screen structure.
-
-## Prototype Follow-Up
-
-A later design task should create a new manual-first prototype. Until then:
-
-- `MOCKUPS.md` is the approved UX specification.
-- `mockups/index.html` is historical/non-authoritative.
-- Auth and manual financial screens must be designed before Flutter implementation.
+The authenticated home should make both speed and control obvious: fast multimodal capture at the top, recent activity below, and direct access to Accounts, Activity, Budgets, Dashboard, and Settings.

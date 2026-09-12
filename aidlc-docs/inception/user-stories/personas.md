@@ -16,16 +16,16 @@ An individual who wants an understandable record of money held across places suc
 - Record income and spending without excessive effort.
 - Move money between accounts without incorrectly treating the movement as income or expense.
 - Understand spending by category and period.
-- Establish simple, understandable weekly or monthly budgets.
+- Establish simple recurring or one-time budgets.
 - Trust that totals are correct even when accounts use different currencies.
-- Later use optional AI to reduce form-entry effort without losing control.
+- Use natural-text and audio AI first, followed by receipt-photo AI, to capture transactions quickly without losing control.
 
 ### Behaviors and Context
 
 - Uses a phone as the primary interface.
 - May alternate frequently between cash and digital accounts.
 - Records some transactions immediately and others later from memory or a receipt.
-- Expects common categories and payment methods to exist but wants to customize them.
+- Expects familiar categories, stores, and income sources but wants to customize them.
 - May have COP and another currency but does not necessarily understand exchange-rate accounting.
 - Values speed, clarity, and visible confirmation more than advanced financial terminology.
 
@@ -42,7 +42,7 @@ An individual who wants an understandable record of money held across places suc
 
 - Clear Add Expense, Add Income, and Transfer actions.
 - Account balances and transaction history scoped to the signed-in user.
-- Simple category/subcategory budgets with visible progress.
+- Flexible overall/category budgets with visible progress.
 - Separate currency totals until trustworthy conversion exists.
 - Manual control at every stage, including after AI is added.
 - Understandable errors, loading states, and recovery from failed submissions.
@@ -64,9 +64,9 @@ An individual who wants an understandable record of money held across places suc
 | Returning user | Resume securely without unnecessary repeated setup |
 | Manual recorder | Enter complete financial data without AI |
 | Multi-account user | Understand balances and transfers across money locations |
-| Budget reviewer | Compare actual spending with weekly or monthly targets |
-| AI-assisted user — deferred | Accept, edit, retry, or discard proposed form values |
+| Budget reviewer | Compare actual spending with recurring or one-time targets |
+| AI-assisted user — after foundation | Glance and accept high-confidence proposals, or edit/retry/discard when needed |
 
 ## Persona-to-Domain Mapping
 
-P-001 applies to every approved product domain: identity, preferences, accounts, catalogs, expenses, income, transfers, history, budgets, dashboard, and deferred AI-assisted input.
+P-001 applies to every approved product domain: identity, accounts, catalogs, expenses, income, transfers, transaction history, the basic dashboard, photo/text/audio AI capture, and budgets.

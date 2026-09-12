@@ -2,67 +2,32 @@
 
 ## Status
 
-This is a dependency-aware release sequence, not a unilateral sprint commitment. The team decides sprint length, capacity, assignments, and story points together. Stable identifiers come from `docs/BACKLOG-AND-STORIES.md`.
+This is a dependency-aware sequence, not a fixed team commitment. The team decides sprint length, capacity, assignments, and story points. Identifiers come only from `docs/BACKLOG-AND-STORIES.md`.
 
-## Release Gates
+## Product and Release Gates
 
-1. Manual forms and deterministic financial behavior must work without an AI provider.
-2. Each story must meet Definition of Ready before Planning Poker and sprint commitment.
-3. HU-015/HU-016 cannot enter a sprint until HU-001–HU-014 form a stable manual MVP.
-4. AI may only propose data for existing forms; user confirmation and normal validation remain mandatory.
+1. Manual forms define the validated expense, income, and transfer contracts and remain available as a fallback.
+2. AI assistance begins only after identity, accounts, catalogs, manual operations, correction/deletion, transaction history, and the basic dashboard are stable (HU-001–HU-012).
+3. AI uses the same save path as manual entry and never bypasses server validation, authorization, or ownership.
+4. High-confidence proposals should need only a glance and one tap. Extra questions or highlighted fields appear only when information is missing or confidence is low.
+5. A story must meet Definition of Ready before estimation and sprint commitment.
 
 ## Recommended Sequence
 
 | Iteration | Outcome | Candidate work |
 |---|---|---|
-| Foundation | A clean, repeatable vertical-development baseline | EN-001–EN-006 |
-| Identity | A user can register, log in, restore/revoke a session, and set defaults | HU-001–HU-003 |
-| Financial structure | A user has accounts/currencies and owned catalogs | HU-004–HU-006 |
-| Manual movements | A user can record the three essential money movements | HU-007, HU-010, HU-011 |
-| Detail and history | A user can add optional detail, correct expenses, and review unified activity | HU-008, HU-009, HU-012 |
-| Planning and overview | A user can create budgets and understand current finances | HU-013, HU-014 |
-| Optional AI — later | Existing forms can be prefilled from photo, audio, or text | HU-015, HU-016 |
+| Foundation | Repeatable development baseline | EN-001–EN-006 — done |
+| Identity | Registration and secure renewable sessions | HU-001–HU-002 — done |
+| Financial structure | Accounts, currencies, and catalogs | HU-003–HU-005 |
+| Core transactions | Manual expense, optional receipt detail, income, and transfers | HU-006–HU-007, HU-009–HU-010 |
+| Control and visibility | Expense correction/deletion, searchable transaction history, and the basic dashboard complete the deterministic foundation | HU-008, HU-011–HU-012 |
+| AI speed layer 1 | Natural-text proposals establish the shared assistant proposal/review flow | HU-013 |
+| AI speed layer 2 | Audio reuses that flow with recording, permission, and temporary-media behavior | HU-014 |
+| AI speed layer 3 | Receipt photo adds image extraction and optional receipt/item detail | HU-015 |
+| Planning | Flexible overall/category budgets and dashboard budget progress | HU-016 |
 
-The team may move a ready story within adjacent iterations when dependencies, capacity, and integration risk permit. It must not renumber the story.
+HU-013 through HU-015 begin after HU-001–HU-012 are stable. They do not need to wait for budgets in HU-016.
 
-## Foundation Before HU-001
+The team may move a ready story within adjacent iterations when dependencies and capacity permit. Story identifiers must never be renumbered to match a sprint.
 
-HU-001 is the first product story. Its implementation depends on foundations that remain separate enablers:
-
-- EN-001 establishes repository and quality conventions.
-- EN-002 supplies repeatable API/database startup.
-- EN-003 supplies the user/default-catalog migration and seed behavior.
-- EN-004 fixes the registration/authentication contract and common errors.
-- EN-005 supplies the Flutter route, theme, and common form states.
-- EN-006 makes checks repeatable from the beginning.
-
-> This schedule is synchronized with `docs/BACKLOG-AND-STORIES.md` as of 2026-08-30.
-> Infrastructure setup is pre-Sprint 1 work, not a user story.
-
-### Sprint 1 — Authentication
-| Tarea/HU | Prioridad |
-|----------|-----------|
-| HU-001: Register | Alta |
-| HU-002: Login | Alta |
-
-### Sprint 2 — Manual expense foundation
-| Tarea/HU | Prioridad |
-|----------|-----------|
-| HU-003: Create expense manually | Media |
-| HU-004: Edit & delete my expenses | Media |
-| HU-005: Find my expenses | Media |
-
-### Sprint 3 — AI-assisted capture
-| Tarea/HU | Prioridad |
-|----------|-----------|
-| HU-006: Photo receipt happy path | Alta |
-| HU-007: Photo capture failure paths | Alta |
-| HU-008: Natural-language text → AI parse | Media |
-
-### Sprint 4 — Future scope (definitions pending)
-| Tarea/HU | Prioridad |
-|----------|-----------|
-| HU-009: Audio → AI parsing + categorization | Media — pendiente de definición |
-| HU-010: Dashboard by category + date filter | Media — pendiente de definición |
-| Pruebas funcionales | Tarea |
-| Encuesta de usabilidad | Tarea |
+Testing, documentation, security checks, and usability review belong inside each iteration; they are not postponed to a final testing sprint.

@@ -17,33 +17,34 @@
 |---|---|---|---|
 | HU-001 | PB-001 | UOW-01 | Register an account |
 | HU-002 | PB-001 | UOW-02 | Login, restore/revoke a session, and logout |
-| HU-003 | PB-002 | UOW-02 | Manage personal defaults |
-| HU-004 | PB-003 | UOW-03 | Manage financial accounts |
-| HU-005 | PB-004 | UOW-03 | Manage categories and subcategories |
-| HU-006 | PB-004 | UOW-03 | Manage payment methods and income sources |
-| HU-007 | PB-005 | UOW-04 | Record a manual expense |
-| HU-010 | PB-006 | UOW-04 | Record and manage income |
-| HU-011 | PB-007 | UOW-04 | Transfer money between accounts |
-| HU-008 | PB-005 | UOW-05 | Add optional receipt and item detail |
-| HU-009 | PB-005 | UOW-05 | Correct or archive an expense |
-| HU-012 | PB-008 | UOW-05 | Review and filter financial activity |
-| HU-013 | PB-009 | UOW-06 | Manage a spending budget |
-| HU-014 | PB-010 | UOW-06 | Review the budget dashboard |
-| HU-015 | PB-011 | UOW-07 | Prefill an expense from a receipt photo |
-| HU-016 | PB-011 | UOW-07 | Prefill a financial form from audio or text |
+| HU-003 | PB-002 | UOW-03 | Manage financial accounts and currencies |
+| HU-004 | PB-003 | UOW-03 | Manage categories and subcategories |
+| HU-005 | PB-003 | UOW-03 | Manage stores and income sources |
+| HU-006 | PB-004 | UOW-04 | Record a fast manual expense |
+| HU-009 | PB-005 | UOW-04 | Record and manage income |
+| HU-010 | PB-006 | UOW-04 | Transfer money between accounts |
+| HU-007 | PB-004 | UOW-05 | Add optional receipt and item detail |
+| HU-008 | PB-004 | UOW-05 | View, correct, or permanently delete an expense |
+| HU-011 | PB-007 | UOW-05 | Search and filter transaction history |
+| HU-012 | PB-008 | UOW-06 | Review the basic financial dashboard |
+| HU-013 | PB-009 | UOW-07 | Natural-text financial capture |
+| HU-014 | PB-009 | UOW-07 | Audio financial capture |
+| HU-015 | PB-010 | UOW-07 | Rapid expense proposal from a receipt photo |
+| HU-016 | PB-011 | UOW-08 | Manage a spending budget and dashboard progress |
 
 ## Unit Coverage Summary
 
-| Unit | Enablers | Manual stories | Deferred AI stories |
+| Unit | Enablers | Deterministic/manual stories | AI speed stories |
 |---|---:|---:|---:|
 | UOW-01 | 6 | 1 | 0 |
-| UOW-02 | 0 | 2 | 0 |
+| UOW-02 | 0 | 1 | 0 |
 | UOW-03 | 0 | 3 | 0 |
 | UOW-04 | 0 | 3 | 0 |
 | UOW-05 | 0 | 3 | 0 |
-| UOW-06 | 0 | 2 | 0 |
-| UOW-07 | 0 | 0 | 2 |
-| Total | 6 | 14 | 2 |
+| UOW-06 | 0 | 1 | 0 |
+| UOW-07 | 0 | 0 | 3 |
+| UOW-08 | 0 | 1 | 0 |
+| Total | 6 | 13 | 3 |
 
 ## Traceability Rules
 
@@ -57,5 +58,5 @@
 
 - Every EN-001 through EN-006 appears exactly once.
 - Every HU-001 through HU-016 appears exactly once.
-- Fourteen manual stories precede the two deferred AI stories.
+- Twelve foundation stories precede the three AI speed stories; the budget story follows.
 - No frontend/backend layer work is represented as an artificial user story.

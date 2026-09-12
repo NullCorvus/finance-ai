@@ -1,78 +1,60 @@
 # Features — Finance AI
 
-Features are ordered by dependency. The complete manual budgeting application is built before product AI.
+Finance AI is designed to make financial capture exceptionally fast. Manual forms provide the reliable data contract and fallback; the AI assistant is the primary speed layer over those same rules.
 
-## Phase 0 — Technical Foundation
+## Phase 0 — Technical Foundation — Done
 
-These are technical enablers, not user stories:
+EN-001–EN-006 provide separate repositories, repeatable FastAPI/PostgreSQL infrastructure, migrations and seeds, versioned API contracts, the shared Android/Windows Flutter foundation, and continuous quality checks.
 
-| ID | Enabler | Outcome |
-|---|---|---|
-| EN-001 | Repository separation and quality baseline | Separate documentation, backend, and frontend repositories with pinned tools, formatting, linting, and review conventions |
-| EN-002 | Local infrastructure | FastAPI and PostgreSQL start repeatably with database health checks |
-| EN-003 | Migration and seed baseline | SQLAlchemy/Alembic database creation plus repeatable currency and default-catalog setup |
-| EN-004 | API contract baseline | Versioned OpenAPI contract for identity and initial resources |
-| EN-005 | Flutter foundation | Theme, navigation shell, loading/error patterns, and auth route structure |
-| EN-006 | Continuous quality baseline | Automated tests, dependency checks, and clean-setup verification |
+## Phase 1 — Identity and Financial Structure
 
-No AI key or provider is required in Phase 0.
+- Registration, login, secure session restoration, renewal, logout, and user isolation
+- User-owned accounts representing cash, banks, wallets, savings, or other money locations
+- Shared supported currencies, initially COP and USD
+- An explicit currency per account; the last-used currency may be suggested for speed without becoming a separate preferences feature
+- User-owned categories, stores, and income sources
+- Permanent catalog deletion with confirmation; existing transactions survive as `Uncategorized` or without the deleted optional catalog value
 
-## Phase 1 — Identity and Financial Foundation
+## Phase 2 — Manual Transaction Contracts
 
-| # | Feature | Description |
-|---|---------|-------------|
-| 1 | Receipt photo → AI extraction + categorization | Upload receipt photo, AI with vision extracts line items (name, amount, subcategory), store, date, total, payment method, currency. purchase_reason and item_reason are optional. User confirms or corrects before saving. Image stored temporarily until confirmation. Atomic save (receipt + items + image + relationships). |
-| 2 | Audio input → AI parsing + categorization | Say "spent $15 on lunch at Subway" — AI parses to structured expense AND categorizes. Supports both short sentences and longer voice memos. |
-| 4 | Registro manual y gestión de gastos (CRUD) | Crear, editar, eliminar gastos con monto, fecha, comercio, moneda, método de pago, categoría/subcategoría y purchase_reason/item_reason. Guardar recibos con imagen opcional. Aislamiento por usuario. Base para todas las capturas. |
-| 5b | Income registration | Register income (salary, freelance, gift...) with source and optional description. Enables balance analysis ("am I spending more than I earn?"). |
-| 8 | Dashboard | Overview of expenses: table of recent transactions, summary cards, graphs (spending by category/subcategory, trends over time, balance vs income). **Computed by the backend with plain SQL — no AI involved.** Low priority — build after capture features work. |
-| 21 | Expense search & filters | Find expenses by item/store name (live text search) + filter by category and date range. Plain SQL (ILIKE), no AI. Part of expense management (HU-005). |
+- Manual expense entry without AI, receipt, or item-detail requirements
+- Optional receipt image and zero or more item-detail rows
+- Expense viewing, editing, and permanent deletion
+- Income entry and management
+- Atomic transfers between owned accounts, including explicit cross-currency amounts
+- One validated save path per transaction type, shared by manual and AI-assisted entry
 
-## Phase 2 — Manual Money Management
+## Phase 3 — Control and Visibility Foundation
 
-- Manual form entry always works — AI is not required to register an expense.
-- Manual form path: the user enters the required expense fields directly; the form bypasses AI and saves after validation.
-- AI-assisted path: natural-language text, photo, or audio → backend calls AI API once → AI returns structured JSON + category → preview with editable fields → **Confirm / Edit / Discard**. Nothing is saved until the user confirms.
-- Auto-categorization is integrated into the AI prompt: the backend passes the user's existing subcategories, so suggestions come from the existing list first. User can override or add a new one.
+- Expense viewing, correction, and permanent deletion
+- Searchable transaction history with account, movement-type, category, text, and date-period filters
+- A basic dashboard with balances, recent movements, income, expenses, and period/category views, always separated by currency
+- Reliable recalculation after edits or deletions
+- Complete ownership, atomicity, validation, and error behavior across every manual operation
 
-## Phase 3 — Budgets and Visibility
+At the end of Phase 3, the deterministic foundation is ready to support AI without accelerating incorrect financial behavior.
 
-| Feature | Description |
+## Phase 4 — Multimodal AI Speed Layer
+
+The assistant behaves like a knowledgeable financial clerk. Text establishes the shared proposal/review flow first, audio reuses it second, and receipt photo extends it third. The assistant determines whether natural text or audio describes an expense, income, or transfer; a receipt photo normally proposes an expense.
+
+| Capability | Outcome |
 |---|---|
-| Category/subcategory budgets | Simple weekly or monthly targets in an explicit currency |
-| Budget progress | Deterministic calculation from qualifying expenses |
-| Account balances | Opening balance plus active movements |
-| Dashboard | Income, expenses, balances, recent activity, category totals, and budget progress |
-| Currency-safe summaries | Group totals by currency until conversion is intentionally implemented |
+| Natural text — first | Proposed expense, income, or transfer and the initial shared “This is what I understood” interaction |
+| Audio capture | Microphone recording with a visible recording state, a 60-second limit, supported temporary formats, permission recovery, and cleanup on discard or failure |
+| Receipt photo — third | Proposed purchase group with an optional store, items, printed total, date, categories, and currency |
+| High-confidence proposal | A compact “This is what I understood” summary that can be accepted with one tap |
+| Uncertain proposal | Only missing or low-confidence fields are highlighted or clarified |
+| Correction | Edit in place without restarting the capture |
+| Manual fallback | Every normal form works when AI is unavailable or the user prefers direct entry |
 
-At the end of Phase 3, the application is a complete usable manual MVP.
+AI output remains untrusted and goes through normal validation and ownership rules, but safety must not recreate the full manual-entry workload. Natural text, audio, and receipt photo share one review model: quick glance, Accept, Edit, Retry, or Discard.
 
-## Phase 4 — Optional AI Assistance
+## Phase 5 — Budgets and Extended Visibility
 
-| # | Feature | Description |
-|---|---------|-------------|
-| 6 | Chat with AI | Ask questions like "how much did I spend on food this month?" in natural language. AI queries the DB (read-only, via tools) and responds. |
-| 7 | AI generates graphs | Visual answers to chat queries: spending by category, trends over time. |
-| 9 | Multi-currency | Support USD + COP with AI handling conversion rates. Store original amount + currency; convert when displaying. |
-| 11 | Recurring expenses | Monthly expenses that auto-create each month. Manual: user marks expense as recurring. AI suggestion: AI detects patterns and asks "Want to make this recurring?". |
-| 13 | What-if simulation | "What if I replace rice with pasta?" → agent simulates the change and shows the difference (e.g., monthly savings). |
-| 14 | Supermarket price reference | Agent can reference product prices (e.g., "how much does rice cost?"). Source: to define. Live online scraping not recommended. |
-| 15 | Google Keep / Workspace integration | Optional. Connect to Google Workspace (e.g., create a shopping list in Google Keep from expenses). Requires prior user configuration. |
-| 16 | Agent-created limits via chat | User says "keep eating out under $50/month" in chat → agent creates/edits the spending limit. |
-| 17 | Spending insights | AI flags unnecessary spending ("you spent $40 on impulse purchases this week") powered by reason/context tracking. |
-| 19 | Saved skills | Save a reusable command/preference so you don't repeat yourself. Example: "every month, send me my spending summary" → saved once, agent runs it anytime you ask. |
-| 20 | Agent write protection | Agent modifications (limits, subcategories) show a confirmation preview before applying — same Confirm/Edit/Discard pattern as expenses. Optional audit/change-log table for undo. |
-| 18 | Chat history | Save past agent conversations so the AI remembers what you asked before. Optional Phase 3 feature. |
+- Flexible recurring or one-time overall/category budgets
+- Deterministic budget progress from qualifying expenses
+- Budget progress added to the existing dashboard
+- Currency-safe totals that do not silently combine unlike currencies
 
-| Feature | Description |
-|---|---|
-| Receipt-photo assistance | Extract proposed expense and optional item values into the existing expense form |
-| Audio assistance | Interpret a spoken expense, income, or transfer and prefill the corresponding normal form |
-| Natural-language text assistance | Interpret typed descriptions and prefill the corresponding normal form |
-| Review gate | Edit, retry, discard, or explicitly confirm every proposal |
-| Manual fallback | All normal forms continue to work when AI is disabled or unavailable |
-
-- **Phase 0** — Infrastructure. Must be done before anything else.
-- **Phase 1** — Must have at launch. Build first. Includes capture (photo/audio/natural-language text), income, and dashboard (low priority).
-- **Phase 2** — Easy extras. Build once Phase 1 is stable. Spending limits, export, reason tracking.
-- **Phase 3** — Optional ideas ("agent" features). Nice-to-have; can be skipped without affecting the core.
+Free-form analytics chat, autonomous financial writes, recurring automation, external price lookup, and third-party integrations remain outside the approved backlog unless the team adds separate stories.

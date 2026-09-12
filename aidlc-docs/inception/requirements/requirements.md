@@ -4,28 +4,29 @@
 
 | Item | Decision |
 |---|---|
-| Request | Reconcile the repository documentation before any application code is created |
-| Request type | Greenfield project requirements and documentation correction |
+| Request | Maintain one concise, consistent product and implementation reference across three repositories |
+| Request type | Brownfield product requirements and documentation maintenance |
 | Scope | System-wide documentation: product scope, data model, architecture, backlog, sprint sequence, mockups, stack, and quality rules |
 | Complexity | High: the decisions affect authentication, financial data, accounts, transfers, budgets, currencies, UI flows, and the later AI integration |
-| Product principle | Build a complete manual budgeting application first; add AI later as an optional assistant over the same forms and business rules |
+| Product principle | Use stable manual transaction contracts as the safety foundation, then make multimodal AI the fastest way to capture financial activity |
 
 ## Product Definition
 
-Finance AI is a personal budgeting application that works completely without artificial intelligence. Users manually manage the places where their money is held, record income and expenses, move money between accounts, organize transactions, establish simple budgets, and review their financial activity.
+Finance AI is a personal budgeting application optimized for capture speed. Users manage accounts, record income and expenses, move money between accounts, organize transactions, establish budgets, and review their financial activity.
 
-After the manual product is stable, optional AI-assisted input may be added. AI can interpret a receipt photo, audio description, or text and propose values for the existing manual forms. AI does not own a separate financial workflow, bypass validation, or save directly. The user always reviews the proposal and explicitly confirms it through the normal application flow.
+Manual forms provide complete fallback behavior and stable transaction contracts. Identity, accounts, catalogs, manual expense/income/transfer operations, correction/deletion, searchable transaction history, and a basic dashboard must work reliably before AI is integrated. AI then begins with natural-language text and audio descriptions, followed by receipt-photo interpretation. It identifies the intended transaction and proposes values for the same forms. A high-confidence proposal requires only a quick glance and one-tap acceptance; only missing or uncertain information adds clarification. AI never owns a separate write path, bypasses validation, or saves directly.
 
 ## Delivery Sequence
 
 1. **Technical foundation:** repository structure, local infrastructure, database migrations and seeds, API contract, quality checks, and UI foundation.
-2. **Identity and preferences:** registration, login, logout, authenticated navigation, and user defaults.
-3. **Manual financial foundation:** accounts, currencies, categories, subcategories, payment methods, and income sources.
+2. **Identity and sessions:** registration, login, logout, session restoration, and authenticated navigation.
+3. **Manual financial foundation:** accounts, currencies, categories, stores, and income sources.
 4. **Manual money movement:** expense CRUD, income CRUD, transfers, transaction history, and date/period filters.
-5. **Budgeting and visibility:** category/subcategory budgets and a basic dashboard.
-6. **Optional AI assistance:** photo/audio/text parsing into the existing forms with review and confirmation.
+5. **Deterministic control and visibility:** correction/deletion, transaction history, and the basic financial dashboard complete the foundation.
+6. **AI speed layer:** natural text first establishes the shared proposal/review flow, audio reuses it second, and receipt photo extends it third with image and item extraction.
+7. **Budgeting:** flexible overall/category budgets and budget progress added to the dashboard.
 
-Product AI must not be introduced into the production feature flow until stages 1–5 provide a usable manual MVP. A time-boxed technical experiment may validate an AI provider earlier, but it is not a user-facing dependency and must not change the delivery order.
+Product AI begins after HU-001–HU-012 form a stable deterministic foundation. It does not need to wait for budgets in HU-016.
 
 ## Functional Requirements
 
@@ -45,7 +46,7 @@ Product AI must not be introduced into the production feature flow until stages 
 | ID | Requirement |
 |---|---|
 | FR-ACC-01 | Each user can create and manage financial accounts representing places where money is held, such as cash, a bank account, a digital wallet, or a savings product. |
-| FR-ACC-02 | An account has an owner, name, type, currency, opening balance, and active/archived status. |
+| FR-ACC-02 | An account has an owner, name, type, currency, opening balance, and active/inactive status. |
 | FR-ACC-03 | Every expense and income entry belongs to exactly one account owned by the authenticated user. |
 | FR-ACC-04 | Users can transfer money between two of their accounts. A transfer is neither income nor expense and must not distort spending or earnings analytics. |
 | FR-ACC-05 | A transfer is recorded atomically: both sides succeed or neither side is saved. |
@@ -53,61 +54,68 @@ Product AI must not be introduced into the production feature flow until stages 
 | FR-CUR-02 | Each account uses one currency, and all original transaction amounts remain stored in their account currency. |
 | FR-CUR-03 | A cross-currency transfer records both the amount leaving the source account and the amount entering the destination account. This preserves the actual exchange without requiring a live exchange-rate service. |
 | FR-CUR-04 | Before conversion is implemented, dashboards show totals separately by currency and never add unlike currencies into a misleading combined value. |
-| FR-CUR-05 | A preferred currency defaults to COP and can later guide default selections and converted displays; it does not rewrite original financial records. |
+| FR-CUR-05 | Account and transaction forms may suggest COP or the user's last-used supported currency for speed; every saved account and transaction retains its explicit currency. |
 
 ### User-Owned Catalogs
 
 | ID | Requirement |
 |---|---|
-| FR-CAT-01 | Currencies are shared reference data. Categories, subcategories, payment methods, and income sources are user-owned and isolated by user. |
-| FR-CAT-02 | On registration, common category, payment-method, and income-source templates are copied as editable defaults for the new user. |
-| FR-CAT-03 | Users can add, edit, archive, and select their own catalog entries without affecting other users. |
-| FR-CAT-04 | Catalog entries already referenced by financial records are archived rather than destructively removed when deletion would damage history. |
+| FR-CAT-01 | Currencies are shared reference data. Categories, stores, and income sources are user-owned and isolated by user. |
+| FR-CAT-02 | Small category and income-source defaults may be copied for a new user when the corresponding story approves them. |
+| FR-CAT-03 | Users can add, edit, permanently delete, and select their own catalog entries without affecting other users. |
+| FR-CAT-04 | Deleting a category requires confirmation, keeps existing expenses, changes their removed classification to Uncategorized, and deletes dependent budgets atomically. |
+| FR-CAT-05 | Deleting an optional store or income source keeps existing transactions and displays the removed reference as Deleted. |
 
 ### Expenses, Income, and Receipts
 
 | ID | Requirement |
 |---|---|
-| FR-EXP-01 | `Expense` represents the purchase or spending transaction, not an individual receipt line. |
-| FR-EXP-02 | A manual expense can exist without a receipt image and without line items. |
-| FR-EXP-03 | An expense records its owner, account, amount, date, merchant/description, category or subcategory, optional payment method, and optional reason/context. |
-| FR-EXP-04 | An expense may contain zero or more optional `ExpenseItem` records for receipt detail. |
-| FR-EXP-05 | A receipt is optional evidence/attachment associated with an expense; it is not a placeholder required for every manual entry. |
-| FR-EXP-06 | Users can create, view, edit, and delete or archive only their own expenses. |
-| FR-INC-01 | Users can create, view, edit, and delete or archive income entries associated with one of their accounts and income sources. |
+| FR-EXP-01 | `Receipt` is a simple purchase group connected to one expense-type financial transaction. |
+| FR-EXP-02 | Every purchase receipt contains one or more `Expense` rows; a lone purchase has exactly one row. |
+| FR-EXP-03 | A receipt records a name, currency, date, total, and optional store, category, note, and image path. Its account effect is represented by `account_movement`. |
+| FR-EXP-04 | Each expense row records its own name, category, position, quantity, amount, optional unit price, note, and image path. There is no product reference. |
+| FR-EXP-05 | Receipt and expense images are optional; the MVP stores backend-managed paths rather than image binaries in PostgreSQL or a generalized attachment model. |
+| FR-EXP-06 | Users can create, view, edit, and permanently delete only their own purchases. Deleting one removes its receipt, expense rows, images, and movements atomically. |
+| FR-INC-01 | Users can create, view, edit, and permanently delete income transactions associated with one account movement and an optional direct income-source reference. |
 | FR-INC-02 | Financial updates that affect multiple records use a database transaction and roll back completely on failure. |
 
 ### Budgets, Dates, and Dashboard
 
 | ID | Requirement |
 |---|---|
-| FR-BUD-01 | Users can create a simple spending budget for either a category or a subcategory. |
-| FR-BUD-02 | A budget has an amount and a weekly or monthly period. Budget progress is calculated from qualifying expenses, not stored as an independent truth. |
-| FR-BUD-03 | A budget targets exactly one category level to prevent ambiguous or double-counted progress. |
+| FR-BUD-01 | Users can create an overall budget or a budget for one category. |
+| FR-BUD-02 | A budget has an amount, start date, optional end date, and either a recurring interval (day/week/month/year) or a one-time/custom schedule. Progress is calculated rather than stored as an independent truth. |
+| FR-BUD-03 | A nullable category target means an overall budget; a non-null owned category means a category budget. |
 | FR-DATE-01 | The manual core includes transaction date selection and weekly/monthly/custom period filters. |
 | FR-DATE-02 | A dedicated calendar screen and recurring transactions are outside the initial manual MVP. |
-| FR-DASH-01 | The dashboard provides recent transactions, expenses by category/subcategory, income versus expenses, account balances, and budget progress for a selected period. |
+| FR-DASH-01 | Before AI integration, the basic dashboard provides recent transactions, expenses by category, income versus expenses, and account balances for a selected period. |
 | FR-DASH-02 | Dashboard calculations are deterministic backend/database calculations; AI is not used for ordinary analytics. |
+| FR-DASH-03 | When budgets are implemented, budget progress is added to the existing dashboard without changing its foundational calculations. |
 
-### Optional AI Assistance
+### Multimodal AI Speed Layer
 
 | ID | Requirement |
 |---|---|
-| FR-AI-01 | Product AI is optional and is delivered only after the complete manual MVP. |
-| FR-AI-02 | AI input adapters may accept photo, audio, or text and return proposed values matching the existing manual expense, income, or transfer form contract as appropriate. |
+| FR-AI-01 | AI is the primary capture-speed layer and is introduced after the HU-001–HU-012 deterministic foundation is stable. |
+| FR-AI-02 | AI input adapters accept supported photo, audio, or text, infer whether the user intends an expense, income, or transfer, and return proposed values matching the corresponding existing form. |
 | FR-AI-03 | AI output is treated as untrusted input and passes the same validation and ownership rules as manually entered data. |
-| FR-AI-04 | The user can review, edit, retry, or discard an AI proposal before saving. |
+| FR-AI-04 | The user sees a compact “This is what I understood” proposal and can accept it with one tap or edit, retry, or discard it before saving. |
 | FR-AI-05 | AI never writes financial data directly, and every AI-assisted action retains a fully manual alternative. |
 | FR-AI-06 | AI provider credentials and calls remain in the backend; the mobile application never contains or calls a provider secret directly. |
+| FR-AI-07 | High-confidence proposals do not force redundant form traversal; only missing or low-confidence values are highlighted or clarified. |
+| FR-AI-08 | Photo, voice, and text use the same review model and preserve the original capture while the user corrects the proposal. |
+| FR-AI-09 | Audio capture provides a visible recording state, stops at 60 seconds, accepts the approved temporary formats such as M4A/WAV, handles microphone permission denial, and removes unconfirmed audio after discard, failure, or expiry. |
+| FR-AI-10 | Receipt-photo capture accepts the approved JPEG/PNG/HEIC inputs up to 10 MB, distinguishes complete, partial, unreadable, and failed extraction, and removes unconfirmed media after discard, failure, or expiry. |
+| FR-AI-11 | Delivery order is natural text first, audio second, and receipt photo third so the shared proposal contract is proven before adding temporary-media complexity. |
 
 ## User Experience Requirements
 
 | ID | Requirement |
 |---|---|
-| UX-01 | Before AI exists, the primary experience is recognizable as a budgeting application, with a dashboard or transaction history and clear Add Expense/Add Income actions. |
+| UX-01 | The application is recognizable as a budgeting product and makes photo, voice, and text capture immediately discoverable alongside manual Add Expense/Add Income/Transfer actions. |
 | UX-02 | Registration and Login receive explicit mockups covering validation, loading, error, success, password visibility, and navigation states. |
-| UX-03 | Manual forms remain first-class after AI is introduced; the assistant pre-fills those same forms rather than replacing them with a separate source of truth. |
-| UX-04 | The later assistant may be presented conversationally, but chat is not the required application shell for the manual MVP. |
+| UX-03 | Manual forms remain complete fallbacks; the assistant prepares those same contracts rather than creating a separate source of truth. |
+| UX-04 | The assistant is conversational and optimized for a glance-and-accept flow. It asks follow-up questions only when information required to save safely is missing or ambiguous. |
 | UX-05 | Error messages are understandable to users and do not reveal internal paths, queries, stack traces, tokens, or secrets. |
 
 ## Technical and Repository Requirements
@@ -116,7 +124,7 @@ Product AI must not be introduced into the production feature flow until stages 
 |---|---|
 | TR-01 | Use three clearly owned repositories: `finance-ai` for documentation/orchestration, `finance-ai-backend` for FastAPI/PostgreSQL/OpenAPI, and `finance-ai-frontend` for the shared Android/Windows Flutter client. |
 | TR-02 | Use a modular monolith: Flutter client, FastAPI backend, and PostgreSQL database. Do not introduce microservices for the MVP. |
-| TR-03 | SQLAlchemy models and Alembic migrations are the executable source of truth for database creation and evolution. `SCHEMA.md` is explanatory documentation; the current `schema.sql` becomes a reference snapshot or is retired to avoid dual authority. |
+| TR-03 | SQLAlchemy models and Alembic migrations are the executable source of truth for database creation and evolution. `SCHEMA.md` explains decisions and `finance-ai-draft.dbml` is a non-authoritative future design draft. |
 | TR-04 | Database reference/default data is created through repeatable seed logic separated from schema migrations where practical. |
 | TR-05 | API behavior is defined in a versioned OpenAPI contract before frontend/backend integration. |
 | TR-06 | `BACKLOG-AND-STORIES.md` owns PB/HU identifiers and story definitions. `SPRINT-PLAN.md` references those identifiers and owns sprint allocation and technical tasks. Trello reflects these documents but does not silently redefine them. |
@@ -175,7 +183,7 @@ Property-based testing uses partial enforcement for backend domain rules. Hypoth
 
 ## Explicitly Deferred or Out of Scope
 
-- Product AI before the full manual MVP.
+- AI before identity, accounts, catalogs, manual operations, correction/deletion, transaction history, and the basic dashboard form a stable deterministic foundation.
 - Live exchange-rate service and automatic converted totals.
 - Dedicated calendar screen and recurring transactions.
 - Admin dashboard and user administration.
@@ -194,7 +202,7 @@ After approval, the repair pass must synchronize at least:
 - `docs/STACK.md`
 - `docs/ARCHITECTURE.md`
 - `docs/SCHEMA.md`
-- `docs/schema.sql` status or replacement policy
+- `docs/finance-ai-draft.dbml` and the removal of conflicting schema snapshots
 - `docs/MOCKUPS.md` and the prototype direction
 - `docs/BACKLOG-AND-STORIES.md`
 - `docs/SPRINT-PLAN.md`

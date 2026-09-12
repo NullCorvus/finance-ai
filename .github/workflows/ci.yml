@@ -3,7 +3,7 @@ name: Project Hub CI
 on:
   pull_request:
   push:
-    branches: [main, master]
+    branches: [main, develop]
 
 permissions:
   contents: read
@@ -28,9 +28,11 @@ jobs:
           test ! -d frontend
           test -f README.md
           test -f docs/REPOSITORIES.md
+          test -f docs/README.md
           test -f docs/STACK.md
           test -f docs/BACKLOG-AND-STORIES.md
-          test -f aidlc-docs/audit.md
+          test -f docs/finance-ai-draft.dbml
+          test -f aidlc-docs/aidlc-state.md
           test -f compose.yaml
           test -f tool/local_stack.ps1
       - name: Reject committed local secrets

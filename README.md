@@ -1,6 +1,6 @@
 # Finance AI
 
-Finance AI is a manual-first personal budgeting application. Users will always be able to manage their finances through ordinary forms. Optional AI assistance will be added later to propose values for those same forms; it will not replace the application, validation, or database.
+Finance AI is a personal budgeting application whose differentiator is fast multimodal capture. A deterministic foundation of identity, accounts, catalogs, manual financial operations, transaction history, and a basic dashboard comes first; then natural text and audio establish conversational AI capture, followed by receipt-photo capture. Every mode prepares a proposal for a quick glance and one-tap acceptance. Manual forms remain complete fallbacks, and AI never bypasses validation or the database rules.
 
 This repository is the project hub. It owns product documentation, architecture decisions, delivery history, and the optional local orchestration that connects the two code repositories.
 
@@ -32,8 +32,9 @@ See [`docs/REPOSITORIES.md`](docs/REPOSITORIES.md) for ownership and change rule
 - Argon2id password hashing, throttling, correlation IDs, and safe problem responses
 - Shared Android and Windows Flutter client
 - Copyable, privacy-safe error reports
+- Owned financial accounts with explicit currency, derived balances, deactivation, and safe deletion
 
-Personal defaults, accounts, movements, budgets, calendars, synchronization, and AI remain later stories.
+Categories, stores and income sources, movements, transaction history, the basic dashboard, the AI speed layer, and budgets remain upcoming stories in that dependency order.
 
 ## Local development stack
 

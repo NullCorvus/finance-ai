@@ -17,6 +17,20 @@ Finance AI uses three private repositories with one responsibility each. The pro
 5. Each code repository runs its own quality gates. The hub's integration profile is the final cross-repository check.
 6. Historical AI-DLC construction records may mention the former `backend/` and `frontend/` monorepo paths. Those paths describe the layout at the time; new work uses the standalone repository roots.
 
+## Branch workflow
+
+All three repositories use the same direction:
+
+```text
+feature branch -> develop -> main
+```
+
+- `main` contains fully tested, release-ready work.
+- `develop` is the shared team-integration branch.
+- Start each user story or focused change from current `develop`.
+- Feature pull requests target `develop`; release pull requests target `main`.
+- Keep completed feature branches unless the team explicitly chooses to remove them.
+
 ## Local checkout
 
 The supported default is:

@@ -50,7 +50,7 @@ Registration copies the smallest approved English preset:
 - Income sources: Salary, Other
 - Subcategories: none initially
 
-The template is versioned configuration. Copied records belong to the user and can later be changed or archived. Registration creates no financial account.
+The template is versioned configuration. Copied records belong to the user and can later be changed or permanently deleted. Registration creates no financial account.
 
 ## Component Boundary Rules
 

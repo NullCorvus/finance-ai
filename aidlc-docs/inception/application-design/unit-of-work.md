@@ -24,18 +24,17 @@ Finance AI remains one modular FastAPI backend, one Flutter client, and one Post
 
 **Completion signal:** HU-001 acceptance criteria pass through Flutter, API, and PostgreSQL from a documented clean setup.
 
-## UOW-02 — Sessions and Preferences
+## UOW-02 — Secure Sessions
 
-**Outcome:** A registered user can log in, restore/revoke a session, log out, and manage simple defaults.
+**Outcome:** A registered user can log in, restore/revoke a session, and log out.
 
-**Assigned work:** HU-002, HU-003.
+**Assigned work:** HU-002.
 
 **Responsibilities:**
 
 - Credential verification and generic invalid-credential behavior.
 - Short-lived access plus revocable renewable session design.
 - Secure Flutter credential storage and authenticated routing.
-- Preferred-currency viewing/updating without rewriting history.
 
 **Explicit exclusions:** Password recovery, social login, multi-factor authentication, and financial accounts.
 
@@ -43,15 +42,15 @@ Finance AI remains one modular FastAPI backend, one Flutter client, and one Post
 
 **Outcome:** A user can define where money is held and maintain owned catalogs used by later forms.
 
-**Assigned work:** HU-004, HU-005, HU-006.
+**Assigned work:** HU-003, HU-004, HU-005.
 
 **Responsibilities:**
 
-- Account create/edit/archive and opening balance.
+- Account create/edit/deactivate and opening balance.
 - Shared currency selection and original-currency preservation.
-- User-owned categories/subcategories.
-- User-owned payment methods and income sources.
-- Historical-safe archive behavior and ownership isolation.
+- User-owned categories.
+- User-owned stores and income sources.
+- Confirmed permanent catalog deletion, Uncategorized historical transactions, and ownership isolation.
 
 **Explicit exclusions:** Expense, income, transfer, budget, or dashboard calculations.
 
@@ -59,7 +58,7 @@ Finance AI remains one modular FastAPI backend, one Flutter client, and one Post
 
 **Outcome:** A user can record expenses and income and move money between owned accounts without AI.
 
-**Assigned work:** HU-007, HU-010, HU-011.
+**Assigned work:** HU-006, HU-009, HU-010.
 
 **Responsibilities:**
 
@@ -70,53 +69,67 @@ Finance AI remains one modular FastAPI backend, one Flutter client, and one Post
 
 **Explicit exclusions:** Receipt parsing, required images/items, AI, and live exchange rates.
 
-## UOW-05 — Expense Detail and Activity
+## UOW-05 — Expense Detail and History
 
 **Outcome:** A user can enrich/correct expenses and review one trustworthy financial history.
 
-**Assigned work:** HU-008, HU-009, HU-012.
+**Assigned work:** HU-007, HU-008, HU-011.
 
 **Responsibilities:**
 
 - Optional receipt attachment and item detail.
-- Expense edit/archive with correct recalculation.
+- Expense view/edit/permanent-delete with correct recalculation.
 - Unified expense/income/transfer activity.
 - Period, account, and movement-type filters.
 - Currency labels and historical ownership isolation.
 
 **Explicit exclusions:** Budgets, dashboard aggregation, and AI parsing.
 
-## UOW-06 — Budgets and Dashboard
+## UOW-06 — Basic Dashboard
 
-**Outcome:** A user can define spending targets and understand current finances through deterministic calculations.
+**Outcome:** A user can understand current balances, movements, income, expenses, and category totals through deterministic calculations before AI is introduced.
 
-**Assigned work:** HU-013, HU-014.
+**Assigned work:** HU-012.
 
 **Responsibilities:**
 
-- Weekly/monthly category or subcategory budgets.
-- Derived budget progress and period boundaries.
-- Account balances, income/expense summaries, category spending, recent activity, and budget progress.
+- Account balances, income/expense summaries, category spending, and recent activity.
+- Today/This week/This month/custom period views and category breakdowns.
 - Transfer neutrality and currency-separated totals.
 
 **Explicit exclusions:** Live conversion, prediction, AI analytics, and autonomous recommendations.
 
-## UOW-07 — Optional AI Assistance
+## UOW-07 — Multimodal AI Speed Layer
 
-**Outcome:** After the complete manual MVP, a user may prefill existing financial forms from photo, audio, or text.
+**Outcome:** After UOW-01–UOW-06 establish the deterministic foundation, a user can capture an expense, income, or transfer quickly from natural text or audio, followed by receipt-photo capture.
 
-**Assigned work:** HU-015, HU-016.
+**Assigned work:** HU-013, HU-014, HU-015.
 
 **Responsibilities:**
 
 - Backend-only provider adapter.
 - Untrusted structured proposals for existing forms.
-- Review/edit/retry/discard/confirm control.
+- Confidence-aware “This is what I understood” review with one-tap Accept plus Edit/Retry/Discard.
 - Manual fallback, temporary-media handling, and provider-failure behavior.
+- Natural-text capture first, audio second, and receipt-photo third, including microphone permissions, a 60-second recording limit, and image extraction behavior.
 
-**Release gate:** UOW-01 through UOW-06 are complete and the manual application remains fully usable without provider configuration.
+**Release gate:** UOW-01 through UOW-06 are complete and the deterministic foundation remains fully usable without provider configuration.
 
 **Explicit exclusions:** Direct database writes, autonomous actions, required chat shell, and separate AI financial truth.
+
+## UOW-08 — Budgets
+
+**Outcome:** A user can define flexible overall/category spending targets and see deterministic progress on the existing dashboard.
+
+**Assigned work:** HU-016.
+
+**Responsibilities:**
+
+- Recurring interval or one-time overall/category budgets.
+- Derived budget progress and period boundaries.
+- Budget progress added to the existing dashboard.
+
+**Explicit exclusions:** Live conversion, prediction, AI analytics, and autonomous recommendations.
 
 ## Code Organization Strategy
 
@@ -134,4 +147,4 @@ Unit names are planning identifiers only. They do not create folders such as uow
 - Enablers are assigned to UOW-01 only and remain separately traceable from HU-001.
 - Later units extend existing deployables and contracts.
 - Each unit preserves security, ownership, atomicity, and currency invariants.
-- UOW-07 never becomes a dependency of UOW-01 through UOW-06.
+- UOW-07 never becomes a dependency of UOW-01 through UOW-06; UOW-08 follows the AI speed layer in the recommended order.

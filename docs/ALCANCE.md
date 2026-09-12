@@ -1,253 +1,140 @@
 # Scope — Finance AI
 
-## Core Vision
+## Product Vision
 
-**The AI is used only for input parsing in the core** — one call from the backend to the LLM provider that turns a photo/audio/natural-language text input into structured data. The user always confirms, edits, or retries before anything is saved. Manual form entry always works as a direct fallback. The phone never calls the AI API directly.
+Finance AI is a personal budgeting application optimized for capture speed. The user can speak, type naturally, or photograph a receipt; the assistant interprets the input like a financial clerk, prepares the appropriate transaction, and shows a compact confirmation:
 
-AI is integrated only after the manual MVP is complete. It acts as an optional input assistant that proposes values for existing forms.
+> This is what I understood.
 
-## Manual MVP
+The user gives it a quick glance and chooses Accept, Edit, Retry, or Discard. High-confidence results should be accepted with one tap. Missing or uncertain information is the only reason to add questions or highlight fields.
 
-### Identity and Preferences
+The assistant and manual UI share the same expense, income, and transfer contracts. AI never owns a separate financial-write path, never bypasses server validation, and never needs to make the user re-enter information it already extracted.
+
+## Identity and Sessions
 
 - Register with email and password
-- Login, session restoration, and logout
-- Default preferred currency: COP
-- Secure user-data isolation
+- Login, secure session restoration and renewal, and logout
+- Strict user-data isolation
 - No Admin role or admin dashboard in the approved MVP
 
-## Input Methods
-1. **Receipt photo** — AI vision extracts line items, store, total, date
-2. **Audio** — short sentence or voice memo describing an expense; AI parsing is planned for HU-009
-3. **Manual form** — direct entry that bypasses AI and saves after validation
-4. **Natural-language text** — a sentence typed in the capture bar; AI converts it into structured data for confirmation
+## Accounts and Currencies
 
-A financial account represents a place where the user holds money.
+An account represents a place where the user holds money, such as cash, a bank account, digital wallet, or savings product. It has an owner, name, type, currency, opening balance, and active/inactive state. Each account stores its currency explicitly; the account form may suggest COP or the last-used currency for speed without creating a separate preferences feature.
 
-Examples:
+Balances are derived from the opening balance and financial movements. COP and USD are initially supported. Original amounts remain in their original currency, and unlike currencies are never silently combined.
 
-- Cash
-- Bank account
-- Digital wallet
-- Savings account or savings product
-- Other user-defined account type
+## User-Owned Catalogs
 
-Each account has:
+Each user owns categories, stores, and income sources. Registration may copy small editable defaults where that saves setup time.
 
-- Owner
-- Name
-- Type
-- Currency
-- Opening balance
-- Active/archived state
+Categories are permanently deleted rather than archived. Deletion requires confirmation:
 
-Account balance is derived consistently from the opening balance and active money movements.
+- Existing expenses remain but their deleted classification becomes `Uncategorized`.
+- Budgets targeting the deleted category are deleted.
+- The operation is atomic and affects only the authenticated user.
+
+Deleted optional stores or income sources are removed from new-entry choices; existing transactions remain and display the missing value as `Deleted`.
+
+## Financial Transactions
 
 ### Expenses
 
-A manual expense is a spending transaction and can be saved without AI, a receipt image, or receipt items.
+A manual purchase is represented by a simple receipt/purchase group containing at least one expense row. It can be saved without AI or an image.
 
 Core fields:
 
 - Account
-- Amount
+- Positive amount
 - Date
-- Merchant or description
-- Category
-- Optional subcategory
-- Optional payment method
-- Optional reason/context
+- Purchase name
+- Optional store
+- Category or `Uncategorized`
+- Optional note/context
 
-An expense can optionally include:
+The receipt/purchase group may include an image and one or more expense rows. Each expense row has its own name, amount, category, quantity, optional unit price, note, and optional image. A lone purchase simply has one row. The receipt total may be calculated from its rows and adjusted when taxes, discounts, tips, or rounding make the printed total differ.
 
-- A receipt image/attachment
-- Zero or more item-detail rows
-
-The expense total is authoritative. Item totals may differ because of taxes, discounts, tips, or rounding.
+The owner can view, edit, and permanently delete an expense. Deletion removes its owned receipt attachment and item details in the same transaction after confirmation.
 
 ### Income
 
-Income records money entering one account.
-
-Core fields:
-
-- Account
-- Income source
-- Amount
-- Date
-- Optional description
+Income records money entering one owned account. It includes the account, source, positive amount, date, and optional description. The owner can view, edit, and permanently delete it.
 
 ### Transfers
 
-A transfer moves money between two accounts owned by the same user.
+A transfer moves money between two different accounts owned by the same user. It is neither income nor expense. Both sides are saved atomically. Same-currency transfers use the same amount; cross-currency transfers preserve the actual source and destination amounts without requiring a live exchange-rate service.
 
-Examples:
+## Fast Input Paths
 
-- Bank account → Cash after an ATM withdrawal
-- Digital wallet → Bank account
-- Checking → Savings
-
-Rules:
-
-- A transfer is neither income nor expense.
-- Source and destination accounts must be different.
-- Both sides are saved atomically.
-- Same-currency transfers use the same amount on both sides.
-- Cross-currency transfers preserve the actual source and destination amounts.
-- No live exchange-rate service is required in the manual MVP.
-
-### User-Owned Catalogs
-
-Currencies are shared reference data. The initial supported list includes COP and USD.
-
-The following catalogs belong to each user:
-
-- Categories
-- Subcategories
-- Payment methods
-- Income sources
-
-Registration copies common editable defaults for the new user. Archived catalog values remain attached to historical records but cannot be selected for new entries.
-
-### Budgets
-
-The manual MVP includes simple spending budgets:
-
-- Target one category or one subcategory
-- Weekly or monthly period
-- Positive amount
-- Explicit currency
-- Progress calculated from qualifying active expenses
-
-A budget never targets both a category and a subcategory. Progress is calculated, not manually edited.
-
-### Activity and Dashboard
-
-The manual MVP provides:
-
-- Unified activity containing expenses, income, and transfers
-- Weekly, monthly, and custom date filters
-- Account and movement-type filters
-- Account balances
-- Income-versus-expense summaries
-- Spending by category/subcategory
-- Budget progress
-- Recent movements
-
-Transfers affect account balances but not income/expense totals.
-
-Until automatic conversion is explicitly added, amounts from unlike currencies are displayed separately and are never silently summed.
-
-## Manual Data Flow
-
-### Expense or Income
+### Manual
 
 ```text
-Open normal form
-→ Enter or select fields
-→ Validate on client and server
-→ Save atomically
-→ Update activity, account balance, budgets, and dashboard
+Open expense, income, or transfer form
+→ Enter fields
+→ Validate
+→ Save
 ```
 
-### Pre-save
-- AI extracts data from AI-assisted input (photo, audio, or natural-language text) — **one call from the backend to the AI API**
-- Structured data includes the purchase facts: store, date, **payment method**, **currency**, total, and line items (when the receipt has them). The AI infers payment method + currency from the receipt; the *user* confirms or corrects them on the confirmation card (defaults "Efectivo" / "COP" if the input doesn't expose them).
-- User sees a preview with editable fields
-- User can: **Confirm** (saves to DB) / **Edit** (change fields, re-preview) / **Discard** (delete everything, nothing saved)
-- Manual form entry bypasses the AI entirely and saves directly after validation; typed natural-language text in the capture bar uses AI and requires confirmation
-- This handles edge cases: blurry receipts, inaudible audio, AI API failures, etc.
+Manual forms are always available and define the reliable fallback.
+
+### AI-assisted
 
 ```text
-Select source and destination accounts
-→ Enter source/destination amount
-→ Validate ownership, currencies, and distinct accounts
-→ Save both sides atomically
-→ Update account balances and activity
-```
-
-## Optional AI Assistance — After Manual MVP
-
-AI may later accept:
-
-1. Receipt photo
-2. Audio description
-3. Natural-language text
-
-The backend sends supported input to the selected provider. The provider returns proposed data matching an existing manual expense, income, or transfer form.
-
-```text
-Optional input
-→ Backend AI adapter
-→ Proposed normal form values
-→ Review / Edit / Retry / Discard
-→ Explicit Confirm
+Natural-language text, audio, or receipt photo
+→ Assistant identifies intent and extracts values
+→ “This is what I understood”
+→ Accept / Edit / Retry / Discard
 → Normal validation and save path
 ```
 
-AI rules:
+Rules:
 
-### Receipt Items
-- Full line-item extraction when available from receipts
-- When AI-assisted input is audio/natural-language text, only the total + description is stored; the manual form may contain multiple receipt items
-- Analytics work at the expense level (total × category), items are bonus drill-down detail
+- Photo usually proposes an expense and may include receipt items.
+- Voice or text may propose an expense, income, or transfer.
+- Audio capture has a visible recording state, a 60-second maximum, supported temporary formats such as M4A/WAV, microphone-permission recovery, and safe cleanup after discard, failure, or expiry.
+- Photo capture accepts the supported receipt formats and size limit, preserves the printed receipt total, and distinguishes complete, partial, unreadable, and failed extraction.
+- High-confidence proposals remain compact and can be accepted with one tap.
+- Low-confidence or missing fields are clearly marked; the assistant asks only necessary follow-up questions.
+- Editing happens in place and does not require repeating the capture.
+- Nothing is persisted before Accept.
+- Temporary photo/audio files are removed after discard, failure, or expiration.
+- The phone never contains or calls an AI-provider secret directly.
 
-## Interface Approach
+## Transaction History, Dashboard, and Budgets
 
-| Component | Responsibility |
-|---|---|
-| Flutter app | Manual forms, account/activity/dashboard screens, validation feedback, later optional assistant entry points |
-| FastAPI backend | Authentication, authorization, financial rules, API contracts, analytics, persistence, and later AI-provider calls |
-| PostgreSQL | Users, accounts, catalogs, expenses, items, receipt attachments, income, transfers, and budgets |
-| Local file storage — prototype | Optional receipt images; accessed only through the backend |
-| External AI provider — deferred | Produces proposals only; not required by the manual MVP |
+The application provides:
 
-The initial home is a recognizable budget-app dashboard or activity screen with clear Add Expense, Add Income, and Transfer actions. A chat interface is not required for the manual MVP.
+- One searchable transaction history for expenses, income, and transfers
+- Weekly, monthly, and custom date filters
+- Account, movement-type, and category filters
+- Flexible recurring or one-time overall/category budgets
+- Account balances
+- Income-versus-expense summaries
+- Category spending and budget progress
+- Recent movements
 
-## Security and Data Protection
-
-- All financial routes require authentication unless explicitly public.
-- Every owned resource is checked against the authenticated user.
-- Passwords use adaptive hashing and are never logged.
-- Renewable session credentials can be revoked on logout.
-- Errors do not expose stack traces, queries, tokens, or secrets.
-- Multi-record financial operations roll back on failure.
-- Archived catalog values preserve history.
-- Product AI proposals are never persisted until confirmed.
-
-### User
-- Register and log in via email/password
-- Add expenses (receipt photo, audio, natural-language text — AI-assisted with confirmation; manual form direct-save)
-- Register income (salary, freelance, gift...) with optional description
-- View dashboard, graphs, and analysis of their own data
-- Set personal spending limits (Phase 3)
-
-### Admin (future scope — excluded from the current core)
-
-> The admin role is documented as a future capability, but it is not part of the current
-> MVP and is deliberately excluded from the current architecture. The current build targets
-> regular users; admin UI, endpoints, and operational permissions remain undefined.
-
-- Separate from User accounts (not a User with extra permissions)
-- View system stats dashboard:
-  - Total registered users
-  - Total expenses in the system (aggregated)
-  - Expenses grouped by category (all users combined)
-  - Expenses over time (aggregated trend)
-  - AI API usage (how many calls made)
-- Manage users: list, create, disable accounts
-- Configure the shared AI API key
-- Admin does NOT view individual user expense data
+All ordinary analytics are deterministic backend/database calculations. Transfers affect account balances but do not count as income or expense.
 
 ## Delivery Boundary
 
-The approved build order is:
+The dependency order is:
 
 1. Technical foundation
-2. Identity and preferences
+2. Identity and sessions
 3. Accounts, currencies, and user catalogs
-4. Manual expenses, income, and transfers
-5. Activity, budgets, and dashboard
-6. Optional AI assistance
+4. Stable manual expense, income, and transfer contracts
+5. Correction/deletion, transaction history, and a basic financial dashboard complete the deterministic foundation
+6. Multimodal AI speed layer: natural text first, audio second, and receipt photo third
+7. Budgets and budget-progress views
 
-A time-boxed AI experiment may test provider feasibility earlier, but it is not a production feature and does not alter this dependency order.
+AI does not need to wait for budgets, but it does wait until HU-001–HU-012 provide a dependable foundation of identity, accounts, catalogs, operations, correction/deletion, transaction history, and a basic dashboard.
+
+## Outside the Approved Backlog
+
+- Admin functionality
+- Bank synchronization
+- Automatic exchange-rate conversion
+- Recurring transactions
+- Autonomous AI writes without confirmation
+- External price lookup
+- Third-party productivity integrations
+- Production-grade high availability and cloud operations

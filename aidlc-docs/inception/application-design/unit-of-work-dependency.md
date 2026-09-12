@@ -5,52 +5,54 @@
 ~~~mermaid
 flowchart LR
     U1["UOW-01<br/>Foundation and Registration"]
-    U2["UOW-02<br/>Sessions and Preferences"]
+    U2["UOW-02<br/>Secure Sessions"]
     U3["UOW-03<br/>Financial Structure"]
     U4["UOW-04<br/>Manual Movements"]
-    U5["UOW-05<br/>Expense Detail and Activity"]
-    U6["UOW-06<br/>Budgets and Dashboard"]
-    U7["UOW-07<br/>Optional AI Assistance"]
+    U5["UOW-05<br/>Expense Detail and History"]
+    U6["UOW-06<br/>Basic Dashboard"]
+    U7["UOW-07<br/>Multimodal AI Speed Layer"]
+    U8["UOW-08<br/>Budgets"]
 
     U1 -->|"registered identity and foundations"| U2
-    U2 -->|"authenticated user and defaults"| U3
+    U2 -->|"authenticated user"| U3
     U3 -->|"accounts and catalogs"| U4
     U4 -->|"financial movements"| U5
-    U3 -->|"budget targets and currencies"| U6
-    U4 -->|"expense/income/transfer data"| U6
-    U5 -->|"unified activity"| U6
-    U6 -->|"complete manual MVP gate"| U7
+    U5 -->|"transaction history"| U6
+    U6 -->|"stable deterministic foundation"| U7
+    U7 -->|"capture loop available"| U8
 ~~~
 
 ### Text Alternative
 
-UOW-01 establishes foundations and registration. UOW-02 adds sessions/preferences. UOW-03 adds accounts/catalogs. UOW-04 uses that structure for manual movements. UOW-05 adds detail/history. UOW-06 depends on financial structure, movements, and activity for budgets/dashboard. Only after UOW-01 through UOW-06 form the manual MVP may UOW-07 add optional AI proposals.
+UOW-01 establishes foundations and registration. UOW-02 adds secure sessions. UOW-03 adds accounts/catalogs. UOW-04 uses that structure for manual movements. UOW-05 adds correction/detail/history. UOW-06 adds the basic deterministic dashboard and completes the foundation. UOW-07 then adds separate natural-text, audio, and receipt-photo AI capture in that order. UOW-08 adds budgets and dashboard budget progress.
 
 ## Direct Dependency Matrix
 
 Legend: **D** = direct dependency; **—** = not direct.
 
-| Unit | UOW-01 | UOW-02 | UOW-03 | UOW-04 | UOW-05 | UOW-06 |
-|---|---:|---:|---:|---:|---:|---:|
-| UOW-01 | — | — | — | — | — | — |
-| UOW-02 | D | — | — | — | — | — |
-| UOW-03 | — | D | — | — | — | — |
-| UOW-04 | — | — | D | — | — | — |
-| UOW-05 | — | — | — | D | — | — |
-| UOW-06 | — | — | D | D | D | — |
-| UOW-07 | — | — | — | — | — | D |
+| Unit | UOW-01 | UOW-02 | UOW-03 | UOW-04 | UOW-05 | UOW-06 | UOW-07 |
+|---|---:|---:|---:|---:|---:|---:|---:|
+| UOW-01 | — | — | — | — | — | — | — |
+| UOW-02 | D | — | — | — | — | — | — |
+| UOW-03 | — | D | — | — | — | — | — |
+| UOW-04 | — | — | D | — | — | — | — |
+| UOW-05 | — | — | — | D | — | — | — |
+| UOW-06 | — | — | — | — | D | — | — |
+| UOW-07 | — | — | — | — | — | D | — |
+| UOW-08 | — | — | — | — | — | — | D |
 
-UOW-07 also has a release gate requiring every prior unit, even though UOW-06 is its direct dependency in the construction graph.
+UOW-07 has a release gate requiring UOW-01–UOW-06.
 
 ## Construction Order
 
 1. UOW-01 — Foundation and Registration
-2. UOW-02 — Sessions and Preferences
+2. UOW-02 — Secure Sessions
 3. UOW-03 — Financial Structure
 4. UOW-04 — Manual Movements
-5. UOW-05 — Expense Detail and Activity
-6. UOW-06 — Budgets and Dashboard
-7. UOW-07 — Optional AI Assistance
+5. UOW-05 — Expense Detail and History
+6. UOW-06 — Basic Dashboard
+7. UOW-07 — Multimodal AI Speed Layer
+8. UOW-08 — Budgets
 
 The team may prepare non-conflicting research or design early, but it must not merge functionality that violates these dependency gates.
 
@@ -72,6 +74,7 @@ The team may prepare non-conflicting research or design early, but it must not m
 - UOW-02: authenticated context works before owned financial resources.
 - UOW-03: accounts/catalogs exist before transaction forms.
 - UOW-04: manual financial writes work before detail/analytics/AI.
-- UOW-05: unified history exists before final dashboard.
-- UOW-06: manual MVP is stable before product AI.
-- UOW-07: manual fallback remains available and no provider response writes directly.
+- UOW-05: correction and searchable transaction history make every movement inspectable.
+- UOW-06: the basic deterministic dashboard completes the foundation required before product AI.
+- UOW-07: natural text, audio, and receipt photo each provide fast one-tap review in that delivery order; manual fallback remains available and no provider response writes directly.
+- UOW-08: budgets reuse the stable deterministic activity/dashboard calculations.

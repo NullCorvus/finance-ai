@@ -5,24 +5,24 @@
 - **Persona:** P-001 — Personal Budget User
 - **Story style:** Vertical user outcomes spanning the necessary UI, API, database, and tests
 - **Acceptance style:** Given/When/Then scenarios plus explicit financial or security invariants
-- **Manual-first rule:** HU-001 through HU-014 form the manual MVP. HU-015 and HU-016 are deferred until the manual MVP is complete.
+- **Foundation-to-speed rule:** HU-001 through HU-012 establish deterministic identity, structure, operations, control, transaction history, and the basic dashboard. HU-013 through HU-015 then provide natural-text, audio, and receipt-photo AI speed in that order. HU-016 adds budgets and dashboard budget progress.
 - **Technical work:** Enablers are tracked separately and are not counted as user stories.
 
 ## Product Backlog Domains
 
-| PB | Domain | Manual MVP | Purpose |
+| PB | Domain | Foundation | Purpose |
 |---|---|---|---|
 | PB-001 | Identity and access | Yes | Registration, authentication, and secure sessions |
-| PB-002 | Preferences | Yes | User defaults without changing historical records |
-| PB-003 | Accounts and currencies | Yes | Places where money is held and their currencies |
-| PB-004 | User catalogs | Yes | Categories, subcategories, payment methods, and income sources |
-| PB-005 | Expenses and receipts | Yes | Manual spending records and optional detail |
-| PB-006 | Income | Yes | Money entering an account |
-| PB-007 | Transfers | Yes | Money moving between the user's accounts |
-| PB-008 | Activity and filters | Yes | Unified financial history by period and account |
-| PB-009 | Budgets | Yes | Weekly/monthly category spending targets |
-| PB-010 | Dashboard | Yes | Balances, summaries, category totals, and budget progress |
-| PB-011 | Optional AI assistance | No — deferred | Propose values for existing forms without direct writes |
+| PB-002 | Accounts and currencies | Yes | Places where money is held and their explicit currencies |
+| PB-003 | User catalogs | Yes | Categories, stores, and income sources |
+| PB-004 | Expenses and receipts | Yes | Fast manual spending records and optional detail |
+| PB-005 | Income | Yes | Money entering an account |
+| PB-006 | Transfers | Yes | Money moving between the user's accounts |
+| PB-007 | Transaction history and filters | Yes | Searchable financial history by period, account, type, and category |
+| PB-008 | Basic financial dashboard | Yes | Balances, recent movements, income, expenses, and category totals |
+| PB-009 | AI natural-text and audio capture | After HU-001–HU-012 | Written and spoken proposals using one conversational capture capability |
+| PB-010 | AI receipt-photo capture | After HU-013 | Receipt extraction with printed-total and item handling |
+| PB-011 | Budgets | After AI speed layer | Flexible overall/category targets and dashboard progress |
 
 ## Technical Enablers — Not User Stories
 
@@ -73,149 +73,141 @@
 
 ---
 
-## HU-003 — Manage Personal Defaults
+## HU-003 — Manage Financial Accounts
 
 **PB:** PB-002  
 **Persona:** P-001  
-**Story:** As a user, I want to manage simple preferences so that new financial entries begin with sensible defaults.
-
-### Acceptance Criteria
-
-1. **View defaults** — Given I am authenticated, when I open preferences, then I see my current preferred currency and supported choices.
-2. **Change preference** — Given I choose a supported currency, when I save, then future forms use that preference where applicable.
-3. **Historical integrity** — Given I change the preference, then existing account and transaction amounts retain their original currencies and values.
-4. **Ownership** — Given another user's identifier, when I attempt to alter their preferences, then access is denied.
-
-**Dependencies:** HU-002.
-
----
-
-## HU-004 — Manage Financial Accounts
-
-**PB:** PB-003  
-**Persona:** P-001  
-**Story:** As a user, I want accounts for cash, banks, wallets, or savings products so that I know where my money is held.
+**Story:** As a user, I want accounts for cash, banks, wallets, savings products, or credit cards so that I know where my money is held.
 
 ### Acceptance Criteria
 
 1. **Create account** — Given a unique account name, supported type/currency, and valid opening balance, when I save, then the account appears in my account list.
 2. **View balance context** — Given an account has financial activity, when I open it, then I see its currency and balance derived consistently from the opening balance and movements.
 3. **Edit account** — Given an owned account, when I change editable metadata, then its financial history remains unchanged.
-4. **Archive account** — Given an account has history, when I archive it, then it cannot be selected for new entries but remains visible in historical records.
+4. **Deactivate account** — Given an account has history, when I deactivate it, then it cannot receive new movements but remains visible in historical records. An unused account may instead be permanently deleted after confirmation.
 5. **Ownership isolation** — Given an account belongs to another user, when I attempt to view or mutate it, then access is denied.
+6. **Fast currency selection** — Given I create another account or transaction, then the form may suggest COP or my last-used supported currency, but the saved record always stores its explicit currency.
 
 **Dependencies:** HU-002, shared currency seed.
 
 ---
 
-## HU-005 — Manage Categories and Subcategories
+## HU-004 — Manage Categories
 
-**PB:** PB-004  
-**Persona:** P-001  
+**PB:** PB-003
+
+**Persona:** P-001
 **Story:** As a user, I want customizable spending categories so that my expenses reflect how I understand my money.
 
 ### Acceptance Criteria
 
 1. **Default catalog** — Given registration completes, when I first view categories, then I have editable common defaults owned by my account.
-2. **Customize hierarchy** — Given I own a category, when I add, rename, or archive a subcategory, then only my catalog changes.
-3. **Historical preservation** — Given a category/subcategory is referenced, when I archive it, then existing expenses retain their classification while new forms exclude the archived choice.
+2. **Customize** — Given I am authenticated, when I add or rename a category, then only my catalog changes and active names remain unique for me.
+3. **Permanent deletion** — Given a category is referenced, when I confirm deletion, then it is permanently removed, existing expenses remain as Uncategorized, and dependent category budgets are removed atomically.
 4. **No cross-user effect** — Given another user has a similarly named category, when I edit mine, then theirs is unchanged.
 
 **Dependencies:** HU-001, HU-002.
 
 ---
 
-## HU-006 — Manage Payment Methods and Income Sources
+## HU-005 — Manage Stores and Income Sources
 
-**PB:** PB-004  
-**Persona:** P-001  
-**Story:** As a user, I want editable payment methods and income sources so that entries use terms that match my finances.
+**PB:** PB-003
+
+**Persona:** P-001
+**Story:** As a user, I want editable stores and income sources so entries use familiar names without modeling how an account was accessed.
 
 ### Acceptance Criteria
 
-1. **Default lists** — Given registration completes, when I open supporting catalogs, then I see editable common payment methods and income sources.
+1. **Supporting lists** — Given I open supporting catalogs, then I can manage my optional stores and income sources.
 2. **Customize** — Given I am authenticated, when I add or rename an entry, then it becomes available only in my forms.
-3. **Archive safely** — Given an entry is referenced by history, when I archive it, then prior records keep their value and new forms omit it.
+3. **Delete** — Given an entry is referenced by history, when I confirm deletion, then the catalog value is permanently removed, prior transactions remain and display the missing value as Deleted, and new forms omit it.
 4. **Ownership** — Given a catalog entry belongs to another user, when I address it directly, then access is denied.
 
 **Dependencies:** HU-001, HU-002.
 
 ---
 
-## HU-007 — Record a Manual Expense
+## HU-006 — Record a Fast Manual Expense
 
-**PB:** PB-005  
-**Persona:** P-001  
-**Story:** As a user, I want to record an expense manually so that spending can always be tracked without AI or a receipt.
+**PB:** PB-004
 
-### Acceptance Criteria
-
-1. **Create expense** — Given I select my active account and classification and provide a positive amount/date, when I save, then the expense is recorded in the account's currency and appears in history.
-2. **Optional details** — Given merchant, payment method, and reason are omitted, when required fields are valid, then the expense can still be saved.
-3. **Validation** — Given an invalid amount, date, archived account/catalog value, or another user's resource, when I submit, then nothing is saved and I see an appropriate error.
-4. **Balance and analytics** — Given the expense saves, then the account balance and relevant spending/budget calculations reflect it once.
-5. **Manual independence** — Given product AI is unavailable or not configured, then the manual expense flow remains fully usable.
-
-**Dependencies:** HU-004, HU-005; HU-006 is optional when no payment method is selected.
-
----
-
-## HU-008 — Add Optional Receipt and Item Detail
-
-**PB:** PB-005  
-**Persona:** P-001  
-**Story:** As a user, I want optional receipt evidence and item detail so that important purchases can be recorded more precisely without burdening simple expenses.
+**Persona:** P-001
+**Story:** As a user, I want to record an expense with only essential information so that manual capture remains fast without AI or a receipt.
 
 ### Acceptance Criteria
 
-1. **Optional attachment** — Given an owned expense, when I attach a valid supported image, then it is linked as optional evidence.
-2. **Item breakdown** — Given an owned expense, when I add, edit, or remove item rows, then the expense remains the purchase header and items remain optional detail.
-3. **Total integrity** — Given item amounts do not equal the expense total because of tax, discounts, or rounding, then the recorded expense total remains authoritative and the difference is allowed.
-4. **Failure rollback** — Given attachment or item persistence fails during a combined save, then the operation follows the documented atomic boundary and does not leave broken references.
-5. **Ownership** — Given the expense belongs to another user, then I cannot attach, view, or mutate its receipt detail.
+1. **Create purchase** — Given I select my active account and provide a positive amount and purchase name, when I save, then one receipt group, one expense row, and one negative account movement are recorded atomically in the account's currency.
+2. **Minimal typing** — Given a simple purchase, then category may be Uncategorized, the date defaults to now, and optional store, note, quantity, unit price, and images stay collapsed.
+3. **No duplicate typing** — Given the purchase contains one row, then the receipt name may initialize the editable expense-row name so I do not enter it twice.
+4. **Validation** — Given an invalid amount, date, inactive account/catalog value, or another user's resource, when I submit, then nothing is saved and I see an appropriate error.
+5. **Balance and analytics** — Given the expense saves, then the account balance and relevant spending calculations reflect it once.
+6. **Manual independence** — Given product AI is unavailable or not configured, then the manual expense flow remains fully usable.
 
-**Dependencies:** HU-007.
+**Dependencies:** HU-003, HU-004; HU-005 is optional when no store is selected.
 
 ---
 
-## HU-009 — Correct or Archive an Expense
+## HU-007 — Add Optional Receipt and Item Detail
 
-**PB:** PB-005  
-**Persona:** P-001  
-**Story:** As a user, I want to correct or archive my expenses so that mistakes do not permanently damage my financial history.
+**PB:** PB-004
+
+**Persona:** P-001
+**Story:** As a user, I want multiple expense rows and optional images in a receipt so important purchases can be recorded precisely without burdening simple purchases.
+
+### Acceptance Criteria
+
+1. **Optional images** — Given an owned receipt or expense row, when I attach a valid supported image, then its backend-managed image path is linked to that record.
+2. **Item breakdown** — Given an owned receipt, when I add, edit, reorder, or remove expense rows, then at least one row remains and each keeps its own amount and optional category.
+3. **Total integrity** — Given row amounts do not equal the printed receipt total because of tax, discounts, tips, or rounding, then the receipt total may be adjusted and the difference is allowed.
+4. **Failure rollback** — Given image or row persistence fails during a combined save, then the operation rolls back without broken references or orphaned files.
+5. **Ownership** — Given the receipt belongs to another user, then I cannot attach, view, or mutate its receipt or expense detail.
+
+**Dependencies:** HU-006.
+
+---
+
+## HU-008 — View, Correct, or Delete an Expense
+
+**PB:** PB-004
+
+**Persona:** P-001
+**Story:** As a user, I want to view, correct, and permanently delete my expenses so that my records remain accurate and under my control.
 
 ### Acceptance Criteria
 
 1. **Edit** — Given an owned expense, when I change valid business fields, then balances, category totals, and budget progress reflect the updated value exactly once.
-2. **Archive** — Given an owned expense, when I archive it, then it is excluded from active financial calculations but remains available for historical traceability according to the approved retention behavior.
-3. **Failure safety** — Given recalculation or persistence fails, when an update/archive is attempted, then the prior record and calculations remain intact.
+2. **Permanent delete** — Given an owned expense, when I confirm deletion, then the expense, its item details, and its owned receipt attachment are removed together and calculations update exactly once.
+3. **Failure safety** — Given recalculation or persistence fails, when an update/delete is attempted, then the prior record and calculations remain intact.
 4. **Ownership** — Given an expense belongs to another user, then view/mutation access is denied.
 
-**Dependencies:** HU-007.
+**Dependencies:** HU-006.
 
 ---
 
-## HU-010 — Record and Manage Income
+## HU-009 — Record and Manage Income
 
-**PB:** PB-006  
-**Persona:** P-001  
+**PB:** PB-005
+
+**Persona:** P-001
 **Story:** As a user, I want to record income into an account so that balances and income-versus-expense summaries are complete.
 
 ### Acceptance Criteria
 
 1. **Create income** — Given my active account, income source, positive amount, and date, when I save, then income appears in history using the account currency and increases its balance.
 2. **Optional description** — Given no description, when all required fields are valid, then income can still be saved.
-3. **Edit/archive** — Given an owned income entry, when I edit or archive it, then balances and summaries update exactly once.
+3. **Edit/delete** — Given an owned income entry, when I edit or confirm permanent deletion, then balances and summaries update exactly once.
 4. **Invalid ownership** — Given an account/source/entry belongs to another user, when I use its identifier, then access is denied and no data changes.
 
-**Dependencies:** HU-004, HU-006.
+**Dependencies:** HU-003, HU-005.
 
 ---
 
-## HU-011 — Transfer Money Between Accounts
+## HU-010 — Transfer Money Between Accounts
 
-**PB:** PB-007  
-**Persona:** P-001  
+**PB:** PB-006
+
+**Persona:** P-001
 **Story:** As a user, I want to transfer money between my accounts so that withdrawals and internal movements do not look like income or spending.
 
 ### Acceptance Criteria
@@ -223,104 +215,130 @@
 1. **Same-currency transfer** — Given two distinct owned active accounts with the same currency and a positive amount, when I confirm a transfer, then the source decreases and destination increases by that amount atomically.
 2. **Cross-currency transfer** — Given owned accounts with different currencies, when I enter the actual source and destination amounts, then both original amounts are stored without requiring a live exchange-rate service.
 3. **Analytics invariant** — Given a transfer completes, then total income and expense analytics are unchanged.
-4. **Validation** — Given the same source/destination, non-positive amount, archived account, or another user's account, when I submit, then no movement is saved.
+4. **Validation** — Given the same source/destination, non-positive amount, inactive account, or another user's account, when I submit, then no movement is saved.
 5. **Atomicity** — Given either side of the movement fails, then neither balance/history side is committed.
 
-**Dependencies:** HU-004.
+**Dependencies:** HU-003.
 
 ---
 
-## HU-012 — Review and Filter Financial Activity
+## HU-011 — Search and Filter Transaction History
 
-**PB:** PB-008  
-**Persona:** P-001  
-**Story:** As a user, I want one history of expenses, income, and transfers so that I can understand what happened to my money.
+**PB:** PB-007
+
+**Persona:** P-001
+**Story:** As a user, I want one searchable history of expenses, income, and transfers so that I can find and inspect any financial operation quickly.
 
 ### Acceptance Criteria
 
 1. **Unified history** — Given I have financial entries, when I open activity, then I see expenses, income, and transfers with visibly distinct types.
 2. **Period filters** — Given weekly, monthly, or custom dates, when I apply a filter, then only entries within the inclusive approved boundary are shown.
 3. **Account/type filters** — Given an owned account or movement type, when I filter, then the result is limited accordingly.
-4. **Currency clarity** — Given results contain multiple currencies, then every amount shows its currency and incompatible totals are not combined.
-5. **Ownership** — Given I am authenticated, then the history never includes another user's entries.
+4. **Text/category search** — Given a purchase name, store, description, expense-row name, or category, when I search or filter, then matching entries are returned case-insensitively with newest first.
+5. **Currency clarity** — Given results contain multiple currencies, then every amount shows its currency and incompatible totals are not combined.
+6. **Ownership** — Given I am authenticated, then the history never includes another user's entries.
 
-**Dependencies:** HU-007, HU-010, HU-011.
-
----
-
-## HU-013 — Manage a Spending Budget
-
-**PB:** PB-009  
-**Persona:** P-001  
-**Story:** As a user, I want a simple category or subcategory budget so that I can compare actual spending with a weekly or monthly target.
-
-### Acceptance Criteria
-
-1. **Create budget** — Given a positive amount, weekly/monthly period, and one owned active category or subcategory target, when I save, then the budget appears with calculated progress.
-2. **Exactly one target** — Given both category and subcategory or neither is selected, when I submit, then the budget is rejected.
-3. **Calculated progress** — Given qualifying active expenses change, then budget progress is recalculated from transactions rather than edited directly.
-4. **Period boundary** — Given a weekly or monthly budget, then only expenses in the applicable period count.
-5. **Currency clarity** — Given spending exists in incompatible currencies, then progress follows the approved account/currency rule and does not silently add unlike amounts.
-6. **Ownership** — Given another user's budget or catalog target, then access is denied.
-
-**Dependencies:** HU-005, HU-007.
+**Dependencies:** HU-006, HU-009, HU-010.
 
 ---
 
-## HU-014 — Review the Budget Dashboard
+## HU-012 — Review the Basic Financial Dashboard
 
-**PB:** PB-010  
-**Persona:** P-001  
-**Story:** As a user, I want a dashboard of balances and spending so that I can understand my current financial position.
+**PB:** PB-008
+
+**Persona:** P-001
+**Story:** As a user, I want a basic dashboard of balances and movements so that I understand my financial position before and after every capture.
 
 ### Acceptance Criteria
 
-1. **Core summary** — Given I select a period, when the dashboard loads, then it shows account balances, income, expenses, recent activity, category/subcategory spending, and budget progress.
-2. **Transfer neutrality** — Given transfers occurred, then they affect relevant account balances but not income-versus-expense totals.
-3. **Currency separation** — Given accounts use different currencies, then totals are grouped by currency until an approved conversion capability exists.
-4. **Deterministic analytics** — Given the same stored financial data and period, then the backend/database calculation returns the same result without AI.
-5. **Empty/error states** — Given there is no data or the request fails, then the dashboard shows a useful empty/retry state rather than fabricated values.
-6. **Ownership** — Given I am authenticated, then all dashboard calculations include only my data.
+1. **Core summary** — Given I select Today, This week, This month, or a custom period, then I see account balances, income, expenses, recent movements, and category spending.
+2. **Category view** — Given expenses exist, then I see category totals ordered from largest to smallest.
+3. **Transfer neutrality** — Given transfers occurred, then they affect relevant account balances but not income-versus-expense totals.
+4. **Currency separation** — Given accounts use different currencies, then totals are grouped by currency until an approved conversion capability exists.
+5. **Deterministic analytics** — Given the same stored data and period, then the backend/database returns the same result without AI.
+6. **Empty/error and ownership** — Given no data, failure, or another user's data, then I see an honest empty/retry state and never see fabricated or foreign results.
 
-**Dependencies:** HU-012, HU-013.
+**Dependencies:** HU-011.
 
 ---
 
-## HU-015 — Prefill an Expense from a Receipt Photo — Deferred AI
+## HU-013 — Natural-Text Financial Capture
 
-**PB:** PB-011  
-**Persona:** P-001  
-**Story:** As a user, I want optional receipt-photo assistance so that I can start from proposed expense values instead of typing every field.
+**PB:** PB-009
 
-### Acceptance Criteria
-
-1. **Proposal only** — Given I submit a supported receipt image, when parsing succeeds, then the assistant opens the existing expense form with proposed header, optional item, and classification values; nothing is saved yet.
-2. **Review control** — Given a proposal, when I edit, confirm, retry, or discard it, then the normal manual form and validation rules control the result.
-3. **Untrusted output** — Given the provider returns missing, invalid, or foreign-user identifiers, then those values are rejected or replaced with safe unresolved fields.
-4. **Failure fallback** — Given the provider is unavailable or parsing fails, then I can continue with the manual expense form.
-5. **Temporary media** — Given I discard or an unconfirmed proposal expires, then temporary media follows the approved cleanup policy.
-6. **Backend boundary** — Given AI assistance is used, then provider secrets and calls remain in the backend.
-
-**Dependencies:** Complete manual MVP, especially HU-007 and HU-008.
-
----
-
-## HU-016 — Prefill a Financial Form from Audio or Natural-Language Text — Deferred AI
-
-**PB:** PB-011  
-**Persona:** P-001  
-**Story:** As a user, I want optional audio/text assistance so that a description such as a purchase, payment, income, or ATM withdrawal can prefill the correct existing form.
+**Persona:** P-001
+**Story:** As a user, I want to write what happened in my own words so that the assistant identifies the financial operation and prepares it for quick review.
 
 ### Acceptance Criteria
 
-1. **Intent proposal** — Given supported audio or text, when parsing succeeds, then the assistant proposes an expense, income, or transfer form and does not save it.
-2. **Transfer recognition** — Given I describe moving money between my own accounts, such as withdrawing from a bank account into cash, then the assistant proposes a transfer rather than an expense and asks for unresolved accounts/amounts.
-3. **Ambiguity** — Given intent, account, amount, currency, or classification is uncertain, then the form visibly marks unresolved fields instead of inventing authoritative data.
-4. **Normal validation** — Given I confirm a completed proposal, then the same ownership, validation, atomicity, and financial invariants as the manual form apply.
-5. **Failure fallback** — Given the provider is unavailable or I decline assistance, then all manual forms remain fully usable.
+1. **Natural input** — Given I write naturally, such as “I spent 15,000 on lunch” or “move 100,000 from bank to cash,” then the assistant proposes the correct expense, income, or transfer without saving.
+2. **Fast proposal** — Given the proposal is complete and high confidence, then I see “This is what I understood” and can accept it with one tap.
+3. **Focused clarification** — Given intent, account, amount, currency, or classification is uncertain, then only unresolved values are highlighted or clarified and my original text remains available.
+4. **Transfer recognition** — Given I describe moving money between my accounts, then it is proposed as a transfer rather than income or expense.
+5. **Normal save** — Given I accept, then the corresponding normal validated atomic operation runs; Edit, Retry, Discard, and manual fallback remain available.
 6. **No direct action** — Given any AI response, then it cannot create or modify financial data without my explicit confirmation.
 
-**Dependencies:** Complete manual MVP, especially HU-007, HU-010, and HU-011.
+**Dependencies:** Stable HU-001–HU-012 deterministic foundation.
+
+---
+
+## HU-014 — Audio Financial Capture
+
+**PB:** PB-009
+
+**Persona:** P-001
+**Story:** As a user, I want to describe a financial operation by voice so that the assistant prepares it while I avoid typing.
+
+### Acceptance Criteria
+
+1. **Recording experience** — Given microphone permission, when I hold/tap record, then I see a clear recording indicator and recording stops automatically at 60 seconds.
+2. **Supported input** — Given an approved M4A or WAV recording, when I submit it, then temporary backend processing produces an expense, income, or transfer proposal without saving financial data.
+3. **Fast proposal** — Given the proposal is complete and high confidence, then I see “This is what I understood” and can accept it with one tap; only uncertain values add a short clarification.
+4. **Permission and failure recovery** — Given permission is denied, audio is unintelligible/partial, or processing times out, then I receive a clear next action: open settings, retry, edit the partial proposal, type instead, or use the manual form.
+5. **Normal save and cleanup** — Given I accept, then the corresponding normal validated atomic operation runs; discard, failure, or expiry removes temporary audio.
+6. **No repetition** — Given I edit the proposal, then the recording/transcript context is preserved and I do not have to record the whole operation again.
+
+**Dependencies:** Stable HU-001–HU-012 deterministic foundation.
+
+---
+
+## HU-015 — Rapid Expense Proposal from a Receipt Photo
+
+**PB:** PB-010
+
+**Persona:** P-001
+**Story:** As a user, I want a receipt photo to produce a proposed expense so that I can verify it at a glance and accept it instead of typing every value.
+
+### Acceptance Criteria
+
+1. **Supported input** — Given a JPEG, PNG, or HEIC receipt up to 10 MB, when I capture or select it, then the backend may resize/compress it and begins temporary analysis without saving financial data.
+2. **Fast proposal** — Given parsing succeeds with high confidence, then I see “This is what I understood” with purchase name, optional store, date, printed total, currency, classification, and extracted expense rows, ready for one-tap acceptance.
+3. **Printed-total integrity** — Given taxes, discounts, tips, or rounding make items differ from the printed total, then the printed receipt total remains the proposed expense total until I edit it.
+4. **Partial/unreadable states** — Given extraction is partial, unreadable, times out, or fails, then only missing fields are highlighted and I can Edit, Retry, Discard, or continue manually; nothing is saved.
+5. **Normal save and cleanup** — Given I accept, then the normal expense validation/save path runs atomically; discard, failure, or expiry removes temporary media.
+6. **Backend boundary** — Given AI assistance is used, then provider secrets and calls remain in the backend.
+
+**Dependencies:** Stable HU-001–HU-012 deterministic foundation.
+
+---
+
+## HU-016 — Manage a Spending Budget
+
+**PB:** PB-011
+
+**Persona:** P-001
+**Story:** As a user, I want a flexible overall or category budget so that I can compare actual spending with a recurring or one-time target.
+
+### Acceptance Criteria
+
+1. **Create budget** — Given a positive amount, start date, optional category, and valid recurring or one-time schedule, when I save, then the budget appears with calculated progress.
+2. **Flexible schedule** — Given recurring is selected, then a positive interval plus day/week/month/year supports patterns such as every 2 weeks or every 3 months; one-time budgets use a custom date range without frequency fields.
+3. **Calculated progress** — Given qualifying expenses change, then budget progress is recalculated from transactions rather than edited directly and appears on the existing dashboard.
+4. **Period boundary** — Given a budget occurrence or one-time range, then only qualifying expenses inside that inclusive period count.
+5. **Currency clarity** — Given spending exists in incompatible currencies, then progress does not silently add unlike amounts.
+6. **Ownership** — Given another user's budget or catalog target, then access is denied.
+
+**Dependencies:** HU-004, HU-006, HU-012.
 
 ---
 
@@ -333,7 +351,7 @@
 | INV-03 | Multi-record financial operations are atomic. |
 | INV-04 | Original monetary amounts and currencies are preserved. Unlike currencies are not silently combined. |
 | INV-05 | Budget progress is derived from qualifying expenses in the selected target and period. |
-| INV-06 | Archived catalog/account entries remain valid for history but cannot be selected for new entries. |
+| INV-06 | Deleted catalog entries are removed permanently; financial records survive with Uncategorized or Deleted placeholders, while inactive accounts remain valid for history. |
 | INV-07 | AI output is untrusted proposal data and cannot bypass manual validation or confirmation. |
 | INV-08 | Passwords, tokens, secrets, and unnecessary personal financial details never appear in logs. |
 
@@ -348,16 +366,15 @@
 | Requirement group | Stories |
 |---|---|
 | FR-AUTH | HU-001, HU-002 |
-| Preferences and FR-CUR-05 | HU-003 |
-| FR-ACC and FR-CUR | HU-004, HU-011, HU-012, HU-014 |
-| FR-CAT | HU-005, HU-006 |
-| FR-EXP | HU-007, HU-008, HU-009 |
-| FR-INC | HU-010 |
-| FR-BUD | HU-013, HU-014 |
-| FR-DATE | HU-012, HU-014 |
-| FR-DASH | HU-014 |
-| FR-AI | HU-015, HU-016 |
-| UX requirements | HU-001, HU-002, HU-007, HU-010, HU-011, HU-014, HU-015, HU-016 |
+| FR-ACC and FR-CUR | HU-003, HU-010, HU-011, HU-012 |
+| FR-CAT | HU-004, HU-005 |
+| FR-EXP | HU-006, HU-007, HU-008 |
+| FR-INC | HU-009 |
+| FR-BUD | HU-016 |
+| FR-DATE | HU-011, HU-012, HU-016 |
+| FR-DASH | HU-012, HU-016 |
+| FR-AI | HU-013, HU-014, HU-015 |
+| UX requirements | HU-001, HU-002, HU-006, HU-009, HU-010, HU-011, HU-012, HU-013, HU-014, HU-015 |
 | Security requirements | All stories; strongest direct coverage in HU-001, HU-002, and ownership scenarios throughout |
 
 ## INVEST Validation
@@ -366,25 +383,26 @@
 |---|---|---|---|---|---|---|---|
 | HU-001 | Yes | Yes | Yes | Yes | Yes | Yes | Registration vertical slice; setup remains in enablers |
 | HU-002 | Yes | Yes | Yes | Yes | Yes | Yes | Depends on registered account but produces distinct session value |
-| HU-003 | Yes | Yes | Yes | Yes | Yes | Yes | Narrow preference behavior |
-| HU-004 | Yes | Yes | Yes | Yes | Yes | Yes | Account lifecycle bounded to create/edit/archive |
-| HU-005 | Yes | Yes | Yes | Yes | Yes | Yes | Category hierarchy and safe archive |
-| HU-006 | Yes | Yes | Yes | Yes | Yes | Yes | Small supporting-catalog slice |
-| HU-007 | Yes | Yes | Yes | Yes | Yes | Yes | Minimal manual expense independent of receipt AI |
-| HU-008 | Yes | Yes | Yes | Yes | Yes | Yes | Optional receipt/item enhancement after expense creation |
-| HU-009 | Yes | Yes | Yes | Yes | Yes | Yes | Correction/archive lifecycle |
-| HU-010 | Yes | Yes | Yes | Yes | Yes | Yes | Complete manual income slice |
-| HU-011 | Yes | Yes | Yes | Yes | Yes | Yes | Transfer value and invariants are explicit |
-| HU-012 | Yes | Yes | Yes | Yes | Yes | Yes | Unified read journey after movements exist |
-| HU-013 | Yes | Yes | Yes | Yes | Yes | Yes | One-target, one-period budget model |
-| HU-014 | Yes | Yes | Yes | Yes | Yes | Yes | Read-only summary with bounded outputs |
-| HU-015 | Yes | Yes | Yes | Yes | Yes | Yes | Deferred adapter over existing expense form |
-| HU-016 | Yes | Yes | Yes | Yes | Yes | Yes | Deferred adapter over existing financial forms |
+| HU-003 | Yes | Yes | Yes | Yes | Yes | Yes | Account lifecycle and explicit currency |
+| HU-004 | Yes | Yes | Yes | Yes | Yes | Yes | Category hierarchy and confirmed permanent deletion |
+| HU-005 | Yes | Yes | Yes | Yes | Yes | Yes | Small supporting-catalog slice |
+| HU-006 | Yes | Yes | Yes | Yes | Yes | Yes | Minimal fast manual expense independent of AI |
+| HU-007 | Yes | Yes | Yes | Yes | Yes | Yes | Optional receipt/item enhancement after expense creation |
+| HU-008 | Yes | Yes | Yes | Yes | Yes | Yes | View, correction, and permanent-delete lifecycle |
+| HU-009 | Yes | Yes | Yes | Yes | Yes | Yes | Complete manual income slice |
+| HU-010 | Yes | Yes | Yes | Yes | Yes | Yes | Transfer value and invariants are explicit |
+| HU-011 | Yes | Yes | Yes | Yes | Yes | Yes | Searchable read journey after movements exist |
+| HU-012 | Yes | Yes | Yes | Yes | Yes | Yes | Deterministic basic dashboard before AI |
+| HU-013 | Yes | Yes | Yes | Yes | Yes | Yes | Natural-text proposal establishes the shared assistant flow |
+| HU-014 | Yes | Yes | Yes | Yes | Yes | Yes | Explicit audio capture, permission, cleanup, and proposal flow |
+| HU-015 | Yes | Yes | Yes | Yes | Yes | Yes | Receipt-photo proposal with partial/failure states |
+| HU-016 | Yes | Yes | Yes | Yes | Yes | Yes | One-target, one-period budget model |
 
 ## Story Count and Academic Requirement
 
-- **Manual MVP stories:** 14
-- **Deferred AI stories:** 2
+- **Deterministic foundation stories:** 12
+- **AI speed-layer stories:** 3
+- **Budget stories:** 1
 - **Total genuine user stories:** 16
 - **Technical enablers:** 6, tracked separately and not counted toward the user-story requirement
 
