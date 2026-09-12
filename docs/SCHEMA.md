@@ -72,4 +72,4 @@ Budget progress is derived from qualifying confirmed expenses. It is not stored 
 
 These can be added later through migrations if an approved user story justifies the additional complexity.
 
-Backend migration `0005_remove_legacy_payment_method` retires the unused catalog without rewriting the original migration history. Current models, registration defaults, account movements, and read-only views contain no payment-method layer.
+Backend migration `0005_drop_payment_method` retires the unused catalog without rewriting the original migration history. Current models, registration defaults, account movements, and read-only views contain no payment-method layer.

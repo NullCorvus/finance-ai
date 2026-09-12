@@ -30,7 +30,7 @@ HU-001 is implemented as the first executable vertical slice. A user can enter e
 - Generated OpenAPI: unchanged after regeneration; SHA-256 `77751FB5351D0AF25AC7C715D603738B1520FAAF086744A72AF33517E88468E3`.
 - Python dependency audit: no known vulnerabilities; the local package is correctly reported as not present on PyPI.
 - Live API: liveness/readiness 200; registration 201; duplicate 409 with `email_already_registered`; safe correlation returned; no authentication created.
-- Controlled live API persistence originally included payment-method starter rows. Migration `0005_remove_legacy_payment_method` later removed that unused catalog and current registrations create only categories and income sources.
+- Controlled live API persistence originally included payment-method starter rows. Migration `0005_drop_payment_method` later removed that unused catalog and current registrations create only categories and income sources.
 - API runtime: UID/GID 10001, no pytest installed.
 - Flutter format/analyze: passed with no changes/issues.
 - Flutter unit/widget/contract/configuration/diagnostic tests: 23 passed; 91.76% coverage.
