@@ -1,7 +1,7 @@
 # Mockups — Finance AI Tracker
 
 > **Status:** PROPOSAL — interactive mockup built as a single self-contained HTML file.
-> Open it in any browser: `docs/mockups/index.html` (3 tabs · 4 screens, clickable).
+> Open it in any browser: `docs/mockups/index.html` (auth flow · 3 tabs · management screens, clickable).
 > UI in Spanish, mockup documentation in English. No frameworks, no dependencies.
 
 ## Design decisions (2026-08-17, revised 2026-08-28: single hub, no chat)
@@ -68,25 +68,36 @@
   income green `#0E9F6E`, confirm `#16A34A`, discard `#DC2626`.
   **Dark theme included:** toggle (sun/moon) in the app header switches the whole mockup
   to a dark palette (background `#101318`, cards `#1A2027`, brighter green `#8FB42C`).
-  Choice persists via `localStorage`.
+   Choice persists via `localStorage`.
+- **Auth visual language:** supplied Android-style composition with full neutral background,
+  compact orbit logo, icon inputs, dynamic focus border, loading button state, ordered links,
+  and no social-login providers.
 
 ## Screens
 
-1. **Gastos (single hub)** — capture bar (photo · voice · text) + AI confirmation card
+1. **Login / Registro** — reference-style centered auth layout with email and password fields,
+   visibility controls, validation, generic invalid-credentials state, registration success,
+   and demo-only navigation into the app. No Google or Apple buttons.
+2. **Gastos (single hub)** — capture bar (photo · voice · text) + AI confirmation card
    sample (all items, Confirmar/Editar/Descartar) + "Agregar gasto manual" button +
    "Mis gastos": live search, category chips, list grouped by receipt (✏️ edit opens the
    same form pre-filled, 🗑 delete with confirmation sheet).
-2. **Nuevo gasto** — manual form (back button; multi-item rows, auto-sum total, collapsed
+3. **Nuevo gasto** — manual form (back button; multi-item rows, auto-sum total, collapsed
    additional fields). The same form, pre-filled, is used for EDIT.
-3. **Dashboard** — Balance del mes, trend, bar chart with subcategory drill-down, recent
+4. **Dashboard** — Balance del mes, trend, bar chart with subcategory drill-down, recent
    movements. ⚠️ proposal E4 = analytics by category ONLY (no trends/balance) — trim the
    balance/trend sections before the demo.
-4. **Ajustes** — categories (with subcategory counts), "+ Agregar categoría", limits
-   (FASE 3 / optional) with "+ Agregar límite", currency COP/USD.
+5. **Ajustes** — account entry point, categories, and income sources. Unimplemented limits and
+   preferences stay hidden until their code exists.
+6. **Cuentas y saldos** — owned cash, bank, and savings accounts with type, currency,
+   balance, add-account form, and edit actions (HU-003).
+7. **Categorías / Fuentes de ingreso** — owned catalog lists with add and edit forms,
+   delete confirmation, subcategory/source details, visible color swatches, icon choices,
+   currency choices, and historical-record copy (HU-004/HU-005).
 
 ## Not represented (deferred)
 
-- **Login/register (auth, Phase 0)** — deliberately out for now (infrastructure, not capture UX).
+- Real authentication, API calls, token storage, and protected routing — auth screens are visual-only.
 - Free AI conversation (Phase 3) — the chat tab is merged into Inicio; free talk is optional Phase 3.
 
 ## Files

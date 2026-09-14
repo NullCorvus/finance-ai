@@ -367,6 +367,112 @@
   .seg{display:flex;background:var(--soft);border-radius:8px;overflow:hidden;}
   .seg button{border:none;background:none;padding:6px 12px;font-size:12px;font-weight:600;color:var(--muted);cursor:pointer;}
   .seg button.on{background:var(--primary);color:#fff;border-radius:7px;}
+
+  /* ---------- AUTH / ACCOUNT / CATALOG SCREENS ---------- */
+  .auth-screen{padding:28px 22px;overflow-y:auto;}
+  .auth-brand{text-align:center;margin:18px 0 28px;}
+  .auth-brand .mark{width:58px;height:58px;margin:0 auto 12px;border-radius:18px;background:var(--primary);color:#fff;display:flex;align-items:center;justify-content:center;font-size:25px;font-weight:800;box-shadow:0 8px 18px rgba(107,142,0,.25);}
+  .auth-brand h1{font-size:22px;color:var(--text);}
+  .auth-brand p{font-size:12px;color:var(--muted);margin-top:5px;}
+  .auth-card{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:18px;box-shadow:0 2px 8px rgba(15,23,42,.06);}
+  .auth-card h2{font-size:18px;color:var(--text);margin-bottom:5px;}
+  .auth-card .intro{font-size:12px;color:var(--muted);line-height:1.45;margin-bottom:14px;}
+  .auth-card .f-label{margin-top:12px;}
+  .password-wrap{position:relative;}
+  .password-wrap .f-input{padding-right:42px;}
+  .password-toggle{position:absolute;right:8px;top:7px;width:30px;height:30px;border:0;background:none;color:var(--muted);cursor:pointer;}
+  .auth-submit{width:100%;margin-top:16px;}
+  .auth-link{display:block;border:0;background:none;color:var(--primary);font-size:12px;font-weight:700;margin:16px auto 0;cursor:pointer;}
+  .auth-foot{text-align:center;color:var(--muted);font-size:11px;margin-top:18px;}
+  .auth-state{display:none;font-size:12px;padding:9px 10px;border-radius:9px;margin-top:10px;line-height:1.4;}
+  .auth-state.error{background:#FDECEC;color:var(--discard);}
+  .auth-state.success{background:var(--income-soft);color:var(--income);}
+  :root[data-theme="dark"] .auth-state.error{background:#351D20;}
+  .manage{padding:8px 16px 16px;overflow-y:auto;flex:1;}
+  .manage h2{font-size:20px;color:var(--text);margin:8px 2px 2px;}
+  .manage .greet{font-size:12px;color:var(--muted);margin-bottom:14px;}
+  .manage-card{background:var(--card);border:1px solid var(--line);border-radius:14px;overflow:hidden;margin-bottom:14px;}
+  .manage-row{display:flex;align-items:center;gap:10px;padding:13px 14px;border-bottom:1px solid var(--rowline);color:var(--text);}
+  .manage-row:last-child{border-bottom:0;}
+  .manage-row .row-main{flex:1;min-width:0;}
+  .manage-row .row-title{font-size:14px;font-weight:700;}
+  .manage-row .row-sub{font-size:11px;color:var(--muted);margin-top:3px;}
+  .manage-row .row-value{text-align:right;font-size:13px;font-weight:700;color:var(--text);}
+  .manage-row .row-value small{display:block;font-size:10px;color:var(--muted);font-weight:400;margin-top:2px;}
+  .manage-icon{width:34px;height:34px;border-radius:10px;background:var(--primary-soft);color:var(--primary);display:flex;align-items:center;justify-content:center;font-weight:800;}
+  .back-title{display:flex;align-items:center;gap:10px;}
+  .back-title h2{margin:0;}
+  .manage-actions{display:flex;gap:8px;margin-bottom:14px;}
+  .manage-actions .addrow{margin:0;}
+  .swatch{width:12px;height:12px;border-radius:50%;display:inline-block;margin-right:6px;vertical-align:-1px;}
+  .catalog-actions{display:flex;gap:6px;}
+  .catalog-actions .iconbtn{width:28px;height:28px;}
+
+  /* Auth follows supplied reference: quiet header, centered copy, pill fields. */
+  .auth-screen{padding:16px 22px 28px;}
+  .auth-screen .back-title{margin:2px 0 20px;}
+  .auth-screen .back-title .iconbtn{background:var(--card);border:1px solid var(--line);font-size:20px;}
+  .auth-brand{margin:28px 0 30px;}
+  .auth-brand .mark{width:52px;height:52px;border-radius:50%;background:var(--primary-soft);color:var(--primary);box-shadow:none;font-size:22px;}
+  .auth-brand h1{font-size:24px;letter-spacing:-.3px;}
+  .auth-brand p{max-width:245px;margin:7px auto 0;line-height:1.45;}
+  .auth-card{background:transparent;border:0;box-shadow:none;padding:0;}
+  .auth-card h2{text-align:center;font-size:23px;letter-spacing:-.3px;}
+  .auth-card .intro{text-align:center;max-width:265px;margin:7px auto 22px;}
+  .auth-card .f-label{margin:14px 2px 7px;text-transform:none;font-size:11px;letter-spacing:0;}
+  .auth-card .f-input{border-radius:24px;padding:13px 16px;background:var(--card);}
+  .auth-submit{border-radius:24px;padding:13px;min-height:47px;background:var(--primary);}
+  .auth-link{font-size:12px;}
+  .auth-foot{margin-top:26px;}
+  .auth-screen > .auth-card{max-width:300px;margin:0 auto;}
+  .auth-screen > .auth-brand{max-width:300px;margin-left:auto;margin-right:auto;}
+  .auth-card .password-wrap .f-input{padding-right:45px;}
+  .auth-card .password-toggle{top:8px;}
+  .manage-modal-fields{display:grid;gap:8px;margin-bottom:14px;}
+  .manage-modal-fields .f-input{background:var(--soft);}
+  #limits-settings,#preferences-settings{display:none;}
+  .auth-orbit{position:relative;width:142px;height:112px;margin:2px auto 10px;}
+  .auth-orbit:before,.auth-orbit:after{content:"";position:absolute;border:1px solid var(--primary);border-radius:50%;opacity:.35;transform:rotate(-25deg);}
+  .auth-orbit:before{inset:18px -10px;border-left-color:transparent;border-right-color:transparent;}
+  .auth-orbit:after{inset:2px 20px;transform:rotate(35deg);border-top-color:transparent;border-bottom-color:transparent;}
+  .auth-orbit .mark{position:absolute;inset:29px 45px;width:52px;height:52px;z-index:1;animation:float-mark 3s ease-in-out infinite;}
+  .orbit-dot{position:absolute;width:9px;height:9px;border-radius:50%;background:var(--income);box-shadow:0 0 0 5px var(--income-soft);}
+  .orbit-dot.one{top:12px;right:22px}.orbit-dot.two{bottom:12px;left:18px;background:var(--primary);}
+  @keyframes float-mark{50%{transform:translateY(-4px) rotate(4deg)}}
+  .auth-card .f-input:focus{border-color:var(--primary);box-shadow:0 0 0 3px var(--primary-soft);}
+  .password-toggle svg{display:block;margin:auto;}
+  .password-toggle:focus{outline:2px solid var(--primary);outline-offset:1px;border-radius:8px;}
+  .choice-grid{display:flex;gap:7px;flex-wrap:wrap;}
+  .choice-grid button{border:1px solid var(--line);background:var(--card);color:var(--muted);border-radius:9px;padding:8px 10px;font-size:11px;cursor:pointer;}
+  .choice-grid button.on{border-color:var(--primary);background:var(--primary-soft);color:var(--primary);font-weight:700;}
+  .currency-choice{display:flex;align-items:center;gap:7px;}
+  .currency-choice .currency-symbol{width:24px;height:24px;border-radius:50%;background:var(--primary-soft);color:var(--primary);display:flex;align-items:center;justify-content:center;font-weight:800;}
+  /* Final login reference: neutral full-screen surface and compact Android-style form. */
+  .auth-screen{background:var(--bg);padding:18px 22px 24px;}
+  .auth-screen .auth-inner{width:100%;max-width:300px;margin:auto;}
+  .auth-orbit{width:110px;height:88px;margin:0 auto 2px;}
+  .auth-orbit .mark{inset:18px 29px;}
+  .auth-brand{margin:12px 0 28px;}
+  .auth-brand h1{font-size:24px;}
+  .auth-brand p{font-size:14px;}
+  .auth-card h2{text-align:left;font-size:24px;}
+  .auth-card .intro{text-align:left;margin:7px 0 20px;font-size:14px;}
+  .auth-card .f-label{font-size:12px;font-weight:700;}
+  .auth-card .f-input{height:54px;border:1px solid var(--line);}
+  .auth-card .f-input:focus{border-color:var(--primary);outline:none;box-shadow:0 0 0 3px var(--primary-soft);}
+  .input-with-icon{position:relative;}
+  .input-with-icon .field-icon{position:absolute;left:15px;top:17px;color:var(--muted);pointer-events:none;}
+  .input-with-icon .f-input{padding-left:44px;}
+  .password-wrap .field-icon{position:absolute;left:15px;top:17px;color:var(--muted);pointer-events:none;z-index:1;}
+  .auth-submit{height:54px;margin-top:18px;box-shadow:0 6px 14px rgba(107,142,0,.2);}
+  .auth-submit:active{background:#587500;}
+  .auth-submit:disabled{background:#C9D0BA;box-shadow:none;}
+  .auth-forgot{display:block;margin:15px auto 0;border:0;background:none;color:var(--primary);font-size:12px;font-weight:700;cursor:pointer;}
+  .auth-divider{display:flex;align-items:center;gap:10px;margin:20px 0 13px;color:var(--muted);font-size:11px;}
+  .auth-divider:before,.auth-divider:after{content:"";height:1px;background:var(--line);flex:1;}
+  .auth-helper{text-align:center;color:var(--muted);font-size:12px;}
+  .auth-helper button{border:0;background:none;color:var(--primary);font-weight:700;cursor:pointer;font-size:12px;}
+  .auth-foot{margin-top:28px;font-size:10px;}
 </style>
 </head>
 <body>
@@ -380,6 +486,60 @@
       <svg width="15" height="11" viewBox="0 0 15 11" fill="none"><rect x="0" y="7" width="2.6" height="4" rx="0.6" fill="currentColor"/><rect x="4" y="5" width="2.6" height="6" rx="0.6" fill="currentColor"/><rect x="8" y="3" width="2.6" height="8" rx="0.6" fill="currentColor"/><rect x="12" y="0" width="2.6" height="11" rx="0.6" fill="currentColor"/></svg>
       <svg width="16" height="11" viewBox="0 0 16 11" fill="none"><path d="M8 10.5c1.5 0 2.8-.5 4-1.4l-1.4-1.6C9.9 8.1 9 8.4 8 8.4S6.1 8.1 5.4 7.5L4 9.1c1.2.9 2.5 1.4 4 1.4z" fill="currentColor"/><path d="M8 7c1 0 2-.3 2.8-1L9.5 4.5C9 5 8.5 5.2 8 5.2S7 5 6.5 4.5L5.2 6C6 6.7 7 7 8 7z" fill="currentColor"/><rect x="13.5" y="1" width="2.2" height="4" rx="1.1" fill="currentColor"/></svg>
     </span>
+  </div>
+
+  <!-- ============ SCREEN: LOGIN (HU-002) ============ -->
+  <div class="screen active" id="screen-login">
+    <div class="auth-screen">
+      <div class="auth-inner">
+      <div class="auth-brand">
+        <div class="auth-orbit"><span class="orbit-dot one"></span><span class="orbit-dot two"></span><div class="mark">$</div></div>
+        <h1>Finance AI</h1>
+        <p>Tu dinero, más claro.</p>
+      </div>
+      <div class="auth-card">
+        <h2>Iniciar sesión</h2>
+        <p class="intro">Accede para ver tus gastos, ingresos y cuentas.</p>
+        <div class="f-label">Correo electrónico</div>
+        <div class="input-with-icon"><span class="field-icon" aria-hidden="true"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3 7 9 6 9-6"/></svg></span><input class="f-input" id="login-email" type="email" placeholder="tu@correo.com" autocomplete="email"></div>
+        <div class="f-label">Contraseña</div>
+        <div class="password-wrap">
+          <span class="field-icon" aria-hidden="true"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="10" width="14" height="11" rx="2"/><path d="M8 10V7a4 4 0 0 1 8 0v3"/></svg></span><input class="f-input" id="login-password" type="password" placeholder="Tu contraseña" autocomplete="current-password" style="padding-left:44px;">
+          <button class="password-toggle" type="button" data-password="login-password" title="Mostrar contraseña"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12s3.5-6 10-6 10 6 10 6-3.5 6-10 6S2 12 2 12z"/><circle cx="12" cy="12" r="2.5"/></svg></button>
+        </div>
+        <div class="auth-state error" id="login-error" role="alert">Correo o contraseña inválidos. Revisa tus datos.</div>
+        <button class="btn btn-confirm auth-submit" id="login-submit" type="button">Iniciar sesión</button>
+        <button class="auth-forgot" id="forgot-password" type="button">¿Olvidaste tu contraseña?</button>
+        <div class="auth-divider"><span>o</span></div>
+        <div class="auth-helper">¿No tienes una cuenta? <button id="open-register" type="button">Crear una cuenta</button></div>
+      </div>
+      <div class="auth-foot">Demo visual · las credenciales no se envían</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============ SCREEN: REGISTRO (HU-001) ============ -->
+  <div class="screen" id="screen-register">
+    <div class="auth-screen">
+      <div class="back-title"><button class="iconbtn" id="back-login" title="Volver"><span aria-hidden="true">←</span></button><h2>Crear cuenta</h2></div>
+      <div class="auth-brand" style="margin-top:10px;margin-bottom:12px;"><div class="auth-orbit"><span class="orbit-dot one"></span><span class="orbit-dot two"></span><div class="mark">+</div></div></div>
+      <div class="auth-card" style="margin-top:20px;">
+        <p class="intro">Crea tu cuenta para empezar a organizar tus finanzas.</p>
+        <div class="f-label">Correo electrónico</div>
+        <input class="f-input" id="register-email" type="email" placeholder="tu@correo.com" autocomplete="email">
+        <div class="f-label">Contraseña</div>
+        <div class="password-wrap">
+          <input class="f-input" id="register-password" type="password" placeholder="Mínimo 8 caracteres" autocomplete="new-password">
+          <button class="password-toggle" type="button" data-password="register-password" title="Mostrar contraseña"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12s3.5-6 10-6 10 6 10 6-3.5 6-10 6S2 12 2 12z"/><circle cx="12" cy="12" r="2.5"/></svg></button>
+        </div>
+        <div class="f-label">Confirmar contraseña</div>
+        <input class="f-input" id="register-confirm" type="password" placeholder="Repite tu contraseña" autocomplete="new-password">
+        <div class="auth-state error" id="register-error" role="alert"></div>
+        <div class="auth-state success" id="register-success">Cuenta creada. Ya puedes iniciar sesión.</div>
+        <button class="btn btn-confirm auth-submit" id="register-submit" type="button">Crear cuenta</button>
+        <button class="auth-link" id="register-to-login" type="button">Ya tengo una cuenta</button>
+      </div>
+    </div>
   </div>
 
   <!-- ============ SCREEN: GASTOS (single hub: capture + manual + list) ============ -->
@@ -479,7 +639,7 @@
           </div>
   </div>
 
-<div class="screen active" id="screen-gastos">
+ <div class="screen" id="screen-gastos">
     <div class="app-header">
       <div>
         <div class="title">Gastos</div>
@@ -748,6 +908,17 @@
     </div>
   </div>
 
+  <div class="modal-back" id="manage-editor-modal">
+    <div class="modal">
+      <div class="m-title" id="manage-editor-title">Agregar valor</div>
+      <div class="manage-modal-fields" id="manage-editor-fields"></div>
+      <div class="card-actions">
+        <button class="btn btn-cancel" id="manage-editor-cancel" type="button">Cancelar</button>
+        <button class="btn btn-confirm" id="manage-editor-save" type="button">Guardar</button>
+      </div>
+    </div>
+  </div>
+
   <!-- ============ SCREEN 2: DASHBOARD ============ -->
   <div class="screen" id="screen-dashboard">
     <div class="dash">
@@ -825,41 +996,88 @@
       <h2>Ajustes</h2>
       <div class="greet">Personaliza tu app</div>
 
-      <div class="set-title">Categorías</div>
-      <div class="set-group">
-        <div class="set-row"><span>Comida</span><span class="sub"><b>4</b> subcategorías · 8 gastos</span></div>
-        <div class="set-row"><span>Transporte</span><span class="sub"><b>3</b> subcategorías · 5 gastos</span></div>
-        <div class="set-row"><span>Entretenimiento</span><span class="sub"><b>2</b> subcategorías · 3 gastos</span></div>
-        <div class="set-row"><span>Suscripciones</span><span class="sub"><b>2</b> subcategorías · 4 gastos</span></div>
-      </div>
-      <button class="addrow">
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg>
-        Agregar categoría
-      </button>
+       <div class="set-title">Mi cuenta</div>
+       <div class="set-group">
+         <button class="set-row" id="open-accounts" type="button" style="width:100%;border:0;background:none;text-align:left;"><span>Cuentas y saldos</span><span class="sub">3 cuentas</span></button>
+       </div>
 
-      <div class="set-title">Límites de gasto <span class="badge phase3">FASE 3 · opcional</span></div>
+       <div class="set-title">Catálogos</div>
+       <div class="set-group">
+         <button class="set-row" id="open-categories" type="button" style="width:100%;border:0;background:none;text-align:left;"><span>Categorías</span><span class="sub">4 categorías</span></button>
+         <button class="set-row" id="open-income-sources" type="button" style="width:100%;border:0;background:none;text-align:left;"><span>Fuentes de ingreso</span><span class="sub">Salario · Freelance</span></button>
+       </div>
+
+       <div id="limits-settings">
+       <div class="set-title">Límites de gasto <span class="badge phase3">FASE 3 · opcional</span></div>
       <div class="set-group">
         <div class="set-row"><span>Comer fuera</span><span class="sub">$ 50 / mes</span></div>
         <div class="set-row"><span>Entretenimiento</span><span class="sub">$ 40 / mes</span></div>
       </div>
-      <button class="addrow">
+       <button class="addrow">
         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg>
         Agregar límite
         <small>también puedes pedirlo al agente · FASE 3</small>
-      </button>
+       </button>
+       </div>
 
-      <div class="set-title">Preferencias</div>
+       <div id="preferences-settings">
+       <div class="set-title">Preferencias</div>
       <div class="set-group">
         <div class="set-row"><span>Moneda preferida</span>
           <div class="seg"><button class="on">COP</button><button>USD</button></div>
-        </div>
+       </div>
+       </div>
         <div class="set-row"><span>Perfil</span><span class="sub">davidf@…</span></div>
       </div>
     </div>
   </div>
 
+  <!-- ============ SCREEN: CUENTAS (HU-003) ============ -->
+  <div class="screen" id="screen-accounts">
+    <div class="app-header"><div class="back-title"><button class="iconbtn back-settings" title="Volver">←</button><div><div class="title">Cuentas y saldos</div><div class="sub">Dónde está tu dinero</div></div></div></div>
+    <div class="manage">
+      <div class="panel" style="margin-top:0;"><div class="ptitle">Saldo total <small>separado por moneda</small></div><div style="font-size:24px;font-weight:800;color:var(--text);">$ 3.245.000 <small style="font-size:11px;color:var(--muted);font-weight:400;">COP</small></div></div>
+      <div class="manage-actions"><button class="addrow" id="add-account" type="button">＋ Agregar cuenta</button></div>
+      <div class="manage-card">
+        <div class="manage-row"><div class="manage-icon">$</div><div class="row-main"><div class="row-title">Efectivo</div><div class="row-sub">Billetera · <span class="currency-choice"><span class="currency-symbol">$</span> COP</span></div></div><div class="row-value">$ 245.000<small>Activa</small></div><div class="catalog-actions"><button class="iconbtn" title="Editar">✎</button></div></div>
+        <div class="manage-row"><div class="manage-icon">⌁</div><div class="row-main"><div class="row-title">Bancolombia</div><div class="row-sub">Cuenta bancaria · <span class="currency-choice"><span class="currency-symbol">$</span> COP</span></div></div><div class="row-value">$ 2.500.000<small>Activa</small></div><div class="catalog-actions"><button class="iconbtn" title="Editar">✎</button></div></div>
+        <div class="manage-row"><div class="manage-icon">◈</div><div class="row-main"><div class="row-title">Ahorros USD</div><div class="row-sub">Ahorros · <span class="currency-choice"><span class="currency-symbol">$</span> USD</span></div></div><div class="row-value">$ 500<small>Activa</small></div><div class="catalog-actions"><button class="iconbtn" title="Editar">✎</button></div></div>
+      </div>
+      <div class="form-error" id="account-demo-note">Formulario de cuenta listo para diseñar: nombre, tipo, moneda y saldo inicial.</div>
+    </div>
+  </div>
+
+  <!-- ============ SCREEN: CATEGORÍAS (HU-004) ============ -->
+  <div class="screen" id="screen-categories">
+    <div class="app-header"><div class="back-title"><button class="iconbtn back-settings" title="Volver">←</button><div><div class="title">Categorías</div><div class="sub">Clasifica tus gastos</div></div></div></div>
+    <div class="manage">
+      <div class="manage-actions"><button class="addrow" id="add-category" type="button">＋ Agregar categoría</button></div>
+      <div class="manage-card">
+        <div class="manage-row"><span class="manage-icon" style="background:#E9F2D8">🍴</span><span class="swatch" style="background:#6B8E00"></span><div class="row-main"><div class="row-title">Comida</div><div class="row-sub">Almuerzo · Mercado · Snacks · 8 gastos</div></div><div class="catalog-actions"><button class="iconbtn" title="Editar">✎</button><button class="iconbtn del" title="Eliminar">⌫</button></div></div>
+        <div class="manage-row"><span class="manage-icon" style="background:#E8F1FF">⌁</span><span class="swatch" style="background:#3B82F6"></span><div class="row-main"><div class="row-title">Transporte</div><div class="row-sub">Bus · Metro · Taxi · 5 gastos</div></div><div class="catalog-actions"><button class="iconbtn" title="Editar">✎</button><button class="iconbtn del" title="Eliminar">⌫</button></div></div>
+        <div class="manage-row"><span class="manage-icon" style="background:#F1E7FF">♫</span><span class="swatch" style="background:#A855F7"></span><div class="row-main"><div class="row-title">Entretenimiento</div><div class="row-sub">Cine · Juegos · 3 gastos</div></div><div class="catalog-actions"><button class="iconbtn" title="Editar">✎</button><button class="iconbtn del" title="Eliminar">⌫</button></div></div>
+        <div class="manage-row"><span class="manage-icon" style="background:#FFF3D8">▶</span><span class="swatch" style="background:#F59E0B"></span><div class="row-main"><div class="row-title">Suscripciones</div><div class="row-sub">Streaming · Apps · 4 gastos</div></div><div class="catalog-actions"><button class="iconbtn" title="Editar">✎</button><button class="iconbtn del" title="Eliminar">⌫</button></div></div>
+      </div>
+      <div class="form-error" id="category-demo-note">Nueva categoría: nombre obligatorio, color e ícono opcionales. Eliminar siempre pide confirmación.</div>
+    </div>
+  </div>
+
+  <!-- ============ SCREEN: FUENTES DE INGRESO (HU-005) ============ -->
+  <div class="screen" id="screen-income-sources">
+    <div class="app-header"><div class="back-title"><button class="iconbtn back-settings" title="Volver">←</button><div><div class="title">Fuentes de ingreso</div><div class="sub">Nombra de dónde viene tu dinero</div></div></div></div>
+    <div class="manage">
+      <div class="manage-actions"><button class="addrow" id="add-income-source" type="button">＋ Agregar fuente</button></div>
+      <div class="manage-card">
+        <div class="manage-row"><div class="manage-icon">↗</div><div class="row-main"><div class="row-title">Salario</div><div class="row-sub">Fuente predeterminada</div></div><div class="catalog-actions"><button class="iconbtn" title="Editar">✎</button><button class="iconbtn del" title="Eliminar">⌫</button></div></div>
+        <div class="manage-row"><div class="manage-icon">✦</div><div class="row-main"><div class="row-title">Freelance</div><div class="row-sub">Fuente personalizada</div></div><div class="catalog-actions"><button class="iconbtn" title="Editar">✎</button><button class="iconbtn del" title="Eliminar">⌫</button></div></div>
+        <div class="manage-row"><div class="manage-icon">+</div><div class="row-main"><div class="row-title">Otros</div><div class="row-sub">Fuente predeterminada</div></div><div class="catalog-actions"><button class="iconbtn" title="Editar">✎</button><button class="iconbtn del" title="Eliminar">⌫</button></div></div>
+      </div>
+      <div class="form-error" id="income-source-demo-note">Nueva fuente: nombre obligatorio. Eliminar pide confirmación y no borra ingresos históricos.</div>
+    </div>
+  </div>
+
   <!-- ============ NAV ============ -->
-  <div class="nav">
+  <div class="nav" id="app-nav" style="display:none;">
     <button class="tab active" data-screen="screen-gastos">
       <span class="ic"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 3h14v18l-2.3-1.5L14.4 21l-2.4-1.5L9.6 21l-2.3-1.5L5 21V3z"/><path d="M9 8h6M9 12h6"/></svg></span>
       Gastos
@@ -877,6 +1095,58 @@
 </div>
 
 <script>
+  // Auth demo: visual-only navigation, no credentials are sent anywhere.
+  var appNav = document.getElementById('app-nav');
+  function showAppScreen(id){
+    document.querySelectorAll('.screen').forEach(function(s){s.classList.remove('active');});
+    document.getElementById(id).classList.add('active');
+    appNav.style.display = 'flex';
+  }
+  function showAuthScreen(id){
+    document.querySelectorAll('.screen').forEach(function(s){s.classList.remove('active');});
+    document.getElementById(id).classList.add('active');
+    appNav.style.display = 'none';
+  }
+  function togglePassword(button){
+    var input = document.getElementById(button.dataset.password);
+    input.type = input.type === 'password' ? 'text' : 'password';
+    button.title = input.type === 'password' ? 'Mostrar contraseña' : 'Ocultar contraseña';
+  }
+  document.querySelectorAll('.password-toggle').forEach(function(button){
+    button.addEventListener('click', function(){ togglePassword(button); });
+  });
+  document.getElementById('open-register').addEventListener('click', function(){ showAuthScreen('screen-register'); });
+  document.getElementById('back-login').addEventListener('click', function(){ showAuthScreen('screen-login'); });
+  document.getElementById('register-to-login').addEventListener('click', function(){ showAuthScreen('screen-login'); });
+  document.getElementById('forgot-password').addEventListener('click', function(){
+    document.getElementById('login-error').textContent = 'Demo: aquí iniciarías recuperación de contraseña.';
+    document.getElementById('login-error').style.display = 'block';
+  });
+  document.getElementById('login-submit').addEventListener('click', function(){
+    var email = document.getElementById('login-email').value.trim();
+    var password = document.getElementById('login-password').value;
+    var error = document.getElementById('login-error');
+    var submit = document.getElementById('login-submit');
+    if(!email || email.indexOf('@') === -1){ error.textContent = 'Ingresa un correo electrónico válido.'; error.style.display = 'block'; return; }
+    if(!password){ error.textContent = 'Ingresa tu contraseña.'; error.style.display = 'block'; return; }
+    error.style.display = 'none';
+    submit.disabled = true;
+    submit.textContent = '◌  Iniciando sesión...';
+    setTimeout(function(){ submit.disabled = false; submit.textContent = 'Iniciar sesión'; showAppScreen('screen-gastos'); }, 500);
+  });
+  document.getElementById('register-submit').addEventListener('click', function(){
+    var email = document.getElementById('register-email').value.trim();
+    var password = document.getElementById('register-password').value;
+    var confirm = document.getElementById('register-confirm').value;
+    var error = document.getElementById('register-error');
+    var success = document.getElementById('register-success');
+    error.style.display = 'none'; success.style.display = 'none';
+    if(!email || email.indexOf('@') === -1){ error.textContent = 'Escribe un correo válido.'; error.style.display = 'block'; return; }
+    if(password.length < 8){ error.textContent = 'La contraseña debe tener mínimo 8 caracteres.'; error.style.display = 'block'; return; }
+    if(password !== confirm){ error.textContent = 'Las contraseñas no coinciden.'; error.style.display = 'block'; return; }
+    success.style.display = 'block';
+  });
+
   // Light / dark theme toggle (persists across tabs).
   var root = document.documentElement;
   function applyTheme(dark){
@@ -920,6 +1190,8 @@
   function setScreen(id){
     document.querySelectorAll('.screen').forEach(function(s){s.classList.remove('active');});
     document.getElementById(id).classList.add('active');
+    if(id === 'screen-login' || id === 'screen-register') appNav.style.display = 'none';
+    else appNav.style.display = 'flex';
   }
   var formTitle = document.getElementById('form-title');
   // ONE form for create AND edit: edit = same form, pre-filled (HU-004)
@@ -1386,6 +1658,83 @@
   document.getElementById('btn-back-search').addEventListener('click',function(){
     document.getElementById('screen-buscar').classList.remove('active');
     document.getElementById('screen-gastos').classList.add('active');
+  });
+  // Settings drill-downs for account and owned catalog stories.
+  document.getElementById('open-accounts').addEventListener('click', function(){ setScreen('screen-accounts'); });
+  document.getElementById('open-categories').addEventListener('click', function(){ setScreen('screen-categories'); });
+  document.getElementById('open-income-sources').addEventListener('click', function(){ setScreen('screen-income-sources'); });
+  document.querySelectorAll('.back-settings').forEach(function(button){
+    button.addEventListener('click', function(){ setScreen('screen-ajustes'); });
+  });
+  document.querySelectorAll('#add-account, #add-category, #add-income-source').forEach(function(button){
+    button.addEventListener('click', function(){
+      openManageEditor(button.id.replace('add-', ''), false);
+    });
+  });
+  document.querySelectorAll('.manage .catalog-actions .iconbtn:not(.del)').forEach(function(button){
+    button.addEventListener('click', function(){
+      button.dataset.bound = 'true';
+      var type = button.closest('#screen-accounts') ? 'account' : (button.closest('#screen-categories') ? 'category' : 'income-source');
+      openManageEditor(type, true);
+    });
+  });
+  document.querySelectorAll('.manage .catalog-actions .del').forEach(function(button){
+    button.addEventListener('click', function(){
+      modal.classList.add('show');
+      mTitle.textContent = '¿Eliminar este valor?';
+      mText.textContent = 'La eliminación es permanente. Los registros históricos se conservan.';
+      pendingMode = null; pendingEl = null;
+    });
+  });
+  document.querySelectorAll('.manage-card').forEach(function(card){
+    card.addEventListener('click', function(event){
+      var button = event.target.closest('.catalog-actions .iconbtn');
+      if(!button || button.classList.contains('del') || button.dataset.bound) return;
+      button.dataset.bound = 'true';
+      var type = card.closest('#screen-accounts') ? 'account' : (card.closest('#screen-categories') ? 'category' : 'income-source');
+      openManageEditor(type, true);
+    });
+  });
+  function openManageEditor(type, edit){
+    manageEditorType = type;
+    var titles = {account:'cuenta', category:'categoría', 'income-source':'fuente de ingreso'};
+    var fields = {
+      account: '<input class="f-input" placeholder="Nombre de la cuenta" value="' + (edit ? 'Bancolombia' : '') + '"><div class="f-label">Tipo de cuenta</div><div class="choice-grid"><button type="button" class="on">⌁ Banco</button><button type="button">$ Efectivo</button><button type="button">◈ Ahorros</button></div><div class="f-label">Moneda</div><div class="choice-grid currency-picker"><button type="button" class="on"><span class="currency-symbol">$</span> COP</button><button type="button"><span class="currency-symbol">$</span> USD</button></div><input class="f-input" placeholder="Saldo inicial" value="">',
+      category: '<input class="f-input" placeholder="Nombre de categoría" value="' + (edit ? 'Comida' : '') + '"><div class="f-label">Color</div><div class="choice-grid color-picker"><button type="button" class="on"><span class="swatch" style="background:#6B8E00"></span> Verde</button><button type="button"><span class="swatch" style="background:#3B82F6"></span> Azul</button><button type="button"><span class="swatch" style="background:#A855F7"></span> Morado</button><button type="button"><span class="swatch" style="background:#F59E0B"></span> Naranja</button></div><div class="f-label">Ícono</div><div class="choice-grid icon-picker"><button type="button" class="on">🍴 Comida</button><button type="button">⌁ Transporte</button><button type="button">⌂ Casa</button><button type="button">♫ Ocio</button></div>',
+      'income-source': '<input class="f-input" placeholder="Nombre de la fuente" value="' + (edit ? 'Salario' : '') + '">'
+    };
+    document.getElementById('manage-editor-title').textContent = (edit ? 'Editar ' : 'Agregar ') + titles[type];
+    document.getElementById('manage-editor-fields').innerHTML = fields[type];
+    document.querySelectorAll('#manage-editor-fields .choice-grid').forEach(function(grid){
+      grid.querySelectorAll('button').forEach(function(choice){
+        choice.addEventListener('click', function(){
+          grid.querySelectorAll('button').forEach(function(item){ item.classList.remove('on'); });
+          choice.classList.add('on');
+        });
+      });
+    });
+    document.getElementById('manage-editor-modal').classList.add('show');
+  }
+  document.getElementById('manage-editor-cancel').addEventListener('click', function(){ document.getElementById('manage-editor-modal').classList.remove('show'); });
+  var manageEditorType = null;
+  document.getElementById('manage-editor-save').addEventListener('click', function(){
+    var fields = document.querySelectorAll('#manage-editor-fields .f-input');
+    var name = fields[0] && fields[0].value.trim();
+    if(!name){ fields[0].focus(); return; }
+    var targets = {account:'screen-accounts', category:'screen-categories', 'income-source':'screen-income-sources'};
+    var screen = document.getElementById(targets[manageEditorType]);
+    var list = screen.querySelector('.manage-card');
+    var row = document.createElement('div');
+    row.className = 'manage-row';
+    if(manageEditorType === 'account'){
+      row.innerHTML = '<div class="manage-icon">$</div><div class="row-main"><div class="row-title">' + escapeHtml(name) + '</div><div class="row-sub">Cuenta · COP</div></div><div class="row-value">$ 0<small>Activa</small></div><div class="catalog-actions"><button class="iconbtn" title="Editar">✎</button></div>';
+    } else if(manageEditorType === 'category'){
+      row.innerHTML = '<span class="swatch" style="background:var(--primary)"></span><div class="row-main"><div class="row-title">' + escapeHtml(name) + '</div><div class="row-sub">Sin subcategorías · 0 gastos</div></div><div class="catalog-actions"><button class="iconbtn" title="Editar">✎</button><button class="iconbtn del" title="Eliminar">⌫</button></div>';
+    } else {
+      row.innerHTML = '<div class="manage-icon">+</div><div class="row-main"><div class="row-title">' + escapeHtml(name) + '</div><div class="row-sub">Fuente personalizada</div></div><div class="catalog-actions"><button class="iconbtn" title="Editar">✎</button><button class="iconbtn del" title="Eliminar">⌫</button></div>';
+    }
+    list.appendChild(row);
+    document.getElementById('manage-editor-modal').classList.remove('show');
   });
   // Gasto/Ingreso selection lives in the form (AI infers it on capture paths)
   document.getElementById('seg-gasto').addEventListener('click',function(){

@@ -1,5 +1,83 @@
 # AI-DLC Audit Log
 
+## Mockup Login Visual Bug Report
+**Timestamp**: 2026-09-13T23:37:20Z
+**User Input:**
+
+```text
+[Image 1]  tiene errores
+```
+
+**AI Response:** Replacing broken Unicode auth glyphs with inline SVG icons and fixing password-eye button styling.
+**Context:** Login screenshot showed broken envelope/lock/eye rendering and native button border.
+
+---
+
+## Mockup Login Reference Revision
+**Timestamp**: 2026-09-13T23:30:00Z
+**User Input:**
+
+```text
+espera mejor como en esta iamgen [Image 1]
+```
+
+**AI Response:** Using supplied reference as final login target: full neutral background, compact orbit logo, icon inputs, dynamic borders, button states, validation feedback, and ordered links.
+**Context:** User replaced previous login direction with second reference image.
+
+---
+
+## Mockup UI Refinement Approval
+**Timestamp**: 2026-09-13T23:25:22Z
+**User Input:**
+
+```text
+ok
+```
+
+**AI Response:** Improving the HTML mockup with an app-style dynamic auth layout, visual category color/icon controls, and account currency/type icons.
+**Context:** User approved the proposed visual refinement scope.
+
+---
+
+## Mockup Revision / Auth and Settings Feedback
+**Timestamp**: 2026-09-13T23:16:00Z
+**User Input:**
+
+```text
+ queiro algo asi para el login el que esta se ve muy feo la verdad pero sin la opcion de google ni aple uy con los mismo colores y por que aqui hay 2 categorias [Image 2]  y queiro todo el proceso represenatdo en el mok up osea editar y todo todo lo que etsa en codigo tal cual agregar fuente de ingreso tampoco funciona y por ahora desactiva las opcioens que no estan en codigo como gasto de esa pestaña ajustes 
+```
+
+**AI Response:** Revising login and registration to match the supplied reference layout without social login, removing duplicate category content, wiring catalog actions, and hiding unfinished settings options.
+**Context:** User requested the full implemented flow represented in the HTML mockup and asked to disable settings options not implemented in code.
+
+---
+
+## Local Android APK Testing
+**Timestamp**: 2026-09-08T00:00:00Z
+**User Input:**
+
+```text
+ok haz todo eso
+```
+
+**AI Response:** Configurando el backend para acceso desde la red local y preparando una APK Flutter de debug para instalarla manualmente en un teléfono Android.
+**Context:** Se detectó Flutter 3.47.2, backend Docker activo y red Wi-Fi local `192.168.241.93`.
+
+---
+
+## Requirements Analysis / Mockup Scope Approval
+**Timestamp**: 2026-09-13T23:06:12Z
+**User Input:**
+
+```text
+A)
+```
+
+**AI Response:** Implementing the standalone HTML mockup update with login, registration, accounts, categories, and income-source screens.
+**Context:** User selected scope A: update only `docs/mockups/index.html`.
+
+---
+
 ## Workspace Detection / Initial Request
 **Timestamp**: 2026-08-25T00:00:00Z
 **User Input:**
@@ -343,3 +421,226 @@ puedes revisar esto pls con docs y guides que tenemos y ver tambien las task si 
 **User Input**: "ok write that and restore fibonacci pls" then "ok writte"
 **AI Response**: Fully defined HU-010 "Dashboard by category + date filter" (Story, 8 ACs, technical note on backend-computed analytics, 3 scenarios, API/UI/Tests/Mockup checklists) using the recommended decisions: period presets Hoy/Esta semana/Este mes, total spent + per-category totals as pie chart + category table, read-only analytics with empty state, ownership scoping, all capture sources included. Restored the standard Fibonacci estimation scale: header note updated, HU-001 → 3 / HU-002 → 2 (valid Fibonacci points), all other stories back to *(to be estimated)*. Updated header note to "all 11 stories fully defined", PB-005 backlog row note to "Sprint 4", SPRINT-PLAN.md HU-010 row to "defined (2026-08-31)", and added decision #14 (dashboard scope + Fibonacci restoration) to Pending Decisions. Verified no "to be defined", "pendiente de definición", or "days" references remain.
 **Context:** Documentation-only backlog refinement; the backlog is now fully defined — only story-point estimation for HU-003…HU-011 remains open.
+
+---
+
+## Backlog and User Stories Review
+**Timestamp**: 2026-09-01T20:21:20Z
+**User Input**: "can you check the US and BAcklog if everything is alright if there is missing something or something that doesnt make sense?"
+**AI Response**: Started a fresh review of the current user stories and backlog against the AI-DLC rules, project scope, architecture, schema, features, mockups, sprint plan, Scrum guidance, and current state. The review will identify missing requirements, contradictions, stale references, unclear acceptance criteria, and readiness gaps without changing application or planning artifacts.
+**Context**: Requirements analysis / documentation review.
+
+---
+
+## Documentation Refinement / Scope Correction
+**Timestamp**: 2026-09-01T23:01:17Z
+**User Input**: "Implement the plan."
+**AI Response**: Applied the requested user-story/backlog changes, then started modifying supporting documentation beyond the requested scope. Those extra changes were reverted after the user clarified that only the US/backlog should be changed.
+**Context**: Documentation-only backlog refinement; scope correction recorded.
+
+---
+
+## Documentation Refinement / Scope Correction
+**Timestamp**: 2026-09-01T23:01:17Z
+**User Input**: "POR QUE ESTAN MODIFCANDO LA BD ?? ESTAAS TOCANDO COSAS QUE SON!!!! ERA SOLO EL US QUE DEBIAS APLCIAR LOS CAMBIOS QUE TE DIJE VUELVE A LOS CMABIOS ANTES DE QUE HICIERAS ESO"
+**AI Response**: Reverted the supporting documentation and schema changes made outside the backlog. Kept the approved changes in `docs/BACKLOG-AND-STORIES.md`; no database or architecture documentation changes remain from this action.
+**Context**: User-requested scope correction.
+
+---
+
+## Backlog Ordering
+**Timestamp**: 2026-09-01T23:07:40Z
+**User Input**: "Implement the plan."
+**AI Response**: Moved the complete HU-012 section from before HU-003 to the end of the user-story list, after HU-011. Preserved HU-012’s code, content, dependencies, and Sprint 2 reference; no other product documentation was changed.
+**Context**: Applied the approved backlog-order correction.
+## Backlog & User Stories Sync (HU-005 renumber)
+**Timestamp**: 2026-09-12T00:00:00Z
+**User Input:**
+
+```text
+I forgot to tell we changed the us let me send you the lastest
+
+# Finance AI — Backlog y User Stories (HU)
+... [latest backlog, 15 user stories; HU-005 = "As a user, I want to manage my income sources so
+that income entries use terms that match my finances."; PB-003; 2 points; Mockup TBD]
+
+lets continue
+```
+
+**AI Response**: Recorded the renumbered backlog. Confirmed HU-005 is now the Income Sources story
+(PB-003, 2 points). Updated the project state from "greenfield planning-only" to brownfield, since
+`finance-ai-backend` (FastAPI) and `finance-ai-frontend` (Flutter) now contain code. Mapped the
+current `income_source` model/migration (archive flag `is_active` + partial unique index
+`uq_income_source_active_name`) against the new PostgreSQL target draft.
+**Context**: INCEPTION — Requirements/User Stories sync; decisions saved for the HU-005 unit.
+
+---
+
+## Sprint Unit Created — hu-005-income-sources
+**Timestamp**: 2026-09-12T00:00:00Z
+**User Input:** "first I wan you to make like a folder or something with the US and the task
+objectives of this sprint but i dont really know what is a good format then I want to follow the
+AI-DLC to do the rest you know ? also I want like to save those desisions, forgetabout trello i
+pasted you all the things noo need to configure it now" then "lets continue"
+**AI Response**: Created the AI-DLC per-unit sprint folder
+`aidlc-docs/construction/hu-005-income-sources/unit-of-work.md` containing the user story, sprint
+objective, four acceptance criteria, task objectives (Database & Migration / Backend API / Frontend
+UI / Tests / Mockup), as-is and target state, saved decisions D1–D6, out-of-scope, dependencies and
+definition of done. Also created the mandatory Workflow Planning artifact
+`aidlc-docs/inception/plans/execution-plan.md`.
+**Context**: INCEPTION — Workflow Planning + Units Generation (single unit). Decisions saved: D1
+scope = HU-005 income sources only; D2 new PostgreSQL draft is migration target; D3 drop `is_active`
+archive flag for `income_source`; D4 trimmed case-insensitive unique names; D5 `SET NULL` on future
+optional historical references; D6 AI-DLC per-unit folder format. Trello integration explicitly
+dropped per user instruction.
+**Status**: Awaiting explicit approval of the sprint unit and execution plan.
+
+---
+
+## HU-005 Implementation Plan Saved
+**Timestamp**: 2026-09-12T00:00:00Z
+**User Input**: "Ok plan looks good we should write this right ?? or were its saved ??"
+**AI Response**: Saved the approved phase-by-phase execution plan to
+`aidlc-docs/construction/hu-005-income-sources/implementation-plan.md` (Phases 0-9: decisions,
+functional design, migration, model/repository/UoW, errors/schemas/service, router/wiring, tests,
+openapi, simple frontend, build-and-test). Recorded D8 (simple testing UI), D9 (backend -> openapi ->
+frontend), D10 (only `income_source` migrates now, full schema later) in `unit-of-work.md` and
+`aidlc-state.md`.
+**Context**: INCEPTION/CONSTRUCTION transition — plan persisted before execution.
+**Status**: Approved by user ("plan looks good").
+
+---
+
+## HU-005 Functional Design Complete
+**Timestamp**: 2026-09-12T00:00:00Z
+**User Input**: (continued from approved implementation plan)
+**AI Response**: Created `aidlc-docs/construction/hu-005-income-sources/functional-design/functional-design.md`
+covering the target `income_source` table (no `is_active`), the `OwnedCatalogMixin` /
+`ArchivedCatalogMixin` split, name validation (trimmed, 1-100, case-insensitive unique per user),
+service operations (list/create/rename/delete) with ownership scoping, the deletion + `SET NULL`
+historical-reference contract, registration default-copy behavior, error mapping and the API sketch.
+**Context**: CONSTRUCTION — Functional Design phase; awaiting user approval before migration/code.
+**Status**: Design artifact ready for review.
+
+---
+
+## HU-005 Functional Design Artifact Set Generated
+**Timestamp**: 2026-09-12T00:00:00Z
+**AI Response**: Generated the AI-DLC mandated functional-design artifacts for
+`hu-005-income-sources`: `domain-entities.md`, `business-rules.md` (BR-1..BR-13),
+`business-logic-model.md` (module layout, operation flows, transaction boundaries), and
+`frontend-components.md` (simple testing UI), plus the stage plan at
+`aidlc-docs/construction/plans/hu-005-income-sources-functional-design-plan.md`. The consolidated
+`functional-design.md` is retained as an index/overview.
+**Context**: CONSTRUCTION — Functional Design; no clarifications needed (all ambiguities resolved by
+D3/D4/D8/D10).
+**Status**: Awaiting explicit user approval to continue to NFR Requirements / Code Generation.
+
+---
+
+## HU-005 Scope Narrowed to One Story + Decisions Amended
+**Timestamp**: 2026-09-12T00:00:00Z
+**User Input:** "and anotehr thing yes migrate everything pls all the db BECAUSE I THINK IS BETTER" then
+"Q1. OK FOLLOW THE DRAFT PLS / Q2. DROP IT / q3. only category / q4. i think leave it as is in the
+drasft without that / q5. yes keep account / q6 its fine" then "leave the question that affect only
+this US pls the rest after the otehr members will se that but we are foing a US" then (choice) "B) Keep
+`is_active` per the draft schema, but still implement permanent delete" then "ok".
+**AI Response**: Widened analysis to the full new PostgreSQL draft, then narrowed back to a single
+user story (HU-005) because the rest of the schema migration was explicitly deferred to other team
+members. Amended decisions: D3 -> keep `income_source.is_active` per the draft (reserved/unused) with
+permanent delete; D11/D12 added (full unique index `(user_id, lower(name))`); D10 marked superseded.
+Created `deferred-schema-work.md` listing enums, accounts, payment_method removal, transactions,
+account movements, receipts, expenses and budgets as other members' work. Updated `implementation-plan.md`,
+`unit-of-work.md` and all functional-design artifacts to remove the mixin split and reflect the
+retained-but-unused `is_active`.
+**Context**: CONSTRUCTION — Scope correction + Functional Design amendment. Approach: HU-005 only;
+DB migration limited to one reversible index change (no column drops, no data loss).
+**Status**: Approved by user ("ok"); proceeding to Phase 2 migration.
+
+---
+
+## HU-005 Implemented and Verified End-to-End
+**Timestamp**: 2026-09-12T00:00:00Z
+**User Input**: "ok" (approval to execute the narrowed HU-005 plan), with confirmed choice "B) Keep
+`is_active` per the draft schema, but still implement permanent delete".
+**AI Response**: Implemented the full unit.
+- Migration `0004_uow03_income_source`: dropped partial index `uq_income_source_active_name`, kept
+  `is_active`, created full unique index `uq_income_source_user_name` on `(user_id, lower(name))`,
+  with a reversible downgrade.
+- Backend: updated `db/models/catalogs.py`; added `db/repositories/income_sources.py`,
+  `SQLAlchemyIncomeSourceUnitOfWork`, `income_sources/` package (schemas, service, dependencies,
+  router) and three typed errors (409/404/422); registered `/api/v1/income-sources` (GET/POST/PATCH/DELETE).
+- Contract: regenerated `openapi.json` (+489 lines).
+- Frontend: `patchJson`/`deleteJson`; new `features/income_sources/` (models, repository, state,
+  controller, screen with add/rename/delete-confirm); `/income-sources` route + Home entry point;
+  `incomeSourceSelectorProvider` for selector refresh; shared diagnostic panel.
+- Tests: `test_income_source_service.py`, `test_income_sources_api.py`,
+  `test_income_source_persistence.py`, `test_income_source_name_properties.py`, and three Flutter
+  test files. Also removed the broken default `test/widget_test.dart` (referenced non-existent `MyApp`).
+**Verification**: backend `ruff`/`mypy` clean; `pytest` 100 passed with 89.60% coverage (integration
+in the Compose test profile); `pip-audit` no known vulnerabilities; frontend `dart format` applied,
+`flutter analyze` no issues, `flutter test` 53 passed.
+**Note (pre-existing, out of scope)**: `test_registration_properties.py::test_public_response_can_never_echo_the_supplied_password`
+is flaky because it does a raw substring check (e.g. password `currency` collides with
+`preferred_currency`). Recommend fixing separately.
+**Context**: CONSTRUCTION — Code Generation + Build and Test complete.
+**Status**: HU-005 done. Build/test artifacts in `aidlc-docs/construction/build-and-test/`.
+
+---
+
+## HU-005 UI Bug Fix — Infinite-width FilledButton in a Row
+**Timestamp**: 2026-09-12T00:00:00Z
+**User Input**: "I dont see anything in this windown an there is an error" (+ screenshot of the blank
+Income Sources screen, then the `!semantics.parentDataDirty` cascade from the console).
+**AI Response**: Diagnosed via `/tmp/flutter_ui.log`. Primary exception (line 21) was
+`BoxConstraints forces an infinite width` on `FilledButton-[<'income-source-add-button'>]`, followed by
+`RenderBox was not laid out` and repeated `!semantics.parentDataDirty` cascades. Root cause:
+`AppTheme.light()` sets `filledButtonTheme ... minimumSize: const Size.fromHeight(52)`
+(= `Size(double.infinity, 52)`), so every `FilledButton` has an **infinite minimum width**; normally
+fine in a vertical list, but `RenderFlex._constraintsForNonFlexChild` gives non-flex children of a
+`Row` an unbounded main-axis width, so the button received `minWidth = maxWidth = ∞`.
+Fix: added `style: FilledButton.styleFrom(minimumSize: const Size(64, 52))` to the three
+`FilledButton`s that live in horizontal layouts — the Add button in the `Row`, and the Rename (Save)
+and Delete (Delete) `AlertDialog.actions` buttons (which use a horizontal `OverflowBar`).
+Added a regression widget test that pumps the screen with `AppTheme.light()` at a 2000x1220 desktop
+surface and asserts no exception for the Add button and the delete-confirm dialog.
+**Verification**: `dart format` applied, `flutter analyze` no issues, `flutter test` 54 passed.
+**Note**: the `libsecret_error ... /org/freedesktop/secrets/collection/login` warning in the same log
+is a separate Linux-desktop keyring issue (secure credential storage), not this crash.
+**Context**: CONSTRUCTION — UI fix after manual testing.
+**Status**: Fixed and verified.
+
+---
+
+## Project Status Inquiry & Review
+**Timestamp**: 2026-09-14T18:41:47Z
+**User Input**: "i mean give the current state of this project like what US are there and diferent information about it"
+**AI Response**: Provided a comprehensive breakdown of the current state of Finance AI: 15 user stories across 11 product backlog items, implementation status (HU-001 through HU-005 complete with 146 backend and 105 frontend tests passing), architectural stack, database migrations, recent UI mockup updates, and the next unit in sequence (HU-006 manual expense).
+**Context**: Project status inspection / session continuity.
+
+---
+
+## Frontend Review Fixes & CI Smoke Test Update (PR #5)
+**Timestamp**: 2026-09-14T20:38:48Z
+**User Input**: "ok haz esos cambios y sube a la rama que es en front end ok ?? pero sube a la rama que es no a develop ni nada de eso"
+**AI Response**: Resolved all Codex review recommendations and the Windows CI test failure in `finance-ai-frontend`: (1) updated `windows_smoke_test.dart` to expect localized `'Bienvenido de nuevo'`, (2) added in-flight guard to `IncomeSourcesController.load()` and eliminated redundant call in `settings_screen.dart`, (3) bound `SettingsRow` subtitles with `Flexible` and `TextOverflow.ellipsis`, (4) made category color and icon selectors keyboard-focusable and accessible via `InkWell` and `Semantics`, (5) handled theme persistence write failures with `ErrorDiagnosticPanel` integration. Verified formatting, analyzer (0 issues), and test suite (106 passed, 83.16% coverage). Committed and pushed to `origin/local/ui-mockup`.
+**Context**: Quality fixes and CI green verification on pull request #5.
+
+---
+
+## Commit & Push Confirmation
+**Timestamp**: 2026-09-14T20:57:39Z
+**User Input**: "OK HAZ EL COMMIT Y EL PUSH"
+**AI Response**: Confirmed that commit `d58e115` has already been created and pushed directly to `origin/local/ui-mockup` in `finance-ai-frontend`, with the working tree clean and synchronized.
+**Context**: Pull request #5 status confirmation.
+
+---
+
+## Jules PR Reviewer Configuration Planning
+**Timestamp**: 2026-09-14T21:17:56Z
+**User Input**: "/plan una duda puedes configurar esto para que jules haga reviews en los repos de backend y front end ??- name: Jules PR Reviewer
+  uses: sanjay3290/jules-pr-reviewer@v1.0.0"
+**AI Response**: Initiated planning mode to configure `sanjay3290/jules-pr-reviewer@v1.0.0` in both `finance-ai-backend` and `finance-ai-frontend` GitHub repositories. Analyzed action requirements (permissions, secrets, triggers, draft behavior) and generated implementation plan artifact.
+**Context**: Workflow / CI automation planning.
+
+---

@@ -1,13 +1,10 @@
 # Product Backlog & User Stories — Finance AI Tracker
 
----
-
-> **Note:** Teacher requires at least **10 user stories**. Current: **11 numbered stories** —
-> all fully defined (HU-001…HU-011).
-> Renumbered 2026-08-30 so HU codes follow build order (old → new: 005a→003 · 005b→004 ·
-> 005c→005 · 003→006 · 003a→007 · 003b→008 · 004→009 · 006→010). PB codes renumbered
-> 2026-08-31 to match build/sprint order: PB-002 CRUD · PB-003 AI capture (photo + text) ·
-> PB-004 audio · PB-005 dashboard (HU codes unchanged).
+> **Source:** supplied backlog and user-story register, 2026-09-13.
+> This file is now synchronized to that register. It contains **15 user-story rows** under
+> **11 product backlog items**. The supplied register does not include HU-007.
+> Product backlog names, priorities, statuses, notes, story wording, implementation scope,
+> acceptance criteria, and points below are the supplied values.
 > **Estimation scale:** Story Points — standard **Fibonacci** (1, 2, 3, 5, 8, 13…).
 
 ---
@@ -15,761 +12,280 @@
 ## Product Backlog
 
 | Code | Feature | Priority | Status | Notes |
-|------|---------|----------|--------|-------|
-| PB-001 | Auth multi-user | High | Not started | Sprint 1 — Register + Login |
-| PB-002 | Expense registration & management (CRUD) | High | Not started | Sprint 2 — manual-first foundation |
-| PB-003 | AI-assisted capture: photo + natural-language text | High | Not started | Sprint 3 |
-| PB-004 | Audio → AI parsing + categorization | Medium | Not started | Sprint 4 — happy path (HU-009) + failure paths (HU-011) |
-| PB-005 | Dashboard by category + date filter | Medium | Not started | Sprint 4 |
+|---|---|---|---|---|
+| PB-001 | Identity and access | High | Done | HU-001 registration and HU-002 secure renewable sessions are implemented. |
+| PB-002 | Accounts and currencies | High | Done | HU-003 complete. Owned accounts, derived balances, deactivate/reactivate, and safe permanent deletion are merged into develop for backend and frontend. |
+| PB-003 | User-owned catalogs | High | In progress | HU-004 categories and HU-005 income sources. Accounts replace payment methods; subcategories and payment methods are outside the product model. Catalog deletion is confirmed and permanent rather than archived. |
+| PB-004 | Expenses and optional receipt detail | High | Not started | HU-006–HU-008. Fast manual expense, optional evidence/items, correction and permanent deletion. |
+| PB-005 | Income | High | Not started | HU-009. Manual income lifecycle tied to an owned account. |
+| PB-006 | Transfers | High | Not started | HU-010. Atomic movement between owned accounts; never income or expense. |
+| PB-007 | Transaction history and filters | High | Not started | HU-011. Search and inspect expenses, income and transfers together before AI is introduced. |
+| PB-008 | Basic financial dashboard | High | Not started | HU-012. Deterministic balances, recent movements, income/expense and period/category views before AI. |
+| PB-009 | AI capture from natural text and audio | High | Not started | HU-013–HU-014. Written and spoken language share one conversational capture capability, with separate stories for text and microphone behavior. |
+| PB-010 | AI capture from receipt photo | High | Not started | HU-015. Receipt images produce a fast editable expense proposal with printed-total and item extraction. |
+| PB-011 | Spending budgets | Medium | Not started | HU-016. Weekly/monthly category or subcategory targets and dashboard progress after the AI speed layer. |
 
 ---
 
 ## User Stories
 
----
+### HU-001 — Registration
 
-### HU-001: Register
-
-**Feature:** PB-001
+**Feature:** PB-001 — Identity and access
 
 **Story:**
-> As a new user, I want to create an account so that I can start using the app.
+> As a new user, I want to create an account so that I can begin managing my finances.
 
-**Acceptance Criteria:**
-- I enter email + password (min 8 chars) + confirm password → account is created
-- After success → I see a confirmation message and am redirected to Login (not logged in automatically)
-- If the email is already taken → I see an error message
-- If the password is too short (< 8 chars) → I see an error message
-- If passwords don't match → I see an error message
-- My password is never shown or stored in plain text
-- My account is created with default settings without asking me
+**Implementation scope:** Validate and normalize email; enforce password policy; hash password adaptively; create user and default catalogs atomically; build accessible registration states; test duplicates, validation, rollback and safe diagnostics.
 
-**Checklist: Setup**
-- [ ] Docker Compose (api + postgres)
-- [ ] Run schema.sql + seed data (roles, currencies, payment methods)
-- [ ] Create FastAPI project structure
-- [ ] Create Flutter project + apply mockup theme
-- [ ] Write `docs/api-spec.yaml` (register + login + me endpoints)
+**Acceptance criteria:** A valid unused normalized email and matching valid passwords create one account and defaults; success redirects to Login without automatic login; duplicate/invalid input gives field-level feedback; duplicate submissions are blocked; passwords and internals are never exposed.
 
-**Checklist: API**
-- [ ] POST /register endpoint (validate → hash → insert user with role="user", currency="COP" → return success)
+**Story points:** 3
 
-**Checklist: UI**
-- [ ] RegisterScreen (email + password + confirm password + register button)
-
-**Story Points:** 3
+**Mockup:** TBD
 
 ---
 
-### HU-002: Login
+### HU-002 — Secure renewable sessions
 
-**Feature:** PB-001
+**Feature:** PB-001 — Identity and access
 
 **Story:**
-> As a returning user, I want to log in so that I can access my expense data.
+> As a returning user, I want a secure renewable session so that I can access my data without signing in on every app launch.
 
-**Acceptance Criteria:**
-- I enter email + password → I'm logged in and see the Gastos screen (capture + manual entry + my expenses)
-- If the password is wrong → I see "Invalid email or password"
-- If my session expires after a long time → I'm redirected to login automatically
-- I stay logged in between app restarts until my session expires
-- Logout clears my session and returns me to the login screen
+**Implementation scope:** Implement login, short-lived access credentials, rotating renewable credentials, restoration, replay protection, logout revocation, secure Android/Windows storage, protected routing and end-to-end tests.
 
-**Checklist: API**
-- [ ] POST /login endpoint (find user → verify hash → return JWT with 30 day expiry)
-- [ ] GET /me endpoint (validate token → return current user)
+**Acceptance criteria:** Valid credentials open the authenticated home; invalid credentials use one generic error; restart restores a valid session; invalid/expired/revoked renewal returns to Login and clears authority; logout revokes the current renewable credential and removes protected access.
 
-**Checklist: UI**
-- [ ] LoginScreen (email + password + login button)
-- [ ] Token storage (flutter_secure_storage)
-- [ ] Protected routes — redirect to login if no valid token
-- [ ] Logout — clear token and redirect to login
-- [ ] Connect to API
+**Story points:** 3
 
-**Story Points:** 2
+**Mockup:** TBD
 
 ---
 
-### Expense CRUD — Feature PB-004 (manual-first foundation)
+### HU-003 — Accounts and currencies
 
-> One story each: create (**HU-003**) · edit & delete (**HU-004**) · find (**HU-005**).
-> "Only mine" isolation lives as acceptance criteria inside all three.
-
----
-
-### HU-003: Create expense manually
-
-**Feature:** PB-002 · **Depends on:** — (foundation story)
+**Feature:** PB-002 — Accounts and currencies
 
 **Story:**
-> As a user, I want to register an expense manually by filling only the essentials so that I can save my spending quickly without typing everything.
+> As a user, I want accounts for cash, banks, wallets, or savings products so that I know where my money is held.
 
-**Acceptance Criteria:**
-- The manual form has all the fields the database requires (store, date, currency, payment method, total, and each item's name/amount/subcategory)
-- Manual form entry bypasses AI and saves directly after the required-field and amount validation passes
-- For a single-item expense I only type: amount, store, and subcategory (picked from the existing list)
-- I can add several items (name, amount, subcategory each) under the same receipt with an "add item" action
-- For manual multi-item entry, the receipt total is auto-calculated as the sum of the item amounts
-- Date defaults to today, currency defaults to COP, and payment method defaults to Efectivo — I can change them
-- Photo, purchase_reason, and item_reason are optional and live in a collapsed "Additional fields" menu
-- For a single item, the item name is auto-filled with the store text I typed, and I can edit it (I never type it twice)
-- The app validates before saving to the DB: every item amount > 0 and required fields present → otherwise I see an error message
-- Future dates are allowed
-- On save, the receipt and all its items are created together in one action (1 receipt + N item expenses)
-- Everything is associated with my account — I cannot create data for another user
+**Implementation scope:** Implement owned account create/list/detail/edit/deactivate/reactivate/safe-delete API and UI; validate unique name, type, currency and opening balance; derive balances from movements; suggest COP or the last-used currency without a separate preference record; allow permanent deletion only before movements; enforce ownership and test currency, inactive-account and deletion rules.
 
-> **Note (technical):** one manual save creates a `receipt` row (store, date, currency, payment method, total, photo, purchase_reason) + one `expense` row per item (name, amount, subcategory, item_reason), linked via `receipt_id`. The AI-assisted photo/audio/text stories later pre-fill this same form and item list. Manual totals use the item sum; photo totals follow the printed receipt total.
+**Acceptance criteria:** I can create and edit an account with name, type, explicit currency and opening balance; its balance is derived consistently; inactive accounts remain visible in history but cannot receive new movements; unused accounts can be permanently deleted while used accounts retain history; suggestions never change existing records; I cannot access another user's account.
 
-**Checklist: API**
-- [ ] Create request schemas for a receipt, its items, and optional fields
-- [ ] Implement `POST /receipts` for manual expense creation
-- [ ] Validate required fields and item amounts greater than zero
-- [ ] Apply defaults: today, COP, and Efectivo
-- [ ] Calculate the manual receipt total from item amounts
-- [ ] Save the receipt and all items atomically in one transaction
-- [ ] Associate the receipt and items with the authenticated user
-- [ ] Return the saved receipt with its items and total
+**Story points:** 2
 
-**Checklist: UI**
-- [ ] Build the manual expense form
-- [ ] Add store, amount, date, currency, payment method, and subcategory fields
-- [ ] Add and remove multiple receipt items
-- [ ] Auto-fill the single-item name from the store field
-- [ ] Add optional photo, purchase reason, and item reason fields
-- [ ] Show default values for date, currency, and payment method
-- [ ] Recalculate the manual total when item amounts change
-- [ ] Display validation errors before submission
-- [ ] Show success feedback and return to the Gastos hub
-
-**Checklist: Tests**
-- [ ] Test required-field and amount validation
-- [ ] Test default values
-- [ ] Test single-item and multi-item creation
-- [ ] Test manual total calculation
-- [ ] Test atomic rollback when item creation fails
-- [ ] Test user ownership isolation
-
-**Checklist: Mockup**
-- [ ] Demonstrate manual validation, multi-item totals, and direct-save success feedback
-- [ ] Keep manual entry separate from the AI confirmation flow
-
-**Story Points:** *(to be estimated)*
+**Mockup:** TBD
 
 ---
 
-### HU-004: Edit & delete my expenses
+### HU-004 — Categories
 
-**Feature:** PB-002 · **Depends on:** HU-003 (needs the saved expense form and data)
+**Feature:** PB-003 — User-owned catalogs
 
 **Story:**
-> As a user, I want to see, edit, and delete my saved expenses so that I can keep my records correct and under control.
+> As a user, I want to manage my categories so that classifications match how I understand my spending.
 
-**Acceptance Criteria:**
-- I can see a "My expenses" list showing each item as: name · amount · date · photo indicator, newest first
-- I can open an expense from the list and edit receipt fields (store, date, currency, payment method, image, and purchase reason) and item fields (name, amount, subcategory, and item reason) with the same validation as HU-003
-- Technical fields (user_id, receipt_id, and IDs) remain read-only and cannot be changed
-- For a manually created receipt, deleting a single item keeps the receipt and re-calculates its total as the sum of the remaining items
-- For a photo receipt, deleting or editing items preserves the printed receipt total unless I explicitly edit that total
-- If I delete the last remaining item of a receipt, the receipt is deleted too (the DB does not allow a receipt with a total of 0)
-- I can delete a whole receipt (ticket) with all its items in one action
-- The image file is deleted from storage together with the receipt
-- I always see a confirmation dialog before deleting — for items and for receipts
-- I can only see, edit, and delete MY expenses — I cannot access another user's expenses
-- Deleted data is permanently removed (per `ALCANCE.md`: no deleted-row retention)
+**Implementation scope:** Implement owned category create/list/detail/edit/reorder/permanent-delete API and UI; replace archive flags through Alembic; support required name, optional color and icon, and manual order; validate trimmed case-insensitive unique names and ownership; keep editable Needs/Wants/Other defaults; confirm deletion; refresh selectors; document that future expense forms require a valid category, deleted historical references display Category deleted, and dependent category budgets cascade without prebuilding those features; test rollback and isolation.
 
-**Checklist: API**
-- [ ] Implement `GET /receipts` for the authenticated user’s expenses
-- [ ] Implement `GET /receipts/{id}` for receipt details and items
-- [ ] Implement `PATCH /receipts/{id}` for receipt and item edits
-- [ ] Implement item deletion
-- [ ] Implement whole-receipt deletion
-- [ ] Enforce ownership checks on every operation
-- [ ] Recalculate totals for manually created receipts after item changes
-- [ ] Preserve printed totals for photo receipts unless explicitly changed
-- [ ] Delete the stored image when its receipt is deleted
-- [ ] Delete the receipt when its last item is removed
+**Acceptance criteria:** I can create, rename, recolor, re-icon, reorder and permanently delete only my categories; starter categories are editable; deletion asks for confirmation; deleted names can be reused; no Uncategorized option is offered for new records; future dependency rules preserve expenses and remove category budgets; only my data changes.
 
-**Checklist: UI**
-- [ ] Build the “Mis gastos” list
-- [ ] Display receipt and item information newest first
-- [ ] Open a saved receipt in the editable form
-- [ ] Allow editing receipt fields and item fields
-- [ ] Keep technical fields read-only
-- [ ] Show the correct total behavior for manual and photo receipts
-- [ ] Add item and receipt delete actions
-- [ ] Add confirmation dialogs before deletion
-- [ ] Show success feedback after editing or deleting
+**Story points:** 3
 
-**Checklist: Tests**
-- [ ] Test receipt and item editing
-- [ ] Test manual total recalculation
-- [ ] Test photo printed-total preservation
-- [ ] Test last-item deletion
-- [ ] Test whole-receipt deletion and image cleanup
-- [ ] Test delete confirmation behavior
-- [ ] Test ownership isolation
-
-**Checklist: Mockup**
-- [ ] Demonstrate edit, cancel, and confirm as separate actions
-- [ ] Demonstrate item and whole-receipt deletion confirmations
-- [ ] Demonstrate manual and photo receipt total behavior
-
-**Story Points:** *(to be estimated)*
+**Mockup:** TBD
 
 ---
 
-### HU-005: Find my expenses (search & filters)
+### HU-005 — Income sources
 
-**Feature:** PB-002 · **Depends on:** HU-004 (needs the expenses list)
+**Feature:** PB-003 — User-owned catalogs
 
 **Story:**
-> As a user, I want to search and filter my expenses so that I can quickly find any of them.
+> As a user, I want to manage my income sources so that income entries use terms that match my finances.
 
-**Acceptance Criteria:**
-- I can search by item name or store — results filter live as I type, ignoring case
-- I can filter by category (chips: Todas · Comida · Transporte · …)
-- I can filter by date range
-- Search and filters combine with each other and with the newest-first order
-- If nothing matches, I see a clear "sin resultados" message
-- Search/filter runs in the backend with plain SQL (ILIKE) — no AI involved
+**Implementation scope:** Implement owned income-source CRUD, editable Salary/Other defaults and migration away from archive flags; validate trimmed case-insensitive unique names; confirm permanent deletion; clear future optional historical references before deletion; refresh selectors; test ownership and rollback.
 
-**Checklist: API**
-- [ ] Implement the expense search endpoint
-- [ ] Add case-insensitive search by item name and store
-- [ ] Add category filtering
-- [ ] Add date-range filtering
-- [ ] Combine text, category, and date filters
-- [ ] Return results newest first
-- [ ] Restrict results to the authenticated user
-- [ ] Use plain SQL/ILIKE without AI
+**Acceptance criteria:** I receive editable income-source defaults; I can add, rename and permanently delete my values; deleted values disappear from new forms while future historical transactions remain and show Source deleted for a missing optional source; another user's data is unaffected.
 
-**Checklist: UI**
-- [ ] Build the “Mis gastos” search screen
-- [ ] Add live search input
-- [ ] Add category filter chips
-- [ ] Add date-range filter controls
-- [ ] Combine search and filters in the UI
-- [ ] Show loading and empty-result states
-- [ ] Show matching receipts and items
-- [ ] Add navigation back to the Gastos hub
+**Story points:** 2
 
-**Checklist: Tests**
-- [ ] Test search by store
-- [ ] Test search by item name
-- [ ] Test case-insensitive matching
-- [ ] Test category and date filters
-- [ ] Test combined filters
-- [ ] Test newest-first ordering
-- [ ] Test empty results
-- [ ] Test user isolation
-
-**Checklist: Mockup**
-- [ ] Demonstrate live search and category filtering
-- [ ] Demonstrate date-range filtering and combined filters
-- [ ] Demonstrate the empty-result state
-
-**Story Points:** *(to be estimated)*
+**Mockup:** TBD
 
 ---
 
-### HU-006: Register an expense by photographing the receipt (happy path)
+### HU-006 — Manual expense
 
-**Feature:** PB-003 · SPIDR **Path** split (guide §9): happy path (this) / failure paths (HU-007) · **Depends on:** HU-003 (Editar opens its form)
+**Feature:** PB-004 — Expenses and optional receipt detail
 
 **Story:**
-> As a user, I want to photograph a receipt so that the AI fills in the whole expense for me and I only have to confirm it before anything is saved.
+> As a user, I want to record an expense with only essential information so that manual capture remains fast without AI or a receipt.
 
-**Acceptance Criteria:**
-- From the Gastos hub I tap the camera shutter → the app opens the camera and captures the receipt photo
-- The photo is sent to the backend as a temporary upload — nothing is saved to the DB yet
-- The AI returns a strict structured result with `status` (`ok`, `partial`, `unreadable`, or `error`), source type, receipt fields, item fields, optional reasons, and a machine-readable error when applicable
-- For a photo, the AI returns: store, date, currency, payment method, the printed receipt total, and each item (name · amount · subcategory picked from my existing subcategories)
-- Photo uploads accept JPEG, PNG, or HEIC files up to 10 MB; oversized or unsupported files are rejected with a clear message, and accepted files may be resized/compressed by the backend
-- I see the confirmation card with **all items editable line by line** + Monto total, Fecha, Categoría/Subcategoría, Pago and Moneda (defaults **Efectivo / COP** when the AI doesn't infer them)
-- For a photo receipt, the printed receipt total is the source of truth and may differ from the sum of item amounts because of taxes, discounts, or rounding
-- **Editar** opens the same pre-filled manual form as HU-003 (add/remove items, additional fields); saving returns me to the updated card
-- Nothing is saved until I tap **Confirmar**
-- On **Confirmar**: one save creates the receipt + all items together (1 receipt + N expenses), the photo file goes to file storage and the DB stores its path — atomically
-- I can tap **Descartar** → nothing is saved and the temporary image is deleted
-- On success I see "✅ Gasto guardado" and land back on the clean hub
-- I CANNOT edit technical fields (user_id, receipt_id, etc.)
-- purchase_reason and item_reason are optional — "Campos adicionales" via the Editar form
-- Everything is associated with my account — I cannot create data for another user
+**Implementation scope:** Define one expense request contract; implement authenticated create API and a short form; require active owned account, positive amount, date and merchant/description; default date to today and allow Uncategorized; collapse optional fields; avoid duplicate typing for one optional item; save atomically and test ownership/currency.
 
-**Scenarios:**
+**Acceptance criteria:** A simple expense needs only account, amount and merchant/description because date defaults to today, account supplies currency and category may be Uncategorized; optional fields stay out of the way; one item can reuse the merchant text; AI, receipt and item rows are not required; invalid references save nothing.
 
-| Scenario | Criteria |
-|---|---|
-| Confirm | **Given** the AI card with extracted data, **When** I tap Confirmar, **Then** receipt + items are saved and I see "✅ Gasto guardado" on the clean hub |
-| Edit → confirm | **Given** the AI card, **When** I tap Editar, correct a value in the form and save, **Then** the card shows the corrected values and Confirmar saves them |
-| Discard | **Given** the AI card, **When** I tap Descartar, **Then** nothing is saved and the temporary image is deleted |
+**Story points:** 5
 
-> **Note (technical):** "unreadable" is judged by the AI itself — the parsing contract requires `status: unreadable` when the minimum photo facts (store + total) cannot be extracted (see HU-007). Voice follows the same shape later in HU-009.
-
-**AI response contract:** All AI-assisted capture paths use the same normalized result:
-
-| Field | Rule |
-|---|---|
-| `status` | `ok`, `partial`, `unreadable`, or `error` |
-| `source` | `photo`, `text`, or `audio` |
-| Receipt data | `store`, `date`, `currency`, `payment_method`, and `total`; values may be null when `status` is `partial` |
-| `items` | List of `name`, `amount`, `subcategory`, and optional `item_reason` |
-| Optional data | `purchase_reason` |
-| `error` | Machine-readable `code` and user-safe `message` when `status` is `error` |
-
-Invalid AI responses are rejected before the confirmation card is shown.
-
-**Checklist: API**
-- [ ] Implement temporary receipt-image upload
-- [ ] Validate JPEG, PNG, and HEIC formats
-- [ ] Reject files larger than 10 MB
-- [ ] Resize or compress accepted images when necessary
-- [ ] Send the temporary image to the AI parsing service
-- [ ] Validate the normalized AI response contract
-- [ ] Return receipt fields, items, totals, and optional reasons
-- [ ] Preserve the printed receipt total
-- [ ] Keep the image and database unchanged until confirmation
-- [ ] Save receipt, items, and image atomically after confirmation
-- [ ] Delete the temporary image after discard
-
-**Checklist: UI**
-- [ ] Connect the camera shutter to receipt capture
-- [ ] Show upload and AI-processing states
-- [ ] Display the AI confirmation card
-- [ ] Display all extracted receipt items
-- [ ] Make receipt fields and item fields editable
-- [ ] Add Confirmar, Editar, and Descartar actions
-- [ ] Open the HU-003 manual form from Editar
-- [ ] Preserve the printed photo total in the confirmation card
-- [ ] Show success feedback and return to the clean hub
-
-**Checklist: Tests**
-- [ ] Test supported image formats
-- [ ] Test the 10 MB upload limit
-- [ ] Test normalized AI response validation
-- [ ] Test confirmation without changing extracted data
-- [ ] Test editing before confirmation
-- [ ] Test discard and temporary-image deletion
-- [ ] Test atomic receipt, item, and image saving
-- [ ] Test printed-total preservation
-
-**Checklist: Mockup**
-- [ ] Demonstrate the photo confirmation card with the store field
-- [ ] Demonstrate all extracted items and editable confirmation data
-- [ ] Demonstrate printed-total preservation when item sums differ
-- [ ] Demonstrate Confirmar, Editar, and Descartar
-
-**Story Points:** *(to be estimated)*
+**Mockup:** TBD
 
 ---
 
-### HU-007: The capture fails or the AI can't read my receipt
+### HU-008 — Expense correction and permanent deletion
 
-**Feature:** PB-003 · **Split of:** HU-006 (SPIDR Path: error paths) · **Depends on:** HU-006
+**Feature:** PB-004 — Expenses and optional receipt detail
 
 **Story:**
-> As a user, when capture or AI parsing fails, I want a clear message and a way forward so that nothing is saved by mistake and I can retry or fall back to manual entry.
+> As a user, I want to view, correct, and permanently delete my expenses so that my records stay accurate and under my control.
 
-**Acceptance Criteria:**
-- If the AI can't extract the minimum (store + total) from the photo → I see "No pudimos leer el recibo" + **Reintentar** (new photo) + the manual ✍️ option — nothing is saved
-- If the AI extracts **partial** data (e.g., total but no items) → the card shows what it got, marks missing required fields, and keeps Confirmar disabled until I complete valid data through Editar
-- If the backend or the LLM fails / times out → error message + **Reintentar**; nothing is saved
-- If camera permission is denied → an explanation of why it's needed + a shortcut to system settings; manual ✍️ entry always stays available
-- On any failure, the temporary image is deleted — no orphans from failed attempts
-- Temp images never confirmed are cleaned by the backend after **24h** (scheduled cleanup)
-- A failure never creates receipt or expense rows (save is all-or-nothing)
+**Implementation scope:** Implement owned list/detail/edit/delete API and UI; recalculate balances, history, budgets and summaries once; confirm deletion; remove items and owned attachment atomically; test unauthorized access and rollback.
 
-**Scenarios:**
+**Acceptance criteria:** I can view and edit only my expenses; valid edits update derived results exactly once; permanent deletion requires confirmation and removes the expense, item details and receipt file together; failure preserves the prior record; another user's expense is never exposed.
 
-| Scenario | Criteria |
-|---|---|
-| Unreadable | **Given** a blurry photo, **When** the AI reports `status: unreadable`, **Then** I see the error + Reintentar + manual option, nothing is saved, temp image deleted |
-| Partial | **Given** a receipt where only the total is legible, **When** parsing returns partial data, **Then** the card shows the partial data, marks missing required fields, and keeps Confirmar disabled until the fields are completed |
-| Backend failure | **Given** the backend/LLM fails or times out, **When** I send the photo, **Then** I see an error + Reintentar and nothing is saved |
-| Permission denied | **Given** I haven't granted camera permission, **When** I tap the shutter, **Then** I see the explanation + settings shortcut and manual entry is still available |
+**Story points:** 5
 
-**Checklist: API**
-- [ ] Handle `ok`, `partial`, `unreadable`, and `error` AI statuses
-- [ ] Return machine-readable error codes and safe messages
-- [ ] Handle AI and backend timeouts
-- [ ] Ensure failed parsing creates no receipt or item rows
-- [ ] Delete temporary images after failure
-- [ ] Clean up unconfirmed images older than 24 hours
-- [ ] Preserve the response contract used by HU-006
-
-**Checklist: UI**
-- [ ] Show the unreadable-receipt state
-- [ ] Show the partial-extraction state
-- [ ] Mark missing required fields
-- [ ] Disable Confirmar until required fields are completed
-- [ ] Allow Editar to complete partial data
-- [ ] Add Reintentar action
-- [ ] Show backend and AI timeout errors
-- [ ] Handle denied camera permission
-- [ ] Link users to device settings when permission is denied
-- [ ] Keep manual entry available in every failure state
-
-**Checklist: Tests**
-- [ ] Test unreadable AI responses
-- [ ] Test partial AI responses
-- [ ] Test backend and AI timeout failures
-- [ ] Test camera permission denial
-- [ ] Test that failures create no database rows
-- [ ] Test temporary-image cleanup
-- [ ] Test 24-hour cleanup behavior
-- [ ] Test partial data completion before confirmation
-
-**Checklist: Mockup**
-- [ ] Add reachable demo states for unreadable, partial, timeout, and permission failure
-- [ ] Demonstrate retry and manual fallback actions
-- [ ] Demonstrate disabled Confirmar for incomplete partial data
-
-**Story Points:** *(to be estimated)*
+**Mockup:** TBD
 
 ---
 
-### HU-008: Register an expense by typing what I spent (text → AI parse)
+### HU-009 — Income lifecycle
 
-**Feature:** PB-003 · SPIDR Path family: photo (HU-006) · text (this) · audio (HU-009) · **Depends on:** HU-003 (Editar opens its form)
+**Feature:** PB-005 — Income
 
 **Story:**
-> As a user, I want to type what I spent in my own words in the capture bar so that the AI turns it into an expense and I only have to confirm it before anything is saved.
+> As a user, I want to record and manage income in an account so that balances and summaries are complete.
 
-**Acceptance Criteria:**
-- I type "gasté 15 mil en almuerzo en Subway…" in the capture bar and press Enter
-- Natural-language text goes to the backend, which calls the AI parsing module (same strict response contract as photo) — nothing is saved yet
-- The AI returns: store, date, total, and a description for the item; currency and payment method if I mention them — otherwise defaults **Efectivo / COP**
-- I see the confirmation card with the parsed data editable (no receipt line-item list and no photo — text has neither; confirmation creates one description item)
-- **Editar** opens the same pre-filled manual form as HU-003; saving returns me to the updated card
-- Nothing is saved until I tap **Confirmar**
-- On **Confirmar**: one minimal receipt (store, date, total — no image) + its item are saved together, atomically
-- The single description item's amount is the parsed or corrected total
-- I can tap **Descartar** → nothing is saved
-- On success I see "✅ Gasto guardado" and land back on the clean hub
-- If the AI can't understand my text → I see "No entendí lo que escribiste" + I can rephrase or use manual ✍️ — nothing is saved
-- This is the AI-assisted text-capture path; the manual form in HU-003 is a separate path that bypasses AI
-- Technical fields (user_id, receipt_id, etc.) are not editable; purchase_reason / item_reason stay optional via "Campos adicionales"
-- Everything is associated with my account
+**Implementation scope:** Implement owned income create/list/detail/edit/delete API and UI; validate active account, positive amount/date and optional owned source; update balance/history; confirm deletion; test ownership and rollback.
 
-**Scenarios:**
+**Acceptance criteria:** Valid income increases the selected account balance and appears in history; description/source follow their optionality rules; edits recalculate once; confirmed deletion removes the income and reverses its effect; foreign-owned resources are rejected.
 
-| Scenario | Criteria |
-|---|---|
-| Confirm | **Given** the card with parsed data, **When** I tap Confirmar, **Then** the minimal receipt + item are saved and I see "✅ Gasto guardado" on the clean hub |
-| Edit → confirm | **Given** the card, **When** I tap Editar, correct the amount in the form and save, **Then** the card shows the correction and Confirmar saves it |
-| AI doesn't understand | **Given** I type something the AI can't parse as an expense, **When** parsing returns no usable data, **Then** I see the error, nothing is saved, and I can rephrase or use ✍️ |
+**Story points:** 2
 
-> **Note (technical):** "unreadable text" is judged by the AI (same `status: unreadable` mechanism as HU-007). Per ALCANCE, text input has no image — nothing to upload or clean up.
-
-**Checklist: API**
-- [ ] Implement the natural-language text capture endpoint
-- [ ] Send the text to the AI parsing service
-- [ ] Reuse the normalized AI response contract from HU-006
-- [ ] Parse store, date, total, and item description
-- [ ] Apply COP and Efectivo defaults when missing
-- [ ] Return a minimal receipt plus one description item
-- [ ] Reject unusable or invalid AI responses
-- [ ] Save only after explicit confirmation
-- [ ] Associate the receipt and item with the authenticated user
-
-**Checklist: UI**
-- [ ] Connect the capture-bar text field to the AI endpoint
-- [ ] Submit text when the user presses Enter
-- [ ] Show the parsed confirmation card
-- [ ] Display one description item and the parsed total
-- [ ] Add Confirmar, Editar, and Descartar actions
-- [ ] Open the HU-003 form from Editar
-- [ ] Show the AI error and manual fallback when parsing fails
-- [ ] Show success feedback and return to the clean hub
-
-**Checklist: Tests**
-- [ ] Test successful natural-language parsing
-- [ ] Test store, date, total, and description extraction
-- [ ] Test COP and Efectivo defaults
-- [ ] Test one-item receipt creation
-- [ ] Test editing the parsed amount
-- [ ] Test discard without saving
-- [ ] Test unusable text responses
-- [ ] Test confirmation-gated persistence
-- [ ] Test user ownership isolation
-
-**Checklist: Mockup**
-- [ ] Demonstrate a text-specific confirmation card with one description item
-- [ ] Hide photo-only fields for text capture
-- [ ] Demonstrate AI failure and manual fallback
-- [ ] Demonstrate Editar returning to the card before Confirmar
-
-**Story Points:** *(to be estimated)*
+**Mockup:** TBD
 
 ---
 
-### HU-009: Record a voice expense (happy path)
+### HU-010 — Transfers
 
-**Feature:** PB-004 · SPIDR **Path** split (guide §9): happy path (this) / failure paths (HU-011) · **Depends on:** HU-003 (Editar opens its form)
+**Feature:** PB-006 — Transfers
 
 **Story:**
-> As a user, I want to record a voice note of what I spent so that the AI fills in the expense for me and I only have to confirm it before anything is saved.
+> As a user, I want to transfer money between my accounts so that internal movements do not look like income or spending.
 
-**Acceptance Criteria:**
-- From the Gastos hub I tap the mic button in the capture bar → recording starts with a visible indicator; I tap again to stop
-- The recording is sent to the backend as a temporary upload — nothing is saved to the DB yet
-- Recordings are capped at **60 seconds** — recording stops automatically at the limit and is sent
-- Accepted formats: **M4A or WAV**, max 60 s; invalid recordings are rejected with a clear message before parsing
-- The backend sends the audio to the AI model, which transcribes and extracts the structured expense **in one call** (per STACK.md — no separate STT service; a separate STT step is only a fallback), using the same strict normalized contract as photo/text with `source: audio` — nothing is saved yet
-- The AI returns: store, date, total, and a description for the item; currency and payment method if I mention them — otherwise defaults **Efectivo / COP**
-- I see the confirmation card with the parsed data editable (same card shape as text — no line-item list and no photo; confirmation creates one description item)
-- **Editar** opens the same pre-filled manual form as HU-003; saving returns me to the updated card
-- Nothing is saved until I tap **Confirmar**
-- On **Confirmar**: one minimal receipt (store, date, total — no image) + its item are saved together, atomically
-- The single description item's amount is the parsed or corrected total
-- I can tap **Descartar** → nothing is saved and the temporary audio is deleted
-- On success I see "✅ Gasto guardado" and land back on the clean hub
-- I CANNOT edit technical fields (user_id, receipt_id, etc.)
-- Everything is associated with my account — I cannot create data for another user
+**Implementation scope:** Implement atomic transfer API and form; validate distinct active owned accounts and positive amounts; preserve source/destination values for cross-currency transfers; update both balances/history; test rollback and analytics neutrality.
 
-**Scenarios:**
+**Acceptance criteria:** A same-currency transfer moves the same amount between distinct owned accounts; a cross-currency transfer stores both actual amounts; both sides commit or neither does; transfers affect balances but never income/expense totals; foreign or invalid accounts save nothing.
 
-| Scenario | Criteria |
-|---|---|
-| Record → confirm | **Given** the AI card with parsed data, **When** I tap Confirmar, **Then** receipt + item are saved and I see "✅ Gasto guardado" on the clean hub |
-| Record → edit → confirm | **Given** the AI card, **When** I tap Editar, correct a value in the form and save, **Then** the card shows the corrected values and Confirmar saves them |
-| Record → discard | **Given** the AI card, **When** I tap Descartar, **Then** nothing is saved and the temporary audio is deleted |
+**Story points:** 2
 
-> **Note (technical):** voice follows the same shape as photo/text (see HU-006 contract) with `source: audio`; the minimum facts are store + total — otherwise the AI reports `status: unreadable` (see HU-011).
-
-**Checklist: API**
-- [ ] Implement temporary recording upload
-- [ ] Validate M4A/WAV formats and the 60 s limit
-- [ ] Send the temporary audio to the AI parsing service (STT handled in the same model call per STACK.md)
-- [ ] Validate the normalized AI response contract with `source: audio`
-- [ ] Return parsed receipt data, item, and optional reasons
-- [ ] Keep the database unchanged until confirmation
-- [ ] Save receipt + item atomically after confirmation
-- [ ] Delete the temporary audio after discard
-
-**Checklist: UI**
-- [ ] Add the mic button to the capture bar with a recording indicator
-- [ ] Stop recording automatically at 60 s
-- [ ] Show recording and AI-processing states
-- [ ] Display the audio confirmation card with editable parsed data
-- [ ] Add Confirmar, Editar, and Descartar actions
-- [ ] Open the HU-003 manual form from Editar
-- [ ] Show success feedback and return to the clean hub
-
-**Checklist: Tests**
-- [ ] Test accepted formats and the 60 s limit
-- [ ] Test normalized AI response validation (`source: audio`)
-- [ ] Test confirmation without changing parsed data
-- [ ] Test editing before confirmation
-- [ ] Test discard and temporary-audio deletion
-- [ ] Test atomic receipt + item saving
-
-**Checklist: Mockup**
-- [ ] Demonstrate the mic button and recording state
-- [ ] Demonstrate the audio confirmation card with editable data
-- [ ] Demonstrate Confirmar, Editar, and Descartar
-
-**Story Points:** *(to be estimated)*
+**Mockup:** TBD
 
 ---
 
-### HU-010: Dashboard by category + date filter
+### HU-011 — Transaction history and filters
 
-**Feature:** PB-005
+**Feature:** PB-007 — Transaction history and filters
 
 **Story:**
-> As a user, I want to see my spending by category for a period so that I can understand where my money goes.
+> As a user, I want one searchable, filterable transaction history so that I can find and inspect any expense, income, or transfer.
 
-**Acceptance Criteria:**
-- I open the Dashboard tab and see my spending for a selected period
-- Period presets: **Hoy / Esta semana / Este mes** — switching presets recalculates everything shown
-- I see the **total spent** in the period and **per-category totals** (top categories first)
-- Totals are shown as a **pie chart + a category table** (category name · amount · share of the total)
-- The dashboard is read-only analytics: I cannot edit or delete anything from here (editing lives in the HU-004 "My expenses" list)
-- Totals include every expense of mine in the period regardless of how it was registered — manual (HU-003), photo (HU-006), text (HU-008), or voice (HU-009)
-- I only ever see MY data — the dashboard is scoped to my user
-- If I have no expenses in the selected period → friendly empty state ("No hay gastos en este período") instead of an empty chart
+**Implementation scope:** Implement one ordered history query and UI; distinguish movement types; add live text search plus weekly/monthly/custom, account, type and category filters; search merchant, description and item text case-insensitively; preserve currency labels; paginate; test combined filters and isolation.
 
-> **Note (technical):** analytics are computed by the backend (GROUP BY category over the authenticated user's expenses in the period), per ALCANCE.md — the backend owns the data and answers dashboard queries.
+**Acceptance criteria:** I see only my expenses, income and transfers, newest first; text and filters combine correctly; every amount shows currency; unlike currencies are not combined; Uncategorized expenses remain visible; a clear no-results state appears when nothing matches.
 
-**Scenarios:**
+**Story points:** 2
 
-| Scenario | Criteria |
-|---|---|
-| Switch period | **Given** the dashboard, **When** I tap "Esta semana", **Then** the total, category totals, and chart recalculate for the week |
-| Mixed sources | **Given** expenses registered manually, by photo, by text, and by voice, **When** I open the dashboard, **Then** all of them are included in the totals |
-| Empty period | **Given** I have no expenses in the selected period, **When** the dashboard loads, **Then** I see the empty state instead of an empty chart |
-
-**Checklist: API**
-- [ ] Implement the dashboard endpoint: totals per category for the authenticated user and period
-- [ ] Compute analytics on the backend (GROUP BY category, filtered by period)
-- [ ] Return total spent, per-category amounts, and shares
-- [ ] Enforce ownership scoping
-- [ ] Handle empty result sets
-
-**Checklist: UI**
-- [ ] Build the Dashboard screen with period preset chips (Hoy / Esta semana / Este mes)
-- [ ] Render the pie chart (per-category shares)
-- [ ] Render the category table (name · amount · share), top categories first
-- [ ] Show the total spent for the period
-- [ ] Implement the empty state
-- [ ] Handle loading and error states
-
-**Checklist: Tests**
-- [ ] Test period preset filtering
-- [ ] Test per-category sums including all capture sources
-- [ ] Test share calculations
-- [ ] Test ownership isolation
-- [ ] Test empty-state behavior
-
-**Checklist: Mockup**
-- [ ] Demonstrate the dashboard with chart + category table
-- [ ] Demonstrate period switching
-- [ ] Demonstrate the empty state
-
-**Story Points:** *(to be estimated)*
+**Mockup:** TBD
 
 ---
 
-### HU-011: Voice capture fails or the AI can't hear me
+### HU-012 — Basic financial dashboard
 
-**Feature:** PB-004 · **Split of:** HU-009 (SPIDR Path: error paths) · **Depends on:** HU-009
+**Feature:** PB-008 — Basic financial dashboard
 
 **Story:**
-> As a user, when voice capture or AI parsing fails, I want a clear message and a way forward so that nothing is saved by mistake and I can retry or fall back to typing.
+> As a user, I want a basic dashboard of balances, recent movements, spending, and income so that I understand my financial position before and after every capture.
 
-**Acceptance Criteria:**
-- If the AI can't extract the minimum (store + total) from the audio → I see "No pudimos escuchar el audio" + **Reintentar** (record again) + the manual ✍️ option — nothing is saved
-- If the AI extracts **partial** data (e.g., total but no store) → the card shows what it got, marks missing required fields, and keeps Confirmar disabled until I complete valid data through Editar
-- If the backend or the AI model (STT + parsing in one call) fails / times out → error message + **Reintentar**; nothing is saved
-- If mic permission is denied → an explanation of why it's needed + a shortcut to system settings; manual ✍️ entry always stays available
-- On any failure, the temporary audio is deleted — no orphans from failed attempts
-- Temp audio never confirmed is cleaned by the backend after **24h** (same scheduled cleanup as temp images)
-- A failure never creates receipt or expense rows (save is all-or-nothing)
+**Implementation scope:** Implement deterministic aggregation API and dashboard UI; add Today/This week/This month/custom periods; show balances, income/expense, recent movements and category totals; allow subcategory breakdown; separate currencies; test transfer neutrality, ownership and empty/error states.
 
-**Scenarios:**
+**Acceptance criteria:** For the selected period I see owned balances, income, expenses, recent movements and categories ordered by spending; I can inspect subcategory detail; transfers affect balances only; totals remain separated by currency; the same stored data produces the same result without AI; empty/error states never fabricate values.
 
-| Scenario | Criteria |
-|---|---|
-| Unintelligible audio | **Given** audio the AI can't parse to store + total, **When** parsing returns `unreadable`, **Then** I see "No pudimos escuchar el audio" with Reintentar and manual ✍️ — nothing is saved |
-| Partial data | **Given** an AI result with missing required fields, **When** the card is shown, **Then** Confirmar is disabled until I complete valid data via Editar |
-| Mic permission denied | **Given** mic permission is denied, **When** I tap the mic button, **Then** I see the explanation + settings shortcut, and manual ✍️ stays available |
-| Timeout | **Given** the backend or STT/LLM fails or times out, **When** I retry, **Then** nothing was saved and the temporary audio was deleted |
+**Story points:** 3
 
-**Checklist: API**
-- [ ] Handle `unreadable` results with a clear error response
-- [ ] Handle partial results (mark missing required fields)
-- [ ] Handle backend/AI-model failures and timeouts
-- [ ] Delete the temporary audio on every failure
-- [ ] Scheduled cleanup of temp audio after 24h
-- [ ] Ensure failures never create receipt or expense rows
-
-**Checklist: UI**
-- [ ] Show failure messages with Reintentar and manual ✍️ fallback
-- [ ] Show partial data with missing fields marked and Confirmar disabled
-- [ ] Show mic-permission explanation + system settings shortcut
-- [ ] Show retry and processing states
-
-**Checklist: Tests**
-- [ ] Test unreadable-audio handling
-- [ ] Test partial-data completion flow
-- [ ] Test timeout and retry behavior
-- [ ] Test mic-permission-denied flow
-- [ ] Test temp-audio deletion on failure and 24h cleanup
-- [ ] Test no rows are created on failure
-
-**Checklist: Mockup**
-- [ ] Demonstrate the failure message with Reintentar + manual ✍️
-- [ ] Demonstrate partial data with Confirmar disabled
-
-**Story Points:** *(to be estimated)*
+**Mockup:** TBD
 
 ---
 
-## Sprint Plan
+### HU-013 — Natural-text capture
 
-| Sprint | Features |
-|--------|----------|
-| Sprint 1 | Register (HU-001) + Login (HU-002) |
-| Sprint 2 | CRUD foundation (HU-003 + HU-004 + HU-005) — manual-first (locked decision) |
-| Sprint 3 | Photo capture (HU-006 + HU-007) + Text capture (HU-008) |
-| Sprint 4 | Audio capture (HU-009 + HU-011) + Dashboard (HU-010) + Testing + Survey |
+**Feature:** PB-009 — AI capture from natural text and audio
+
+**Story:**
+> As a user, I want to write what happened in my own words so that the assistant identifies the financial operation and prepares it for quick review.
+
+**Implementation scope:** Implement natural-text input, intent classification for expense/income/transfer, structured proposal/confidence, account/catalog grounding, compact review, focused clarification, in-place edit, retry/discard, latency/error UX and tests.
+
+**Acceptance criteria:** Natural text proposes the correct operation without saving; transfers are not misclassified as spending; complete high-confidence proposals need one-tap acceptance; only ambiguity triggers a short clarification; corrections preserve the original text; Accept uses the normal validated atomic operation; manual forms remain available.
+
+**Story points:** 8
+
+**Mockup:** TBD
 
 ---
 
-## Pending Decisions — expense CRUD foundation (manual-first)
+### HU-014 — Voice capture
 
-> Locked so far: manual-first (HU-003–HU-005 before AI stories) · vertical splits, no FE/BE · one backlog (this file) · HU-003: multiple items per receipt, manual total = item sum · photo total = printed receipt total · expense name = store text (editable) · manual form bypasses AI, while natural-language text in the capture bar uses AI · single hub "Gastos": no core chat — photo/voice/natural-language text are capture channels, reasons = optional fields · HU-006 split by SPIDR Path (guide §9): photo happy path (HU-006) / failure paths (HU-007) / text parse (HU-008) · Editar opens the HU-003 form · post-save = "✅ Gasto guardado" + clean hub · temp images: deleted on discard/failure + 24h backend cleanup · unreadable = the AI reports `status: unreadable` (no blur detection) · photo uploads: JPEG/PNG/HEIC, max 10 MB · audio last (STT is the riskiest channel).
-> Decide in order (1 blocks the rest); the CRUD split is already documented above.
+**Feature:** PB-009 — AI capture from natural text and audio
 
-1. **Receipt required?** `expense.receipt_id` NOT NULL → every expense needs a receipt row (store, date, total: NOT NULL).
-   A) no quick-add, schema unchanged · B) quick-add without receipt → make `receipt_id` NULLable (schema change)
+**Story:**
+> As a user, I want to describe a financial operation by voice so that the assistant prepares it while I avoid typing.
 
-   [Decision]: A — complete form, minimal UX (no quick-add, schema unchanged)
+**Implementation scope:** Reuse the HU-013 proposal/review flow; implement microphone permission, visible recording state, automatic stop at 60 seconds, temporary M4A/WAV handling, speech plus intent extraction, partial/unintelligible/timeout recovery, edit/retry/type/manual actions, cleanup and tests.
 
-2. **Split shape.** Current HU-005 has 10 ACs (create + edit + delete + isolation + validation).
-   A) 2 stories: create / edit+delete · B) 3 stories: create / edit+delete / "only mine" · C) keep one story
+**Acceptance criteria:** Voice proposes an expense, income or transfer without saving; recording visibly stops by 60 seconds; denied permission links to settings; high-confidence results need one-tap acceptance; partial/unintelligible/timeouts preserve useful context and offer retry or text/manual fallback; Accept uses the normal save path; temporary audio is cleaned.
 
-   [Decision]: A — 2 stories (HU-003 create / HU-004 edit+delete); "only mine" as ACs inside both
+**Story points:** 3
 
-3. **List gap.** No story lets the user SEE their expenses to edit/delete (dashboard = analytics, not a list).
-   A) basic "my expenses" list in HU-005 · B) edit from dashboard table (couples with HU-010) · C) other
+**Mockup:** TBD
 
-   [Decision]: A — basic "My expenses" list inside HU-004 (name · amount · date · photo indicator, newest first)
+---
 
-4. **Delete cleanup.** Delete is permanent (ALCANCE: retention out of scope). What happens to the image file? Is the receipt row (1:1) deleted too?
+### HU-015 — Receipt-photo capture
 
-   [Decision]: both granularities — delete single item (receipt stays, total re-summed) AND delete whole receipt · last item deleted → receipt auto-deleted (DB CHECK total > 0) · image file deleted with the receipt · confirmation dialog always
+**Feature:** PB-010 — AI capture from receipt photo
 
-5. **Validation.** 5a future dates allowed/rejected? · 5b expense `name` (NOT NULL): default to store name or typed? · 5c store always required? · 5d purchase_reason (receipt) / item_reason (expense) — confirm wording
+**Story:**
+> As a user, I want a receipt photo to produce a proposed expense so that I can verify it at a glance and accept it instead of typing every value.
 
-   [Decision 5a]: future dates allowed (for now) · [5b]: name = store text, editable · [5c]: store always required · [5d]: purchase_reason on receipt · item_reason on expense — confirmed
+**Implementation scope:** Reuse the shared proposal/review flow; implement temporary JPEG/PNG/HEIC upload up to 10 MB, resize/compression, structured extraction status/confidence, printed-total preservation, mapping to the expense form, focused uncertainty, edit/retry/discard, cleanup and provider-failure tests.
 
-6. **Form defaults.** Currency COP + payment Efectivo: pre-selected and changeable, or empty required fields?
+**Acceptance criteria:** A supported photo produces “This is what I understood” without saving; merchant, date, printed total, currency, payment method, classification and items are editable; a high-confidence proposal is accepted with one tap; partial/unreadable/error states offer focused recovery; Accept uses the normal save path; temporary media is cleaned.
 
-   [Decision]: pre-selected (COP / Efectivo), changeable
+**Story points:** Not provided in supplied register
 
-7. **Input channels.** Does typed input from the capture bar bypass AI like the manual form, or use AI parsing?
+**Mockup:** TBD
 
-   [Decision]: two separate paths — the manual form bypasses AI and saves directly; natural-language text from the capture bar uses AI, shows structured JSON in the confirmation card, and requires Confirmar.
+---
 
-8. **Receipt totals.** Should all receipts use the item sum, or should photo receipts preserve the printed total?
+### HU-016 — Spending budgets
 
-   [Decision]: source-dependent — manual multi-item receipts use the item sum; natural-language text/audio use the parsed or entered amount as the single item total; photo receipts preserve the printed total, even when taxes, discounts, or rounding make it differ from item sums.
+**Feature:** PB-011 — Spending budgets
 
-9. **Photo receipt editing.** What happens when item edits change the sum of a saved photo receipt's items?
+**Story:**
+> As a user, I want a category or subcategory budget so that I can compare actual spending with a weekly or monthly target.
 
-   [Decision]: preserve the printed receipt total; item edits do not overwrite it unless the user explicitly edits the total.
+**Implementation scope:** Implement owned budget CRUD; require positive amount, currency, period and exactly one target; calculate progress from qualifying expenses; delete dependent budgets with deleted classifications; add progress to the existing dashboard; test period, currency and ownership rules.
 
-10. **Partial photo extraction.** Can a partial AI result be saved?
+**Acceptance criteria:** I can create a weekly/monthly budget for exactly one owned category or subcategory; progress is derived, not manually stored, and appears on the dashboard; only matching period/currency expenses count; deleting its classification removes the budget after confirmation; ownership is enforced.
 
-   [Decision]: yes, after completion — show extracted values, mark missing required fields, keep Confirmar disabled, and allow Editar to complete valid data before saving.
+**Story points:** 1
 
-11. **AI response and image boundary.** What contract and upload boundary apply to the active photo path?
+**Mockup:** TBD
 
-   [Decision]: one strict normalized response with `status` (`ok`, `partial`, `unreadable`, `error`), `source`, receipt data, item data, optional reasons, and a machine-readable error; accept JPEG/PNG/HEIC up to 10 MB and reject invalid files before parsing.
+---
 
-12. **Audio input and limits.** How does the user capture voice — in-app recording or file upload? Duration/format limits?
+## Register consistency
 
-   [Decision]: in-app mic button in the capture bar · max 60 s · M4A/WAV · server-side STT reusing the HU-006 normalized contract with `source: audio` (2026-08-31)
-
-13. **Audio split.** One audio story, or split happy path from failure paths like photo?
-
-   [Decision]: B — split like photo (SPIDR Path, guide §9): HU-009 happy path / HU-011 failure paths (2026-08-31)
-
-14. **Dashboard scope.** Period filter style, metrics, and scope of HU-010?
-
-   [Decision]: period presets (Hoy / Esta semana / Este mes) · total spent + per-category totals as pie chart + category table · read-only analytics (no editing, no expense list — that is HU-004) · friendly empty state · backend computes the analytics · estimation scale restored to standard Fibonacci (2026-08-31)
-
-### Parked — capture stories: resolved & remaining
-
-Resolved via the HU-006 happy-path / failure-path split (SPIDR Path, guide §9) and decisions of 2026-08-30:
-
-- [x] failure paths (AI can't read / backend fails / camera permission denied) → **HU-007**
-- [x] orphan temp image when there is no confirm and no discard → backend cleanup after 24h (HU-007)
-- [x] post-save feedback (where the user lands) → "✅ Gasto guardado" + clean hub
-- [x] numbering → 2026-08-30 renumber to build order: HU-006 photo · HU-007 photo failures · HU-008 text · HU-009 audio · HU-010 dashboard
-- [ ] items added later to a saved receipt vs. one single confirm flow (was "003b" under the old numbering)
-- [ ] AI suggests subcategory on the fly (was "003d") — story now or Phase 2
-- [x] HU-009 (voice) failure ACs → split like photo: HU-009 happy path / HU-011 failure paths (2026-08-31)
-- [ ] AC person ("I" vs "User") · checklist sections consistency
+- HU-001 through HU-006, HU-008 through HU-016 are present in the supplied register.
+- HU-007 is intentionally absent from the supplied register; no replacement story was invented.
+- Product backlog status belongs to the PB row. Individual HU completion must be verified against its acceptance criteria and implementation evidence.
