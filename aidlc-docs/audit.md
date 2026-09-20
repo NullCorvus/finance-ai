@@ -780,3 +780,15 @@ mira este error"
 **Context**: Bug fix - Error diagnostic transparency and resilient options loading in manual expense/income creation form.
 
 ---
+
+## Category Visibility & Direct Chips in Manual Expense Form
+**Timestamp**: 2026-09-20T13:19:26-05:00
+**User Input**: "lo mismo pasa con categoprias no me las muestra"
+**AI Response**: Resolved category display and selection across the app:
+1. Promoted Categoría to a prominent, directly visible section in `ExpenseCreateScreen` (just like Cuenta de pago), displaying interactive chips for `[ ⚪ Sin categoría ]`, all user categories with their respective color and icon (`[ 🔵 aldanas ]`, `[ 🔵 Needs ]`, `[ 🟣 Wants ]`, `[ ⚪ Other ]`), and a quick `[ ＋ Nueva categoría ]` ActionChip that navigates to `/categories/new` and auto-reloads upon return.
+2. In `CategoriesScreen` (`/categories`), removed the `== CategoriesLoadStatus.initial` restriction so that categories are always freshly fetched when opening the screen, and ensured the loading spinner does not hang indefinitely when an error occurs.
+3. All 153 frontend tests pass.
+**Context**: Construction - UX enhancement for visible category chips in manual creation form and screen refresh reliability.
+
+---
+
