@@ -3,6 +3,7 @@
 > **Status:** PROPOSAL — core is the Flutter app + backend (API + DB). The "agent" features
 > (chat, AI acting on data) are optional Phase 3 ideas and are marked as such below.
 > Decisions source: `docs/step5-plan.md` (Q1–Q7). Guide: `docs/guides/architecture-diagrams-guide.md`.
+> Code architecture & layers guide: `docs/guides/code-architecture-guide.md`.
 > Stack decisions: `docs/STACK.md`.
 
 ## Pending decisions (TBD)

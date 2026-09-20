@@ -1,0 +1,427 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Finance AI — Menú variantes (adecuado al contexto)</title>
+<style>
+  :root{
+    --bg:#F5F6F8; --card:#FFFFFF; --primary:#6B8E00; --primary-soft:#E9F2D8; --primary-dark:#546E00;
+    --income:#0E9F6E; --income-soft:#E1F5EC; --text:#1F2933; --muted:#6B7280; --line:#E5E7EB;
+    --confirm:#16A34A; --discard:#DC2626; --nav:#9CA3AF; --soft:#F3F4F6; --soft-2:#FAFAFB; --rowline:#F3F4F6;
+    --thumb:#D9DFE8; --media-bg:rgba(255,255,255,.6); --ph:#9AA0A6; --warn-bg:#FDF3D8; --warn-fg:#9A7B00;
+  }
+  :root[data-theme="dark"]{
+    --bg:#101318; --card:#1A2027; --primary:#8FB42C; --primary-soft:#26301A; --primary-dark:#B7D45C;
+    --income:#2DB886; --income-soft:#143129; --text:#E8EBF0; --muted:#9AA5B5; --line:#262E38;
+    --confirm:#1FA254; --discard:#E5534D; --nav:#5A6472; --soft:#20262E; --soft-2:#232A33; --rowline:#1F262E;
+    --thumb:#2A323D; --media-bg:rgba(255,255,255,.05); --ph:#6B7686; --warn-bg:#3A3113; --warn-fg:#E5C76B;
+  }
+  :root[data-theme="dark"] body{background:#0B0E12;}
+  :root[data-theme="dark"] .trend{--trendg:#8FB42C;--trendi:#2DB886;}
+  :root:not([data-theme="dark"]) .trend{--trendg:#6B8E00;--trendi:#0E9F6E;}
+  *{box-sizing:border-box;margin:0;padding:0;}
+  body{
+    background:#E8EAED; font-family:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+    display:flex; flex-direction:column; align-items:center; min-height:100vh; padding:24px; gap:18px;
+  }
+  /* page header */
+  .page-head{
+    width:100%; max-width:920px; background:var(--card); border:1px solid var(--line); border-radius:16px; padding:16px 18px;
+    display:flex; flex-direction:column; gap:12px;
+  }
+  .page-head .toprow{display:flex; flex-wrap:wrap; align-items:flex-start; justify-content:space-between; gap:12px;}
+  .page-head h1{font-size:16px; font-weight:800; color:var(--text); line-height:1.2;}
+  .page-head h1 small{display:block; font-size:11.5px; font-weight:400; color:var(--muted); margin-top:4px; line-height:1.45;}
+  .badge-udec{font-size:10px; font-weight:700; background:var(--primary); color:#fff; padding:3px 8px; border-radius:999px; vertical-align:middle; margin-left:6px;}
+  .controls{display:flex; gap:8px; flex-wrap:wrap; align-items:center;}
+  .seg{ display:flex; background:var(--soft); border-radius:10px; padding:3px; gap:2px; }
+  .seg button{ border:none; background:none; padding:7px 12px; font-size:12px; font-weight:600; color:var(--muted); cursor:pointer; border-radius:8px; display:flex; align-items:center; gap:6px;}
+  .seg button.on{ background:var(--card); color:var(--text); box-shadow:0 1px 3px rgba(0,0,0,.08); }
+  .seg button.rec.on{ background:var(--primary); color:#fff; }
+  .iconbtn{width:32px;height:32px;border-radius:50%;border:none;background:var(--soft);color:var(--muted);display:flex;align-items:center;justify-content:center;cursor:pointer;}
+  .iconbtn:active{transform:scale(.96);}
+  .layout{
+    width:100%; max-width:920px; display:grid; grid-template-columns:390px 1fr; gap:20px; align-items:start;
+  }
+  @media(max-width:820px){ .layout{grid-template-columns:1fr; justify-items:center;} .page-head{max-width:390px;} }
+  /* info panel */
+  .info{ background:var(--card); border:1px solid var(--line); border-radius:16px; padding:16px; display:flex; flex-direction:column; gap:12px; }
+  .info h3{font-size:13px; font-weight:800; color:var(--text); display:flex; align-items:center; gap:8px;}
+  .info h3 .dot{width:8px;height:8px;border-radius:50%;background:var(--primary);}
+  .info p{font-size:12.5px; color:var(--muted); line-height:1.5;}
+  .info ul{font-size:12px; color:var(--muted); margin-left:16px; line-height:1.6;}
+  .info .pros{color:var(--income);} .info .cons{color:var(--muted);}
+  .chiprow{display:flex; gap:6px; flex-wrap:wrap; margin-top:4px;}
+  .chip{font-size:10px; font-weight:700; padding:4px 8px; border-radius:999px; background:var(--soft); color:var(--muted);}
+  .chip.good{background:var(--income-soft); color:var(--income);} .chip.warn{background:var(--warn-bg); color:var(--warn-fg);}
+  .variant-desc{ background:var(--bg); border:1px solid var(--line); border-radius:12px; padding:12px; }
+  .variant-desc h4{font-size:12px; font-weight:800; color:var(--text); margin-bottom:6px;}
+  .variant-desc p{font-size:11.5px; color:var(--muted); line-height:1.5;}
+  .variant-desc .meta{font-size:10px; color:var(--muted); margin-top:8px; display:flex; gap:8px; flex-wrap:wrap;}
+  .variant-desc .meta span{background:var(--card); border:1px solid var(--line); padding:3px 7px; border-radius:999px;}
+  .comparison{ width:100%; max-width:920px; background:var(--card); border:1px solid var(--line); border-radius:16px; padding:14px 16px; }
+  .comparison h3{font-size:12px; font-weight:800; color:var(--text); margin-bottom:10px;}
+  .comp{width:100%; border-collapse:collapse; font-size:11.5px;}
+  .comp th{text-align:left; font-size:10px; text-transform:uppercase; letter-spacing:.4px; color:var(--muted); padding:7px 6px; border-bottom:1px solid var(--line);}
+  .comp td{padding:8px 6px; border-bottom:1px solid var(--rowline); color:var(--text); vertical-align:top;}
+  .comp td:first-child{font-weight:700; white-space:nowrap;}
+
+  /* phone base */
+  .phone{
+    width:390px; height:812px; background:var(--bg); border-radius:38px; overflow:hidden; position:relative;
+    box-shadow:0 24px 60px rgba(15,23,42,.28),0 2px 8px rgba(15,23,42,.1); display:flex; flex-direction:column; flex-shrink:0;
+  }
+  .statusbar{height:44px; flex:0 0 44px; display:flex; align-items:center; justify-content:space-between; padding:0 22px; color:var(--text); font-size:13px; font-weight:600; background:var(--bg);}
+  .screen{display:none; flex:1; flex-direction:column; min-height:0; overflow:hidden;}
+  .screen.active{display:flex;}
+  .chat-header{flex:0 0 auto; display:flex; align-items:center; justify-content:space-between; padding:10px 16px; background:var(--bg);}
+  .chat-header .title{font-size:17px; font-weight:700; color:var(--text);}
+  .chat-header .sub{font-size:11px; color:var(--muted); font-weight:400;}
+  .chat-header .actions{display:flex; align-items:center; gap:8px;}
+  .theme-toggle{width:32px;height:32px;border-radius:50%;border:none;cursor:pointer;background:var(--soft);color:var(--muted);display:flex;align-items:center;justify-content:center;}
+  .chat-body{flex:1; overflow-y:auto; padding:12px 16px; display:flex; flex-direction:column; gap:12px;}
+  .chat-body::-webkit-scrollbar{display:none;}
+  .card{align-self:flex-start; width:96%; background:var(--card); border:1px solid var(--line); border-radius:16px; padding:14px 14px 12px; box-shadow:0 1px 3px rgba(15,23,42,.05);}
+  .card .head{display:flex; justify-content:space-between; align-items:center; margin-bottom:6px;}
+  .card .head .ai{font-size:11px; font-weight:700; color:var(--primary); letter-spacing:.4px;}
+  .card .head .tag{font-size:10px; color:var(--muted); background:var(--soft); padding:3px 8px; border-radius:10px;}
+  .field{display:flex; justify-content:space-between; align-items:center; padding:6px 0; border-bottom:1px dashed var(--line); font-size:13.5px;}
+  .field .label{color:var(--muted); font-size:12px;} .field .val{font-weight:600; color:var(--text);}
+  .items{margin-top:8px; border:1px solid var(--line); border-radius:10px; overflow:hidden;}
+  .items .it-head{display:grid; grid-template-columns:1fr 42px 52px; gap:6px; padding:6px 10px; background:var(--soft-2); font-size:10px; color:var(--muted); text-transform:uppercase; letter-spacing:.3px;}
+  .items .it{display:grid; grid-template-columns:1fr 42px 52px; gap:6px; align-items:center; padding:8px 10px; border-top:1px solid var(--rowline); font-size:13px; color:var(--text);}
+  .items .it.total{border-top:1.5px solid var(--line); font-weight:700; background:var(--soft-2);}
+  .card-actions{display:flex; gap:8px; margin-top:12px;}
+  .btn{flex:1; padding:10px; border-radius:10px; border:none; font-weight:600; font-size:13px; cursor:pointer;}
+  .btn-confirm{background:var(--confirm); color:#fff;}
+  .btn-edit{background:var(--card); color:var(--primary); border:1.5px solid var(--primary);}
+  .btn-discard{background:var(--card); color:var(--discard); border:1.5px solid var(--discard);}
+  .empty-hint{margin:auto 0; text-align:center; font-size:13px; color:var(--muted); padding:22px 16px; line-height:1.6;}
+  .inputbar{flex:0 0 auto; display:flex; flex-direction:column; gap:10px; background:var(--card); border-top:1px solid var(--line); padding:10px 12px 12px;}
+  .input-row{display:flex; align-items:center; gap:8px;}
+  .shutter{width:54px; height:54px; border-radius:50%; flex:0 0 54px; background:var(--primary); border:3px solid var(--primary-dark); display:flex; align-items:center; justify-content:center; color:#fff; cursor:pointer; box-shadow:0 2px 6px rgba(107,142,0,.35);}
+  .shutter:active{transform:scale(.96);}
+  .mic-btn{width:44px; height:44px; border-radius:50%; flex:0 0 44px; background:var(--soft); border:none; display:flex; align-items:center; justify-content:center; color:var(--text); cursor:pointer;}
+  .textfield{flex:1; background:var(--soft); border-radius:24px; padding:12px 14px; border:none; font-size:13px; color:var(--text); outline:none;}
+  .textfield::placeholder{color:var(--ph);}
+  .dash{padding:8px 16px 16px; overflow-y:auto; flex:1;}
+  .dash h2{font-size:20px; font-weight:700; color:var(--text); margin:8px 2px 2px;}
+  .dash .greet{font-size:12px; color:var(--muted); margin-bottom:12px;}
+  .panel{background:var(--card); border:1px solid var(--line); border-radius:14px; padding:14px; margin-top:12px;}
+  .panel .ptitle{font-size:13px; font-weight:700; color:var(--text); margin-bottom:10px;}
+  .stats{display:flex; gap:8px;}
+  .stat{flex:1; background:var(--bg); border:1px solid var(--line); border-radius:12px; padding:10px;}
+  .stat .lbl{font-size:11px; color:var(--muted);} .stat .val{font-size:16px; font-weight:700; color:var(--text); margin-top:2px;}
+  .stat .val.pos{color:var(--income);} .stat .val.neg{color:var(--discard);}
+  .bars{display:flex; align-items:flex-end; gap:10px; height:100px;}
+  .bar-col{flex:1; display:flex; flex-direction:column; align-items:center; gap:6px;}
+  .bar{width:100%; max-width:34px; border-radius:6px 6px 0 0; background:var(--primary);}
+  .bar-col .lbl{font-size:10px; color:var(--muted); text-align:center;} .bar-col .lbl b{display:block; color:var(--text); font-size:11px;}
+  .settings{flex:1; overflow-y:auto; padding:8px 16px 16px;}
+  .settings h2{font-size:20px; font-weight:700; color:var(--text); margin:8px 2px 2px;}
+  .settings .greet{font-size:12px; color:var(--muted); margin-bottom:14px;}
+  .set-group{background:var(--card); border:1px solid var(--line); border-radius:14px; overflow:hidden; margin-bottom:12px;}
+  .set-title{font-size:11px; font-weight:700; text-transform:uppercase; letter-spacing:.4px; color:var(--muted); padding:10px 14px 6px; background:var(--bg);}
+  .set-row{display:flex; justify-content:space-between; align-items:center; padding:12px 14px; border-top:1px solid var(--rowline); font-size:13px; color:var(--text);}
+  .set-row:first-of-type{border-top:none;}
+
+  /* BASE NAV - original fidelity */
+  .nav{flex:0 0 auto; display:flex; background:var(--card); border-top:1px solid var(--line); padding-bottom:8px;}
+  .nav .tab{flex:1; padding:9px 0 7px; text-align:center; color:var(--nav); font-size:11px; cursor:pointer; display:flex; flex-direction:column; align-items:center; gap:3px; background:none; border:none; position:relative;}
+  .nav .tab .icon-wrap{width:56px; height:28px; display:flex; align-items:center; justify-content:center; border-radius:16px; transition:background .18s, transform .12s;}
+  .nav .tab .label{font-size:11px; line-height:1; transition:color .18s, font-weight .18s;}
+  .nav .tab.active{color:var(--primary);} 
+  .nav .tab:active .icon-wrap{transform:scale(.96);}
+
+  /* V0 original subtle - just current */
+  .phone[data-variant="v0"] .nav .tab.active .icon-wrap{background:transparent;}
+  .phone[data-variant="v0"] .nav .tab.active{color:var(--primary); font-weight:600;}
+
+  /* V1 Material 3 NavigationBar - indicator pill behind icon */
+  .phone[data-variant="v1"] .nav{
+    border-top:none; border-radius:20px 20px 0 0; background:var(--card);
+    box-shadow:0 -1px 0 var(--line), 0 -4px 16px rgba(15,23,42,.06);
+    padding:6px 6px 8px; gap:2px;
+  }
+  .phone[data-variant="v1"] .nav .tab{padding:4px 0 6px;}
+  .phone[data-variant="v1"] .nav .tab .icon-wrap{width:58px; height:30px; border-radius:16px; background:transparent;}
+  .phone[data-variant="v1"] .nav .tab.active .icon-wrap{background:var(--primary-soft);}
+  .phone[data-variant="v1"] .nav .tab.active{color:var(--text); font-weight:700;}
+  .phone[data-variant="v1"] .nav .tab.active .label{color:var(--text);}
+  .phone[data-variant="v1"] .nav .tab.active svg{stroke:var(--primary); stroke-width:2.2;}
+  .phone[data-variant="v1"] .nav .tab:not(.active){color:var(--muted);}
+  .phone[data-variant="v1"] .inputbar{border-top:none; box-shadow:0 -1px 0 var(--line);}
+
+  /* V2 Pill whole tab */
+  .phone[data-variant="v2"] .nav{
+    background:var(--soft); border-top:1px solid var(--line); padding:8px 8px 10px; gap:6px; border-radius:0;
+  }
+  .phone[data-variant="v2"] .nav .tab{border-radius:999px; padding:7px 0 7px; background:transparent; transition:background .18s, color .18s;}
+  .phone[data-variant="v2"] .nav .tab .icon-wrap{width:auto; height:auto; background:none; border-radius:0;}
+  .phone[data-variant="v2"] .nav .tab.active{background:var(--primary-soft); color:var(--primary); font-weight:700;}
+  .phone[data-variant="v2"] .nav .tab.active svg{stroke:var(--primary);}
+  .phone[data-variant="v2"] .nav .tab:not(.active){color:var(--muted);}
+
+  /* V3 Minimal underline + dot */
+  .phone[data-variant="v3"] .nav{
+    background:var(--card); border-top:1px solid var(--line); padding-bottom:8px; gap:0;
+  }
+  .phone[data-variant="v3"] .nav .tab{padding:10px 0 7px; overflow:visible;}
+  .phone[data-variant="v3"] .nav .tab::before{
+    content:""; position:absolute; top:0; left:32%; right:32%; height:2.5px; background:transparent; border-radius:0 0 4px 4px; transition:background .18s;
+  }
+  .phone[data-variant="v3"] .nav .tab.active::before{background:var(--primary);}
+  .phone[data-variant="v3"] .nav .tab.active{color:var(--primary); font-weight:700;}
+  .phone[data-variant="v3"] .nav .tab.active::after{
+    content:""; position:absolute; bottom:2px; left:50%; transform:translateX(-50%); width:4px; height:4px; border-radius:50%; background:var(--primary); opacity:.9;
+  }
+  .phone[data-variant="v3"] .nav .tab:not(.active){color:var(--nav);}
+  .phone[data-variant="v3"] .nav .tab.active svg{stroke-width:2.2;}
+</style>
+</head>
+<body>
+
+<div class="page-head">
+  <div class="toprow">
+    <h1>Finance AI Tracker — menú <span class="badge-udec">UdeC Facatativá</span>
+      <small>3 evoluciones sutiles del mismo bottom nav · pensado para <b>reducir fricción</b> y sostener el hábito (retención 4,2%) · captura-first <b>foto → voz → texto</b> intacta · Flutter NavigationBar nativo</small>
+    </h1>
+    <button class="iconbtn" id="themeBtn" title="Cambiar tema">◐</button>
+  </div>
+  <div class="controls">
+    <span style="font-size:11px; color:var(--muted); font-weight:600;">Variante:</span>
+    <div class="seg" id="variantSeg">
+      <button data-v="v0" class="">V0 Actual</button>
+      <button data-v="v1" class="on rec">V1 Material 3 ★</button>
+      <button data-v="v2" class="">V2 Pill suave</button>
+      <button data-v="v3" class="">V3 Minimal</button>
+    </div>
+    <span style="font-size:10px; color:var(--muted); margin-left:6px;">★ recomendada · toca el nav para probar</span>
+  </div>
+</div>
+
+<div class="layout">
+  <!-- PHONE -->
+  <div class="phone" id="phone" data-variant="v1">
+    <div class="statusbar"><span>9:41</span><span style="display:flex;gap:6px;align-items:center;"><svg width="15" height="11" viewBox="0 0 15 11" fill="none"><rect x="0" y="7" width="2.6" height="4" rx="0.6" fill="currentColor"/><rect x="4" y="5" width="2.6" height="6" rx="0.6" fill="currentColor"/><rect x="8" y="3" width="2.6" height="8" rx="0.6" fill="currentColor"/><rect x="12" y="0" width="2.6" height="11" rx="0.6" fill="currentColor"/></svg> ●</span></div>
+
+    <div class="chat-header">
+      <div><div class="title" id="headerTitle">Gastos</div><div class="sub">registra gastos e ingresos — la IA te ayuda</div></div>
+      <div class="actions">
+        <button class="theme-toggle" id="btnSearch" title="Buscar">🔍</button>
+        <button class="theme-toggle" id="btnThemePhone" title="Tema">◐</button>
+      </div>
+    </div>
+
+    <!-- GASTOS hub -->
+    <div class="screen active" data-screen="gastos">
+      <div class="chat-body" id="gastosBody">
+        <div class="empty-hint" id="emptyHint">📷 foto · 🎤 voz · ✍️ manual — la IA arma el gasto y tú lo confirmas</div>
+        <div class="msg user" style="display:none;" id="userMsg">
+          <div class="media"><div class="thumb"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 10h18M6 14h2M11 14h2"/></svg></div><div class="meta"><div class="lbl">Recibo_D1.jpg</div><div class="sub">gasto · foto · hoy 12:03</div></div></div>
+        </div>
+        <div class="card" style="display:none;" id="aiCard">
+          <div class="head"><span class="ai">IA · ¿esto es correcto?</span><span class="tag">gasto · listo para guardar</span></div>
+          <div class="field"><span class="label">Monto total</span><span class="val">$ 12.500</span></div>
+          <div class="field"><span class="label">Fecha</span><span class="val">Hoy</span></div>
+          <div class="field"><span class="label">Categoría</span><span class="val">Comida</span></div>
+          <div class="field"><span class="label">Subcategoría</span><span class="val">Almuerzo</span></div>
+          <div class="field"><span class="label">Pago</span><span class="val">Efectivo</span></div>
+          <div class="field"><span class="label">Moneda</span><span class="val">COP</span></div>
+          <div class="items">
+            <div class="it-head"><span>Producto</span><span>Cant</span><span>Precio</span></div>
+            <div class="it"><span>Arroz con pollo</span><span style="text-align:right;color:var(--muted)">1</span><span style="text-align:right;font-weight:600">$ 8.000</span></div>
+            <div class="it"><span>Gaseosa</span><span style="text-align:right;color:var(--muted)">1</span><span style="text-align:right;font-weight:600">$ 2.500</span></div>
+            <div class="it"><span>Jugo natural</span><span style="text-align:right;color:var(--muted)">1</span><span style="text-align:right;font-weight:600">$ 2.000</span></div>
+            <div class="it total"><span>Total</span><span></span><span style="text-align:right">$ 12.500</span></div>
+          </div>
+          <div class="card-actions"><button class="btn btn-confirm" id="btnConfirm">Confirmar</button><button class="btn btn-edit">Editar</button><button class="btn btn-discard" id="btnDiscard">Descartar</button></div>
+        </div>
+        <div class="saved-note" style="display:none;" id="savedNote">✅ Gasto guardado · $ 12.500</div>
+      </div>
+      <div class="inputbar">
+        <div class="input-row">
+          <button class="shutter" id="btnShutter" title="Tomar foto"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg></button>
+          <button class="mic-btn" id="btnMic" title="Voz"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2M12 19v4"/></svg></button>
+          <button class="mic-btn" id="btnManual" title="Manual">✎</button>
+          <input class="textfield" id="captureField" type="text" placeholder="gasté 15 mil en almuerzo en Subway…">
+        </div>
+      </div>
+    </div>
+
+    <!-- DASHBOARD -->
+    <div class="screen" data-screen="dashboard">
+      <div class="dash">
+        <h2>Dashboard</h2><div class="greet">Agosto 2026 · 8 gastos · 1 ingreso</div>
+        <div class="panel" style="margin-top:0;">
+          <div class="ptitle">Balance del mes <span style="font-size:10px; color:var(--muted); font-weight:400;">solo categoría (PGC E4)</span></div>
+          <div class="stats"><div class="stat"><div class="lbl">Gastos</div><div class="val neg">$ 345.800</div></div><div class="stat"><div class="lbl">Balance</div><div class="val pos">+ $1.15M</div></div></div>
+        </div>
+        <div class="panel">
+          <div class="ptitle">Gastos por categoría</div>
+          <div class="bars"><div class="bar-col"><div class="bar" style="height:78px"></div><span class="lbl"><b>Comida</b>$132k</span></div><div class="bar-col"><div class="bar" style="height:52px"></div><span class="lbl"><b>Transp.</b>$84k</span></div><div class="bar-col"><div class="bar" style="height:44px"></div><span class="lbl"><b>Entreten.</b>$72k</span></div><div class="bar-col"><div class="bar" style="height:30px"></div><span class="lbl"><b>Suscrip.</b>$58k</span></div></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- AJUSTES -->
+    <div class="screen" data-screen="ajustes">
+      <div class="settings">
+        <h2>Ajustes</h2><div class="greet">Personaliza tu app</div>
+        <div class="set-title">Categorías</div>
+        <div class="set-group"><div class="set-row"><span>Comida</span><span style="font-size:11px;color:var(--muted)"><b>4</b> sub · 8 gastos</span></div><div class="set-row"><span>Transporte</span><span style="font-size:11px;color:var(--muted)"><b>3</b> sub · 5 gastos</span></div><div class="set-row"><span>Entretenimiento</span><span style="font-size:11px;color:var(--muted)"><b>2</b> sub · 3 gastos</span></div></div>
+        <div class="set-title">Preferencias</div>
+        <div class="set-group"><div class="set-row"><span>Moneda</span><span class="chip good">COP</span></div><div class="set-row"><span>Perfil</span><span style="font-size:11px;color:var(--muted)">davidf@…</span></div></div>
+      </div>
+    </div>
+
+    <!-- NAV -->
+    <div class="nav" id="nav">
+      <button class="tab active" data-target="gastos">
+        <span class="icon-wrap"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 3h14v18l-2.3-1.5L14.4 21l-2.4-1.5L9.6 21l-2.3-1.5L5 21V3z"/><path d="M9 8h6M9 12h6"/></svg></span>
+        <span class="label">Gastos</span>
+      </button>
+      <button class="tab" data-target="dashboard">
+        <span class="icon-wrap"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M3 3v18h18"/><rect x="7" y="12" width="3" height="6" rx="0.6"/><rect x="12" y="8" width="3" height="10" rx="0.6"/><rect x="17" y="5" width="3" height="13" rx="0.6"/></svg></span>
+        <span class="label">Dashboard</span>
+      </button>
+      <button class="tab" data-target="ajustes">
+        <span class="icon-wrap"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.9l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.9-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1-1.6 1.7 1.7 0 0 0-1.9.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.9V9a1.7 1.7 0 0 0 1.5 1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.6-1 1.7 1.7 0 0 0-.3-1.9l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.9.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.9-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.9V9a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1z"/></svg></span>
+        <span class="label">Ajustes</span>
+      </button>
+    </div>
+  </div>
+
+  <!-- INFO -->
+  <div class="info">
+    <h3><span class="dot"></span> Por qué estas 3 (y no las anteriores)</h3>
+    <p>Proyecto es <b>prototipo académico UdeC</b> (no fintech comercial). Objetivo PGC <b>reducir esfuerzo de captura</b> y sostener hábito beyond 30 días. Las 4 variantes anteriores añadían fricción (drawer +1 tap) o peso visual (dock blur 32px, notch FAB) que contradicen <code>ALCANCE.md</code> y no existen en Flutter nativo. Estas 3 mantienen <b>mismo paradigma bottom nav 3 tabs</b>, solo pulen el activo.</p>
+    <div class="chiprow"><span class="chip">Flutter NavigationBar</span><span class="chip">UdeC verde #6B8E00</span><span class="chip">COP default</span><span class="chip good">Sin +taps</span></div>
+
+    <div class="variant-desc" id="desc-v0" style="display:none;">
+      <h4>V0 — Actual (baseline)</h4>
+      <p>Nav plano, `border-top:var(--line)`, activo solo color `var(--primary)`. Funciona pero activo poco visible, `var(--nav:#9CA3AF)` demasiado claro en `var(--bg:#F5F6F8)`, sin indicador táctil.</p>
+      <div class="meta"><span>altura 52px</span><span>sin indicador</span><span>contraste bajo</span></div>
+    </div>
+    <div class="variant-desc" id="desc-v1">
+      <h4>V1 — Material 3 NavigationBar ★ recomendada</h4>
+      <p>Pill `56×30` `var(--primary-soft)` detrás del icono activo + label `700` `var(--text)`. Espacio negativo correcto, elevación sutil `0 -4px 16px`. Es el componente que Flutter genera con `NavigationBar` sin código extra — menor riesgo sprint Scrum.</p>
+      <div class="meta"><span>pill 56×30</span><span>label 700</span><span>Flutter nativo</span><span>contraste AA</span></div>
+      <ul>
+        <li class="pros">✓ Activo inequívoco a 40cm (piloto estudiantes)</li>
+        <li class="pros">✓ Mantiene capture bar separado 0 fricción</li>
+        <li class="pros">✓ Light/dark ya resuelto `var(--primary-soft)`</li>
+      </ul>
+    </div>
+    <div class="variant-desc" id="desc-v2" style="display:none;">
+      <h4>V2 — Pill suave (tab completo)</h4>
+      <p>Todo el tab activo es pill `var(--primary-soft)` circular. Más color, activo ocupa todo el ancho. Útil si el piloto usa el app bajo sol y necesita alto contraste.</p>
+      <div class="meta"><span>pill full-width</span><span>bg var(--soft)</span><span>alto contraste</span></div>
+    </div>
+    <div class="variant-desc" id="desc-v3" style="display:none;">
+      <h4>V3 — Minimal académico</h4>
+      <p>Solo `border-top 2.5px` + punto `4px` + label `700` verde. Máximo aire, tono más formal UdeC, ideal para defensa PGC/sustentación. Menos “app comercial”, más “prototipo serio”.</p>
+      <div class="meta"><span>línea 2.5px</span><span>punto 4px</span><span>muy limpio</span></div>
+    </div>
+
+    <div style="background:var(--primary-soft); border-radius:12px; padding:10px 12px;">
+      <div style="font-size:11px; font-weight:800; color:var(--primary);">Captura-first intacta</div>
+      <div style="font-size:11px; color:var(--text); line-height:1.5; margin-top:4px;">Shutter 54px `var(--primary)` hero + `🎤` + `✎` + `textfield` siguen arriba del nav con gap 8px y `border-top:var(--line)`. No se integran en el nav — la foto sigue siendo acción #1 sin competir con tabs. Respeta `MOCKUPS.md` prioridad `📷 > 🎤 > ✍️ > texto`.</div>
+    </div>
+
+    <div class="chiprow" style="margin-top:6px;">
+      <button class="seg" style="flex:1; justify-content:center; background:var(--primary); color:#fff; border-radius:10px; padding:10px; border:none; font-weight:700; cursor:pointer;" onclick="applyToIndex()">Aplicar V<span id="applyLabel">1</span> a index.html →</button>
+    </div>
+    <p style="font-size:10px; color:var(--muted); text-align:center;">Abre `docs/mockups/index.html` para ver el original. Esta página es solo comparador.</p>
+  </div>
+</div>
+
+<div class="comparison">
+  <h3>Comparativa honesta</h3>
+  <table class="comp">
+    <thead><tr><th>Variante</th><th>Indicador activo</th><th>Contraste</th><th>Fricción</th><th>Flutter</th></tr></thead>
+    <tbody>
+      <tr><td>V0 Actual</td><td>solo color</td><td>bajo (#9CA3AF)</td><td>0</td><td>trivial</td></tr>
+      <tr style="background:var(--primary-soft);"><td><b>V1 Material 3 ★</b></td><td>pill 56×30 + label 700</td><td>AA</td><td>0</td><td>NavigationBar nativo</td></tr>
+      <tr><td>V2 Pill</td><td>pill full tab</td><td>alto</td><td>0</td><td>nativo</td></tr>
+      <tr><td>V3 Minimal</td><td>línea 2.5px + punto</td><td>medio</td><td>0</td><td>nativo</td></tr>
+    </tbody>
+  </table>
+</div>
+
+<script>
+  const root=document.documentElement;
+  const phone=document.getElementById('phone');
+  const seg=document.getElementById('variantSeg');
+  const descs={v0:document.getElementById('desc-v0'),v1:document.getElementById('desc-v1'),v2:document.getElementById('desc-v2'),v3:document.getElementById('desc-v3')};
+  function applyTheme(dark){
+    root.setAttribute('data-theme', dark?'dark':'light');
+    const b=document.getElementById('themeBtn'); if(b) b.textContent=dark?'☀️':'◐';
+    try{localStorage.setItem('finance-mock-theme', dark?'dark':'light')}catch(e){}
+  }
+  try{applyTheme(localStorage.getItem('finance-mock-theme')==='dark')}catch(e){applyTheme(false)}
+  document.getElementById('themeBtn').addEventListener('click',()=>applyTheme(root.getAttribute('data-theme')!=='dark'));
+  document.getElementById('btnThemePhone').addEventListener('click',()=>applyTheme(root.getAttribute('data-theme')!=='dark'));
+
+  function setVariant(v){
+    phone.setAttribute('data-variant', v);
+    seg.querySelectorAll('button').forEach(b=>b.classList.toggle('on', b.dataset.v===v));
+    Object.keys(descs).forEach(k=> descs[k].style.display = k===v ? 'block' : 'none');
+    document.getElementById('applyLabel').textContent = v.replace('v','');
+    try{localStorage.setItem('menu-variant', v)}catch(e){}
+  }
+  seg.querySelectorAll('button').forEach(b=>b.addEventListener('click',()=>setVariant(b.dataset.v)));
+  try{const saved=localStorage.getItem('menu-variant'); if(saved && descs[saved]) setVariant(saved)}catch(e){}
+
+  // tab switching inside phone
+  const headerTitle=document.getElementById('headerTitle');
+  const titles={gastos:'Gastos',dashboard:'Dashboard',ajustes:'Ajustes'};
+  document.querySelectorAll('#nav .tab').forEach(tab=>{
+    tab.addEventListener('click',()=>{
+      const t=tab.dataset.target;
+      document.querySelectorAll('#nav .tab').forEach(x=>x.classList.remove('active'));
+      tab.classList.add('active');
+      phone.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
+      const scr=phone.querySelector('.screen[data-screen="'+t+'"]');
+      if(scr) scr.classList.add('active');
+      if(headerTitle && titles[t]) headerTitle.textContent=titles[t];
+    });
+  });
+
+  // capture demo
+  const emptyHint=document.getElementById('emptyHint');
+  const userMsg=document.getElementById('userMsg');
+  const aiCard=document.getElementById('aiCard');
+  const savedNote=document.getElementById('savedNote');
+  function showCapture(){
+    emptyHint.style.display='none';
+    userMsg.style.display='block';
+    aiCard.style.display='block';
+    savedNote.style.display='none';
+    userMsg.scrollIntoView({behavior:'smooth', block:'nearest'});
+  }
+  document.getElementById('btnShutter').addEventListener('click', showCapture);
+  document.getElementById('btnMic').addEventListener('click', showCapture);
+  document.getElementById('captureField').addEventListener('keydown', e=>{ if(e.key==='Enter' && e.target.value.trim()) showCapture(); });
+  document.getElementById('btnDiscard').addEventListener('click', ()=>{
+    userMsg.style.display='none'; aiCard.style.display='none'; emptyHint.style.display='block'; savedNote.style.display='none';
+  });
+  document.getElementById('btnConfirm').addEventListener('click', ()=>{
+    userMsg.style.display='none'; aiCard.style.display='none'; savedNote.style.display='block';
+  });
+  document.getElementById('btnSearch').addEventListener('click', ()=>{
+    // toggle to dashboard as demo of navigation depth
+    document.querySelector('#nav .tab[data-target="dashboard"]').click();
+  });
+  document.getElementById('btnManual').addEventListener('click', ()=>{
+    alert('Aquí abriría el form manual HU-003 (mismo form create/edit) — ver docs/mockups/index.html #screen-gasto-nuevo');
+  });
+
+  function applyToIndex(){
+    const v=phone.getAttribute('data-variant');
+    alert('Para aplicar '+v+' a index.html: copia los bloques CSS .phone[data-variant="'+v+'"] de este archivo a docs/mockups/index.html:249-259 y añade .icon-wrap en 731-745. ¿Lo aplico yo ahora? (dime sí y lo hago)');
+  }
+</script>
+</body>
+</html>

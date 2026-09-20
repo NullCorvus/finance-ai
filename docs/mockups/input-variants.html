@@ -1,0 +1,506 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Finance AI — Input menú (no-chat) 3 variantes</title>
+<style>
+  :root{
+    --bg:#F5F6F8; --card:#FFFFFF; --primary:#6B8E00; --primary-soft:#E9F2D8; --primary-dark:#546E00;
+    --income:#0E9F6E; --income-soft:#E1F5EC; --text:#1F2933; --muted:#6B7280; --line:#E5E7EB;
+    --confirm:#16A34A; --discard:#DC2626; --nav:#9CA3AF; --soft:#F3F4F6; --soft-2:#FAFAFB; --rowline:#F3F4F6;
+    --thumb:#D9DFE8; --media-bg:rgba(255,255,255,.6); --ph:#9AA0A6; --warn-bg:#FDF3D8; --warn-fg:#9A7B00;
+  }
+  :root[data-theme="dark"]{
+    --bg:#101318; --card:#1A2027; --primary:#8FB42C; --primary-soft:#26301A; --primary-dark:#B7D45C;
+    --income:#2DB886; --income-soft:#143129; --text:#E8EBF0; --muted:#9AA5B5; --line:#262E38;
+    --confirm:#1FA254; --discard:#E5534D; --nav:#5A6472; --soft:#20262E; --soft-2:#232A33; --rowline:#1F262E;
+    --thumb:#2A323D; --media-bg:rgba(255,255,255,.05); --ph:#6B7686; --warn-bg:#3A3113; --warn-fg:#E5C76B;
+  }
+  :root[data-theme="dark"] body{background:#0B0E12;}
+  *{box-sizing:border-box;margin:0;padding:0;}
+  body{background:#E8EAED;font-family:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;display:flex;flex-direction:column;align-items:center;min-height:100vh;padding:24px;gap:18px;}
+  .page-head{width:100%;max-width:920px;background:var(--card);border:1px solid var(--line);border-radius:16px;padding:16px 18px;display:flex;flex-direction:column;gap:12px;}
+  .page-head .toprow{display:flex;flex-wrap:wrap;align-items:flex-start;justify-content:space-between;gap:12px;}
+  .page-head h1{font-size:15px;font-weight:800;color:var(--text);line-height:1.25;}
+  .page-head h1 small{display:block;font-size:11.5px;font-weight:400;color:var(--muted);margin-top:5px;line-height:1.5;}
+  .badge{font-size:10px;font-weight:700;background:var(--primary);color:#fff;padding:3px 8px;border-radius:999px;vertical-align:middle;margin-left:6px;}
+  .controls{display:flex;gap:8px;flex-wrap:wrap;align-items:center;}
+  .seg{display:flex;background:var(--soft);border-radius:10px;padding:3px;gap:2px;}
+  .seg button{border:none;background:none;padding:7px 12px;font-size:12px;font-weight:600;color:var(--muted);cursor:pointer;border-radius:8px;}
+  .seg button.on{background:var(--card);color:var(--text);box-shadow:0 1px 3px rgba(0,0,0,.08);}
+  .seg button.rec.on{background:var(--primary);color:#fff;}
+  .iconbtn{width:32px;height:32px;border-radius:50%;border:none;background:var(--soft);color:var(--muted);display:flex;align-items:center;justify-content:center;cursor:pointer;}
+  .layout{width:100%;max-width:920px;display:grid;grid-template-columns:390px 1fr;gap:20px;align-items:start;}
+  @media(max-width:820px){.layout{grid-template-columns:1fr;justify-items:center;}.page-head{max-width:390px;}}
+  .info{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:16px;display:flex;flex-direction:column;gap:12px;}
+  .info h3{font-size:13px;font-weight:800;color:var(--text);display:flex;align-items:center;gap:8px;}
+  .info h3 .dot{width:8px;height:8px;border-radius:50%;background:var(--primary);}
+  .info p{font-size:12px;color:var(--muted);line-height:1.5;}
+  .info ul{font-size:11.5px;color:var(--muted);margin-left:16px;line-height:1.6;}
+  .chiprow{display:flex;gap:6px;flex-wrap:wrap;}
+  .chip{font-size:10px;font-weight:700;padding:4px 8px;border-radius:999px;background:var(--soft);color:var(--muted);}
+  .chip.good{background:var(--income-soft);color:var(--income);}
+  .variant-desc{background:var(--bg);border:1px solid var(--line);border-radius:12px;padding:12px;}
+  .variant-desc h4{font-size:12px;font-weight:800;color:var(--text);margin-bottom:6px;}
+  .variant-desc p{font-size:11.5px;color:var(--muted);line-height:1.5;}
+  .variant-desc .meta{font-size:10px;color:var(--muted);margin-top:8px;display:flex;gap:6px;flex-wrap:wrap;}
+  .variant-desc .meta span{background:var(--card);border:1px solid var(--line);padding:3px 7px;border-radius:999px;}
+  .comparison{width:100%;max-width:920px;background:var(--card);border:1px solid var(--line);border-radius:16px;padding:14px 16px;}
+  .comparison h3{font-size:12px;font-weight:800;color:var(--text);margin-bottom:10px;}
+  .comp{width:100%;border-collapse:collapse;font-size:11.5px;}
+  .comp th{text-align:left;font-size:10px;text-transform:uppercase;letter-spacing:.4px;color:var(--muted);padding:7px 6px;border-bottom:1px solid var(--line);}
+  .comp td{padding:8px 6px;border-bottom:1px solid var(--rowline);color:var(--text);vertical-align:top;}
+  .comp td:first-child{font-weight:700;white-space:nowrap;}
+
+  /* phone */
+  .phone{width:390px;height:812px;background:var(--bg);border-radius:38px;overflow:hidden;position:relative;box-shadow:0 24px 60px rgba(15,23,42,.28),0 2px 8px rgba(15,23,42,.1);display:flex;flex-direction:column;flex-shrink:0;}
+  .statusbar{height:44px;flex:0 0 44px;display:flex;align-items:center;justify-content:space-between;padding:0 22px;color:var(--text);font-size:13px;font-weight:600;background:var(--bg);}
+  .screen{display:none;flex:1;flex-direction:column;min-height:0;overflow:hidden;position:relative;}
+  .screen.active{display:flex;}
+  .chat-header{flex:0 0 auto;display:flex;align-items:center;justify-content:space-between;padding:10px 16px;background:var(--bg);}
+  .chat-header .title{font-size:17px;font-weight:700;color:var(--text);}
+  .chat-header .sub{font-size:11px;color:var(--muted);}
+  .chat-header .actions{display:flex;gap:8px;align-items:center;}
+  .theme-toggle{width:32px;height:32px;border-radius:50%;border:none;cursor:pointer;background:var(--soft);color:var(--muted);display:flex;align-items:center;justify-content:center;}
+  .chat-body{flex:1;overflow-y:auto;padding:12px 16px;display:flex;flex-direction:column;gap:12px;}
+  .card{align-self:flex-start;width:96%;background:var(--card);border:1px solid var(--line);border-radius:16px;padding:14px 14px 12px;box-shadow:0 1px 3px rgba(15,23,42,.05);}
+  .card .head{display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;}
+  .card .head .ai{font-size:11px;font-weight:700;color:var(--primary);letter-spacing:.4px;}
+  .card .head .tag{font-size:10px;color:var(--muted);background:var(--soft);padding:3px 8px;border-radius:10px;}
+  .field{display:flex;justify-content:space-between;align-items:center;padding:6px 0;border-bottom:1px dashed var(--line);font-size:13.5px;}
+  .field .label{color:var(--muted);font-size:12px;} .field .val{font-weight:600;color:var(--text);}
+  .items{margin-top:8px;border:1px solid var(--line);border-radius:10px;overflow:hidden;}
+  .items .it-head{display:grid;grid-template-columns:1fr 42px 52px;gap:6px;padding:6px 10px;background:var(--soft-2);font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:.3px;}
+  .items .it{display:grid;grid-template-columns:1fr 42px 52px;gap:6px;align-items:center;padding:8px 10px;border-top:1px solid var(--rowline);font-size:13px;color:var(--text);}
+  .items .it.total{border-top:1.5px solid var(--line);font-weight:700;background:var(--soft-2);}
+  .card-actions{display:flex;gap:8px;margin-top:12px;}
+  .btn{flex:1;padding:10px;border-radius:10px;border:none;font-weight:600;font-size:13px;cursor:pointer;}
+  .btn-confirm{background:var(--confirm);color:#fff;}
+  .btn-edit{background:var(--card);color:var(--primary);border:1.5px solid var(--primary);}
+  .btn-discard{background:var(--card);color:var(--discard);border:1.5px solid var(--discard);}
+  .empty-hint{margin:auto 0;text-align:center;font-size:13px;color:var(--muted);padding:22px 16px;line-height:1.6;}
+  .nav{flex:0 0 auto;display:flex;background:var(--card);border-top:1px solid var(--line);padding-bottom:8px;}
+  .nav .tab{flex:1;padding:9px 0 7px;text-align:center;color:var(--nav);font-size:11px;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:3px;background:none;border:none;position:relative;}
+  .nav .tab .icon-wrap{width:56px;height:28px;display:flex;align-items:center;justify-content:center;border-radius:16px;transition:background .18s;}
+  .nav .tab.active{color:var(--primary);font-weight:600;}
+  /* keep nav stable - use Material3 pill for all variants base */
+  .phone[data-input] .nav .tab.active .icon-wrap{background:var(--primary-soft);}
+  .phone[data-input] .nav .tab.active{color:var(--text);font-weight:700;}
+  .phone[data-input] .nav .tab.active .label{color:var(--text);}
+
+  /* INPUT BASE - hide original by default, we replace per variant */
+  .inputarea{flex:0 0 auto;background:var(--card);border-top:1px solid var(--line);position:relative;overflow:visible;}
+  /* Variant A - Hero radial FLUID */
+  @keyframes radialIn{0%{opacity:0;transform:translateY(8px) scale(.88)}100%{opacity:1;transform:translateY(0) scale(1)}}
+  @keyframes pulseVoice{0%,100%{transform:scale(1);box-shadow:0 0 0 0 rgba(13,159,110,0)}50%{transform:scale(1.03);box-shadow:0 0 0 7px rgba(13,159,110,.10)}}
+  @keyframes shimmer{0%{opacity:.6}50%{opacity:1}100%{opacity:.6}}
+  .phone[data-input="a"] .inputarea{
+    padding:16px 12px 16px; display:flex; flex-direction:column; gap:10px; align-items:center;
+    background:var(--card); border-top:1px solid var(--line); position:relative; overflow:visible;
+  }
+  .hero-row{display:flex; align-items:center; justify-content:center; gap:14px; width:100%;}
+  .phone[data-input="a"] .hero-row{gap:18px; padding:4px 0 2px;}
+  .shutter{width:64px;height:64px;border-radius:50%;flex:0 0 64px;background:var(--primary);border:3px solid var(--primary-dark);display:flex;align-items:center;justify-content:center;color:#fff;cursor:pointer;box-shadow:0 4px 12px rgba(107,142,0,.35);position:relative;overflow:visible;will-change:transform;}
+  .shutter:active{transform:scale(.96);}
+  .shutter.hero{width:72px;height:72px;flex:0 0 72px;box-shadow:0 6px 18px rgba(107,142,0,.4);animation:radialIn 360ms cubic-bezier(.32,.72,0,1) 0ms both;}
+  .shutter.hero::after{content:"";position:absolute;inset:-6px;border-radius:50%;border:2px solid var(--primary);opacity:0;pointer-events:none;}
+  .shutter.hero.pulse::after{animation:shimmer 900ms ease infinite;}
+  .mini-bubble{width:48px;height:48px;border-radius:50%;flex:0 0 48px;background:var(--card);border:1.5px solid var(--line);display:flex;flex-direction:column;align-items:center;justify-content:center;color:var(--text);cursor:pointer;font-size:13px;font-weight:700;gap:1px;will-change:transform;transition:transform .18s cubic-bezier(.32,.72,0,1), border-color .18s, box-shadow .18s, background .18s;box-shadow:0 1px 3px rgba(15,23,42,.06);}
+  .mini-bubble small{font-size:8px;font-weight:700;letter-spacing:.3px;color:var(--muted);line-height:1;}
+  .mini-bubble:hover{transform:translateY(-1px);border-color:var(--primary);box-shadow:0 4px 10px rgba(15,23,42,.08);}
+  .mini-bubble:active{transform:scale(.92);}
+  .mini-bubble.primary{background:var(--card);border-color:var(--primary);color:var(--primary);box-shadow:0 2px 8px rgba(107,142,0,.12);}
+  .mini-bubble.primary small{color:var(--primary);}
+  .mini-bubble.voice-rec{animation:pulseVoice 1.6s ease infinite; border-color:var(--income); color:var(--income);}
+  /* stagger entrance */
+  .phone[data-input="a"].enter #aShutter{animation:radialIn 360ms cubic-bezier(.32,.72,0,1) 0ms both;}
+  .phone[data-input="a"].enter #aVoice{animation:radialIn 340ms cubic-bezier(.32,.72,0,1) 80ms both;}
+  .phone[data-input="a"].enter #aText{animation:radialIn 340ms cubic-bezier(.32,.72,0,1) 120ms both;}
+  .phone[data-input="a"].enter #aManual{animation:radialIn 340ms cubic-bezier(.32,.72,0,1) 160ms both;}
+  .phone[data-input="a"].enter .hint-row{animation:radialIn 300ms ease 260ms both;}
+  .hint-row{font-size:10px;color:var(--muted);display:flex;gap:10px;justify-content:center;width:100%;flex-wrap:wrap;}
+  .hint-row span{display:flex;align-items:center;gap:4px;background:var(--soft);padding:3px 8px;border-radius:999px;border:1px solid var(--line);font-weight:600;font-size:10px;}
+  /* sheet A as bottom sheet */
+  .sheet-backdrop-a{position:absolute;inset:0;background:rgba(15,23,42,.22);backdrop-filter:blur(2px);z-index:9;display:none;opacity:0;transition:opacity .22s;}
+  .sheet-backdrop-a.show{display:block;opacity:1;}
+  .sheet-text{
+    position:absolute; left:0; right:0; bottom:0; background:var(--card); border-radius:20px 20px 0 0;
+    box-shadow:0 -8px 28px rgba(15,23,42,.14); border-top:1px solid var(--line);
+    padding:18px 12px 14px; display:flex; gap:8px; align-items:center;
+    transform:translateY(100%); opacity:0; pointer-events:none;
+    transition:transform .34s cubic-bezier(.32,.72,0,1), opacity .22s; z-index:10;
+  }
+  .sheet-text.show{transform:translateY(0);opacity:1;pointer-events:auto;}
+  .sheet-text .handle{position:absolute;top:8px;left:50%;transform:translateX(-50%);width:36px;height:4px;border-radius:999px;background:var(--line);}
+  .sheet-text .textfield{flex:1;background:var(--soft);border:1px solid var(--line);border-radius:12px;padding:12px 12px;font-size:13px;color:var(--text);outline:none;transition:border-color .15s, box-shadow .15s;}
+  .sheet-text .textfield:focus{border-color:var(--primary);box-shadow:0 0 0 3px var(--primary-soft);}
+  .sheet-text .send{flex:0 0 auto;background:var(--primary);color:#fff;border:none;border-radius:10px;padding:11px 14px;font-weight:700;font-size:12px;cursor:pointer;display:flex;align-items:center;gap:6px;transition:transform .12s, opacity .15s;}
+  .sheet-text .send:active{transform:scale(.97);}
+  .sheet-text .send:disabled{opacity:.6;cursor:wait;}
+  .sheet-text .close{flex:0 0 32px;width:32px;height:32px;border-radius:50%;border:1px solid var(--line);background:var(--soft);color:var(--muted);cursor:pointer;display:flex;align-items:center;justify-content:center;}
+
+  /* Variant B - FAB Extended + Bottom Sheet */
+  .phone[data-input="b"] .inputarea{display:none;} /* no persistent bar */
+  .phone[data-input="b"] .fab-extended{
+    position:absolute; right:16px; bottom:78px; /* above nav 58 + 20 gap */
+    background:var(--primary); color:#fff; border:none; border-radius:16px; padding:14px 18px;
+    display:flex; align-items:center; gap:8px; font-size:13px; font-weight:700;
+    box-shadow:0 6px 18px rgba(107,142,0,.35), 0 2px 8px rgba(15,23,42,.15); cursor:pointer; z-index:5;
+  }
+  .phone[data-input="b"] .fab-extended:active{transform:scale(.97);}
+  .phone[data-input="b"] .sheet-b{
+    position:absolute; left:0; right:0; bottom:0; background:var(--card); border-radius:20px 20px 0 0;
+    box-shadow:0 -8px 28px rgba(15,23,42,.18); z-index:10; transform:translateY(100%); transition:transform .32s cubic-bezier(.32,.72,0,1);
+    display:flex; flex-direction:column; max-height:66%; overflow:hidden; border-top:1px solid var(--line);
+  }
+  .phone[data-input="b"] .sheet-b.show{transform:translateY(0);}
+  .sheet-b .handle{width:36px;height:4px;border-radius:999px;background:var(--line);margin:10px auto 8px;}
+  .sheet-b .sheet-head{padding:0 16px 12px;display:flex;justify-content:space-between;align-items:center;}
+  .sheet-b .sheet-head h4{font-size:13px;font-weight:800;color:var(--text);}
+  .sheet-b .sheet-head .close{width:30px;height:30px;border-radius:50%;border:1px solid var(--line);background:var(--soft);color:var(--muted);display:flex;align-items:center;justify-content:center;cursor:pointer;}
+  .sheet-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;padding:0 12px 16px;overflow-y:auto;}
+  .sheet-card{background:var(--bg);border:1px solid var(--line);border-radius:14px;padding:14px;display:flex;flex-direction:column;gap:8px;cursor:pointer;text-align:left;}
+  .sheet-card:active{transform:scale(.98);border-color:var(--primary);}
+  .sheet-card .ic{width:40px;height:40px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:18px;}
+  .sheet-card .ic.photo{background:var(--primary-soft);color:var(--primary);}
+  .sheet-card .ic.voice{background:#E1F5EC;color:var(--income);}
+  .sheet-card .ic.text{background:#E8EAF6;color:#3F51B5;}
+  .sheet-card .ic.manual{background:#FFF3E0;color:#EF6C00;}
+  .sheet-card .ttl{font-size:13px;font-weight:700;color:var(--text);}
+  .sheet-card .sub{font-size:11px;color:var(--muted);line-height:1.4;}
+  .sheet-card .cta{font-size:10px;font-weight:700;color:var(--primary);margin-top:2px;}
+  .sheet-backdrop{position:absolute;inset:0;background:rgba(15,23,42,.28);z-index:9;display:none;}
+  .sheet-backdrop.show{display:block;}
+  /* inline text sheet inside B (when picking Texto) */
+  .sheet-b .inline-text{display:none;padding:0 12px 12px;gap:8px;}
+  .sheet-b .inline-text.show{display:flex;}
+  .sheet-b .inline-text .textfield{flex:1;background:var(--soft);border:1px solid var(--line);border-radius:12px;padding:11px 12px;font-size:13px;color:var(--text);outline:none;}
+
+  /* Variant C - 4 tiles dock */
+  .phone[data-input="c"] .inputarea{padding:10px 10px 12px;display:flex;flex-direction:column;gap:10px;}
+  .dock-grid{display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:8px;width:100%;}
+  .tile{background:var(--bg);border:1px solid var(--line);border-radius:14px;padding:12px 6px;display:flex;flex-direction:column;align-items:center;gap:6px;cursor:pointer;text-align:center;transition:border-color .15s, transform .1s;}
+  .tile:active{transform:scale(.97);border-color:var(--primary);}
+  .tile .ti{width:38px;height:38px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:18px;}
+  .tile .ti.photo{background:var(--primary-soft);color:var(--primary);}
+  .tile .ti.voice{background:var(--income-soft);color:var(--income);}
+  .tile .ti.text{background:#E8EAF6;color:#3F51B5;}
+  .tile .ti.manual{background:#FFF3E0;color:#EF6C00;}
+  .tile .lbl{font-size:11px;font-weight:700;color:var(--text);}
+  .tile .sub{font-size:9px;color:var(--muted);}
+  .phone[data-input="c"] .sheet-c-text{display:none;gap:8px;align-items:center;}
+  .phone[data-input="c"] .sheet-c-text.show{display:flex;}
+  .phone[data-input="c"] .sheet-c-text .textfield{flex:1;background:var(--soft);border:1px solid var(--line);border-radius:12px;padding:11px 12px;font-size:13px;color:var(--text);outline:none;}
+  .phone[data-input="c"] .sheet-c-text .send{flex:0 0 auto;background:var(--primary);color:#fff;border:none;border-radius:10px;padding:10px 14px;font-weight:700;font-size:12px;cursor:pointer;}
+</style>
+</head>
+<body>
+
+<div class="page-head">
+  <div class="toprow">
+    <h1>Input menú — no-chat, captura creativa <span class="badge">Gastos hub</span>
+      <small>Bottom nav <b>Gastos/Dashboard/Ajustes</b> intacto · solo cambia <b>cómo se registra</b> el gasto. 3 formas sin `textfield` chat persistente · prioridad <b>📷 > 🎤 > ✍️ > texto</b> respetada · 1 parse IA → card Confirmar/Editar/Descartar.</small>
+    </h1>
+    <button class="iconbtn" id="themeBtn" title="Tema">◐</button>
+  </div>
+  <div class="controls">
+    <span style="font-size:11px;color:var(--muted);font-weight:600;">Input:</span>
+    <div class="seg" id="inputSeg">
+      <button data-v="a" class="on">A Hero radial</button>
+      <button data-v="b" class="rec">B FAB Sheet ★</button>
+      <button data-v="c">C 4 Tiles</button>
+    </div>
+    <span style="font-size:10px;color:var(--muted);">★ recomendada · no-chat</span>
+  </div>
+</div>
+
+<div class="layout">
+  <div class="phone" id="phone" data-input="a">
+    <div class="statusbar"><span>9:41</span><span style="display:flex;gap:6px;align-items:center;"><svg width="15" height="11" viewBox="0 0 15 11" fill="none"><rect x="0" y="7" width="2.6" height="4" rx="0.6" fill="currentColor"/><rect x="4" y="5" width="2.6" height="6" rx="0.6" fill="currentColor"/><rect x="8" y="3" width="2.6" height="8" rx="0.6" fill="currentColor"/><rect x="12" y="0" width="2.6" height="11" rx="0.6" fill="currentColor"/></svg> ●</span></div>
+    <div class="chat-header">
+      <div><div class="title" id="hTitle">Gastos</div><div class="sub">registra gastos e ingresos — la IA te ayuda</div></div>
+      <div class="actions"><button class="theme-toggle" id="btnSearch" title="Buscar">🔍</button><button class="theme-toggle" id="btnThemePhone">◐</button></div>
+    </div>
+
+    <!-- GASTOS -->
+    <div class="screen active" data-screen="gastos">
+      <div class="chat-body" id="chatBody">
+        <div class="empty-hint" id="emptyHint">Tu hub limpio — elige cómo capturar arriba</div>
+        <div class="msg user" style="display:none;" id="userMsg"><div style="display:flex;align-items:center;gap:10px;background:var(--media-bg);border-radius:10px;padding:8px 10px;"><div style="width:44px;height:44px;border-radius:8px;background:var(--thumb);display:flex;align-items:center;justify-content:center;color:var(--muted);">🧾</div><div><div style="font-size:12px;font-weight:600;color:var(--text);">Recibo_D1.jpg</div><div style="font-size:11px;color:var(--muted);">foto · hoy 12:03</div></div></div></div>
+        <div class="card" style="display:none;" id="aiCard">
+          <div class="head"><span class="ai">IA · ¿esto es correcto?</span><span class="tag">gasto · listo para guardar</span></div>
+          <div class="field"><span class="label">Monto total</span><span class="val">$ 12.500</span></div>
+          <div class="field"><span class="label">Categoría</span><span class="val">Comida · Almuerzo</span></div>
+          <div class="field"><span class="label">Pago</span><span class="val">Efectivo · COP</span></div>
+          <div class="items"><div class="it-head"><span>Producto</span><span>Cant</span><span>Precio</span></div><div class="it"><span>Arroz con pollo</span><span style="text-align:right;color:var(--muted)">1</span><span style="text-align:right;font-weight:600">$ 8.000</span></div><div class="it total"><span>Total</span><span></span><span style="text-align:right">$ 12.500</span></div></div>
+          <div class="card-actions"><button class="btn btn-confirm" id="btnConfirm">Confirmar</button><button class="btn btn-edit">Editar</button><button class="btn btn-discard" id="btnDiscard">Descartar</button></div>
+        </div>
+        <div style="display:none;align-self:center;background:var(--income-soft);color:var(--income);font-size:13px;font-weight:700;padding:10px 16px;border-radius:12px;" id="savedNote">✅ Gasto guardado · $ 12.500</div>
+      </div>
+
+      <!-- INPUT AREA - switches per variant -->
+      <!-- A FLUID -->
+      <div class="inputarea" id="inputA" style="display:none;">
+        <div class="hero-row">
+          <button class="mini-bubble" id="aVoice" title="Nota de voz">🎤<small>VOZ</small></button>
+          <button class="shutter hero" id="aShutter" title="Foto recibo"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg></button>
+          <button class="mini-bubble" id="aText" title="Escribir">T<small>TEXTO</small></button>
+          <button class="mini-bubble primary" id="aManual" title="Manual">✎<small>MANUAL</small></button>
+        </div>
+        <div class="hint-row"><span>📷 Foto hero</span><span>🎤 Voz</span><span>T Texto</span><span>✎ Manual</span></div>
+      </div>
+      <div class="sheet-backdrop-a" id="backdropA"></div>
+      <div class="sheet-text" id="aSheet"><div class="handle"></div><input class="textfield" id="aField" type="text" placeholder="Describe: gasté 15 mil en almuerzo en Subway…"><button class="send" id="aSend">Enviar →</button><button class="close" id="aClose">✕</button></div>
+      <!-- B - FAB + sheet (FAB outside inputarea but inside screen) -->
+      <button class="fab-extended" id="fabBtn" style="display:none;"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg> Nuevo gasto</button>
+      <div class="sheet-backdrop" id="backdropB"></div>
+      <div class="sheet-b" id="sheetB">
+        <div class="handle"></div>
+        <div class="sheet-head"><h4>¿Cómo quieres registrar?</h4><button class="close" id="closeB">✕</button></div>
+        <div class="sheet-grid" id="sheetGridB">
+          <button class="sheet-card" data-action="photo"><div class="ic photo">📷</div><div class="ttl">Foto recibo</div><div class="sub">IA extrae tienda, items, total, fecha y pago</div><div class="cta">Tomar foto →</div></button>
+          <button class="sheet-card" data-action="voice"><div class="ic voice">🎤</div><div class="ttl">Nota de voz</div><div class="sub">Di “gasté 15 mil en almuerzo” — IA transcribe</div><div class="cta">Grabar →</div></button>
+          <button class="sheet-card" data-action="text"><div class="ic text">T</div><div class="ttl">Texto</div><div class="sub">Escribe tu gasto en lenguaje natural</div><div class="cta">Escribir →</div></button>
+          <button class="sheet-card" data-action="manual"><div class="ic manual">✎</div><div class="ttl">Manual</div><div class="sub">Form con tienda, items, pago y moneda</div><div class="cta">Abrir form →</div></button>
+        </div>
+        <div class="inline-text" id="bInline"><input class="textfield" type="text" placeholder="Ej: gasté 12.500 en almuerzo en D1…"><button class="send" id="bSend" style="background:var(--primary);color:#fff;border:none;border-radius:10px;padding:10px 14px;font-weight:700;cursor:pointer;">Enviar →</button><button class="close" id="bInlineClose" style="width:32px;height:32px;border-radius:50%;border:1px solid var(--line);background:var(--card);cursor:pointer;">✕</button></div>
+      </div>
+      <!-- C -->
+      <div class="inputarea" id="inputC" style="display:none;">
+        <div class="dock-grid">
+          <button class="tile" data-action="photo"><div class="ti photo">📷</div><div class="lbl">Foto</div><div class="sub">recibo</div></button>
+          <button class="tile" data-action="voice"><div class="ti voice">🎤</div><div class="lbl">Voz</div><div class="sub">nota</div></button>
+          <button class="tile" data-action="text"><div class="ti text">T</div><div class="lbl">Texto</div><div class="sub">escribir</div></button>
+          <button class="tile" data-action="manual"><div class="ti manual">✎</div><div class="lbl">Manual</div><div class="sub">form</div></button>
+        </div>
+        <div class="sheet-c-text" id="cSheet"><input class="textfield" type="text" placeholder="Ej: gasté 8 mil en transporte…"><button class="send" id="cSend">Enviar →</button><button class="close" id="cClose" style="width:32px;height:32px;border-radius:50%;border:1px solid var(--line);background:var(--card);cursor:pointer;">✕</button></div>
+      </div>
+    </div>
+
+    <!-- DASHBOARD & AJUSTES keep same nav -->
+    <div class="screen" data-screen="dashboard">
+      <div style="padding:8px 16px 16px;overflow-y:auto;flex:1;">
+        <h2 style="font-size:20px;font-weight:700;color:var(--text);margin:8px 2px 2px;">Dashboard</h2><div style="font-size:12px;color:var(--muted);margin-bottom:12px;">Agosto 2026 · por categoría (PGC E4)</div>
+        <div class="panel"><div class="ptitle">Balance</div><div class="stats"><div class="stat"><div class="lbl">Gastos</div><div class="val neg">$ 345k</div></div><div class="stat"><div class="lbl">Balance</div><div class="val pos">+$1.15M</div></div></div></div>
+        <div class="panel"><div class="ptitle">Gastos por categoría</div><div class="bars"><div class="bar-col"><div class="bar" style="height:78px"></div><span class="lbl"><b>Comida</b>$132k</span></div><div class="bar-col"><div class="bar" style="height:52px"></div><span class="lbl"><b>Transp.</b>$84k</span></div><div class="bar-col"><div class="bar" style="height:44px"></div><span class="lbl"><b>Entreten.</b>$72k</span></div><div class="bar-col"><div class="bar" style="height:30px"></div><span class="lbl"><b>Suscrip.</b>$58k</span></div></div></div>
+      </div>
+    </div>
+    <div class="screen" data-screen="ajustes">
+      <div class="settings"><h2>Ajustes</h2><div style="font-size:12px;color:var(--muted);margin-bottom:14px;">Personaliza tu app</div>
+        <div class="set-group"><div class="set-row"><span>Comida</span><span style="font-size:11px;color:var(--muted)"><b>4</b> sub · 8 gastos</span></div><div class="set-row"><span>Transporte</span><span style="font-size:11px;color:var(--muted)"><b>3</b> sub · 5 gastos</span></div></div>
+      </div>
+    </div>
+
+    <div class="nav" id="nav">
+      <button class="tab active" data-target="gastos"><span class="icon-wrap"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M5 3h14v18l-2.3-1.5L14.4 21l-2.4-1.5L9.6 21l-2.3-1.5L5 21V3z"/><path d="M9 8h6M9 12h6"/></svg></span><span class="label">Gastos</span></button>
+      <button class="tab" data-target="dashboard"><span class="icon-wrap"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 3v18h18"/><rect x="7" y="12" width="3" height="6" rx="0.6"/><rect x="12" y="8" width="3" height="10" rx="0.6"/><rect x="17" y="5" width="3" height="13" rx="0.6"/></svg></span><span class="label">Dashboard</span></button>
+      <button class="tab" data-target="ajustes"><span class="icon-wrap"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.9l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.9-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1-1.6 1.7 1.7 0 0 0-1.9.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.9V9a1.7 1.7 0 0 0 1.5 1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.6-1 1.7 1.7 0 0 0-.3-1.9l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.9.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.9-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.9V9a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1z"/></svg></span><span class="label">Ajustes</span></button>
+    </div>
+  </div>
+
+  <div class="info">
+    <h3><span class="dot"></span> Qué cambia (solo input)</h3>
+    <p>Nav <code>Gastos/Dashboard/Ajustes</code> queda igual. El chat-input antiguo era <code>textfield</code> persistente tipo WhatsApp. Estos 3 lo reemplazan por patrones <b>no-chat</b>, manteniendo 4 vías accesibles en ≤2 taps.</p>
+    <div class="variant-desc" id="desc-a">
+      <h4>A — Hero radial ★ fluido</h4>
+      <p>Shutter 72px centro + 3 bubbles con stagger 80/120/160ms, hint pills, sheet bottom con backdrop blur y focus. Sin textfield a la vista. Tap <b>T</b> revela sheet con typewriter + Enviar. Máxima jerarquía foto, mín. ruido.</p>
+      <div class="meta"><span>1 tap foto</span><span>2 taps texto</span><span>stagger 320ms</span></div>
+    </div>
+    <div class="variant-desc" id="desc-b" style="display:none;">
+      <h4>B — FAB Extended → Sheet ★ recomendada</h4>
+      <p>Hub vacío + FAB <b>+ Nuevo gasto</b> flotante. Tap abre bottom sheet con 4 cards ilustradas (foto/voz/texto/manual). Patrón Material 3 `Extended FAB + Modal Bottom Sheet` — nativo Flutter, enseña opciones al usuario nuevo.</p>
+      <div class="meta"><span>FAB Material 3</span><span>sheet 4 cards</span><span>descubrible</span></div>
+      <ul>
+        <li class="pros">✓ No parece chat en reposo (solo lista)</li>
+        <li class="pros">✓ Explica cada vía con subtexto (piloto UdeC)</li>
+        <li class="pros">✓ Texto no ocupa altura permanente</li>
+      </ul>
+    </div>
+    <div class="variant-desc" id="desc-c" style="display:none;">
+      <h4>C — 4 Tiles dock</h4>
+      <p>4 tiles iguales con icon color + label. Todas las vías visibles a 1 tap, sin textfield permanente. Democrático pero ocupa 92px de alto siempre — menos espacio para lista.</p>
+      <div class="meta"><span>4 opciones 1 tap</span><span>92px fijo</span><span>igualitario</span></div>
+    </div>
+    <div style="background:var(--primary-soft);border-radius:12px;padding:10px 12px;">
+      <div style="font-size:11px;font-weight:800;color:var(--primary);">Común a las 3</div>
+      <div style="font-size:11px;color:var(--text);line-height:1.5;margin-top:4px;">Cualquier vía → misma card <code>IA · ¿esto es correcto? → Confirmar/Editar/Descartar</code> `ALCANCE.md:27`. Texto nunca es chat persistente: aparece solo en sheet tras tap. Manual `✎` abre form `HU-003` (tienda/items/pago/COP default).</div>
+    </div>
+    <div class="chiprow" style="margin-top:6px;">
+      <button style="flex:1;justify-content:center;background:var(--primary);color:#fff;border-radius:10px;padding:10px;border:none;font-weight:700;cursor:pointer;display:flex;align-items:center;gap:6px;" onclick="applyInput()">Aplicar <span id="applyLabel">B</span> a index.html →</button>
+    </div>
+    <p style="font-size:10px;color:var(--muted);text-align:center;">Prueba: tap en shutter/tiles/FAB y en text sheets “Enviar →” para ver la card IA.</p>
+  </div>
+</div>
+
+<div class="comparison">
+  <h3>Comparativa input (no-chat)</h3>
+  <table class="comp">
+    <thead><tr><th>Variante</th><th>En reposo</th><th>Taps a texto</th><th>Altura</th><th>Ideal para</th></tr></thead>
+    <tbody>
+      <tr><td>A Hero radial</td><td>shutter 72 + 3 bubbles</td><td>2 (T → enviar)</td><td>86px</td><td>Foto-domina, ultra-minimal</td></tr>
+      <tr style="background:var(--primary-soft);"><td><b>B FAB Sheet ★</b></td><td>solo lista + FAB</td><td>2 (FAB → Texto)</td><td>0 + sheet</td><td>Onboarding claro, hub limpio</td></tr>
+      <tr><td>C 4 Tiles</td><td>4 tiles visibles</td><td>1 + sheet</td><td>92px</td><td>Todas las vías igual peso</td></tr>
+    </tbody>
+  </table>
+</div>
+
+<script>
+  const root=document.documentElement, phone=document.getElementById('phone');
+  const seg=document.getElementById('inputSeg');
+  const descs={a:document.getElementById('desc-a'),b:document.getElementById('desc-b'),c:document.getElementById('desc-c')};
+  function applyTheme(dark){ root.setAttribute('data-theme', dark?'dark':'light'); document.getElementById('themeBtn').textContent=dark?'☀️':'◐'; document.getElementById('btnThemePhone').textContent=dark?'☀️':'◐'; try{localStorage.setItem('finance-mock-theme', dark?'dark':'light')}catch(e){} }
+  try{applyTheme(localStorage.getItem('finance-mock-theme')==='dark')}catch(e){applyTheme(false)}
+  document.getElementById('themeBtn').addEventListener('click',()=>applyTheme(root.getAttribute('data-theme')!=='dark'));
+  document.getElementById('btnThemePhone').addEventListener('click',()=>applyTheme(root.getAttribute('data-theme')!=='dark'));
+
+  function setInput(v){
+    phone.setAttribute('data-input', v);
+    seg.querySelectorAll('button').forEach(b=>b.classList.toggle('on', b.dataset.v===v));
+    Object.keys(descs).forEach(k=>descs[k].style.display=k===v?'block':'none');
+    document.getElementById('applyLabel').textContent=v.toUpperCase();
+    // toggle inputareas
+    document.getElementById('inputA').style.display = v==='a' ? 'flex' : 'none';
+    document.getElementById('inputC').style.display = v==='c' ? 'flex' : 'none';
+    document.getElementById('fabBtn').style.display = v==='b' ? 'flex' : 'none';
+    // for B, ensure sheet closed initially but backdrop hidden
+    if(v!=='b'){ closeSheetB(); }
+    // hide sheets
+    document.getElementById('aSheet').classList.remove('show');
+    var bdA=document.getElementById('backdropA'); if(bdA) bdA.classList.remove('show');
+    document.getElementById('cSheet').classList.remove('show');
+    document.getElementById('emptyHint').style.display='block';
+    document.getElementById('userMsg').style.display='none';
+    document.getElementById('aiCard').style.display='none';
+    document.getElementById('savedNote').style.display='none';
+    // fluid stagger for A
+    phone.classList.remove('enter');
+    if(v==='a'){
+      // trigger reflow then add enter for stagger
+      void phone.offsetWidth;
+      phone.classList.add('enter');
+      // focus hint after entrance
+      setTimeout(()=>{ var f=document.getElementById('aField'); if(f) f.placeholder='Describe: gasté 15 mil en almuerzo en Subway…'; }, 420);
+    }
+    try{localStorage.setItem('input-variant', v)}catch(e){}
+  }
+  seg.querySelectorAll('button').forEach(b=>b.addEventListener('click',()=>setInput(b.dataset.v)));
+  try{const s=localStorage.getItem('input-variant'); if(s&&descs[s]) setInput(s); else setInput('a');}catch(e){setInput('a')}
+
+  // nav tabs
+  const hTitle=document.getElementById('hTitle');
+  const titles={gastos:'Gastos',dashboard:'Dashboard',ajustes:'Ajustes'};
+  document.querySelectorAll('#nav .tab').forEach(tab=>{
+    tab.addEventListener('click',()=>{
+      const t=tab.dataset.target;
+      document.querySelectorAll('#nav .tab').forEach(x=>x.classList.remove('active'));
+      tab.classList.add('active');
+      phone.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
+      const scr=phone.querySelector('.screen[data-screen="'+t+'"]');
+      if(scr) scr.classList.add('active');
+      if(hTitle&&titles[t]) hTitle.textContent=titles[t];
+    });
+  });
+  // capture helpers
+  const emptyHint=document.getElementById('emptyHint'), userMsg=document.getElementById('userMsg'), aiCard=document.getElementById('aiCard'), savedNote=document.getElementById('savedNote');
+  function showCapture(){
+    emptyHint.style.display='none';
+    // animate hint out
+    emptyHint.style.transition='opacity .18s, transform .18s';
+    emptyHint.style.opacity='0'; emptyHint.style.transform='translateY(-6px)';
+    setTimeout(()=>{ emptyHint.style.opacity=''; emptyHint.style.transform=''; }, 260);
+    userMsg.style.display='block'; aiCard.style.display='block'; savedNote.style.display='none';
+    // close sheets fluid
+    var aSheet=document.getElementById('aSheet'), bdA=document.getElementById('backdropA');
+    if(aSheet) aSheet.classList.remove('show');
+    if(bdA) bdA.classList.remove('show');
+    document.getElementById('cSheet').classList.remove('show');
+    closeSheetB();
+    // remove voice pulse, shutter pulse
+    var v=document.getElementById('aVoice'); if(v) v.classList.remove('voice-rec');
+    var s=document.getElementById('aShutter'); if(s) s.classList.remove('pulse');
+    // card entrance
+    aiCard.style.opacity='0'; aiCard.style.transform='translateY(8px)';
+    requestAnimationFrame(()=>{ aiCard.style.transition='opacity .28s ease, transform .32s cubic-bezier(.32,.72,0,1)'; aiCard.style.opacity='1'; aiCard.style.transform='translateY(0)'; });
+    setTimeout(()=>{ aiCard.style.transition=''; aiCard.style.opacity=''; aiCard.style.transform=''; }, 380);
+    aiCard.scrollIntoView({behavior:'smooth',block:'nearest'});
+  }
+  // A interactions FLUID
+  var aShutter=document.getElementById('aShutter'), aVoice=document.getElementById('aVoice'), aText=document.getElementById('aText'), aManual=document.getElementById('aManual');
+  var aSheet=document.getElementById('aSheet'), aField=document.getElementById('aField'), aSend=document.getElementById('aSend'), aClose=document.getElementById('aClose'), backdropA=document.getElementById('backdropA');
+  function openASheet(){
+    aSheet.classList.add('show'); backdropA.classList.add('show');
+    setTimeout(()=>{ if(aField) { aField.focus(); aField.value=''; } }, 220);
+    // typewriter placeholder demo (only if empty)
+    if(aField && !aField.value){
+      var full='Describe: gasté 15 mil en almuerzo en Subway…', i=0; aField.placeholder='';
+      var iv=setInterval(()=>{ aField.placeholder=full.slice(0, ++i); if(i>=full.length) clearInterval(iv); }, 18);
+      aSheet._typeIv=iv;
+    }
+  }
+  function closeASheet(){ aSheet.classList.remove('show'); backdropA.classList.remove('show'); if(aSheet._typeIv) clearInterval(aSheet._typeIv); }
+  aShutter.addEventListener('click', function(){
+    aShutter.classList.add('pulse');
+    // ripple
+    var r=document.createElement('span'); r.style.position='absolute'; r.style.inset='-8px'; r.style.borderRadius='50%'; r.style.border='2px solid var(--primary)'; r.style.opacity='.35'; r.style.pointerEvents='none'; r.style.transform='scale(.7)'; r.style.transition='transform .38s cubic-bezier(.32,.72,0,1), opacity .38s';
+    aShutter.style.position='relative'; aShutter.appendChild(r);
+    requestAnimationFrame(()=>{ r.style.transform='scale(1.35)'; r.style.opacity='0'; });
+    setTimeout(()=>{ r.remove(); aShutter.classList.remove('pulse'); }, 420);
+    setTimeout(showCapture, 180);
+  });
+  aVoice.addEventListener('click', function(){
+    aVoice.classList.add('voice-rec');
+    aVoice.innerHTML='●<small>GRABANDO</small>';
+    setTimeout(()=>{ aVoice.classList.remove('voice-rec'); aVoice.innerHTML='🎤<small>VOZ</small>'; showCapture(); }, 900);
+  });
+  aText.addEventListener('click', openASheet);
+  aClose.addEventListener('click', closeASheet);
+  backdropA.addEventListener('click', closeASheet);
+  aSend.addEventListener('click', function(){
+    var v=(aField.value||'').trim();
+    if(!v){ aField.focus(); aField.style.borderColor='var(--discard)'; setTimeout(()=>aField.style.borderColor='',600); return; }
+    aSend.disabled=true; var old=aSend.textContent; aSend.textContent='Enviando…';
+    setTimeout(()=>{ aSend.disabled=false; aSend.textContent=old; showCapture(); aField.value=''; }, 420);
+  });
+  aField.addEventListener('keydown', function(e){ if(e.key==='Enter') aSend.click(); if(e.key==='Escape') closeASheet(); });
+  aManual.addEventListener('click', ()=>alert('Abre form manual HU-003 (tienda/items/pago/COP) — ver docs/mockups/index.html #screen-gasto-nuevo'));
+  // C interactions
+  document.querySelectorAll('#inputC .tile').forEach(tile=>{
+    tile.addEventListener('click', ()=>{
+      const a=tile.dataset.action;
+      if(a==='text') document.getElementById('cSheet').classList.add('show');
+      else if(a==='manual') alert('Abre form manual HU-003');
+      else showCapture();
+    });
+  });
+  document.getElementById('cSend').addEventListener('click', showCapture);
+  document.getElementById('cClose').addEventListener('click', ()=>document.getElementById('cSheet').classList.remove('show'));
+  // B interactions
+  const fabBtn=document.getElementById('fabBtn'), sheetB=document.getElementById('sheetB'), backdropB=document.getElementById('backdropB');
+  function openSheetB(){ sheetB.classList.add('show'); backdropB.classList.add('show'); document.getElementById('sheetGridB').style.display='grid'; document.getElementById('bInline').classList.remove('show'); }
+  function closeSheetB(){ sheetB.classList.remove('show'); backdropB.classList.remove('show'); }
+  fabBtn.addEventListener('click', openSheetB);
+  document.getElementById('closeB').addEventListener('click', closeSheetB);
+  backdropB.addEventListener('click', closeSheetB);
+  sheetB.querySelectorAll('.sheet-card').forEach(card=>{
+    card.addEventListener('click', ()=>{
+      const a=card.dataset.action;
+      if(a==='text'){ document.getElementById('sheetGridB').style.display='none'; document.getElementById('bInline').classList.add('show'); }
+      else if(a==='manual'){ closeSheetB(); alert('Abre form manual HU-003'); }
+      else { showCapture(); }
+    });
+  });
+  document.getElementById('bSend').addEventListener('click', showCapture);
+  document.getElementById('bInlineClose').addEventListener('click', ()=>{ document.getElementById('bInline').classList.remove('show'); document.getElementById('sheetGridB').style.display='grid'; });
+
+  document.getElementById('btnConfirm').addEventListener('click', ()=>{ userMsg.style.display='none'; aiCard.style.display='none'; savedNote.style.display='flex'; });
+  document.getElementById('btnDiscard').addEventListener('click', ()=>{ userMsg.style.display='none'; aiCard.style.display='none'; emptyHint.style.display='block'; savedNote.style.display='none'; });
+  document.getElementById('btnSearch').addEventListener('click', ()=>document.querySelector('#nav .tab[data-target="dashboard"]').click());
+
+  function applyInput(){
+    const v=phone.getAttribute('data-input');
+    alert('Aplicar input '+v.toUpperCase()+' a index.html: reemplaza .inputbar (158-181 y 513-527) por variante '+v+' de este archivo. ¿Lo aplico yo ahora? dime sí y lo hago.');
+  }
+</script>
+</body>
+</html>

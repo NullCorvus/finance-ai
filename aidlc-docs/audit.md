@@ -644,3 +644,75 @@ is a separate Linux-desktop keyring issue (secure credential storage), not this 
 **Context**: Workflow / CI automation planning.
 
 ---
+
+## Waydroid Build/Test Script (runWaydroid.sh)
+**Timestamp**: 2026-09-19T16:32:00Z
+**User Input**: "puedes hacer un scritp que genera la apk y que se pruebe en waydroid basado en el cloud scritp osea usando waydroid que genere el apk y que se incie y que yo pueda testear" (plan aprobado con "ok", cambio a modo act)
+**AI Response**: Created /home/d3ad/codigos/finance-ai/runWaydroid.sh following runCloud.sh conventions (logging to logs/waydroid-<ts>/, waydroid-latest symlink, tee). Flow: preflight (flutter/waydroid/adb/curl) -> Waydroid init check (waydroid status prints "not initialized" but exits 0, so the check inspects output text) -> container/session start -> Cloud Run health check (/health/live, /health/ready, bypassable with --skip-health) -> flutter build apk --debug|--release --dart-define=FINANCE_AI_API_BASE_URL -> boot wait via getprop sys.boot_completed (with early abort if the session dies) -> install via waydroid app install with adb connect <ip>:5555 fallback -> launch com.nullcorvus.finance_ai + waydroid show-full-ui -> optional adb logcat tailing (--logs). Options: --release, --clean, --reinstall, --init, --no-launch, --logs, --skip-health, --help. Env overrides: FINANCE_AI_CLOUD_API_BASE_URL, HEALTH_TIMEOUT, WAYDROID_BOOT_TIMEOUT. Validated: bash -n OK, --help OK, full dry run built the debug APK successfully (~17s), uninitialized-Waydroid path aborts cleanly with exit 1 and init guidance, Cloud Run API healthy (live=200, ready=200). Also restored audit.md full history (646 lines) from git HEAD because the working-tree copy had been previously truncated to 43 lines by an uncommitted change. Not validated (blocked): install/launch inside Waydroid because the container is NOT initialized; user must run 'sudo waydroid init' (or use './runWaydroid.sh --init') before the full flow can run.
+**Context**: Construction - new dev-tooling script for building the Flutter APK against the deployed Cloud Run API and testing it on Waydroid.
+
+---
+
+## Database Architecture Documentation Update
+**Timestamp**: 2026-09-19T16:49:44-05:00
+**User Input**: "oK WE NEED TO UPDATE DOCS WITH THAT"
+**AI Response**: Updated project documentation to track the collaborative PostgreSQL target schema from the dbdiagram vision: (1) created `docs/schema.dbml` with the complete DBML schema, (2) updated `docs/schema.sql` with the executable PostgreSQL DDL containing all 13 tables, 6 enums, constraints, and indexes, (3) updated `docs/SCHEMA.md` with complete Mermaid class/ER diagrams, entity breakdown by table group, and core architectural rules (ledger pattern, multi-tenancy, purchase group model).
+**Context**: Documentation synchronization with target database architecture.
+
+---
+
+## Desktop App Credential Failure Diagnosis (secure storage / keyring)
+**Timestamp**: 2026-09-19T17:10:00Z
+**User Input**: "OK OTRA COSA LA APP DE ESCRITORIO NO ME SIRVE POR ALGO DE4 CREDENCIALES NO QUIERO QUE CMABIES CODIGO CHECKEA QUE LE PASA A MI DISPOSITIVO Y TESTEA CHECKEA LOGS ETC" luego "OK TESTEOMOS PRIMERO A"
+**AI Response**: Diagnosed with zero code changes. Root cause chain: (1) App stores renewable session credential via flutter_secure_storage (key finance_ai.renewable_session); the Linux plugin (v3.0.2) stores a JSON blob in the libsecret default collection with schema label com.nullcorvus.finance_ai/FlutterSecureStorage and attribute account=com.nullcorvus.finance_ai.secureStorage. (2) At every launch AuthSessionController.restoreSession() (microtask in build) reads the credential BEFORE showing login; any storage failure shows 'Session restoration needs attention' + 'Secure session storage is unavailable'. (3) System state: sway + greetd, NO pam_gnome_keyring in any /etc/pam.d/*, so the login keyring is never auto-unlocked at login; unlock prompts time out (journal: 'couldn't create system prompt: Timeout was reached'); busctl shows collection login Locked=true; keyring file ~/.local/share/keyrings/login.keyring exists, no 'default' file, password NOT empty (empty-password --unlock attempt did not unlock). (4) Reproduction: exact-equivalent 'secret-tool lookup account com.nullcorvus.finance_ai.secureStorage' HANGS indefinitely on locked keyring (timeout 124); launched the real app binary and its own log printed '(com.nullcorvus.finance_ai): WARNING: libsecret_error: KeyringLocked' at 17:05:24 with matching journal prompt timeout. Live reproduction complete. Blocked on: unlock requires the user's keyring password (not attempted by agent). Next steps offered: Option A (user runs unlock one-liner with their keyring password, then presses 'Retry restoration' in the running app or relaunches), Option B (permanent: add pam_gnome_keyring to /etc/pam.d/greetd + autostart gnome-keyring-daemon in sway config, create keyrings/default), Option C (recreate default keyring with empty password via seahorse).
+**Context**: Desktop (Linux/sway) runtime diagnosis of credential/secure-storage failure; no application code modified.
+
+---
+
+## Desktop Credential Failure RESOLVED (keyring recreated with empty password)
+**Timestamp**: 2026-09-19T17:32:00Z
+**User Input**: "OK TESTEOMOS PRIMERO A" (applied; then user ran the manual unlock one-liner in fish and Locked stayed true)
+**AI Response**: Reproduced live: launched the real binary and captured 'libsecret_error: KeyringLocked' + journal 'couldn't create system prompt: Timeout was reached'. User's manual unlock with their typed password failed (via python-dbus the daemon returned org.gnome.keyring.Error.Denied 'The password was invalid' for empty, and the typed password also did not match) => the encrypted 'login' keyring password was unknown. Its only item was an unrelated legacy compat secret (empty label, gkr:compat:hashed attributes), NOT the finance app credential, so recreation was safe. Executed: backed up login.keyring twice (~/.local/share/keyrings/backups/: login.keyring.20260919T172306Z and login.keyring.encrypted-unknown-pw), killed the daemon, used the legacy D-Bus interface org.gnome.keyring.InternalUnsupportedGuiltRiddenInterface CreateWithMasterPassword (via python3-dbus, OpenSession 'plain' + secret struct (oayays) with empty password) to create a fresh 'login' collection with EMPTY password, set Service.SetAlias('default' -> collection/login). Verified: Locked=false, secret-tool store/lookup/clear roundtrip OK, fresh login.keyring (plain format) written to disk, journal 'emit collection_Created', relaunched app (pid 99054) and its log has NO KeyringLocked error - app now reaches the login screen. NO application code changed at any point. Optional follow-up: PAM auto-unlock (pam_gnome_keyring in /etc/pam.d/greetd) is unnecessary while the keyring has an empty password; if the user ever sets a keyring password again they will need PAM or manual unlock. Old encrypted keyring can be deleted from backups once confirmed unwanted.
+**Context**: Desktop (sway) secure-storage/keyring fix via system configuration only; HU-less maintenance task.
+
+---
+
+## runWaydroid.sh boot-wait false positive fixed; first real APK install+launch on Waydroid OK
+**Timestamp**: 2026-09-20T11:00:00Z
+**User Input**: pasted failing run output: './runWaydroid.sh' built the APK OK (428s cold) then 'ERROR: Waydroid session stopped unexpectedly during boot (try 10)' (plan approved with 'ok', modo act)
+**AI Response**: Diagnosis: Waydroid itself was fine - session-start.log showed 'Android with user 0 is ready' and waydroid status showed Session RUNNING / Container FROZEN (normal idle freeze). Two script bugs: (1) boot-wait early-abort grepped 'Session: RUNNING' with a space but waydroid status uses a TAB between field and value, so the check always failed; (2) with the container FROZEN, 'waydroid shell getprop sys.boot_completed' returns nothing, so boot was never detected. Fixes: match Session with [[:space:]]*(RUNNING|FROZEN), treat FROZEN as valid idle state, detect boot via the session manager marker 'Android with user [0-9]+ is ready' in session-start.log, grace-period fallback when the session was already running before the script, and the same tab-safe grep for show-full-ui. Also retried 'waydroid app list' check up to 10s (install registration race produced a false 'not listed' warning). Validation: bash -n OK; live re-run built the APK in 5.4s (warm gradle), boot detected in ~16s via the ready marker, APK installed (waydroid app list now shows 'Finance AI' / com.nullcorvus.finance_ai), app launched and container unfroze to RUNNING. adb connect needs RSA acceptance on screen (not needed since waydroid app install worked). User can now test the app in the Waydroid window.
+**Context**: Dev-tooling script fix; first end-to-end build-install-launch cycle against the Cloud Run API completed.
+
+---
+
+## Local API target added to runWaydroid.sh; local backend revived; APK now hits docker API
+**Timestamp**: 2026-09-20T11:35:00Z
+**User Input**: "cambielo al container momentaneamente o que se pueda cambiar nose con un comando si cloud o container ya que no he hecho el deploy" (plan aprobado con 'ok', modo act)
+**AI Response**: Found the local backend (docker compose, finance-ai-backend) crash-looping: alembic 'Can't locate revision 0012_dbml_store_budget' because the image was stale (built before migration 0012) while the local DB was already at 0012; code at HEAD has 0012. Fixed by 'docker compose build api && docker compose up -d api' (cached layers, fast) -> alembic clean, uvicorn on 0.0.0.0:8000, health live+ready return {"status":"alive"}/{"status":"ready"}. Extended runWaydroid.sh with --api local|cloud (default cloud) and --api-url override; local resolves to http://192.168.240.1:8000 (host IP on waydroid0; no NAT needed since the request targets the host itself). Health check now runs against the chosen URL. Also fixed waydroid_ip to be non-fatal without root (waydroid shell requires root; '|| true' so set -e+pipefail does not abort) - adb fallback paths degrade gracefully; primary path is waydroid app install (works without root). Validated live: './runWaydroid.sh --api local --reinstall' -> health 200/200 against local URL, APK built (24s) with the local URL baked, installed (reinstall remove returned -3, benign: install updates in place), launched; waydroid app list shows Finance AI; container RUNNING. Cleartext HTTP allowed because debug manifest has usesCleartextTraffic=true (release builds remain https-only). Switching back to cloud is just './runWaydroid.sh'. Pending: user performs login in the Waydroid app to confirm app->container->host:8000 request path end to end.
+**Context**: Dev workflow: APK against local docker API instead of Cloud Run; config/tooling only, no app source changes.
+
+---
+
+## Contract Alignment: has_next added to ExpenseListResponse & HistoryResponse
+**Timestamp**: 2026-09-20T12:16:09-05:00
+**User Input**: "Ok" (approving fix for "invalid_expense_list_payload" error on load_expenses)
+**AI Response**: Resolved contract mismatch where Flutter expected `has_next: bool` in `ExpenseListResult.fromJson` and `HistoryResult.fromJson` per `openapi.json`, but backend schemas lacked `has_next`: (1) added `@property def has_next(self) -> bool` to `ExpenseListResult` and `HistoryResult` in `finance-ai-backend/src/finance_ai/expenses/schemas.py`, (2) added `has_next: bool` to `ExpenseListResponse` and `HistoryResponse` Pydantic models, (3) passed `has_next=result.has_next` in `list_expenses` and `get_history` routes in `finance-ai-backend/src/finance_ai/expenses/router.py`. Verified: 166 backend tests passed, ruff/mypy clean, 32 Flutter expense tests passed.
+**Context**: Bug fix — API contract synchronization between FastAPI backend and Flutter frontend.
+
+---
+
+## App UI Alignment with Mockup (Hub & First Screen Experience)
+**Timestamp**: 2026-09-20T12:53:56-05:00
+**User Input**: "puedes aplicar estos cambios a la app que tenemos lo inetnte en otro chat peor no lo dejo como queria osea queiro que se vea como en el mokup osea daptado pero como esta en el mok osea lo primero que se ve y todo eso"
+**AI Response**: Evaluating current Flutter frontend architecture vs. HTML mockup. Formulating implementation plan to transform the authenticated initial landing experience into the Gastos Hub (balance summary, recent transaction feed, radial wheel FAB, and bottom navigation) matching docs/mockups/index.html.
+**Context**: Inception / Construction - Aligning Flutter frontend initial screen and layout with approved mockup.
+
+---
+
+## Pre-Implementation Commit & Checkpoint Confirmation
+**Timestamp**: 2026-09-20T12:56:04-05:00
+**User Input**: "ok pero haz commit o chekea cual es punto antes d elos cambios ok ?"
+**AI Response**: Checking current git status across the monorepo (root, backend, frontend), creating checkpoint commits for pending changes (contract alignment, mockup updates, HU-006 improvements) before initiating the Hub and navigation overhaul.
+**Context**: Checkpoint creation and git state validation prior to executing the implementation plan.
+
+---

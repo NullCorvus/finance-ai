@@ -10,24 +10,39 @@
   confirmation, manual entry and the list all live in the same screen. There is NO chat:
   the conversational parts (reply mode, chat history, agent) are Phase 3 and are not
   mocked up (`ALCANCE.md`: chat is optional and can be skipped entirely).
-- **Capture bar by priority (📷 > 🎤 > ✍️ > texto):** the camera is the HERO — a large
-  centered shutter button (72px, green ring, subtle glow) that communicates \"this is the
-  main action\". Below it in a compact secondary row: audio 🎤 · manual ✍️ · a text field
-  — all three at the same visual weight, subordinate to the photo. The placeholder says
-  \"escribe un gasto…\" (not a chat prompt). Four paths, one clear hierarchy.
-- **Manual entry is ALWAYS visible:** a ✍️ button sits permanently in the capture bar
-  (next to 📷 and 🎤) — it opens the form (HU-003); ✏️ edit opens the SAME form
-  pre-filled (HU-004) — one form for create + edit. It never gets buried or lost.
+- **Hub shows recent history (2026-09-20):** the capture-only empty hub now opens with a
+  preloaded "Historial reciente" (4 demo movements) grouped like the schema:
+  `financial_transaction(source)` > `receipt(store, total)` > `expense(items)` — capture badge
+  per source (📷 foto / 🎤 voz / T texto / ✎ manual), receipt groups expand on tap to show
+  items, and income rows render green "+ $" with the income source. Saving from the AI card
+  (Confirmar) or the manual form prepends a new entry. A pretty empty state (🧾 + CTA)
+  replaces the list if everything is removed; the hint text lives there now.
+- **Radial capture menu — fan-out from the launcher (2026-09-20, rev 2):** the static capture
+  bar was replaced by a circular launcher button (+, bottom-right). Tapping it shows a soft
+  scrim and 4 small app-styled bubbles (54px, white cards, UdeC-green hover) that pop out
+  from the button in a quarter-arc — 📷 Foto · 🎤 Voz · T Texto · ✎ Manual — each staggered
+  50 ms; the + icon rotates 45° into a close affordance. Picking a bubble closes the menu and
+  opens the existing flow (AI card / manual form). Close by tapping the scrim or Esc; demo
+  failure buttons sit above the fan and close it too. Decided after reviewing the
+  sheet-of-cards variant B (see `input-variants.html` and `input-flow-b.html` for the
+  full-flow standalone reference).
+- **Fast manual entry is ALWAYS reachable (HU-006 & HU-005):** the ✎ Manual slot in the
+  wheel opens the fast manual capture form — Hero Amount ($ 0), Merchant/Description, and
+  Payment Account chips (💵 Efectivo, 🟣 Nequi, 🟡 Bancolombia) with collapsed optional
+  details (Category, Date, Note); ✏️ edit opens the SAME form pre-filled (HU-008). Incomes
+  use the same fast model (+ $ 0, Source chips, Destination Account). No receipt rows required.
 - **"Mis gastos" opens as a sub-screen (not inline):** tapping 🔍 in the header hides
   the hub and shows the search screen with a back arrow (←) to return. The search + chips
   + date range + receipt list live there; the hub stays clean for capture. Delete
   confirmations still work in the list.
-- **Interactive capture flow (like the original chat menu):** send photo/voice/natural-language
-  text → the AI card menu appears with items marked "editable" + Confirmar / Editar /
-  Descartar. Confirmar → "✅ Gasto guardado"; Editar → the pre-filled form; Descartar →
-  back to the empty state. Natural-language text shows one description item and no photo;
-  the manual form is a separate direct-save path with validation. The core has no
-  conversational chat.
+- **Dedicated AI capture preview screen (Foto / Voz / Texto):** tapping 📷 Foto, 🎤 Voz, or
+  T Texto now opens a dedicated review screen (`#screen-capture-preview`) with a back button (←)
+  and evidence preview instead of cluttering the main Hub inline:
+  - For photo: shows photo evidence with an "＋ Agregar otra foto / página" button for multi-page/long receipts.
+  - For voice: shows voice memo player with waveform and transcription.
+  - For text: shows natural language input card.
+  - Below the evidence: the AI confirmation card with Confirmar y guardar / Editar / Descartar.
+  - Tapping ← or Descartar returns cleanly to the Hub.
 - **Failure states are demonstrable in the prototype:** compact Demo controls expose
   partial extraction, unreadable receipt, timeout, and camera-permission-denied states;
   each keeps saving blocked and offers retry or manual fallback as appropriate.
@@ -103,6 +118,10 @@
 ## Files
 
 - `docs/mockups/index.html` — the interactive mockup (source of truth for the visual).
+- `docs/mockups/input-flow-b.html` — full flow mockup of the chosen input variant B
+  (Extended FAB → bottom sheet → camera / voice / text / manual form → AI confirmation card
+  → saved), with failure states (permission denied, unreadable receipt), edit-prefilled form
+  and Gasto/Ingreso toggle. Standalone, same visual language as `index.html`.
 - This file — the short design-summary (ASCII/plain version if needed later).
 
 ## Related

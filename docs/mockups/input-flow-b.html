@@ -1,0 +1,810 @@
+<!DOCTYPE html>
+<html lang="es" data-theme="light">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Finance AI — Flujo B: FAB → Sheet → 4 vías</title>
+<style>
+  :root{
+    --bg:#F5F6F8; --card:#FFFFFF; --primary:#6B8E00; --primary-soft:#E9F2D8; --primary-dark:#546E00;
+    --income:#0E9F6E; --income-soft:#E1F5EC; --text:#1F2933; --muted:#6B7280; --line:#E5E7EB;
+    --confirm:#16A34A; --discard:#DC2626; --nav:#9CA3AF; --soft:#F3F4F6; --soft-2:#FAFAFB; --rowline:#F3F4F6;
+    --thumb:#D9DFE8; --ph:#9AA0A6; --warn-bg:#FDF3D8; --warn-fg:#9A7B00;
+  }
+  :root[data-theme="dark"]{
+    --bg:#101318; --card:#1A2027; --primary:#8FB42C; --primary-soft:#26301A; --primary-dark:#B7D45C;
+    --income:#2DB886; --income-soft:#143129; --text:#E8EBF0; --muted:#9AA5B5; --line:#262E38;
+    --confirm:#1FA254; --discard:#E5534D; --nav:#5A6472; --soft:#20262E; --soft-2:#232A33; --rowline:#1F262E;
+    --thumb:#2A323D; --ph:#6B7686; --warn-bg:#3A3113; --warn-fg:#E5C76B;
+  }
+  :root[data-theme="dark"] body{background:#0B0E12;}
+  *{box-sizing:border-box;margin:0;padding:0;}
+  body{background:#E8EAED;font-family:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;display:flex;flex-direction:column;align-items:center;min-height:100vh;padding:24px;gap:18px;}
+  .page-head{width:100%;max-width:920px;background:var(--card);border:1px solid var(--line);border-radius:16px;padding:16px 18px;display:flex;flex-direction:column;gap:10px;}
+  .page-head .toprow{display:flex;flex-wrap:wrap;align-items:flex-start;justify-content:space-between;gap:12px;}
+  .page-head h1{font-size:15px;font-weight:800;color:var(--text);line-height:1.25;}
+  .page-head h1 small{display:block;font-size:11.5px;font-weight:400;color:var(--muted);margin-top:5px;line-height:1.5;}
+  .badge{font-size:10px;font-weight:700;background:var(--primary);color:#fff;padding:3px 8px;border-radius:999px;vertical-align:middle;margin-left:6px;}
+  .controls{display:flex;gap:8px;flex-wrap:wrap;align-items:center;}
+  .iconbtn{width:32px;height:32px;border-radius:50%;border:none;background:var(--soft);color:var(--muted);display:flex;align-items:center;justify-content:center;cursor:pointer;}
+  .layout{width:100%;max-width:920px;display:grid;grid-template-columns:390px 1fr;gap:20px;align-items:start;}
+  @media(max-width:820px){.layout{grid-template-columns:1fr;justify-items:center;}.page-head{max-width:390px;}}
+  .info{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:16px;display:flex;flex-direction:column;gap:12px;}
+  .info h3{font-size:13px;font-weight:800;color:var(--text);display:flex;align-items:center;gap:8px;}
+  .info h3 .dot{width:8px;height:8px;border-radius:50%;background:var(--primary);}
+  .info p{font-size:12px;color:var(--muted);line-height:1.5;}
+  .info ul{font-size:11.5px;color:var(--muted);margin-left:16px;line-height:1.7;}
+  .info li.pros{color:var(--income);font-weight:600;list-style:none;margin-left:-16px;}
+  .chiprow{display:flex;gap:6px;flex-wrap:wrap;}
+  .chip{font-size:10px;font-weight:700;padding:4px 8px;border-radius:999px;background:var(--soft);color:var(--muted);}
+  .chip.good{background:var(--income-soft);color:var(--income);}
+  .flow{display:flex;flex-direction:column;gap:9px;}
+  .step{display:flex;gap:10px;align-items:flex-start;font-size:12px;color:var(--muted);line-height:1.5;}
+  .step b{color:var(--text);}
+  .step .n{width:22px;height:22px;border-radius:50%;background:var(--primary-soft);color:var(--primary);font-size:11px;font-weight:800;display:flex;align-items:center;justify-content:center;flex:0 0 22px;}
+
+  /* ---------- PHONE FRAME ---------- */
+  .phone{width:390px;height:780px;background:var(--bg);border-radius:30px;overflow:hidden;position:relative;display:flex;flex-direction:column;box-shadow:0 14px 44px rgba(0,0,0,.20);border:1px solid var(--line);}
+
+  /* ---------- BASE SCREEN (hub) ---------- */
+  .hub{position:absolute;inset:0;display:flex;flex-direction:column;background:var(--bg);z-index:1;}
+  .hub-head{display:flex;align-items:baseline;justify-content:space-between;padding:20px 16px 4px;}
+  .hub-head h2{font-size:20px;font-weight:800;color:var(--text);}
+  .hub-head .greet{font-size:12px;color:var(--muted);}
+  .hub-list{padding:10px 16px 16px;overflow-y:auto;flex:1;display:flex;flex-direction:column;gap:12px;}
+  .receipt-group{background:var(--card);border:1px solid var(--line);border-radius:14px;overflow:hidden;}
+  .rg-head{display:flex;align-items:center;gap:10px;padding:11px 14px;}
+  .rg-head .foto{flex:0 0 auto;font-size:10px;font-weight:700;color:var(--primary);background:var(--primary-soft);padding:3px 7px;border-radius:8px;}
+  .rg-main{flex:1;min-width:0;}
+  .rg-main .store{font-size:14px;font-weight:700;color:var(--text);}
+  .rg-main .meta{font-size:11px;color:var(--muted);}
+  .rg-head .total{font-size:14px;font-weight:700;color:var(--text);white-space:nowrap;}
+  .exp-row{display:flex;align-items:center;gap:10px;padding:9px 14px;border-top:1px solid var(--rowline);font-size:13px;color:var(--text);}
+  .exp-row .e-main{flex:1;min-width:0;}
+  .exp-row .e-main small{display:block;font-size:11px;color:var(--muted);}
+  .exp-row .e-amt{font-weight:600;white-space:nowrap;}
+
+  /* ---------- FAB EXTENDED (Material 3, variante B) ---------- */
+  .fab-extended{position:absolute;right:16px;bottom:80px;z-index:20;display:inline-flex;align-items:center;gap:8px;padding:0 18px;height:48px;border-radius:16px;background:var(--primary);color:#fff;border:none;font-weight:700;font-size:14px;cursor:pointer;box-shadow:0 6px 18px rgba(107,142,0,.38);transition:transform .12s ease;}
+  .fab-extended:active{transform:scale(.96);}
+
+  /* ---------- NAV ---------- */
+  .nav{flex:0 0 auto;display:flex;gap:4px;background:var(--card);border-top:1px solid var(--line);padding:8px 12px 12px;}
+  .nav .tab{flex:1;padding:4px 0 2px;text-align:center;color:var(--nav);font-size:11px;font-weight:600;cursor:default;display:flex;flex-direction:column;align-items:center;gap:3px;background:none;border:none;border-radius:16px;}
+  .nav .tab.active{color:var(--primary);}
+  .nav .tab.active .icon-wrap{background:var(--primary-soft);}
+  .nav .icon-wrap{width:44px;height:26px;border-radius:999px;display:flex;align-items:center;justify-content:center;}
+  .nav .label{font-size:10.5px;}
+
+  /* ---------- OVERLAY SCREENS ---------- */
+  .overlay{position:absolute;inset:0;z-index:25;transform:translateX(100%);transition:transform .28s ease;visibility:hidden;display:flex;flex-direction:column;background:var(--bg);}
+  .overlay.active{transform:none;visibility:visible;}
+  .form-head{display:flex;align-items:center;gap:10px;margin:14px 0 4px;padding:0 16px;}
+  .form-head h2{font-size:18px;font-weight:700;color:var(--text);}
+  .s-iconbtn{width:32px;height:32px;flex:0 0 32px;border-radius:10px;border:none;background:var(--soft);color:var(--muted);display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:14px;}
+
+  /* ---------- SEGMENTED ---------- */
+  .seg{display:flex;background:var(--soft);border-radius:10px;padding:3px;gap:2px;margin:10px 16px 2px;}
+  .seg button{flex:1;border:none;background:none;padding:8px 12px;font-size:12.5px;font-weight:600;color:var(--muted);cursor:pointer;border-radius:8px;}
+  .seg button.on{background:var(--card);color:var(--text);box-shadow:0 1px 3px rgba(0,0,0,.08);}
+  .seg.income-on button.on{background:var(--income-soft);color:var(--income);}
+
+  /* ---------- SHEET B (FAB → Modal Bottom Sheet, Material 3) ---------- */
+  .sheet-backdrop{position:absolute;inset:0;background:rgba(15,23,42,.45);opacity:0;pointer-events:none;transition:opacity .25s ease;z-index:30;}
+  .sheet-backdrop.show{opacity:1;pointer-events:auto;}
+  .sheet-b{position:absolute;left:0;right:0;bottom:0;background:var(--card);border-radius:22px 22px 0 0;padding:10px 14px 18px;transform:translateY(105%);transition:transform .3s cubic-bezier(.2,.8,.2,1);z-index:31;}
+  .sheet-b.show{transform:none;}
+  .handle{width:38px;height:4px;border-radius:999px;background:var(--line);margin:0 auto 10px;}
+  .sheet-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;}
+  .sheet-head h4{font-size:15px;font-weight:800;color:var(--text);}
+  .sheet-head .close{width:32px;height:32px;border-radius:50%;border:1px solid var(--line);background:var(--soft);color:var(--muted);cursor:pointer;font-size:13px;}
+  .sheet-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
+  .sheet-card{background:var(--soft);border:1px solid var(--line);border-radius:14px;padding:12px;text-align:left;cursor:pointer;display:flex;flex-direction:column;gap:6px;transition:transform .12s ease;}
+  .sheet-card:active{transform:scale(.97);}
+  .sheet-card .ic{width:38px;height:38px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:17px;font-weight:800;background:var(--primary-soft);color:var(--primary);}
+  .sheet-card .ic.voice{background:var(--income-soft);color:var(--income);}
+  .sheet-card .ic.text{background:var(--thumb);color:var(--text);}
+  .sheet-card .ttl{font-size:13px;font-weight:800;color:var(--text);}
+  .sheet-card .sub{font-size:10.5px;color:var(--muted);line-height:1.4;min-height:28px;}
+  .sheet-card .cta{font-size:11px;font-weight:700;color:var(--primary);}
+
+  /* ---------- SCREEN: CÁMARA ---------- */
+  #scr-camara{background:#0E1116;}
+  .cam{flex:1;display:flex;flex-direction:column;padding:14px 12px 16px;gap:12px;}
+  .cam-top{display:flex;align-items:center;justify-content:space-between;}
+  .cam-top .cam-title{font-size:13px;font-weight:700;color:#fff;}
+  .cam-btn{width:38px;height:38px;border-radius:50%;border:none;background:rgba(255,255,255,.10);color:#fff;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:16px;}
+  .vf{flex:1;border-radius:18px;position:relative;overflow:hidden;background:linear-gradient(160deg,#151B23 0%,#1B222D 60%,#141A22 100%);border:1px solid #2A323D;}
+  .vf .receipt-mock{position:absolute;left:50%;top:50%;transform:translate(-50%,-52%);width:150px;background:#F5F1E6;border-radius:8px 8px 14px 14px;padding:12px 10px 16px;display:flex;flex-direction:column;gap:6px;box-shadow:0 10px 30px rgba(0,0,0,.45);}
+  .vf .receipt-mock i{display:block;height:7px;border-radius:3px;background:#CFC9B8;}
+  .vf .receipt-mock i:nth-child(2){width:80%;}
+  .vf .receipt-mock i:nth-child(3){width:60%;}
+  .vf .receipt-mock i:nth-child(4){width:85%;margin-top:6px;}
+  .vf .corner{position:absolute;width:26px;height:26px;border:3px solid rgba(143,180,44,.9);}
+  .vf .corner.tl{top:14px;left:14px;border-right:none;border-bottom:none;border-radius:8px 0 0 0;}
+  .vf .corner.tr{top:14px;right:14px;border-left:none;border-bottom:none;border-radius:0 8px 0 0;}
+  .vf .corner.bl{bottom:14px;left:14px;border-right:none;border-top:none;border-radius:0 0 0 8px;}
+  .vf .corner.br{bottom:14px;right:14px;border-left:none;border-top:none;border-radius:0 0 8px 0;}
+  .vf .vf-hint{position:absolute;bottom:18px;left:0;right:0;text-align:center;font-size:11.5px;font-weight:600;color:rgba(255,255,255,.75);}
+  .vf-panel{position:absolute;inset:0;background:rgba(10,13,18,.82);backdrop-filter:blur(2px);display:none;flex-direction:column;align-items:center;justify-content:center;gap:10px;padding:24px;text-align:center;}
+  .vf-panel.show{display:flex;}
+  .vf-panel .big{font-size:15px;font-weight:800;color:#fff;line-height:1.35;}
+  .vf-panel small{font-size:11.5px;color:rgba(255,255,255,.65);line-height:1.5;}
+  .spinner{width:34px;height:34px;border-radius:50%;border:3px solid rgba(255,255,255,.2);border-top-color:#8FB42C;animation:spin .8s linear infinite;}
+  @keyframes spin{to{transform:rotate(360deg);}}
+  .vf-btns{display:flex;gap:10px;margin-top:6px;}
+  .vf-btn{padding:10px 14px;border-radius:12px;border:none;font-size:12.5px;font-weight:700;cursor:pointer;background:#8FB42C;color:#fff;}
+  .vf-btn.ghost{background:rgba(255,255,255,.12);color:#fff;}
+  .cam-actions{display:flex;align-items:center;justify-content:space-between;padding:0 12px;}
+  .gal{width:44px;height:44px;border-radius:10px;background:rgba(255,255,255,.10);display:flex;align-items:center;justify-content:center;font-size:18px;}
+  .shutter{width:68px;height:68px;border-radius:50%;background:#8FB42C;border:4px solid rgba(255,255,255,.85);box-shadow:0 4px 18px rgba(143,180,44,.4);display:flex;align-items:center;justify-content:center;cursor:pointer;color:#fff;}
+  .shutter:active{transform:scale(.94);}
+  .cam-demo{display:flex;gap:6px;justify-content:center;flex-wrap:wrap;}
+  .cam-demo button{border:1px dashed rgba(255,255,255,.3);background:none;color:rgba(255,255,255,.65);border-radius:8px;padding:5px 9px;font-size:10px;cursor:pointer;}
+  .cam-demo button:hover{border-color:#8FB42C;color:#8FB42C;}
+
+  /* ---------- SCREEN: VOZ ---------- */
+  .voz{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:18px;padding:24px 20px 90px;text-align:center;}
+  .mic-wrap{display:flex;flex-direction:column;align-items:center;gap:12px;}
+  .mic-big{width:110px;height:110px;border-radius:50%;border:none;background:var(--income-soft);color:var(--income);font-size:44px;display:flex;align-items:center;justify-content:center;cursor:pointer;position:relative;}
+  .mic-big.rec{background:var(--income);color:#fff;}
+  .mic-big.rec:after{content:"";position:absolute;inset:-10px;border-radius:50%;border:3px solid var(--income);opacity:.5;animation:pulse 1.4s ease-out infinite;}
+  @keyframes pulse{0%{transform:scale(.9);opacity:.6;}100%{transform:scale(1.25);opacity:0;}}
+  .voz .timer{font-size:26px;font-weight:800;color:var(--text);font-variant-numeric:tabular-nums;}
+  .wave{display:flex;align-items:center;gap:4px;height:38px;}
+  .wave i{width:4px;border-radius:999px;background:var(--income);animation:wave 1s ease-in-out infinite;}
+  .wave.paused i{animation-play-state:paused;opacity:.3;}
+  @keyframes wave{0%,100%{height:8px;}50%{height:34px;}}
+  .voz-status{font-size:12.5px;color:var(--muted);line-height:1.5;}
+  .voz-actions{display:flex;gap:12px;}
+  .voz-btn{padding:11px 18px;border-radius:12px;border:none;font-size:13px;font-weight:700;cursor:pointer;background:var(--soft);color:var(--muted);}
+  .voz-btn.stop{background:var(--discard);color:#fff;}
+  .voz-btn.go{background:var(--confirm);color:#fff;}
+
+  /* ---------- SHEET TEXTO ---------- */
+  .sheet-text{position:absolute;left:0;right:0;bottom:0;background:var(--card);border-radius:22px 22px 0 0;padding:10px 14px 18px;z-index:31;transform:translateY(105%);transition:transform .3s cubic-bezier(.2,.8,.2,1);display:flex;flex-direction:column;gap:10px;}
+  .sheet-text.show{transform:none;}
+  .textfield{width:100%;background:var(--soft);border-radius:14px;padding:14px 16px;border:none;font-size:14px;color:var(--text);outline:none;resize:none;font-family:inherit;line-height:1.45;min-height:64px;}
+  .textfield::placeholder{color:var(--ph);}
+  .ex-chips{display:flex;gap:6px;flex-wrap:wrap;}
+  .ex-chips button{border:1px solid var(--line);background:var(--card);color:var(--muted);font-size:11px;font-weight:600;padding:6px 10px;border-radius:999px;cursor:pointer;}
+  .ex-chips button:hover{border-color:var(--primary);color:var(--primary);}
+  .text-send{width:100%;padding:13px;border-radius:12px;border:none;background:var(--primary);color:#fff;font-weight:700;font-size:14px;cursor:pointer;}
+  .parse-status{display:none;align-items:center;gap:10px;background:var(--primary-soft);border-radius:12px;padding:12px 14px;font-size:12.5px;font-weight:700;color:var(--primary);}
+  .parse-status.show{display:flex;}
+  .parse-status .spinner{border-color:rgba(107,142,0,.25);border-top-color:var(--primary);}
+
+  /* ---------- FORM (manual, HU-003/HU-006) ---------- */
+  .gform{padding:0 16px 16px;overflow-y:auto;flex:1;display:flex;flex-direction:column;}
+  .f-label{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.4px;color:var(--muted);margin:14px 2px 6px;}
+  .f-input{width:100%;background:var(--card);border:1px solid var(--line);border-radius:10px;padding:11px 13px;font-size:14px;color:var(--text);outline:none;}
+  .f-input::placeholder{color:var(--ph);}
+  .f-input:focus{border-color:var(--primary);box-shadow:0 0 0 3px var(--primary-soft);}
+  .f-grid{display:flex;gap:10px;}
+  .f-grid>*{flex:1;}
+  .form-note{font-size:10.5px;color:var(--muted);margin-top:6px;}
+  .item-row{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:10px;margin-bottom:8px;}
+  .item-row .ir-1{display:flex;gap:8px;margin-bottom:8px;align-items:center;}
+  .item-row .ir-2{display:flex;gap:8px;}
+  .e-del{width:30px;height:30px;flex:0 0 30px;border:none;border-radius:8px;background:var(--soft);color:var(--discard);font-size:12px;cursor:pointer;}
+  .im-toggle{margin-top:7px;background:none;border:none;padding:0;color:var(--muted);font-size:11px;font-weight:600;cursor:pointer;display:inline-flex;align-items:center;gap:4px;}
+  .im-toggle:hover{color:var(--primary);}
+  .item-motivo{display:none;margin-top:8px;}
+  .item-motivo.show{display:block;}
+  .mini-input{width:100%;background:var(--soft);border:none;border-radius:8px;padding:9px 10px;font-size:13px;color:var(--text);outline:none;font-family:inherit;}
+  .mini-input::placeholder{color:var(--ph);}
+  .mini-input.amt{text-align:right;font-weight:600;}
+  .addrow{display:flex;align-items:center;gap:8px;justify-content:center;width:100%;padding:11px;border-radius:12px;border:1.5px dashed var(--line);background:none;color:var(--muted);font-weight:700;font-size:12px;cursor:pointer;margin:8px 0;font-family:inherit;}
+  .addrow small{display:block;font-weight:400;font-size:10px;color:var(--muted);margin-top:2px;}
+  .addrow:hover{border-color:var(--primary);color:var(--primary);}
+  .totalbar{display:flex;justify-content:space-between;align-items:center;background:var(--primary-soft);border-radius:12px;padding:12px 14px;margin-top:12px;}
+  .totalbar .lbl{font-size:12px;font-weight:700;color:var(--primary);}
+  .totalbar .val{font-size:18px;font-weight:700;color:var(--text);}
+  .extra-fields{display:none;background:var(--card);border:1px solid var(--line);border-radius:12px;padding:10px;margin-top:8px;}
+  .extra-fields.show{display:block;}
+  .extra-fields .f-input{margin-bottom:8px;background:var(--soft);border:none;}
+  .savebar{padding:10px 16px 14px;background:var(--card);border-top:1px solid var(--line);flex:0 0 auto;}
+  .btn-save{width:100%;padding:13px;border-radius:12px;border:none;background:var(--confirm);color:#fff;font-weight:700;font-size:14px;cursor:pointer;font-family:inherit;}
+  .btn-save:active{transform:scale(.98);}
+  .form-error{display:none;color:var(--discard);background:var(--soft);border-radius:8px;padding:9px 10px;margin:10px 0 0;font-size:12px;line-height:1.4;}
+  .form-error.show{display:block;}
+
+  /* ---------- CARD IA (confirmación) ---------- */
+  .ai-card{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:14px;display:flex;flex-direction:column;gap:10px;}
+  .ai-card .head{display:flex;justify-content:space-between;align-items:center;gap:8px;}
+  .ai-card .head .ai{font-size:11.5px;font-weight:800;color:var(--primary);}
+  .ai-card .head .tag{font-size:9.5px;font-weight:700;color:var(--muted);background:var(--soft);padding:3px 8px;border-radius:999px;white-space:nowrap;}
+  .ai-card .media{display:flex;gap:10px;align-items:center;background:var(--soft);border-radius:12px;padding:8px 10px;}
+  .ai-card .media .thumb{width:44px;height:44px;border-radius:8px;background:var(--thumb);display:flex;align-items:center;justify-content:center;font-size:19px;flex:0 0 44px;}
+  .ai-card .media .lbl{font-size:12.5px;font-weight:700;color:var(--text);}
+  .ai-card .media .sub{font-size:11px;color:var(--muted);}
+  .ai-card .field{display:flex;justify-content:space-between;align-items:center;background:var(--soft);border-radius:10px;padding:9px 12px;font-size:13px;}
+  .ai-card .field .label{color:var(--muted);font-weight:700;font-size:10.5px;text-transform:uppercase;letter-spacing:.3px;}
+  .ai-card .field .val{font-weight:700;color:var(--text);}
+  .ai-card .items{display:flex;flex-direction:column;}
+  .ai-card .items .it{display:flex;gap:8px;align-items:center;border-top:1px solid var(--rowline);padding:8px 2px;font-size:13px;color:var(--text);}
+  .ai-card .items .it:first-child{border-top:none;}
+  .ai-card .items .it .qty{font-size:11px;color:var(--muted);}
+  .ai-card .items .it .name{flex:1;min-width:0;}
+  .ai-card .items .it .amt{font-weight:600;white-space:nowrap;}
+  .ai-card .items .it input{width:100%;background:var(--soft);border:none;border-radius:7px;padding:6px 8px;font-size:12.5px;color:var(--text);outline:none;font-family:inherit;}
+  .ai-card .warn{background:var(--warn-bg);color:var(--warn-fg);border-radius:10px;padding:10px 12px;font-size:12px;font-weight:600;line-height:1.45;}
+  .card-actions{display:flex;gap:8px;}
+  .btn{flex:1;padding:11px;border-radius:12px;font-weight:700;font-size:13px;border:none;cursor:pointer;font-family:inherit;}
+  .btn-confirm{background:var(--confirm);color:#fff;}
+  .btn-edit{background:var(--primary-soft);color:var(--primary);}
+  .btn-discard{background:var(--card);color:var(--discard);border:1.5px solid var(--discard);}
+
+  /* ---------- TOAST GUARDADO ---------- */
+  .toast{position:absolute;top:16px;left:50%;transform:translateX(-50%) translateY(-10px);opacity:0;transition:.35s ease;z-index:60;background:var(--income-soft);color:var(--income);font-weight:800;font-size:13px;padding:10px 18px;border-radius:12px;box-shadow:0 6px 18px rgba(0,0,0,.15);pointer-events:none;white-space:nowrap;}
+  .toast.show{opacity:1;transform:translateX(-50%);}
+
+  /* ---------- DEMO STRIP (pantallas con estados) ---------- */
+  .demo-strip{display:flex;align-items:center;gap:5px;flex-wrap:wrap;padding:10px 16px 4px;font-size:10px;color:var(--muted);}
+  .demo-strip button{border:1px dashed var(--line);background:var(--card);color:var(--muted);border-radius:7px;padding:4px 7px;font-size:10px;cursor:pointer;font-family:inherit;}
+  .demo-strip button:hover{border-color:var(--primary);color:var(--primary);}
+</style>
+</head>
+<body>
+  <div class="page-head">
+    <div class="toprow">
+      <h1>Flujo completo — Variante B: FAB Extended → Bottom Sheet → 4 vías <span class="badge">HU-006 / HU-003</span>
+        <small>Cada card de la sheet lleva a su pantalla destino: cámara · grabación · texto · formulario manual. Todas terminan en la card de confirmación IA (o guardado directo en manual) y vuelven al hub con el recibo en la lista.</small>
+      </h1>
+      <div class="controls">
+        <button class="iconbtn" id="restartBtn" title="Reiniciar demo">↺</button>
+        <button class="iconbtn" id="themeBtn" title="Tema">◐</button>
+      </div>
+    </div>
+    <div class="chiprow">
+      <span class="chip good">FAB Material 3</span><span class="chip">sheet 4 cards</span><span class="chip">1 tap → 4 vías</span><span class="chip good">sin chat</span><span class="chip">COP · Efectivo por defecto</span>
+    </div>
+  </div>
+
+  <div class="layout">
+    <div class="phone" id="phone">
+
+      <!-- ============ HUB: GASTOS (base) ============ -->
+      <div class="hub" id="scr-hub">
+        <div class="hub-head"><h2>Gastos</h2><span class="greet">Septiembre 2026 · <span id="hub-count">2</span> recibos</span></div>
+        <div class="hub-list" id="hubList">
+          <div class="receipt-group">
+            <div class="rg-head"><span class="foto">📷 foto</span><div class="rg-main"><div class="store">D1</div><div class="meta">3 items · hoy 12:03</div></div><span class="total">$ 25.400</span></div>
+            <div class="exp-row"><div class="e-main">Arroz Diana 500g<small>Comida · Almuerzo</small></div><span class="e-amt">$ 3.400</span></div>
+            <div class="exp-row"><div class="e-main">Huevos x30<small>Comida · Almuerzo</small></div><span class="e-amt">$ 14.000</span></div>
+            <div class="exp-row"><div class="e-main">Panela<small>Comida · Despensa</small></div><span class="e-amt">$ 8.000</span></div>
+          </div>
+          <div class="receipt-group">
+            <div class="rg-head"><div class="rg-main"><div class="store">Subway</div><div class="meta">1 item · ayer 13:10</div></div><span class="total">$ 15.900</span></div>
+            <div class="exp-row"><div class="e-main">Combo almuerzo<small>Comida · Almuerzo</small></div><span class="e-amt">$ 15.900</span></div>
+          </div>
+        </div>
+        <button class="fab-extended" id="fabBtn" title="Nuevo gasto">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg>
+          Nuevo gasto
+        </button>
+        <div class="nav">
+          <button class="tab active"><span class="icon-wrap"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M5 3h14v18l-2.3-1.5L14.4 21l-2.4-1.5L9.6 21l-2.3-1.5L5 21V3z"/><path d="M9 8h6M9 12h6"/></svg></span><span class="label">Gastos</span></button>
+          <button class="tab"><span class="icon-wrap"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 3v18h18"/><rect x="7" y="12" width="3" height="6" rx="0.6"/><rect x="12" y="8" width="3" height="10" rx="0.6"/><rect x="17" y="5" width="3" height="13" rx="0.6"/></svg></span><span class="label">Dashboard</span></button>
+          <button class="tab"><span class="icon-wrap"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M12 1v4M12 19v4M4.2 4.2l2.8 2.8M17 17l2.8 2.8M1 12h4M19 12h4M4.2 19.8L7 17M17 7l2.8-2.8"/></svg></span><span class="label">Ajustes</span></button>
+        </div>
+      </div>
+
+      <!-- ============ SHEET B ============ -->
+      <div class="sheet-backdrop" id="backdropB"></div>
+      <div class="sheet-b" id="sheetB">
+        <div class="handle"></div>
+        <div class="sheet-head"><h4>¿Cómo quieres registrar?</h4><button class="close" id="closeB">✕</button></div>
+        <div class="sheet-grid">
+          <button class="sheet-card" data-action="photo"><div class="ic">📷</div><div class="ttl">Foto recibo</div><div class="sub">IA extrae tienda, items, total, fecha y pago</div><div class="cta">Tomar foto →</div></button>
+          <button class="sheet-card" data-action="voice"><div class="ic voice">🎤</div><div class="ttl">Nota de voz</div><div class="sub">Di “gasté 15 mil en almuerzo” — IA transcribe</div><div class="cta">Grabar →</div></button>
+          <button class="sheet-card" data-action="text"><div class="ic text">T</div><div class="ttl">Texto</div><div class="sub">Escribe tu gasto en lenguaje natural</div><div class="cta">Escribir →</div></button>
+          <button class="sheet-card" data-action="manual"><div class="ic">✎</div><div class="ttl">Manual</div><div class="sub">Form con cuenta, tienda, items, pago y moneda</div><div class="cta">Abrir form →</div></button>
+        </div>
+      </div>
+
+      <!-- ============ SCREEN: CÁMARA (vía foto) ============ -->
+      <div class="overlay" id="scr-camara">
+        <div class="cam">
+          <div class="cam-top">
+            <button class="cam-btn" id="camClose">✕</button>
+            <span class="cam-title">Foto del recibo</span>
+            <button class="cam-btn" title="Flash">⚡</button>
+          </div>
+          <div class="vf">
+            <div class="receipt-mock"><i></i><i></i><i></i><i></i></div>
+            <span class="corner tl"></span><span class="corner tr"></span><span class="corner bl"></span><span class="corner br"></span>
+            <span class="vf-hint">Encuadra el recibo completo</span>
+            <div class="vf-panel" id="vfProcessing">
+              <div class="spinner"></div>
+              <div class="big">🤖 IA extrayendo datos…</div>
+              <small>tienda · items · total · fecha · pago</small>
+            </div>
+            <div class="vf-panel" id="vfDenied">
+              <div style="font-size:34px;">🚫</div>
+              <div class="big">Permiso de cámara denegado</div>
+              <small>Permite el acceso a la cámara en Ajustes del sistema, o registra el gasto manual.</small>
+              <div class="vf-btns"><button class="vf-btn ghost" id="deniedBack">Volver</button><button class="vf-btn" id="deniedManual">Usar manual</button></div>
+            </div>
+            <div class="vf-panel" id="vfUnread">
+              <div style="font-size:34px;">🤷</div>
+              <div class="big">No pudimos leer el recibo</div>
+              <small>La foto está borrosa o el ticket no es legible. Reintenta con mejor luz o ingresa los datos manual.</small>
+              <div class="vf-btns"><button class="vf-btn ghost" id="unreadRetry">Reintentar</button><button class="vf-btn" id="unreadManual">Ingresar manual</button></div>
+            </div>
+          </div>
+          <div class="cam-actions">
+            <div class="gal">🖼</div>
+            <button class="shutter" id="camShutter" title="Tomar foto">
+              <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg>
+            </button>
+            <div class="gal" style="background:none;color:rgba(255,255,255,.6);font-size:22px;">🔄</div>
+          </div>
+          <div class="cam-demo">
+            <span style="color:rgba(255,255,255,.4);font-size:10px;align-self:center;">demo:</span>
+            <button id="demoUnread">Recibo ilegible</button>
+            <button id="demoDenied">Permiso denegado</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- ============ SCREEN: VOZ (vía voz) ============ -->
+      <div class="overlay" id="scr-voz">
+        <div class="form-head">
+          <button class="s-iconbtn" id="vozClose">✕</button>
+          <h2>Nota de voz</h2>
+        </div>
+        <div class="voz">
+          <div class="mic-wrap">
+            <button class="mic-big" id="micBtn" title="Grabar / pausar">🎤</button>
+            <div class="timer" id="vozTimer">0:00</div>
+          </div>
+          <div class="wave" id="vozWave"><i style="animation-delay:0s"></i><i style="animation-delay:.12s"></i><i style="animation-delay:.24s"></i><i style="animation-delay:.06s"></i><i style="animation-delay:.18s"></i><i style="animation-delay:.3s"></i><i style="animation-delay:.09s"></i><i style="animation-delay:.21s"></i><i style="animation-delay:.03s"></i><i style="animation-delay:.15s"></i><i style="animation-delay:.27s"></i><i style="animation-delay:.08s"></i></div>
+          <div class="voz-status" id="vozStatus">Toca el micrófono y di tu gasto.<br><b>“Gasté quince mil en almuerzo en Subway”</b></div>
+          <div class="voz-actions">
+            <button class="voz-btn" id="vozCancel">Cancelar</button>
+            <button class="voz-btn stop" id="vozStop" style="display:none;">⏹ Terminar</button>
+            <button class="voz-btn go" id="vozSend" style="display:none;">Enviar a la IA →</button>
+          </div>
+        </div>
+        <div class="demo-strip">demo: la IA no está conectada — al terminar se simula la transcripción</div>
+      </div>
+
+      <!-- ============ SHEET TEXTO (vía texto) ============ -->
+      <div class="sheet-backdrop" id="backdropText"></div>
+      <div class="sheet-text" id="sheetText">
+        <div class="handle"></div>
+        <div class="sheet-head"><h4>Escribe tu gasto</h4><button class="close" id="closeText">✕</button></div>
+        <textarea class="textfield" id="textField" placeholder="Ej: gasté 12.500 en almuerzo en D1…"></textarea>
+        <div class="ex-chips">
+          <button data-fill="gasté 12.500 en almuerzo en D1">“gasté 12.500 en almuerzo en D1”</button>
+          <button data-fill="pagué 8 mil en taxi ayer en la noche">“pagué 8 mil en taxi”</button>
+          <button data-fill="compré el mercado en Ara por 87.000">“mercado en Ara por 87.000”</button>
+        </div>
+        <button class="text-send" id="textSend">Enviar a la IA →</button>
+        <div class="parse-status" id="textParsing"><div class="spinner"></div>🤖 IA interpretando tu texto…</div>
+      </div>
+
+      <!-- ============ SCREEN: FORMULARIO MANUAL (vía manual / Editar) ============ -->
+      <div class="overlay" id="scr-manual">
+        <div class="form-head">
+          <button class="s-iconbtn" id="btnBackManual">←</button>
+          <h2 id="manualTitle">Nuevo gasto</h2>
+        </div>
+        <div class="seg" id="segWrap">
+          <button class="on" id="seg-gasto">Gasto</button>
+          <button id="seg-ingreso">Ingreso</button>
+        </div>
+        <div class="gform">
+          <div id="f-gasto">
+            <div class="f-label">Cuenta</div>
+            <input class="f-input" id="f-account" type="text" value="Efectivo">
+            <div class="f-label">Tienda</div>
+            <input class="f-input" id="f-store" type="text" placeholder="¿Dónde compraste?">
+            <div class="f-grid">
+              <div><div class="f-label">Fecha</div><input class="f-input" id="manual-date" type="text" value="Hoy · 20 sep"></div>
+              <div><div class="f-label">Pago</div><input class="f-input" id="manual-payment" type="text" value="Efectivo"></div>
+              <div><div class="f-label">Moneda</div><input class="f-input" id="manual-currency" type="text" value="COP"></div>
+            </div>
+            <div class="form-note">fecha, pago y moneda vienen por defecto — cámbialos si necesitas</div>
+            <div class="f-label">Items</div>
+            <div id="item-rows">
+              <div class="item-row">
+                <div class="ir-1"><input class="mini-input item-name" type="text" placeholder="Item (ej. Arroz)"><button class="e-del" type="button" title="Quitar item">✕</button></div>
+                <div class="ir-2">
+                  <input class="mini-input" type="text" placeholder="Subcategoría (ej. Almuerzo)">
+                  <input class="mini-input amt item-amt" type="text" inputmode="numeric" placeholder="$ 0">
+                </div>
+                <button class="im-toggle" type="button">＋ motivo</button>
+                <div class="item-motivo"><input class="mini-input" type="text" placeholder="¿Por qué compraste esto? (opcional)"></div>
+              </div>
+            </div>
+            <button class="addrow" id="btn-add-item">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg>
+              Agregar item
+            </button>
+            <div class="totalbar"><span class="lbl">Total · auto = suma de items</span><span class="val" id="gasto-total">$ 0</span></div>
+            <button class="addrow" id="btn-extra" style="margin-top:12px;">Campos adicionales (opcional)<small>📷 foto del recibo · motivo de la compra — el motivo por item va en cada item</small></button>
+            <div class="extra-fields" id="extra-fields">
+              <input class="f-input" type="text" placeholder="📷 Foto del recibo (opcional)">
+              <input class="f-input" type="text" placeholder="Motivo de la compra (opcional)" style="margin-bottom:0;">
+            </div>
+            <div class="form-error" id="manual-error"></div>
+          </div>
+          <div id="f-ingreso" style="display:none;">
+            <div class="f-label">Monto</div>
+            <input class="f-input" id="ing-amount" type="text" inputmode="numeric" placeholder="$ 0">
+            <div class="f-grid">
+              <div><div class="f-label">Fecha</div><input class="f-input" type="text" value="Hoy · 20 sep"></div>
+              <div><div class="f-label">Moneda</div><input class="f-input" type="text" value="COP"></div>
+            </div>
+            <div class="f-label">Fuente de ingreso</div>
+            <input class="f-input" type="text" placeholder="Salario · arriendo · freelance…">
+            <div class="f-label">Nota (opcional)</div>
+            <input class="f-input" type="text" placeholder="Ej: segunda quincena de septiembre">
+            <div class="form-error" id="ing-error"></div>
+          </div>
+        </div>
+        <div class="savebar"><button class="btn-save" id="btnSaveGasto">Guardar gasto</button></div>
+      </div>
+
+      <!-- ============ SCREEN: CONFIRMACIÓN IA (vías foto/voz/texto) ============ -->
+      <div class="overlay" id="scr-confirm">
+        <div class="gform">
+          <div class="form-head">
+            <button class="s-iconbtn" id="confBack">←</button>
+            <h2>Confirma tu gasto</h2>
+          </div>
+          <div class="ai-card">
+            <div class="head"><span class="ai">🤖 IA · ¿esto es correcto?</span><span class="tag" id="confTag">gasto · foto</span></div>
+            <div class="media" id="confMedia">
+              <div class="thumb" id="confThumb">🧾</div>
+              <div><div class="lbl" id="confFileName">Recibo_D1.jpg</div><div class="sub" id="confFileSub">foto · hoy 12:03</div></div>
+            </div>
+            <div class="field"><span class="label">Monto total</span><span class="val" id="confTotal">$ 12.500</span></div>
+            <div class="field"><span class="label">Fecha</span><span class="val" id="confDate">Hoy · 20 sep</span></div>
+            <div class="field"><span class="label">Tienda</span><span class="val" id="confStore">D1</span></div>
+            <div class="f-grid">
+              <div class="field"><span class="label">Pago</span><span class="val" id="confPay">Efectivo</span></div>
+              <div class="field"><span class="label">Moneda</span><span class="val" id="confCur">COP</span></div>
+            </div>
+            <div class="items" id="confItems"></div>
+            <div class="warn" id="confWarn" style="display:none;">⚠️ El total impreso no coincide con la suma de los items — revisa antes de confirmar.</div>
+            <div class="card-actions">
+              <button class="btn btn-confirm" id="btnConfirm">Confirmar</button>
+              <button class="btn btn-edit" id="btnEdit">Editar</button>
+              <button class="btn btn-discard" id="btnDiscard">Descartar</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- toast guardado -->
+      <div class="toast" id="toast">✅ Gasto guardado</div>
+    </div>
+
+    <div class="info">
+      <h3><span class="dot"></span> Flujo completo de la variante B (recomendada en input-variants)</h3>
+      <p>El hub queda limpio en reposo: solo lista + <b>FAB “+ Nuevo gasto”</b>. Un tap abre el bottom sheet Material 3 con las 4 vías, y cada card lleva a su pantalla destino. Las vías con IA terminan en la <b>card de confirmación</b> (Confirmar / Editar / Descartar) y el manual guarda directo con validación.</p>
+      <div class="flow">
+        <div class="step"><span class="n">1</span><div><b>FAB → Sheet</b><br>“¿Cómo quieres registrar?” con 4 cards ilustradas (foto · voz · texto · manual).</div></div>
+        <div class="step"><span class="n">2</span><div><b>📷 Foto → cámara</b><br>obturador + encuadre → “IA extrayendo…” → card con items editables, Pago/Moneda, 🧾 foto chip.</div></div>
+        <div class="step"><span class="n">3</span><div><b>🎤 Voz → grabación</b><br>mic pulsante + timer + onda → “Transcribiendo…” → card IA.</div></div>
+        <div class="step"><span class="n">4</span><div><b>T Texto → sheet</b><br>typewriter demo + chips de ejemplo → “IA interpretando…” → card con 1 item descriptivo, sin foto.</div></div>
+        <div class="step"><span class="n">5</span><div><b>✎ Manual → form</b><br>cuenta · tienda · fecha/pago/moneda por defecto · items auto-suma · campos adicionales colapsados · toggle Gasto/Ingreso → guardar directo (sin IA).</div></div>
+        <div class="step"><span class="n">6</span><div><b>Cierre</b><br>Confirmar → “✅ Gasto guardado” y el recibo aparece en el hub · Editar → form prellenado · Descartar → volver al hub.</div></div>
+      </div>
+      <div class="chiprow"><span class="chip good">1 tap foto</span><span class="chip good">2 taps texto</span><span class="chip">estados demo: permiso · ilegible</span><span class="chip">HU-006</span></div>
+      <ul>
+        <li class="pros">✓ No parece chat en reposo (solo lista + FAB)</li>
+        <li class="pros">✓ Explica cada vía con subtexto (piloto UdeC)</li>
+        <li class="pros">✓ Texto no ocupa altura permanente</li>
+      </ul>
+      <p><b>Demo:</b> toca el FAB y recorre las 4 vías. En cámara usa los botones <i>demo: ilegible / permiso</i> para los estados de fallo. ◐ cambia el tema; ↺ reinicia.</p>
+    </div>
+  </div>
+
+<script>
+(function(){
+  'use strict';
+  var $ = function(id){ return document.getElementById(id); };
+  var OVERLAYS = ['scr-camara','scr-voz','scr-manual','scr-confirm'];
+
+  function show(id){ OVERLAYS.forEach(function(o){ $(o).classList.toggle('active', o === id); }); }
+  function showHub(){ show(null); }
+
+  /* ---------- tema + reinicio ---------- */
+  $('themeBtn').addEventListener('click', function(){
+    var r = document.documentElement;
+    var next = r.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+    r.setAttribute('data-theme', next);
+    try{ localStorage.setItem('flowB-theme', next); }catch(e){}
+  });
+  try{ var t = localStorage.getItem('flowB-theme'); if(t){ document.documentElement.setAttribute('data-theme', t); } }catch(e){}
+  $('restartBtn').addEventListener('click', function(){ location.reload(); });
+
+  /* ---------- toast ---------- */
+  var toastTimer = null;
+  function toast(msg){
+    var el = $('toast'); el.textContent = msg; el.classList.add('show');
+    clearTimeout(toastTimer);
+    toastTimer = setTimeout(function(){ el.classList.remove('show'); }, 2200);
+  }
+
+  /* ---------- sheet B ---------- */
+  function openSheetB(){ $('backdropB').classList.add('show'); $('sheetB').classList.add('show'); }
+  function closeSheetB(){ $('backdropB').classList.remove('show'); $('sheetB').classList.remove('show'); }
+  $('fabBtn').addEventListener('click', openSheetB);
+  $('closeB').addEventListener('click', closeSheetB);
+  $('backdropB').addEventListener('click', closeSheetB);
+
+  /* ---------- card IA (confirmación) ---------- */
+  var currentVariant = null;
+  var VARIANTS = {
+    photo: {
+      tag: 'gasto · foto',
+      thumb: '🧾', name: 'Recibo_D1.jpg', sub: 'foto · hoy 12:03',
+      total: '$ 25.400', date: 'Hoy · 20 sep', store: 'D1', pay: 'Efectivo', cur: 'COP', warn: false,
+      items: [['Arroz Diana 500g','1 × ','$ 3.400','Comida · Almuerzo'],['Huevos x30','1 × ','$ 14.000','Comida · Despensa'],['Panela','1 × ','$ 8.000','Comida · Despensa']]
+    },
+    voice: {
+      tag: 'gasto · voz',
+      thumb: '🎤', name: 'Nota de voz', sub: 'audio · hoy 12:05 · 0:06',
+      total: '$ 15.900', date: 'Hoy · 20 sep', store: 'Subway', pay: 'Tarjeta', cur: 'COP', warn: false,
+      items: [['Combo almuerzo','1 × ','$ 15.900','Comida · Almuerzo']]
+    },
+    text: {
+      tag: 'gasto · texto',
+      thumb: 'T', name: 'Texto interpretado', sub: 'lenguaje natural · hoy 12:07',
+      total: '$ 12.500', date: 'Hoy · 20 sep', store: 'D1', pay: 'Efectivo', cur: 'COP', warn: false,
+      items: [['Almuerzo en D1','—','$ 12.500','Comida · Almuerzo']]
+    }
+  };
+
+  function fillConfirm(variant){
+    var v = VARIANTS[variant];
+    currentVariant = variant;
+    $('confTag').textContent = v.tag;
+    $('confThumb').textContent = v.thumb;
+    $('confFileName').textContent = v.name;
+    $('confFileSub').textContent = v.sub;
+    $('confTotal').textContent = v.total;
+    $('confDate').textContent = v.date;
+    $('confStore').textContent = v.store;
+    $('confPay').textContent = v.pay;
+    $('confCur').textContent = v.cur;
+    $('confWarn').style.display = v.warn ? 'block' : 'none';
+    var box = $('confItems'); box.innerHTML = '';
+    v.items.forEach(function(it){
+      var row = document.createElement('div');
+      row.className = 'it';
+      row.innerHTML = '<span class="qty">' + it[1] + '</span>' +
+        '<input type="text" value="' + it[0] + '" title="Item">' +
+        '<span class="amt">' + it[2] + '</span>' +
+        '<input type="text" value="' + it[3] + '" style="max-width:110px" title="Categoría">';
+      box.appendChild(row);
+    });
+    show('scr-confirm');
+  }
+
+  /* ---------- acciones card IA ---------- */
+  function saveFromConfirm(){
+    var v = VARIANTS[currentVariant];
+    addReceipt(v.store, v.total, v.tag.split('·')[1].trim(), '3 items', 'hoy 12:10');
+    showHub(); toast('✅ Gasto guardado');
+  }
+  $('btnConfirm').addEventListener('click', saveFromConfirm);
+  $('btnDiscard').addEventListener('click', function(){ showHub(); toast('Gasto descartado — no se guardó nada'); });
+  $('btnEdit').addEventListener('click', function(){ openManual(true); });
+  $('confBack').addEventListener('click', showHub);
+
+  /* ---------- agregar recibo al hub ---------- */
+  var receiptCount = 2;
+  function addReceipt(store, total, via, itemsTxt, when){
+    receiptCount++;
+    $('hub-count').textContent = receiptCount;
+    var g = document.createElement('div');
+    g.className = 'receipt-group';
+    g.innerHTML =
+      '<div class="rg-head"><span class="foto">' + via + '</span>' +
+      '<div class="rg-main"><div class="store">' + store + '</div>' +
+      '<div class="meta">' + itemsTxt + ' · ' + when + '</div></div>' +
+      '<span class="total">' + total + '</span></div>' +
+      '<div class="exp-row"><div class="e-main">Registrado por ' + via + '<small>nuevo</small></div><span class="e-amt">' + total + '</span></div>';
+    $('hubList').insertBefore(g, $('hubList').firstChild);
+  }
+
+  /* ---------- vía FOTO ---------- */
+  function resetVf(){ ['vfProcessing','vfDenied','vfUnread'].forEach(function(id){ $(id).classList.remove('show'); }); }
+  function startPhoto(){ resetVf(); show('scr-camara'); }
+  document.querySelectorAll('.sheet-card').forEach(function(card){
+    card.addEventListener('click', function(){
+      closeSheetB();
+      var a = card.getAttribute('data-action');
+      if(a === 'photo') startPhoto();
+      else if(a === 'voice') startVoice();
+      else if(a === 'text') openText();
+      else openManual(false);
+    });
+  });
+  $('camClose').addEventListener('click', showHub);
+  $('camShutter').addEventListener('click', function(){
+    $('vfProcessing').classList.add('show');
+    setTimeout(function(){ $('vfProcessing').classList.remove('show'); fillConfirm('photo'); }, 1400);
+  });
+  $('demoUnread').addEventListener('click', function(){
+    $('vfProcessing').classList.add('show');
+    setTimeout(function(){ $('vfProcessing').classList.remove('show'); $('vfUnread').classList.add('show'); }, 1200);
+  });
+  $('demoDenied').addEventListener('click', function(){ $('vfDenied').classList.add('show'); });
+  $('deniedBack').addEventListener('click', resetVf);
+  $('deniedManual').addEventListener('click', function(){ resetVf(); openManual(false); });
+  $('unreadRetry').addEventListener('click', resetVf);
+  $('unreadManual').addEventListener('click', function(){ resetVf(); openManual(false); });
+
+  /* ---------- vía VOZ ---------- */
+  var vozState = 'idle', vozTicks = 0, vozInt = null;
+  function startVoice(){
+    vozState = 'idle'; vozTicks = 0; $('vozTimer').textContent = '0:00';
+    $('micBtn').classList.remove('rec'); $('vozWave').classList.add('paused');
+    $('vozStop').style.display = 'none'; $('vozSend').style.display = 'none'; $('vozCancel').style.display = '';
+    $('vozStatus').innerHTML = 'Toca el micrófono y di tu gasto.<br><b>“Gasté quince mil en almuerzo en Subway”</b>';
+    show('scr-voz');
+  }
+  function fmtTime(s){ return Math.floor(s/60) + ':' + ('0' + (s%60)).slice(-2); }
+  $('micBtn').addEventListener('click', function(){
+    if(vozState === 'idle' || vozState === 'paused'){
+      vozState = 'rec';
+      $('micBtn').classList.add('rec'); $('vozWave').classList.remove('paused');
+      $('vozStop').style.display = ''; $('vozCancel').style.display = 'none';
+      $('vozStatus').innerHTML = 'Grabando… toca <b>⏹ Terminar</b> cuando listes';
+      vozInt = setInterval(function(){ vozTicks++; $('vozTimer').textContent = fmtTime(vozTicks); }, 1000);
+    } else {
+      vozState = 'paused';
+      $('micBtn').classList.remove('rec'); $('vozWave').classList.add('paused');
+      clearInterval(vozInt);
+      $('vozStatus').innerHTML = 'Pausado — toca 🎤 para seguir o envía a la IA';
+      $('vozSend').style.display = '';
+    }
+  });
+  $('vozStop').addEventListener('click', function(){
+    clearInterval(vozInt); vozState = 'done';
+    $('micBtn').classList.remove('rec'); $('vozWave').classList.add('paused');
+    $('vozStop').style.display = 'none'; $('vozSend').style.display = '';
+    $('vozStatus').innerHTML = '🎧 Grabación lista (' + fmtTime(vozTicks) + ') — <b>Enviar a la IA</b> para transcribir';
+  });
+  $('vozSend').addEventListener('click', function(){
+    if(vozState === 'idle') return;
+    $('vozStatus').innerHTML = '🤖 Transcribiendo…';
+    setTimeout(function(){ fillConfirm('voice'); vozState = 'idle'; }, 1300);
+  });
+  $('vozCancel').addEventListener('click', showHub);
+  $('vozClose').addEventListener('click', showHub);
+
+  /* ---------- vía TEXTO ---------- */
+  var typeTimer = null;
+  function openText(){
+    $('textField').value = '';
+    $('textParsing').classList.remove('show');
+    $('backdropText').classList.add('show'); $('sheetText').classList.add('show');
+    var txt = 'gasté 12.500 en almuerzo en D1', i = 0;
+    clearInterval(typeTimer);
+    typeTimer = setInterval(function(){
+      i++; $('textField').value = txt.slice(0, i);
+      if(i >= txt.length) clearInterval(typeTimer);
+    }, 45);
+  }
+  function closeText(){ $('backdropText').classList.remove('show'); $('sheetText').classList.remove('show'); }
+  $('closeText').addEventListener('click', closeText);
+  $('backdropText').addEventListener('click', closeText);
+  document.querySelectorAll('.ex-chips button').forEach(function(b){
+    b.addEventListener('click', function(){
+      clearInterval(typeTimer);
+      $('textField').value = b.getAttribute('data-fill');
+    });
+  });
+  $('textSend').addEventListener('click', function(){
+    if(!$('textField').value.trim()) return;
+    $('textParsing').classList.add('show');
+    setTimeout(function(){ closeText(); fillConfirm('text'); }, 1200);
+  });
+
+  /* ---------- vía MANUAL ---------- */
+  function openManual(prefilled){
+    $('manualTitle').textContent = prefilled ? 'Editar gasto' : 'Nuevo gasto';
+    $('btnSaveGasto').textContent = prefilled ? 'Guardar cambios' : 'Guardar gasto';
+    $('manual-error').classList.remove('show');
+    if(prefilled && currentVariant){
+      var v = VARIANTS[currentVariant];
+      $('f-store').value = v.store;
+      $('manual-date').value = v.date;
+      $('manual-payment').value = v.pay;
+      $('manual-currency').value = v.cur;
+      setGastoMode();
+      var rows = $('item-rows');
+      rows.innerHTML = '';
+      v.items.forEach(function(it){
+        var r = document.createElement('div');
+        r.className = 'item-row';
+        r.innerHTML = '<div class="ir-1"><input class="mini-input item-name" type="text" value="' + it[0] + '"><button class="e-del" type="button" title="Quitar item">✕</button></div>' +
+          '<div class="ir-2"><input class="mini-input" type="text" value="' + (it[3] || '') + '">' +
+          '<input class="mini-input amt item-amt" type="text" value="' + it[2] + '"></div>';
+        wireItemRow(r);
+        rows.appendChild(r);
+      });
+      recalcTotal();
+    }
+    show('scr-manual');
+  }
+  $('btnBackManual').addEventListener('click', function(){
+    if(currentVariant && $('scr-confirm').classList.contains('active')){ show('scr-confirm'); }
+    else showHub();
+  });
+  function setGastoMode(){
+    $('seg-gasto').classList.add('on'); $('seg-ingreso').classList.remove('on');
+    $('segWrap').classList.remove('income-on');
+    $('f-gasto').style.display = ''; $('f-ingreso').style.display = 'none';
+    $('btnSaveGasto').textContent = $('manualTitle').textContent === 'Editar gasto' ? 'Guardar cambios' : 'Guardar gasto';
+  }
+  $('seg-gasto').addEventListener('click', setGastoMode);
+  $('seg-ingreso').addEventListener('click', function(){
+    $('seg-ingreso').classList.add('on'); $('seg-gasto').classList.remove('on');
+    $('segWrap').classList.add('income-on');
+    $('f-gasto').style.display = 'none'; $('f-ingreso').style.display = '';
+    $('btnSaveGasto').textContent = 'Guardar ingreso';
+  });
+  function wireItemRow(row){
+    row.querySelector('.im-toggle').addEventListener('click', function(){
+      row.querySelector('.item-motivo').classList.toggle('show');
+    });
+    row.querySelector('.e-del').addEventListener('click', function(){
+      if($('item-rows').children.length > 1){ row.remove(); recalcTotal(); }
+    });
+    row.querySelector('.item-amt').addEventListener('input', recalcTotal);
+  }
+  (function(){ var first = document.querySelector('#item-rows .item-row'); wireItemRow(first); })();
+  $('btn-add-item').addEventListener('click', function(){
+    var r = document.createElement('div');
+    r.className = 'item-row';
+    r.innerHTML = '<div class="ir-1"><input class="mini-input item-name" type="text" placeholder="Item (ej. Arroz)"><button class="e-del" type="button" title="Quitar item">✕</button></div>' +
+      '<div class="ir-2"><input class="mini-input" type="text" placeholder="Subcategoría (ej. Almuerzo)">' +
+      '<input class="mini-input amt item-amt" type="text" inputmode="numeric" placeholder="$ 0"></div>' +
+      '<button class="im-toggle" type="button">＋ motivo</button>' +
+      '<div class="item-motivo"><input class="mini-input" type="text" placeholder="¿Por qué compraste esto? (opcional)"></div>';
+    wireItemRow(r);
+    $('item-rows').appendChild(r);
+    r.querySelector('.item-name').focus();
+  });
+  function parseMoney(s){ var n = parseFloat(String(s).replace(/[^0-9,\.]/g,'').replace(/\./g,'').replace(',','.')); return isNaN(n) ? 0 : n; }
+  function recalcTotal(){
+    var sum = 0;
+    document.querySelectorAll('.item-amt').forEach(function(i){ sum += parseMoney(i.value); });
+    $('gasto-total').textContent = '$ ' + sum.toLocaleString('es-CO');
+    return sum;
+  }
+  $('btn-extra').addEventListener('click', function(){ $('extra-fields').classList.toggle('show'); });
+  $('btnSaveGasto').addEventListener('click', function(){
+    if($('seg-ingreso').classList.contains('on')){
+      if(parseMoney($('ing-amount').value) <= 0){
+        $('ing-error').textContent = '⚠️ El monto del ingreso debe ser mayor a 0.';
+        $('ing-error').classList.add('show'); return;
+      }
+      showHub(); toast('✅ Ingreso guardado'); return;
+    }
+    if(!$('f-store').value.trim()){
+      $('manual-error').textContent = '⚠️ Escribe la tienda: ¿dónde compraste?';
+      $('manual-error').classList.add('show'); return;
+    }
+    if(recalcTotal() <= 0){
+      $('manual-error').textContent = '⚠️ Agrega al menos un item con monto mayor a 0.';
+      $('manual-error').classList.add('show'); return;
+    }
+    var n = $('item-rows').children.length;
+    addReceipt($('f-store').value.trim(), '$ ' + recalcTotal().toLocaleString('es-CO'), '✎ manual', n + (n === 1 ? ' item' : ' items'), 'hoy 12:12');
+    currentVariant = null;
+    showHub(); toast('✅ Gasto guardado');
+  });
+})();
+</script>
+</body>
+</html>

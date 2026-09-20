@@ -3,124 +3,77 @@
 ## Setup de infraestructura (Sprint 1 — ANTES de Auth)
 
 ### Repositorios Git
-- [ ] Crear repo backend (FastAPI)
-- [ ] Crear repo frontend (Flutter)
-- [ ] Opcional: monorepo con carpetas `backend/` y `frontend/`
+- [x] Crear repo backend (FastAPI)
+- [x] Crear repo frontend (Flutter)
+- [x] Monorepo con carpetas `finance-ai-backend/` y `finance-ai-frontend/`
 
 ### Backend (FastAPI)
-- [ ] Crear proyecto FastAPI
-- [ ] Virtual environment + dependencias
-  - fastapi, uvicorn, sqlalchemy, psycopg2, python-jose, passlib, bcrypt
-- [ ] Estructura de carpetas:
-  ```
-  backend/
-  ├── app/
-  │   ├── main.py
-  │   ├── routes/
-  │   ├── models/
-  │   ├── schemas/
-  │   ├── services/
-  │   └── config.py
-  ├── requirements.txt
-  ├── Dockerfile
-  └── .env.example
-  ```
-- [ ] Archivo `.env` con variables de entorno
+- [x] Crear proyecto FastAPI con uv
+- [x] Virtual environment + dependencias
+  - fastapi, uvicorn, sqlalchemy, psycopg2, python-jose, passlib, bcrypt, pydantic, alembic
+- [x] Estructura de carpetas modular por features
+- [x] Archivo `.env` con variables de entorno
 
 ### Frontend (Flutter)
-- [ ] Crear proyecto Flutter
-- [ ] Dependencias: http, provider, camera, image_picker, record
-- [ ] Estructura de carpetas:
-  ```
-  frontend/
-  ├── lib/
-  │   ├── main.dart
-  │   ├── screens/
-  │   ├── widgets/
-  │   ├── services/
-  │   └── models/
-  ├── pubspec.yaml
-  └── Dockerfile (opcional)
-  ```
+- [x] Crear proyecto Flutter
+- [x] Dependencias: http, provider, etc.
+- [x] Estructura de carpetas modular por features
+- [x] Scripts de ejecución y build (`run.sh`, `runCloud.sh`)
 
 ### Base de datos (PostgreSQL)
-- [ ] Instalar PostgreSQL (Docker)
-- [ ] Crear base de datos `finance_ai`
-- [ ] Ejecutar `docs/schema.sql` para crear tablas
-- [ ] Configurar usuario y contraseña
-
-### Docker Compose
-- [ ] Crear `docker-compose.yml`:
-  ```yaml
-  services:
-    backend:
-      build: ./backend
-      ports:
-        - "8000:8000"
-      env_file:
-        - ./backend/.env
-      depends_on:
-        - db
-    db:
-      image: postgres:16
-      environment:
-        POSTGRES_DB: finance_ai
-        POSTGRES_USER: postgres
-        POSTGRES_PASSWORD: postgres
-      ports:
-        - "5432:5432"
-      volumes:
-        - pgdata:/var/lib/postgresql/data
-        - ./docs/schema.sql:/docker-entrypoint-initdb.d/schema.sql
-  volumes:
-    pgdata:
-  ```
-
-### API Key (free tier)
-- [ ] Obtener API key de Google AI Studio (Gemini Flash)
-- [ ] Guardar en `.env` como `GEMINI_API_KEY`
-- [ ] **NUNCA** subir `.env` a Git
-
-### Variables de entorno
-```bash
-# .env
-DATABASE_URL=postgresql://postgres:postgres@db:5432/finance_ai
-GEMINI_API_KEY=tu_api_key_aqui
-SECRET_KEY=tu_secret_key_aqui
-```
+- [x] PostgreSQL en Docker (`compose.yaml`)
+- [x] Migraciones Alembic aplicadas
 
 ---
 
-## Sprints
+## Sprints & User Stories Synchronization
 
-> This schedule is synchronized with `docs/BACKLOG-AND-STORIES.md` as of 2026-08-31.
-> Infrastructure setup is pre-Sprint 1 work, not a user story.
+> Synchronized with `docs/BACKLOG-AND-STORIES.md` (15 user stories, 11 PB items).
 
-### Sprint 1 — Authentication
-| Tarea/HU | Prioridad |
-|----------|-----------|
-| HU-001: Register | Alta |
-| HU-002: Login | Alta |
+### Completed Work
+| Story | Feature | Description | Status |
+|---|---|---|---|
+| **HU-001** | PB-001 Identity and access | Registration & starter defaults | ✅ Done |
+| **HU-002** | PB-001 Identity and access | Secure renewable sessions | ✅ Done |
+| **HU-003** | PB-002 Accounts and currencies | Owned accounts & derived balances | ✅ Done |
+| **HU-004** | PB-003 User-owned catalogs | Categories management | ✅ Done |
+| **HU-005** | PB-003 User-owned catalogs | Income sources management | ✅ Done |
 
-### Sprint 2 — Manual expense foundation
-| Tarea/HU | Prioridad |
-|----------|-----------|
-| HU-003: Create expense manually | Media |
-| HU-004: Edit & delete my expenses | Media |
-| HU-005: Find my expenses | Media |
+---
 
-### Sprint 3 — AI-assisted capture
-| Tarea/HU | Prioridad |
-|----------|-----------|
-| HU-006: Photo receipt happy path | Alta |
-| HU-007: Photo capture failure paths | Alta |
-| HU-008: Natural-language text → AI parse | Media |
+### Active Sprint — PB-004 Expenses Foundation
+> **Detailed Execution Plan & 80/20 Architecture Guide:**  
+> Refer to [docs/HU006-PLAN-AND-CORE-CONCEPTS.md](file:///home/d3ad/codigos/finance-ai/docs/HU006-PLAN-AND-CORE-CONCEPTS.md)
 
-### Sprint 4 — Audio capture + Dashboard
-| Tarea/HU | Prioridad |
-|----------|-----------|
-| HU-009: Voice expense happy path | Media — defined (2026-08-31) |
-| HU-011: Voice capture failure paths | Media — defined (2026-08-31) |
-| HU-010: Dashboard by category + date filter | Media — defined (2026-08-31) |
-| Pruebas funcionales | Tarea |
-| Encuesta de usabilidad | Tarea |
+| Story | Priority | Points | Description | Status |
+|---|---|---|---|---|
+| **HU-006** | High | 5 | **Manual expense**: Record expense with only essential info (account, amount, merchant) quickly without AI or receipt. | 🟡 In Progress |
+| **HU-008** | High | 5 | **Expense correction & permanent deletion**: Edit & delete manual expenses, atomic rollback. | ⏳ Planned |
+
+---
+
+### Upcoming Sprints Roadmap
+
+#### Sprint: PB-005 Income & PB-006 Transfers
+| Story | Priority | Points | Description |
+|---|---|---|---|
+| **HU-009** | High | 3 | **Income lifecycle**: Record and manage income in an account. |
+| **HU-010** | High | 3 | **Transfers**: Atomic movement between owned accounts. |
+
+#### Sprint: PB-007 History & PB-008 Financial Dashboard
+| Story | Priority | Points | Description |
+|---|---|---|---|
+| **HU-011** | High | 3 | **Transaction history & filters**: Search and inspect expenses, income, and transfers. |
+| **HU-012** | High | 5 | **Basic financial dashboard**: Deterministic balances, period & category views. |
+
+#### Sprint: PB-009 & PB-010 AI Capture Layer
+| Story | Priority | Points | Description |
+|---|---|---|---|
+| **HU-013** | High | 5 | **AI text capture**: Natural language expense entry. |
+| **HU-014** | High | 5 | **AI voice capture**: Audio microphone input. |
+| **HU-015** | High | 8 | **AI receipt photo**: Photo receipt proposal and item extraction. |
+
+#### Sprint: PB-011 Budgets
+| Story | Priority | Points | Description |
+|---|---|---|---|
+| **HU-016** | Medium | 1 | **Spending budgets**: Weekly/monthly category targets and progress. |

@@ -177,30 +177,54 @@
     justify-content:center;
   }
 
-  /* input area: oval Gasto/Ingreso toggle on top + photo(mic,text) row below */
-  .inputbar{
-    flex:0 0 auto;display:flex;flex-direction:column;gap:10px;
-    background:var(--card);border-top:1px solid var(--line);padding:10px 12px 12px;
+  /* capture launcher: circular button (GTA weapon-wheel trigger) */
+  #screen-gastos{position:relative;}
+  #screen-gastos .screen-body{padding-bottom:96px;}
+  .wheel-fab{
+    position:absolute;right:18px;bottom:18px;z-index:30;
+    width:64px;height:64px;border-radius:50%;border:3px solid var(--primary-dark);
+    background:var(--primary);color:#fff;cursor:pointer;
+    display:flex;align-items:center;justify-content:center;
+    box-shadow:0 6px 16px rgba(107,142,0,.4);
   }
-  .input-row{display:flex;align-items:center;gap:10px;}
-  .shutter{
-    width:56px;height:56px;border-radius:50%;flex:0 0 56px;
-    background:var(--primary);border:3px solid var(--primary-dark);
-    display:flex;align-items:center;justify-content:center;color:#fff;
-    cursor:pointer;box-shadow:0 2px 6px rgba(107,142,0,.35);
+  .wheel-fab:active{transform:scale(.94);}
+  .wheel-fab svg{transition:transform .25s ease;}
+  .wheel-fab.open svg{transform:rotate(45deg);}
+
+  /* radial capture menu: small option bubbles fan out from the launcher button */
+  .wheel-scrim{
+    position:absolute;inset:0;z-index:44;
+    background:rgba(15,23,42,.22);opacity:0;pointer-events:none;transition:opacity .2s ease;
   }
-  .shutter:active{transform:scale(.95);}
-  .mic-btn{
-    width:46px;height:46px;border-radius:50%;flex:0 0 46px;
-    background:var(--soft);border:none;display:flex;align-items:center;justify-content:center;
-    color:var(--text);cursor:pointer;
+  .wheel-scrim.show{opacity:1;pointer-events:auto;}
+  .wheel-menu{position:absolute;right:0;bottom:0;width:360px;height:400px;z-index:45;pointer-events:none;}
+  .wheel-item{
+    position:absolute;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;
+    width:54px;height:54px;border-radius:50%;
+    background:var(--card);border:1px solid var(--line);cursor:pointer;
+    box-shadow:0 4px 12px rgba(15,23,42,.10);
+    opacity:0;transform:scale(.35);transform-origin:bottom right;
+    transition:transform .22s cubic-bezier(.34,1.4,.5,1), opacity .18s ease, border-color .15s, background .15s;
   }
-  .mic-btn:active{transform:scale(.95);}
-  .textfield{
-    flex:1;background:var(--soft);border-radius:24px;padding:13px 16px;border:none;
-    font-size:14px;color:var(--text);outline:none;
+  .wheel-menu.open .wheel-item{opacity:1;transform:none;transition-delay:calc(var(--i,0)*50ms);pointer-events:auto;}
+  .wheel-item:hover,.wheel-item:focus-visible{border-color:var(--primary);background:var(--primary-soft);}
+  .wheel-item:active{transform:scale(.92);}
+  .wheel-item .wi-ic{font-size:19px;line-height:1;font-weight:800;color:var(--text);}
+  .wheel-item .wi-lb{font-size:8.5px;font-weight:700;color:var(--muted);letter-spacing:.02em;}
+  .wheel-item:hover .wi-ic,.wheel-item:hover .wi-lb,.wheel-item:focus-visible .wi-ic,.wheel-item:focus-visible .wi-lb{color:var(--primary);}
+  .wheel-demo{
+    position:absolute;right:18px;bottom:216px;display:flex;align-items:center;gap:5px;flex-wrap:wrap;
+    padding:6px 10px;background:var(--card);border:1px solid var(--line);border-radius:12px;
+    box-shadow:0 4px 12px rgba(15,23,42,.10);
+    opacity:0;transform:translateY(8px);transition:transform .2s ease, opacity .18s ease;
   }
-  .textfield::placeholder{color:var(--ph);}
+  .wheel-menu.open .wheel-demo{opacity:1;transform:none;transition-delay:calc(4*50ms);pointer-events:auto;}
+  .wheel-demo span{color:var(--muted);font-size:10px;font-weight:600;}
+  .wheel-demo button{
+    border:1px dashed var(--line);background:var(--soft-2);color:var(--muted);
+    border-radius:7px;padding:4px 8px;font-size:10px;cursor:pointer;
+  }
+  .wheel-demo button:hover{border-color:var(--primary);color:var(--primary);}
 
   /* ---------- GASTOS (list) & NUEVO GASTO (manual form) ---------- */
   .gastos{padding:8px 16px 16px;overflow-y:auto;flex:1;}
@@ -229,24 +253,43 @@
   .f-input::placeholder{color:var(--ph);}
   .f-grid{display:flex;gap:10px;}
   .f-grid>*{flex:1;}
-  .item-row{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:10px;margin-bottom:8px;}
-  .item-row .ir-1{display:flex;gap:8px;margin-bottom:8px;align-items:center;}
-  .item-row .ir-1 .mini-input{flex:1;min-width:0;}
-  .item-row .ir-2{display:flex;gap:8px;}
-  .im-toggle{margin-top:7px;background:none;border:none;padding:0;color:var(--muted);font-size:11px;font-weight:600;cursor:pointer;display:inline-flex;align-items:center;gap:4px;}
-  .im-toggle:hover{color:var(--primary);}
-  .item-motivo{display:none;margin-top:8px;}
-  .item-motivo.show{display:block;}
-  .item-motivo .mini-input{font-size:12px;}
-  .mini-input{width:100%;background:var(--soft);border:none;border-radius:8px;padding:9px 10px;font-size:13px;color:var(--text);outline:none;}
-  .mini-input::placeholder{color:var(--ph);}
-  .mini-input.amt{text-align:right;font-weight:600;}
-  .totalbar{display:flex;justify-content:space-between;align-items:center;background:var(--primary-soft);border-radius:12px;padding:12px 14px;margin-top:12px;}
-  .totalbar .lbl{font-size:12px;font-weight:700;color:var(--primary);}
-  .totalbar .val{font-size:18px;font-weight:700;color:var(--text);}
-  .extra-fields{display:none;background:var(--card);border:1px solid var(--line);border-radius:12px;padding:10px;margin-top:8px;}
-  .extra-fields.show{display:block;}
-  .extra-fields .f-input{margin-bottom:8px;background:var(--soft);border:none;}
+  /* HU-006 Fast Manual Expense & HU-005 Income capture */
+  .hero-amount-box{
+    display:flex;align-items:center;justify-content:center;gap:6px;
+    background:var(--card);border:1px solid var(--line);border-radius:18px;
+    padding:16px;margin:8px 0 12px;box-shadow:0 2px 8px rgba(15,23,42,.03);
+  }
+  .hero-amount-box.inc .ha-symbol, .hero-amount-box.inc .ha-input{color:var(--income);}
+  .ha-symbol{font-size:26px;font-weight:800;color:var(--text);}
+  .ha-input{
+    font-size:32px;font-weight:800;color:var(--text);border:none;background:none;outline:none;
+    width:220px;text-align:left;font-family:inherit;
+  }
+  .ha-input::placeholder{color:var(--ph);font-weight:600;}
+
+  .account-chips{display:flex;gap:7px;flex-wrap:wrap;margin:4px 0 10px;}
+  .achip{
+    padding:8px 12px;border-radius:10px;border:1px solid var(--line);background:var(--card);
+    font-size:12px;font-weight:600;color:var(--text);cursor:pointer;
+    transition:all .15s ease;
+  }
+  .achip:hover{border-color:var(--primary);background:var(--primary-soft);}
+  .achip.on{background:var(--primary);border-color:var(--primary);color:#fff;}
+  .achip.on:hover{background:var(--primary-dark);border-color:var(--primary-dark);}
+
+  .toggle-optional-btn{
+    width:100%;display:flex;align-items:center;justify-content:space-between;
+    background:none;border:none;padding:10px 2px 6px;color:var(--muted);
+    font-size:11.5px;font-weight:700;cursor:pointer;margin-top:6px;
+  }
+  .toggle-optional-btn:hover{color:var(--text);}
+  .toggle-optional-btn .to-chev{transition:transform .2s ease;}
+  .toggle-optional-btn.open .to-chev{transform:rotate(180deg);}
+
+  .optional-fields{
+    background:var(--soft-2);border:1px solid var(--line);border-radius:14px;
+    padding:12px;margin-bottom:10px;
+  }
   .savebar{padding:10px 16px 14px;background:var(--card);border-top:1px solid var(--line);}
   .btn-save{width:100%;padding:13px;border-radius:12px;border:none;background:var(--confirm);color:#fff;font-weight:700;font-size:14px;cursor:pointer;}
   .btn-save:active{transform:scale(.98);}
@@ -260,6 +303,117 @@
 
   /* empty state / saved note (single hub) */
   .empty-hint{margin:auto 0;text-align:center;font-size:13px;color:var(--muted);padding:24px 16px;line-height:1.6;}
+
+  /* Dedicated Capture Preview Screen */
+  .capture-input-preview{margin-bottom:10px;}
+  .photo-strip-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;}
+  .photo-strip-head .ps-label{font-size:11px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.3px;}
+  .btn-add-page{
+    background:none;border:1px dashed var(--primary);color:var(--primary);
+    border-radius:8px;padding:4px 8px;font-size:11px;font-weight:700;cursor:pointer;
+    display:inline-flex;align-items:center;gap:4px;
+  }
+  .btn-add-page:hover{background:var(--primary-soft);}
+  .photo-strip{display:flex;gap:8px;overflow-x:auto;padding-bottom:4px;}
+  .ps-item{
+    display:flex;align-items:center;gap:10px;background:var(--card);border:1px solid var(--line);
+    border-radius:12px;padding:8px 12px;flex:1;min-width:180px;box-shadow:0 2px 6px rgba(15,23,42,.03);
+  }
+  .ps-thumb{
+    width:38px;height:38px;border-radius:9px;background:var(--thumb);
+    display:flex;align-items:center;justify-content:center;color:var(--muted);flex:0 0 38px;
+  }
+  .ps-meta .ps-name{font-size:12px;font-weight:700;color:var(--text);}
+  .ps-meta .ps-size{font-size:10.5px;color:var(--muted);}
+
+  /* Voice player preview */
+  .voice-player-card{
+    background:var(--card);border:1px solid var(--line);border-radius:14px;padding:12px 14px;
+    box-shadow:0 2px 6px rgba(15,23,42,.03);
+  }
+  .vp-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;}
+  .vp-badge{font-size:11px;font-weight:700;color:var(--primary);}
+  .vp-duration{font-size:11px;color:var(--muted);font-weight:600;}
+  .vp-wave{display:flex;align-items:center;gap:4px;height:32px;margin:6px 0 10px;}
+  .wave-bar{width:4px;border-radius:2px;background:var(--primary);}
+  .vp-transcript{font-size:12px;color:var(--text);font-style:italic;background:var(--soft);border-radius:8px;padding:8px 10px;line-height:1.4;}
+
+  /* Text preview */
+  .text-preview-card{
+    background:var(--card);border:1px solid var(--line);border-radius:14px;padding:12px 14px;
+    box-shadow:0 2px 6px rgba(15,23,42,.03);
+  }
+  .text-preview-card .tp-label{font-size:11px;color:var(--muted);font-weight:700;text-transform:uppercase;margin-bottom:4px;}
+  .text-preview-card .tp-content{font-size:13px;color:var(--text);font-weight:600;}
+  /* hub summary + modern transaction feed */
+  .hub-summary{
+    background:var(--card);border:1px solid var(--line);border-radius:18px;padding:14px 16px;
+    display:flex;align-items:center;justify-content:space-between;box-shadow:0 2px 8px rgba(15,23,42,.03);
+    margin-bottom:6px;
+  }
+  .hub-summary .hs-main .hs-lbl{font-size:10.5px;color:var(--muted);font-weight:700;text-transform:uppercase;letter-spacing:.3px;}
+  .hub-summary .hs-main .hs-val{font-size:22px;font-weight:800;color:var(--text);margin-top:2px;}
+  .hub-summary .hs-tags{display:flex;flex-direction:column;align-items:flex-end;gap:3px;font-size:11px;font-weight:700;}
+  .hub-summary .hs-inc{color:var(--income);}
+  .hub-summary .hs-exp{color:var(--discard);}
+
+  .hist-head{display:flex;align-items:baseline;justify-content:space-between;margin:4px 2px 6px;}
+  .hist-head .ht{font-size:13px;font-weight:800;color:var(--text);letter-spacing:-.01em;}
+  .hist-head .hc{font-size:11px;color:var(--muted);font-weight:500;}
+
+  .tx-feed{display:flex;flex-direction:column;gap:9px;}
+  .tx-card{
+    background:var(--card);border:1px solid var(--line);border-radius:16px;
+    box-shadow:0 2px 8px rgba(15,23,42,.03);overflow:hidden;
+    transition:border-color .15s ease, box-shadow .15s ease;
+  }
+  .tx-card:hover{border-color:rgba(107,142,0,.35);}
+  .tx-head{
+    display:flex;align-items:center;gap:12px;padding:12px 14px;cursor:pointer;
+    user-select:none;
+  }
+  .tx-icon{
+    width:42px;height:42px;border-radius:13px;display:flex;align-items:center;justify-content:center;
+    font-size:19px;flex:0 0 42px;background:var(--soft);
+  }
+  .tx-icon.ic-market{background:var(--primary-soft);color:var(--primary);}
+  .tx-icon.ic-food{background:#FEF3C7;color:#D97706;}
+  .tx-icon.ic-income{background:var(--income-soft);color:var(--income);}
+  .tx-icon.ic-transport{background:#E0E7FF;color:#4F46E5;}
+  .tx-info{flex:1;min-width:0;}
+  .tx-title{font-size:14.5px;font-weight:700;color:var(--text);line-height:1.2;}
+  .tx-sub{font-size:11px;color:var(--muted);margin-top:3px;display:flex;align-items:center;gap:6px;}
+  .tx-source-tag{
+    font-size:9.5px;font-weight:700;padding:1px 5px;border-radius:5px;
+    background:var(--soft);color:var(--muted);display:inline-flex;align-items:center;gap:2px;
+  }
+  .tx-amt-box{text-align:right;white-space:nowrap;}
+  .tx-amt{font-size:14px;font-weight:800;color:var(--text);}
+  .tx-amt.pos{color:var(--income);}
+  .tx-chev{font-size:10px;color:var(--muted);margin-left:4px;transition:transform .2s ease;display:inline-block;}
+  .tx-card.open .tx-chev{transform:rotate(180deg);}
+
+  .tx-body{display:none;background:var(--soft-2);border-top:1px solid var(--rowline);padding:10px 14px 12px;}
+  .tx-card.open .tx-body{display:block;}
+  .tx-items{display:flex;flex-direction:column;gap:7px;margin-bottom:10px;}
+  .tx-item-row{display:flex;justify-content:space-between;align-items:baseline;font-size:12.5px;color:var(--text);}
+  .tx-item-row .tir-name{font-weight:600;}
+  .tx-item-row .tir-cat{font-size:10.5px;color:var(--muted);display:block;}
+  .tx-item-row .tir-price{font-weight:700;color:var(--text);}
+
+  .tx-actions{display:flex;gap:8px;justify-content:flex-end;border-top:1px dashed var(--line);padding-top:8px;}
+  .btn-tx-edit,.btn-tx-del{
+    border:none;border-radius:8px;padding:6px 11px;font-size:11px;font-weight:700;cursor:pointer;
+    display:inline-flex;align-items:center;gap:4px;transition:all .15s ease;
+  }
+  .btn-tx-edit{background:var(--primary-soft);color:var(--primary-dark);}
+  .btn-tx-edit:hover{background:var(--primary);color:#fff;}
+  .btn-tx-del{background:var(--soft);color:var(--discard);}
+  .btn-tx-del:hover{background:var(--discard);color:#fff;}
+  .hub-empty{display:none;margin:auto 0;text-align:center;padding:28px 20px;line-height:1.5;}
+  .hub-empty .he-icon{width:64px;height:64px;margin:0 auto 10px;border-radius:50%;background:var(--primary-soft);display:flex;align-items:center;justify-content:center;font-size:26px;}
+  .hub-empty .he-title{font-size:14px;font-weight:800;color:var(--text);margin-bottom:4px;}
+  .hub-empty .he-sub{font-size:12px;color:var(--muted);}
   .saved-note{align-self:center;background:var(--income-soft);color:var(--income);font-size:13px;font-weight:700;padding:10px 16px;border-radius:12px;}
   /* search & filter chips (Mis gastos) */
   .chips{display:flex;gap:6px;flex-wrap:wrap;margin:8px 0 12px;}
@@ -269,9 +423,6 @@
   .date-filter label{flex:1;font-size:10px;color:var(--muted);font-weight:700;text-transform:uppercase;letter-spacing:.3px;}
   .date-filter input{display:block;width:100%;margin-top:4px;background:var(--card);border:1px solid var(--line);border-radius:8px;padding:8px;font-size:12px;color:var(--text);}
   .search-empty{display:none;text-align:center;color:var(--muted);font-size:13px;padding:28px 12px;}
-  .demo-tools{display:flex;align-items:center;gap:5px;flex-wrap:wrap;padding-top:2px;font-size:10px;color:var(--muted);}
-  .demo-tools button{border:1px dashed var(--line);background:var(--card);color:var(--muted);border-radius:7px;padding:4px 7px;font-size:10px;cursor:pointer;}
-  .demo-tools button:hover{border-color:var(--primary);color:var(--primary);}
   .form-error{display:none;color:var(--discard);background:var(--soft);border-radius:8px;padding:9px 10px;margin:10px 0 0;font-size:12px;line-height:1.4;}
 
   /* ---------- NAV (Material-3 style: pill highlight on active icon) ---------- */
@@ -657,29 +808,245 @@
     </div>
 
     <div class="screen-body">
-      <div class="empty-hint" id="empty-hint">📷 foto o escribe un gasto · ✍️ manual — la IA prepara una vista previa y tú confirmas</div>
-      
-      <div id="ai-flow" style="display:none;">
-      <!-- AI confirmation card — demo: appears after capture (📷 / 🎤 / Enter) -->
-      <div id="ai-demo" style="display:none;">
-      <!-- user message: receipt photo (GASTO) -->
-      <div class="msg user" id="ai-source-message">
-        <div class="media">
-          <div class="thumb" id="ai-source-thumb">
-            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 10h18M6 14h2M11 14h2"/></svg>
+      <div class="empty-hint" id="empty-hint" style="display:none;">toca <b>＋</b> y elige cómo capturar: 📷 foto · 🎤 voz · T texto · ✎ manual — la IA prepara una vista previa y tú confirmas</div>
+
+      <!-- hub history: mirrors financial_transaction (source) > receipt (store, total) > expense (items) -->
+      <div class="hub-empty" id="hub-empty">
+        <div class="he-icon">🧾</div>
+        <div class="he-title">Aún no tienes movimientos</div>
+        <div class="he-sub">toca <b>＋</b> y elige cómo capturar: 📷 foto · 🎤 voz · T texto · ✎ manual — la IA prepara una vista previa y tú confirmas</div>
+      </div>
+
+      <!-- Quick balance summary card -->
+      <div class="hub-summary" id="hub-summary">
+        <div class="hs-main">
+          <div class="hs-lbl">Balance de agosto</div>
+          <div class="hs-val">$ 1.450.700</div>
+        </div>
+        <div class="hs-tags">
+          <span class="hs-inc">+$ 1.500.000</span>
+          <span class="hs-exp">-$ 49.300</span>
+        </div>
+      </div>
+
+      <div class="hist-head" id="hist-head">
+        <span class="ht">Historial reciente</span>
+        <span class="hc" id="hist-count">4 movimientos</span>
+      </div>
+      <div class="tx-feed" id="hub-history">
+        <!-- D1 -->
+        <div class="tx-card receipt-group" data-type="expense" data-store="D1" data-total="$ 25.400" data-source="photo">
+          <div class="tx-head rg-toggle">
+            <div class="tx-icon ic-market">🛒</div>
+            <div class="tx-info">
+              <div class="tx-title">D1</div>
+              <div class="tx-sub">
+                <span class="tx-source-tag">📷 Foto</span>
+                <span>hoy 12:03 · 3 items</span>
+              </div>
+            </div>
+            <div class="tx-amt-box">
+              <span class="tx-amt total">$ 25.400</span>
+              <span class="tx-chev chev">▾</span>
+            </div>
           </div>
-          <div class="meta">
-            <div class="lbl" id="ai-source-label">Recibo_mercado.jpg</div>
-            <div class="sub" id="ai-source-meta">gasto · foto · hoy 12:03</div>
+          <div class="tx-body rg-items">
+            <div class="tx-items">
+              <div class="tx-item-row"><div class="tir-name">Arroz Diana 500g<span class="tir-cat">Comida · Almuerzo</span></div><span class="tir-price">$ 3.400</span></div>
+              <div class="tx-item-row"><div class="tir-name">Huevos x30<span class="tir-cat">Comida · Despensa</span></div><span class="tir-price">$ 14.000</span></div>
+              <div class="tx-item-row"><div class="tir-name">Panela<span class="tir-cat">Comida · Despensa</span></div><span class="tir-price">$ 8.000</span></div>
+            </div>
+            <div class="tx-actions">
+              <button class="btn-tx-edit exp-edit-item" type="button"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M12 20h9M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg> Editar</button>
+              <button class="btn-tx-del exp-del-item" type="button">✕ Quitar</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Subway -->
+        <div class="tx-card receipt-group" data-type="expense" data-store="Subway" data-total="$ 15.900" data-source="text">
+          <div class="tx-head rg-toggle">
+            <div class="tx-icon ic-food">🍔</div>
+            <div class="tx-info">
+              <div class="tx-title">Subway</div>
+              <div class="tx-sub">
+                <span class="tx-source-tag">T Texto</span>
+                <span>ayer 13:10 · 1 item</span>
+              </div>
+            </div>
+            <div class="tx-amt-box">
+              <span class="tx-amt total">$ 15.900</span>
+              <span class="tx-chev chev">▾</span>
+            </div>
+          </div>
+          <div class="tx-body rg-items">
+            <div class="tx-items">
+              <div class="tx-item-row"><div class="tir-name">Combo almuerzo<span class="tir-cat">Comida · Almuerzo</span></div><span class="tir-price">$ 15.900</span></div>
+            </div>
+            <div class="tx-actions">
+              <button class="btn-tx-edit exp-edit-item" type="button"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M12 20h9M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg> Editar</button>
+              <button class="btn-tx-del exp-del-item" type="button">✕ Quitar</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Salario -->
+        <div class="tx-card receipt-group" data-type="income" data-store="Salario" data-total="1500000" data-source="manual">
+          <div class="tx-head rg-toggle">
+            <div class="tx-icon ic-income">💰</div>
+            <div class="tx-info">
+              <div class="tx-title">Salario</div>
+              <div class="tx-sub">
+                <span class="tx-source-tag">＋ Ingreso</span>
+                <span>30 ago · Cuenta Principal</span>
+              </div>
+            </div>
+            <div class="tx-amt-box">
+              <span class="tx-amt total pos">+ $ 1.500.000</span>
+              <span class="tx-chev chev">▾</span>
+            </div>
+          </div>
+          <div class="tx-body rg-items">
+            <div class="tx-items">
+              <div class="tx-item-row"><div class="tir-name">Sueldo de agosto<span class="tir-cat">Fuente: Nómina empresa</span></div><span class="tir-price pos">+ $ 1.500.000</span></div>
+            </div>
+            <div class="tx-actions">
+              <button class="btn-tx-edit exp-edit-item" type="button"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M12 20h9M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg> Editar</button>
+              <button class="btn-tx-del exp-del-item" type="button">✕ Quitar</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Transporte -->
+        <div class="tx-card receipt-group" data-type="expense" data-store="Transporte" data-total="$ 8.000" data-source="manual">
+          <div class="tx-head rg-toggle">
+            <div class="tx-icon ic-transport">🚌</div>
+            <div class="tx-info">
+              <div class="tx-title">Transporte</div>
+              <div class="tx-sub">
+                <span class="tx-source-tag">✎ Manual</span>
+                <span>29 ago · 2 items</span>
+              </div>
+            </div>
+            <div class="tx-amt-box">
+              <span class="tx-amt total">$ 8.000</span>
+              <span class="tx-chev chev">▾</span>
+            </div>
+          </div>
+          <div class="tx-body rg-items">
+            <div class="tx-items">
+              <div class="tx-item-row"><div class="tir-name">Bus<span class="tir-cat">Transporte · Bus</span></div><span class="tir-price">$ 5.000</span></div>
+              <div class="tx-item-row"><div class="tir-name">Metro<span class="tir-cat">Transporte · Metro</span></div><span class="tir-price">$ 3.000</span></div>
+            </div>
+            <div class="tx-actions">
+              <button class="btn-tx-edit exp-edit-item" type="button"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M12 20h9M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg> Editar</button>
+              <button class="btn-tx-del exp-del-item" type="button">✕ Quitar</button>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <div class="saved-note" id="saved-note" style="display:none;">✅ Gasto guardado · $ 12.500</div>
+    </div>
+
+    <!-- capture launcher: tap to open the GTA-style radial capture wheel -->
+    <button class="wheel-fab" id="wheel-fab" title="Nuevo gasto — abrir la rueda de captura">
+      <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg>
+    </button>
+
+    <!-- radial capture menu: options pop out from the launcher button -->
+    <div class="wheel-scrim" id="wheel-scrim"></div>
+    <div class="wheel-menu" id="wheel-menu" aria-hidden="true">
+      <div class="wheel-demo" aria-label="Estados de demostración del mockup">
+        <span>Demo:</span>
+        <button type="button" data-demo-state="partial">Parcial</button>
+        <button type="button" data-demo-state="unreadable">No legible</button>
+        <button type="button" data-demo-state="timeout">Timeout</button>
+        <button type="button" data-demo-state="permission">Permiso</button>
+      </div>
+      <button class="wheel-item" data-capture="photo" style="--i:0;right:23px;bottom:150px;"><span class="wi-ic">📷</span><span class="wi-lb">Foto</span></button>
+      <button class="wheel-item" data-capture="audio" style="--i:1;right:87px;bottom:133px;"><span class="wi-ic">🎤</span><span class="wi-lb">Voz</span></button>
+      <button class="wheel-item" data-capture="text" style="--i:2;right:133px;bottom:87px;"><span class="wi-ic">T</span><span class="wi-lb">Texto</span></button>
+      <button class="wheel-item" data-capture="manual" style="--i:3;right:150px;bottom:23px;"><span class="wi-ic">✎</span><span class="wi-lb">Manual</span></button>
+    </div>
+  </div>
+
+  <!-- ============ SCREEN: REVISAR CAPTURA IA (Dedicated screen: Foto / Voz / Texto) ============ -->
+  <div class="screen" id="screen-capture-preview">
+    <div class="app-header">
+      <div style="display:flex;align-items:center;gap:10px;">
+        <button class="iconbtn" id="btn-back-capture" title="Volver a Gastos">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+        </button>
+        <div>
+          <div class="title" id="capture-screen-title">Revisar captura</div>
+          <div class="sub" id="capture-screen-sub">la IA extrajo los datos para tu confirmación</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="screen-body">
+      <!-- Input Preview Strip -->
+      <div class="capture-input-preview" id="capture-input-preview">
+        <!-- Photo multi-evidence strip -->
+        <div id="preview-photo-strip">
+          <div class="photo-strip-head">
+            <span class="ps-label" id="photo-strip-count">Fotos del recibo (1)</span>
+            <button type="button" class="btn-add-page" id="btn-add-page">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg>
+              Agregar otra foto / página
+            </button>
+          </div>
+          <div class="photo-strip" id="photo-strip-list">
+            <div class="ps-item">
+              <div class="ps-thumb">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 10h18M6 14h2M11 14h2"/></svg>
+              </div>
+              <div class="ps-meta">
+                <div class="ps-name">Recibo_página_1.jpg</div>
+                <div class="ps-size">Página principal · 1.2 MB</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Voice Memo Player Strip -->
+        <div id="preview-voice-strip" style="display:none;">
+          <div class="voice-player-card">
+            <div class="vp-head">
+              <span class="vp-badge">🎤 Grabación de voz</span>
+              <span class="vp-duration">0:08</span>
+            </div>
+            <div class="vp-wave">
+              <div class="wave-bar" style="height:12px;"></div>
+              <div class="wave-bar" style="height:24px;"></div>
+              <div class="wave-bar" style="height:18px;"></div>
+              <div class="wave-bar" style="height:32px;"></div>
+              <div class="wave-bar" style="height:28px;"></div>
+              <div class="wave-bar" style="height:16px;"></div>
+              <div class="wave-bar" style="height:22px;"></div>
+              <div class="wave-bar" style="height:30px;"></div>
+              <div class="wave-bar" style="height:14px;"></div>
+              <div class="wave-bar" style="height:20px;"></div>
+            </div>
+            <div class="vp-transcript">"Almorcé en Subway un combo de almuerzo por quince mil novecientos con Efectivo"</div>
+          </div>
+        </div>
+
+        <!-- Text input strip -->
+        <div id="preview-text-strip" style="display:none;">
+          <div class="text-preview-card">
+            <div class="tp-label">Texto ingresado:</div>
+            <div class="tp-content" id="preview-text-content">"Almorcé en Subway combo de almuerzo 15900"</div>
           </div>
         </div>
       </div>
 
-      <!-- AI confirmation card with ALL receipt items (GASTO) -->
+      <!-- AI Confirmation Card -->
       <div class="card" id="ai-card">
         <div class="head">
-          <span class="ai">IA · ¿esto es correcto?</span>
-          <span class="tag">gasto · listo para guardar</span>
+          <span class="ai">✨ IA · Datos extraídos</span>
+          <span class="tag">revisa y confirma</span>
         </div>
 
         <div class="field"><span class="label">Tienda</span><span class="val">D1</span></div>
@@ -700,12 +1067,13 @@
         </div>
 
         <div class="card-actions">
-          <button class="btn btn-confirm">Confirmar</button>
+          <button class="btn btn-confirm">Confirmar y guardar</button>
           <button class="btn btn-edit">Editar</button>
           <button class="btn btn-discard">Descartar</button>
         </div>
       </div>
 
+      <!-- Failure Card (demo states) -->
       <div class="card failure-card" id="ai-failure" style="display:none;">
         <div class="head">
           <span class="failure-title" id="failure-title">No pudimos leer el recibo</span>
@@ -721,7 +1089,7 @@
         </div>
       </div>
 
-      <!-- INLINE EDIT VIEW — aparece al pulsar "Editar" en la tarjeta de IA -->
+      <!-- Inline edit view -->
       <div class="card" id="ai-edit-card" style="display:none;">
         <div class="head">
           <span class="ai">Editando gasto</span>
@@ -782,38 +1150,10 @@
           <button class="btn btn-cancel" id="e-cancel" type="button">Cancelar</button>
         </div>
       </div>
-
-      </div>
-      <div class="saved-note" id="saved-note" style="display:none;">✅ Gasto guardado · $ 12.500</div>
-    </div>
-
-    </div>
-
-    <!-- capture bar: photo · voice · text (one AI parse, one confirmation card — NOT a chat) -->
-    <div class="inputbar">
-      <div class="input-row">
-        <button class="shutter" title="Tomar foto">
-          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg>
-        </button>
-        <button class="mic-btn" title="Dictar">
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2M12 19v4"/></svg>
-        </button>
-        <button class="mic-btn" id="btn-open-form" title="Agregar gasto manual">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>
-        </button>
-        <input class="textfield" id="capture-field" type="text" placeholder="gasté 15 mil en almuerzo en Subway…">
-      </div>
-      <div class="demo-tools" aria-label="Estados de demostración del mockup">
-        <span>Demo:</span>
-        <button type="button" data-demo-state="partial">Parcial</button>
-        <button type="button" data-demo-state="unreadable">No legible</button>
-        <button type="button" data-demo-state="timeout">Timeout</button>
-        <button type="button" data-demo-state="permission">Permiso</button>
-      </div>
     </div>
   </div>
 
-  <!-- ============ SCREEN: NUEVO GASTO (manual form, HU-003) ============ -->
+  <!-- ============ SCREEN: NUEVO GASTO / INGRESO MANUAL (HU-006 & HU-005) ============ -->
   <div class="screen" id="screen-gasto-nuevo">
     <div class="gform">
       <div class="form-head">
@@ -821,75 +1161,90 @@
         <h2 id="form-title">Nuevo gasto</h2>
       </div>
 
-      <div class="seg" style="margin:10px 0 2px;">
+      <div class="seg" style="margin:8px 0 6px;">
         <button class="on" id="seg-gasto">Gasto</button>
         <button id="seg-ingreso">Ingreso</button>
       </div>
+
+      <!-- GASTO MANUAL RÁPIDO (HU-006: Monto + Concepto + Cuenta) -->
       <div id="f-gasto">
-      <div class="f-label">Tienda</div>
-      <input class="f-input" id="f-store" type="text" placeholder="¿Dónde compraste?">
+        <div class="hero-amount-box">
+          <span class="ha-symbol">$</span>
+          <input class="ha-input" id="f-amount" type="text" placeholder="0" inputmode="numeric">
+        </div>
 
-      <div class="f-grid">
-        <div>
-          <div class="f-label">Fecha</div>
-          <input class="f-input" id="manual-date" type="text" value="Hoy · 28 ago">
-        </div>
-        <div>
-          <div class="f-label">Pago</div>
-          <input class="f-input" id="manual-payment" type="text" value="Efectivo">
-        </div>
-        <div>
-          <div class="f-label">Moneda</div>
-          <input class="f-input" id="manual-currency" type="text" value="COP">
-        </div>
-      </div>
-      <div style="font-size:10.5px;color:var(--muted);margin-top:6px;">fecha, pago y moneda vienen por defecto — cámbialos si necesitas</div>
+        <div class="f-label">¿En qué gastaste? / Comercio</div>
+        <input class="f-input" id="f-merchant" type="text" placeholder="ej. Almuerzo, D1, Taxi, Café...">
 
-      <div class="f-label">Items</div>
-      <div id="item-rows">
-        <div class="item-row">
-          <div class="ir-1"><input class="mini-input item-name" type="text" placeholder="Item (ej. Arroz)"><button class="e-del" type="button" title="Quitar item">✕</button></div>
-          <div class="ir-2">
-            <input class="mini-input" type="text" placeholder="Subcategoría (ej. Almuerzo)">
-            <input class="mini-input amt item-amt" type="text" placeholder="$ 0">
+        <div class="f-label">Cuenta de pago</div>
+        <div class="account-chips" id="f-account-chips">
+          <button type="button" class="achip on" data-account="Efectivo">💵 Efectivo</button>
+          <button type="button" class="achip" data-account="Nequi">🟣 Nequi</button>
+          <button type="button" class="achip" data-account="Bancolombia">🟡 Bancolombia</button>
+        </div>
+
+        <!-- Detalles opcionales colapsados (AC-3: fuera del camino) -->
+        <button type="button" class="toggle-optional-btn" id="btn-toggle-optional">
+          <span>Detalles opcionales (categoría, fecha, nota)</span>
+          <span class="to-chev">▾</span>
+        </button>
+        <div class="optional-fields" id="optional-fields" style="display:none;">
+          <div class="f-grid">
+            <div>
+              <div class="f-label">Categoría</div>
+              <select class="f-input" id="f-category">
+                <option value="">Sin categorizar</option>
+                <option value="Comida">🍔 Comida / Alimentación</option>
+                <option value="Transporte">🚌 Transporte</option>
+                <option value="Mercado">🛒 Mercado / Despensa</option>
+                <option value="Servicios">💡 Servicios</option>
+                <option value="Entretenimiento">🎉 Entretenimiento</option>
+                <option value="Salud">💊 Salud</option>
+              </select>
+            </div>
+            <div>
+              <div class="f-label">Fecha</div>
+              <input class="f-input" id="f-date" type="text" value="Hoy">
+            </div>
           </div>
-          <button class="im-toggle" type="button">＋ motivo</button>
-          <div class="item-motivo">
-            <input class="mini-input" type="text" placeholder="¿Por qué compraste esto? (opcional)">
-          </div>
+          <div class="f-label">Nota (opcional)</div>
+          <input class="f-input" id="f-note" type="text" placeholder="Observación o motivo...">
         </div>
       </div>
-      <button class="addrow" id="btn-add-item" style="margin-bottom:0;">
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg>
-        Agregar item
-      </button>
 
-      <div class="totalbar"><span class="lbl">Total · auto = suma de items</span><span class="val" id="gasto-total">$ 0</span></div>
-
-      <button class="addrow" id="btn-extra" style="margin-top:12px;">
-        Campos adicionales (opcional)
-        <small>📷 foto del recibo · motivo de la compra — el motivo por item va en cada item</small>
-      </button>
-      <div class="extra-fields" id="extra-fields">
-        <input class="f-input" type="text" placeholder="📷 Foto del recibo (opcional)">
-        <input class="f-input" type="text" placeholder="Motivo de la compra (opcional)" style="margin-bottom:0;">
-      </div>
-      </div>
+      <!-- INGRESO MANUAL (HU-005: Monto + Fuente + Cuenta) -->
       <div id="f-ingreso" style="display:none;">
-        <div class="f-label">Monto</div>
-        <input class="f-input" type="text" placeholder="$ 0">
-        <div class="f-grid">
-          <div>
-            <div class="f-label">Fecha</div>
-            <input class="f-input" type="text" value="Hoy · 28 ago">
-          </div>
-          <div>
-            <div class="f-label">Fuente</div>
-            <input class="f-input" type="text" placeholder="Salario / Freelance / Regalo…">
-          </div>
+        <div class="hero-amount-box inc">
+          <span class="ha-symbol">+ $</span>
+          <input class="ha-input" id="f-inc-amount" type="text" placeholder="0" inputmode="numeric">
         </div>
-        <div class="f-label">Nota (opcional)</div>
-        <input class="f-input" type="text" placeholder="ej. sueldo de agosto">
+
+        <div class="f-label">Fuente de ingreso</div>
+        <div class="account-chips" id="f-inc-source-chips">
+          <button type="button" class="achip on" data-source="Salario">💼 Salario</button>
+          <button type="button" class="achip" data-source="Freelance">💻 Freelance</button>
+          <button type="button" class="achip" data-source="Transferencia">🔄 Transferencia</button>
+          <button type="button" class="achip" data-source="Regalo">🎁 Regalo</button>
+        </div>
+        <input class="f-input" id="f-inc-source-custom" type="text" placeholder="O escribe otra fuente..." style="margin-top:4px;">
+
+        <div class="f-label">Cuenta de destino</div>
+        <div class="account-chips" id="f-inc-account-chips">
+          <button type="button" class="achip on" data-account="Bancolombia">🟡 Bancolombia</button>
+          <button type="button" class="achip" data-account="Nequi">🟣 Nequi</button>
+          <button type="button" class="achip" data-account="Efectivo">💵 Efectivo</button>
+        </div>
+
+        <button type="button" class="toggle-optional-btn" id="btn-toggle-inc-optional">
+          <span>Detalles opcionales (fecha, nota)</span>
+          <span class="to-chev">▾</span>
+        </button>
+        <div class="optional-fields" id="optional-inc-fields" style="display:none;">
+          <div class="f-label">Fecha</div>
+          <input class="f-input" id="f-inc-date" type="text" value="Hoy">
+          <div class="f-label">Nota (opcional)</div>
+          <input class="f-input" id="f-inc-note" type="text" placeholder="ej. Sueldo quincenal...">
+        </div>
       </div>
     </div>
     <div class="form-error" id="manual-error" role="alert"></div>
@@ -1194,22 +1549,105 @@
     else appNav.style.display = 'flex';
   }
   var formTitle = document.getElementById('form-title');
-  // ONE form for create AND edit: edit = same form, pre-filled (HU-004)
-  function openForm(edit){
-    var blank = '<div class="item-row"><div class="ir-1"><input class="mini-input item-name" type="text" placeholder="Item (ej. Arroz)"><button class="e-del" type="button" title="Quitar item">✕</button></div><div class="ir-2"><input class="mini-input" type="text" placeholder="Subcategoría (ej. Almuerzo)"><input class="mini-input amt item-amt" type="text" placeholder="$ 0"></div><button class="im-toggle" type="button">＋ motivo</button><div class="item-motivo"><input class="mini-input" type="text" placeholder="¿Por qué compraste esto? (opcional)"></div></div>';
+  var currentFormMode = 'expense';
+  var isEditMode = false;
+
+  // Segment toggle (Gasto vs Ingreso)
+  document.getElementById('seg-gasto').addEventListener('click', function(){
+    currentFormMode = 'expense';
+    this.classList.add('on');
+    document.getElementById('seg-ingreso').classList.remove('on');
+    document.getElementById('f-gasto').style.display = 'block';
+    document.getElementById('f-ingreso').style.display = 'none';
+    formTitle.textContent = isEditMode ? 'Editar gasto' : 'Nuevo gasto';
+    document.getElementById('btn-save').textContent = isEditMode ? 'Guardar cambios' : 'Guardar gasto';
+    document.getElementById('manual-error').style.display = 'none';
+  });
+  document.getElementById('seg-ingreso').addEventListener('click', function(){
+    currentFormMode = 'income';
+    this.classList.add('on');
+    document.getElementById('seg-gasto').classList.remove('on');
+    document.getElementById('f-ingreso').style.display = 'block';
+    document.getElementById('f-gasto').style.display = 'none';
+    formTitle.textContent = isEditMode ? 'Editar ingreso' : 'Nuevo ingreso';
+    document.getElementById('btn-save').textContent = isEditMode ? 'Guardar cambios' : 'Guardar ingreso';
+    document.getElementById('manual-error').style.display = 'none';
+  });
+
+  // Account chips toggle
+  function setupChips(containerId){
+    var cont = document.getElementById(containerId);
+    if(!cont) return;
+    cont.addEventListener('click', function(e){
+      var btn = e.target.closest('.achip');
+      if(!btn) return;
+      cont.querySelectorAll('.achip').forEach(function(c){ c.classList.remove('on'); });
+      btn.classList.add('on');
+    });
+  }
+  setupChips('f-account-chips');
+  setupChips('f-inc-source-chips');
+  setupChips('f-inc-account-chips');
+
+  // Optional fields toggles (AC-3: collapsed by default)
+  var btnToggleOpt = document.getElementById('btn-toggle-optional');
+  var optFields = document.getElementById('optional-fields');
+  btnToggleOpt.addEventListener('click', function(){
+    var isHidden = optFields.style.display === 'none';
+    optFields.style.display = isHidden ? 'block' : 'none';
+    btnToggleOpt.classList.toggle('open', isHidden);
+  });
+
+  var btnToggleIncOpt = document.getElementById('btn-toggle-inc-optional');
+  var optIncFields = document.getElementById('optional-inc-fields');
+  btnToggleIncOpt.addEventListener('click', function(){
+    var isHidden = optIncFields.style.display === 'none';
+    optIncFields.style.display = isHidden ? 'block' : 'none';
+    btnToggleIncOpt.classList.toggle('open', isHidden);
+  });
+
+  // ONE form for create AND edit (HU-006 & HU-005): fast, essential fields
+  function openForm(edit, data){
+    isEditMode = !!edit;
+    document.getElementById('manual-error').style.display = 'none';
     if(edit){
-      formTitle.textContent = 'Editar gasto';
-      document.getElementById('f-store').value = 'D1';
-      itemRows.innerHTML = '<div class="item-row"><div class="ir-1"><input class="mini-input item-name" type="text" value="Arroz con pollo"><button class="e-del" type="button" title="Quitar item">✕</button></div><div class="ir-2"><input class="mini-input" type="text" value="Almuerzo"><input class="mini-input amt item-amt" type="text" value="12900"></div><button class="im-toggle" type="button">＋ motivo</button><div class="item-motivo"><input class="mini-input" type="text" placeholder="¿Por qué compraste esto? (opcional)"></div></div>';
+      if(data && data.type === 'income'){
+        document.getElementById('seg-ingreso').click();
+        var rawAmt = (data.total || '').replace(/[^0-9]/g, '');
+        document.getElementById('f-inc-amount').value = rawAmt ? parseInt(rawAmt,10).toLocaleString('es-CO') : '';
+        var src = data.store || data.source || 'Salario';
+        var matched = false;
+        document.querySelectorAll('#f-inc-source-chips .achip').forEach(function(c){
+          if(c.dataset.source === src){ c.classList.add('on'); matched = true; }
+          else c.classList.remove('on');
+        });
+        document.getElementById('f-inc-source-custom').value = matched ? '' : src;
+        document.getElementById('f-inc-note').value = data.note || '';
+        document.getElementById('f-inc-date').value = data.date || '30 ago';
+      } else {
+        document.getElementById('seg-gasto').click();
+        var rawAmt = (data && data.total) ? data.total.replace(/[^0-9]/g, '') : '';
+        document.getElementById('f-amount').value = rawAmt ? parseInt(rawAmt,10).toLocaleString('es-CO') : '';
+        document.getElementById('f-merchant').value = (data && data.store) ? data.store : 'D1';
+        if(data && data.note) document.getElementById('f-note').value = data.note;
+        if(data && data.category) document.getElementById('f-category').value = data.category;
+      }
     } else {
-      formTitle.textContent = 'Nuevo gasto';
-      document.getElementById('f-store').value = '';
-      itemRows.innerHTML = blank;
+      document.getElementById('seg-gasto').click();
+      document.getElementById('f-amount').value = '';
+      document.getElementById('f-merchant').value = '';
+      document.getElementById('f-note').value = '';
+      document.getElementById('f-inc-amount').value = '';
+      document.getElementById('f-inc-source-custom').value = '';
+      document.getElementById('f-inc-note').value = '';
+      optFields.style.display = 'none';
+      btnToggleOpt.classList.remove('open');
+      optIncFields.style.display = 'none';
+      btnToggleIncOpt.classList.remove('open');
     }
-    refreshTotal();
     setScreen('screen-gasto-nuevo');
   }
-  document.getElementById('btn-open-form').addEventListener('click', function(){ openForm(false); });
+
   document.querySelectorAll('.exp-edit').forEach(function(b){
     b.addEventListener('click', function(){ openForm(true); });
   });
@@ -1217,84 +1655,72 @@
     document.getElementById('manual-error').style.display='none';
     setScreen('screen-gastos');
   });
+
+  // Save handler (Fast validation: Amount > 0 and Merchant non-empty)
   document.getElementById('btn-save').addEventListener('click', function(){
     var error = document.getElementById('manual-error');
-    var rows = itemRows.querySelectorAll('.item-row');
-    var message = '';
-    if(!document.getElementById('f-store').value.trim()) message = 'Escribe la tienda.';
-    if(!message && !rows.length) message = 'Agrega al menos un item.';
-    rows.forEach(function(row){
-      var sub = row.querySelector('.ir-2 .mini-input');
-      var amount = row.querySelector('.item-amt');
-      if(!message && (!sub.value.trim() || parseAmt(amount.value) <= 0)) message = 'Completa la subcategoría y un monto mayor que cero en cada item.';
-    });
-    if(message){
-      error.textContent = message;
-      error.style.display = 'block';
-      return;
+    if(currentFormMode === 'expense'){
+      var amountRaw = document.getElementById('f-amount').value.replace(/[^0-9]/g, '');
+      var merchant = document.getElementById('f-merchant').value.trim();
+      var amount = parseInt(amountRaw, 10);
+      if(!amount || amount <= 0){
+        error.textContent = 'Ingresa un monto mayor que cero.';
+        error.style.display = 'block';
+        return;
+      }
+      if(!merchant){
+        error.textContent = 'Ingresa el comercio o descripción (ej. Almuerzo).';
+        error.style.display = 'block';
+        return;
+      }
+      error.style.display = 'none';
+      var activeAccount = document.querySelector('#f-account-chips .achip.on');
+      var accountName = activeAccount ? activeAccount.textContent.trim() : 'Efectivo';
+      var formattedAmt = '$ ' + amount.toLocaleString('es-CO');
+      var category = document.getElementById('f-category').value;
+      var note = document.getElementById('f-note').value.trim();
+      addHubEntry({
+        type: 'expense',
+        source: 'manual',
+        title: merchant,
+        total: formattedAmt,
+        meta: 'hoy · ' + accountName,
+        first: note || (category ? (category + ' · General') : merchant)
+      });
+      document.getElementById('saved-note').textContent = '✅ Gasto guardado · ' + formattedAmt;
+      document.getElementById('saved-note').style.display = 'block';
+      setScreen('screen-gastos');
+    } else {
+      var incAmountRaw = document.getElementById('f-inc-amount').value.replace(/[^0-9]/g, '');
+      var incAmount = parseInt(incAmountRaw, 10);
+      if(!incAmount || incAmount <= 0){
+        error.textContent = 'Ingresa un monto mayor que cero.';
+        error.style.display = 'block';
+        return;
+      }
+      error.style.display = 'none';
+      var customSrc = document.getElementById('f-inc-source-custom').value.trim();
+      var activeSrc = document.querySelector('#f-inc-source-chips .achip.on');
+      var sourceName = customSrc || (activeSrc ? activeSrc.dataset.source : 'Salario');
+      var activeIncAcc = document.querySelector('#f-inc-account-chips .achip.on');
+      var accName = activeIncAcc ? activeIncAcc.textContent.trim() : 'Bancolombia';
+      var formattedIncAmt = '$ ' + incAmount.toLocaleString('es-CO');
+      var incNote = document.getElementById('f-inc-note').value.trim();
+      addHubEntry({
+        type: 'income',
+        source: 'manual',
+        title: sourceName,
+        total: formattedIncAmt,
+        meta: 'hoy · ' + accName,
+        first: incNote || ('Ingreso · ' + sourceName)
+      });
+      document.getElementById('saved-note').textContent = '✅ Ingreso guardado · + ' + formattedIncAmt;
+      document.getElementById('saved-note').style.display = 'block';
+      setScreen('screen-gastos');
     }
-    error.style.display = 'none';
-    refreshTotal();
-    document.getElementById('saved-note').textContent = '✅ Gasto guardado · ' + document.getElementById('gasto-total').textContent;
-    document.getElementById('saved-note').style.display = 'block';
-    setScreen('screen-gastos');
   });
 
-  // add item row (multiple items under one receipt)
-  var itemRows = document.getElementById('item-rows');
-  document.getElementById('btn-add-item').addEventListener('click', function(){
-    var div = document.createElement('div');
-    div.className = 'item-row';
-    div.innerHTML = '<div class="ir-1"><input class="mini-input item-name" type="text" placeholder="Item (ej. Arroz)"><button class="e-del" type="button" title="Quitar item">✕</button></div>' +
-                    '<div class="ir-2"><input class="mini-input" type="text" placeholder="Subcategoría (ej. Almuerzo)">' +
-                    '<input class="mini-input amt item-amt" type="text" placeholder="$ 0"></div>' +
-                    '<button class="im-toggle" type="button">＋ motivo</button>' +
-                    '<div class="item-motivo"><input class="mini-input" type="text" placeholder="¿Por qué compraste esto? (opcional)"></div>';
-    itemRows.appendChild(div);
-  });
 
-  // per-item motivo: expand/collapse inside each item row · ✕: remove the row
-  itemRows.addEventListener('click', function(e){
-    if(e.target.classList.contains('e-del')){
-      e.target.closest('.item-row').remove();
-      refreshTotal();
-      return;
-    }
-    if(e.target.classList.contains('im-toggle')){
-      var box = e.target.closest('.item-row').querySelector('.item-motivo');
-      box.classList.toggle('show');
-      e.target.textContent = box.classList.contains('show') ? '− motivo' : '＋ motivo';
-      if(box.classList.contains('show')) box.querySelector('input').focus();
-    }
-  });
-
-  // total = auto-sum of item amounts
-  function parseAmt(v){ var n = parseInt(String(v).replace(/[^0-9]/g, ''), 10); return isNaN(n) ? 0 : n; }
-  function refreshTotal(){
-    var sum = 0;
-    document.querySelectorAll('#item-rows .item-amt').forEach(function(i){ sum += parseAmt(i.value); });
-    document.getElementById('gasto-total').textContent = '$ ' + sum.toLocaleString('es-CO');
-  }
-  function updateReceiptGroupTotal(group){
-    if(!group || group.dataset.totalSource !== 'items') return;
-    var sum = 0;
-    group.querySelectorAll('.exp-row .e-amt').forEach(function(i){ sum += parseAmt(i.textContent); });
-    var total = group.querySelector('.rg-head .total');
-    if(total) total.textContent = '$ ' + sum.toLocaleString('es-CO');
-  }
-  itemRows.addEventListener('input', function(e){ if(e.target.classList.contains('item-amt')) refreshTotal(); });
-
-  // single item: name auto-fills from the store text (editable)
-  document.getElementById('f-store').addEventListener('input', function(){
-    var rows = itemRows.querySelectorAll('.item-row');
-    var name = itemRows.querySelector('.item-name');
-    if(rows.length === 1 && name && !name.value) name.value = this.value;
-  });
-
-  // additional fields (collapsed menu)
-  document.getElementById('btn-extra').addEventListener('click', function(){
-    document.getElementById('extra-fields').classList.toggle('show');
-  });
 
   // delete confirmations: item AND whole receipt, always confirm
   var modal = document.getElementById('confirm-modal');
@@ -1368,46 +1794,195 @@
     });
   });
 
-  // Interactive capture flow: input -> AI card -> Confirmar/Editar/Descartar.
+  // Dedicated AI capture preview screen: Foto / Voz / Texto -> separate screen with back button & multi-page support
   var captureSource = 'photo';
+  var photoPagesCount = 1;
   function showCaptureFlow(source){
     captureSource = source || 'photo';
     updateAiCardForSource(captureSource);
-    document.getElementById('empty-hint').style.display='none';
-    document.getElementById('saved-note').style.display='none';
-    document.getElementById('ai-failure').style.display='none';
-    aiCard.style.display='block';
-    aiEditCard.style.display='none';
-    document.getElementById('ai-flow').style.display='block';
-    document.getElementById('ai-demo').style.display='block';
-    document.getElementById('ai-flow').scrollIntoView({behavior:'smooth'});
+    var titleEl = document.getElementById('capture-screen-title');
+    var subEl = document.getElementById('capture-screen-sub');
+    var pPhoto = document.getElementById('preview-photo-strip');
+    var pVoice = document.getElementById('preview-voice-strip');
+    var pText = document.getElementById('preview-text-strip');
+
+    pPhoto.style.display = captureSource === 'photo' ? 'block' : 'none';
+    pVoice.style.display = captureSource === 'audio' ? 'block' : 'none';
+    pText.style.display = captureSource === 'text' ? 'block' : 'none';
+
+    if(captureSource === 'photo'){
+      titleEl.textContent = '📷 Captura de recibo';
+      subEl.textContent = 'la IA extrajo los datos de tu foto para confirmación';
+    } else if(captureSource === 'audio'){
+      titleEl.textContent = '🎤 Nota de voz';
+      subEl.textContent = 'la IA transcribió tu audio y extrajo el gasto';
+    } else {
+      titleEl.textContent = 'T Texto libre';
+      subEl.textContent = 'la IA estructuró tu texto para confirmación';
+    }
+
+    aiCard.style.display = 'block';
+    aiEditCard.style.display = 'none';
+    document.getElementById('ai-failure').style.display = 'none';
+    setScreen('screen-capture-preview');
   }
+
   function resetCaptureFlow(){
-    document.getElementById('ai-flow').style.display='none';
-    document.getElementById('ai-demo').style.display='none';
-    document.getElementById('ai-failure').style.display='none';
-    document.getElementById('empty-hint').style.display='block';
+    setScreen('screen-gastos');
   }
-  document.querySelector('.shutter').addEventListener('click',function(){ showCaptureFlow('photo'); });
-  document.querySelector('.mic-btn').addEventListener('click',function(){ showCaptureFlow('audio'); });
-  document.getElementById('capture-field').addEventListener('keydown',function(e){
-    if(e.key==='Enter' && this.value.trim()) showCaptureFlow('text');
+
+  document.getElementById('btn-back-capture').addEventListener('click', function(){
+    setScreen('screen-gastos');
   });
-  document.querySelector('#ai-flow .btn-confirm').addEventListener('click',function(){
+
+  // Support for multiple photos/pages (e.g. long receipt)
+  document.getElementById('btn-add-page').addEventListener('click', function(){
+    photoPagesCount++;
+    var list = document.getElementById('photo-strip-list');
+    var item = document.createElement('div');
+    item.className = 'ps-item';
+    item.innerHTML = '<div class="ps-thumb"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 10h18M6 14h2M11 14h2"/></svg></div>' +
+      '<div class="ps-meta"><div class="ps-name">Recibo_página_' + photoPagesCount + '.jpg</div><div class="ps-size">Página adicional · 1.1 MB</div></div>';
+    list.appendChild(item);
+    document.getElementById('photo-strip-count').textContent = 'Fotos del recibo (' + photoPagesCount + ')';
+  });
+  // Radial capture wheel (GTA weapon-wheel style): open -> pick a slot -> existing flow.
+  var wheelMenu=document.getElementById('wheel-menu');
+  var wheelScrim=document.getElementById('wheel-scrim');
+  var wheelFab=document.getElementById('wheel-fab');
+  function openWheel(){ wheelMenu.classList.add('open'); wheelScrim.classList.add('show'); wheelFab.classList.add('open'); wheelMenu.setAttribute('aria-hidden','false'); }
+  function closeWheel(){ wheelMenu.classList.remove('open'); wheelScrim.classList.remove('show'); wheelFab.classList.remove('open'); wheelMenu.setAttribute('aria-hidden','true'); }
+  document.getElementById('wheel-fab').addEventListener('click',openWheel);
+  wheelScrim.addEventListener('click',closeWheel);
+  document.addEventListener('keydown',function(e){ if(e.key==='Escape') closeWheel(); });
+  document.querySelectorAll('.wheel-item').forEach(function(slot){
+    slot.addEventListener('click',function(){
+      closeWheel();
+      var action=slot.dataset.capture;
+      if(action==='manual') openForm(false); else showCaptureFlow(action);
+    });
+  });
+  document.querySelector('#screen-capture-preview .btn-confirm').addEventListener('click',function(){
+    addHubEntry({type:'expense',badge:SRC_BADGE[captureSource]||'📷 foto',badgeClass:SRC_CLASS[captureSource]||'',
+      title:aiCardFieldValue('Tienda')||'Gasto',meta:'IA · hoy',total:aiTotalText(),
+      first:captureSource==='text'?(aiCardFieldValue('Descripción')||'Gasto'):aiFirstItem()});
     resetCaptureFlow();
     var n=document.getElementById('saved-note');
     n.textContent='✅ Gasto guardado · ' + aiTotalText();
     n.style.display='block';
     n.scrollIntoView({behavior:'smooth'});
   });
-  document.querySelector('#ai-flow .btn-discard').addEventListener('click',resetCaptureFlow);
+  document.querySelector('#screen-capture-preview .btn-discard').addEventListener('click',resetCaptureFlow);
+
+  // Hub history: grouped receipts (receipt > expense) + income rows, newest first.
+  var SRC_BADGE={photo:'📷 Foto',audio:'🎤 Voz',text:'T Texto',manual:'✎ Manual'};
+  var SRC_CLASS={photo:'ic-market',audio:'ic-food',text:'ic-food',manual:'ic-transport'};
+  var hubHistory=document.getElementById('hub-history');
+  function syncHubEmpty(){
+    var groups=hubHistory.querySelectorAll('.receipt-group');
+    var hasGroups = groups.length > 0;
+    var sumEl = document.getElementById('hub-summary');
+    if(sumEl) sumEl.style.display = hasGroups ? 'flex' : 'none';
+    document.getElementById('hist-head').style.display = hasGroups ? 'flex' : 'none';
+    document.getElementById('hub-empty').style.display = hasGroups ? 'none' : 'block';
+    document.getElementById('hist-count').textContent = groups.length + (groups.length===1 ? ' movimiento' : ' movimientos');
+  }
+  function addHubEntry(opt){
+    var g=document.createElement('div');
+    g.className='tx-card receipt-group';
+    g.dataset.type = opt.type || 'expense';
+    g.dataset.store = opt.title || 'Gasto';
+    g.dataset.total = opt.total || '$ 0';
+    g.dataset.source = opt.source || 'manual';
+    var icon = opt.type==='income' ? '💰' : (opt.title && opt.title.toLowerCase().indexOf('d1')>=0 ? '🛒' : (opt.title && opt.title.toLowerCase().indexOf('subway')>=0 ? '🍔' : (opt.title && opt.title.toLowerCase().indexOf('transporte')>=0 ? '🚌' : '🧾')));
+    var iconCls = opt.type==='income' ? 'ic-income' : (icon==='🛒' ? 'ic-market' : (icon==='🍔' ? 'ic-food' : (icon==='🚌' ? 'ic-transport' : '')));
+    var badgeLabel = opt.type==='income' ? '＋ Ingreso' : (SRC_BADGE[opt.source] || '✎ Manual');
+    var isIncome = opt.type==='income';
+    g.innerHTML = '<div class="tx-head rg-toggle">' +
+      '<div class="tx-icon '+iconCls+'">'+icon+'</div>' +
+      '<div class="tx-info">' +
+        '<div class="tx-title">'+escapeHtml(opt.title)+'</div>' +
+        '<div class="tx-sub"><span class="tx-source-tag">'+escapeHtml(badgeLabel)+'</span><span>'+escapeHtml(opt.meta||'hoy')+'</span></div>' +
+      '</div>' +
+      '<div class="tx-amt-box">' +
+        '<span class="tx-amt total '+(isIncome?'pos':'')+'">'+(isIncome?'+ ':'')+escapeHtml(opt.total)+'</span>' +
+        '<span class="tx-chev chev">▾</span>' +
+      '</div>' +
+    '</div>' +
+    '<div class="tx-body rg-items">' +
+      '<div class="tx-items">' +
+        '<div class="tx-item-row"><div class="tir-name">'+escapeHtml(opt.first||'Item recién guardado')+'<span class="tir-cat">'+(isIncome?'Ingreso':'General')+'</span></div><span class="tir-price '+(isIncome?'pos':'')+'">'+escapeHtml(opt.total)+'</span></div>' +
+      '</div>' +
+      '<div class="tx-actions">' +
+        '<button class="btn-tx-edit exp-edit-item" type="button"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M12 20h9M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg> Editar</button>' +
+        '<button class="btn-tx-del exp-del-item" type="button">✕ Quitar</button>' +
+      '</div>' +
+    '</div>';
+    hubHistory.insertBefore(g,hubHistory.firstChild);
+    syncHubEmpty();
+  }
+  hubHistory.addEventListener('click',function(e){
+    var editBtn = e.target.closest('.exp-edit-item');
+    if(editBtn){
+      e.stopPropagation();
+      var card = editBtn.closest('.tx-card');
+      var type = card.dataset.type || 'expense';
+      var store = card.dataset.store || card.querySelector('.tx-title').textContent;
+      var total = card.dataset.total || card.querySelector('.tx-amt').textContent;
+      var items = [];
+      card.querySelectorAll('.tx-item-row').forEach(function(row){
+        var name = row.querySelector('.tir-name').childNodes[0].textContent.trim();
+        var cat = row.querySelector('.tir-cat') ? row.querySelector('.tir-cat').textContent.trim() : 'General';
+        var amt = row.querySelector('.tir-price').textContent.replace(/[^0-9]/g, '');
+        items.push({name: name, cat: cat, amt: amt});
+      });
+      openForm(true, {type: type, store: store, total: total, items: items});
+      return;
+    }
+    var delBtn = e.target.closest('.exp-del-item');
+    if(delBtn){
+      e.stopPropagation();
+      var cardToDel = delBtn.closest('.tx-card');
+      var storeToDel = cardToDel.querySelector('.tx-title').textContent;
+      document.getElementById('m-title').textContent = '¿Eliminar movimiento?';
+      document.getElementById('m-text').textContent = '¿Deseas quitar "' + storeToDel + '" del historial?';
+      var modal = document.getElementById('confirm-modal');
+      modal.classList.add('show');
+      var okBtn = document.getElementById('m-ok');
+      var cancelBtn = document.getElementById('m-cancel');
+      function onOk(){
+        cardToDel.remove();
+        syncHubEmpty();
+        cleanup();
+      }
+      function cleanup(){
+        modal.classList.remove('show');
+        okBtn.removeEventListener('click', onOk);
+        cancelBtn.removeEventListener('click', cleanup);
+      }
+      okBtn.addEventListener('click', onOk);
+      cancelBtn.addEventListener('click', cleanup);
+      return;
+    }
+    var head=e.target.closest('.rg-toggle');
+    if(head) head.closest('.receipt-group').classList.toggle('open');
+  });
+  function aiCardFieldValue(label){
+    var v='';
+    aiCard.querySelectorAll('.field').forEach(function(f){
+      if(f.querySelector('.label').textContent===label) v=f.querySelector('.val').textContent;
+    });
+    return v;
+  }
+  function aiFirstItem(){
+    var n=aiCard.querySelector('#ai-items .it .name');
+    return n ? n.textContent.replace('editable','').trim() : 'Item';
+  }
+  syncHubEmpty();
 
   function showFailureState(state){
     captureSource='photo';
-    document.getElementById('empty-hint').style.display='none';
-    document.getElementById('saved-note').style.display='none';
-    document.getElementById('ai-flow').style.display='block';
-    document.getElementById('ai-demo').style.display='block';
+    setScreen('screen-capture-preview');
     aiCard.style.display='none';
     aiEditCard.style.display='none';
     var failure=document.getElementById('ai-failure');
@@ -1451,7 +2026,7 @@
     failure.scrollIntoView({behavior:'smooth'});
   }
   document.querySelectorAll('[data-demo-state]').forEach(function(button){
-    button.addEventListener('click',function(){ showFailureState(button.dataset.demoState); });
+    button.addEventListener('click',function(){ closeWheel(); showFailureState(button.dataset.demoState); });
   });
   document.getElementById('failure-retry').addEventListener('click',function(){ showCaptureFlow('photo'); });
   document.getElementById('failure-manual').addEventListener('click',function(){ openForm(false); });
@@ -1490,10 +2065,6 @@
   }
   function updateAiCardForSource(source){
     var textMode=source === 'text';
-    var sourceThumb=document.getElementById('ai-source-thumb');
-    document.getElementById('ai-source-label').textContent=textMode ? 'Texto capturado' : (source === 'audio' ? 'Nota de voz' : 'Recibo_mercado.jpg');
-    document.getElementById('ai-source-meta').textContent=textMode ? 'gasto · texto natural · ahora' : (source === 'audio' ? 'gasto · voz · ahora' : 'gasto · foto · hoy 12:03');
-    sourceThumb.style.display=textMode ? 'none' : 'flex';
     aiCard.dataset.source=source;
     if(textMode){
       setField('Tienda','Subway');
@@ -1573,7 +2144,7 @@
   });
 
   // Editar: open the inline edit view, prefilled from the AI card
-  document.querySelector('#ai-flow .btn-edit').addEventListener('click', function(){
+  document.querySelector('#screen-capture-preview .btn-edit').addEventListener('click', function(){
     eItems.innerHTML = '';
     eStore.value = getField('Tienda');
     eTotalInput.value = aiTotalText();

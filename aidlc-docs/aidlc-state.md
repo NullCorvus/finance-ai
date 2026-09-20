@@ -3,7 +3,7 @@
 ## Project Information
 - **Project Type**: Brownfield (FastAPI backend + Flutter frontend already implemented)
 - **Start Date**: 2026-08-30T20:58:11Z
-- **Current Stage**: INCEPTION - Workflow Planning complete for unit `hu-005-income-sources`
+- **Current Stage**: CONSTRUCTION - Active unit `hu-006-manual-expense` (COMPLETE)
 
 ## Workspace State
 - **Existing Code**: Yes — `finance-ai-backend/` (FastAPI, Alembic, uv) and `finance-ai-frontend/` (Flutter)
@@ -12,6 +12,9 @@
 - **Project Structure**: Monorepo with backend, frontend, `docs/` product docs, `aidlc-docs/` AI-DLC artifacts
 - **Workspace Root**: /home/d3ad/codigos/finance-ai
 - **Persistent Knowledge Graph**: graphify-out/graph.json exists
+- **Active Git Branches**:
+  - `finance-ai-backend`: `feat/hu-006-manual-expense`
+  - `finance-ai-frontend`: `feat/hu-006-manual-expense`
 
 ## Code Location Rules
 - **Application Code**: Workspace root (never in aidlc-docs/)
@@ -26,24 +29,26 @@ No extension choices have been recorded for this review.
 - [x] Workspace Detection
 - [x] Reverse Engineering skipped (small codebase already mapped in existing docs)
 - [x] Requirements Analysis - latest backlog (2026-09-12, 15 stories) recorded
-- [x] User Stories - HU-005 now "manage my income sources" (PB-003, 2 pts)
+- [x] User Stories - HU-006 "manual expense capture" (PB-004, 5 pts)
 - [x] Workflow Planning - `aidlc-docs/inception/plans/execution-plan.md`
 - [x] Application Design - light (module layout in functional design)
-- [x] Units Generation - single unit `hu-005-income-sources`
+- [x] Units Generation - active unit `hu-006-manual-expense`
 
 ### CONSTRUCTION PHASE
-- [x] Functional Design - `hu-005-income-sources/functional-design/`
-- [x] NFR Requirements - light (ownership/security, atomic rollback)
-- [x] NFR Design - SKIP (reuses existing patterns)
-- [x] Infrastructure Design - SKIP (reuses Compose/PostgreSQL)
-- [x] Code Generation - migration `0004`, backend CRUD, OpenAPI, Flutter screen
-- [x] Build and Test - 100 backend tests (89.60%), 53 Flutter tests, all checks pass
+- [x] Unit Specification - `aidlc-docs/construction/hu-006-manual-expense/unit-of-work.md`
+- [x] Database Schema & Repository verification
+- [x] Backend Domain Schemas, UoW & Service (`POST /api/v1/expenses`)
+- [x] Backend API Route, Automated Tests & OpenAPI Sync
+- [x] Frontend Feature Layer & State Management
+- [x] Frontend Short Form UI (Fast Capture)
+- [x] Build, Test and Audit Verification
 
 ## Current Status
 - **Lifecycle Phase**: CONSTRUCTION
-- **Current Stage**: HU-005 income sources implemented and verified end-to-end
-- **Next Step**: Review the implementation; then pick the next unit (HU-004 categories or HU-003 accounts)
-- **Status**: COMPLETE — migration `0004_uow03_income_source`, `/api/v1/income-sources` CRUD, simple Flutter screen. Backend 100 tests / 89.60% coverage; Flutter 53 tests; lint/type/analyze/audit clean.
+- **Current Stage**: HU-006 manual expense capture completed
+- **Active Unit**: `hu-006-manual-expense`
+- **Next Step**: Review with user / merge `feat/hu-006-manual-expense` or proceed to next user story.
+- **Status**: COMPLETED — Steps 1 through 7 complete. All unit tests passing on both backend (166 tests) and frontend (32 tests). Clean commits made to `feat/hu-006-manual-expense` on both repos.
 
 ## Mockup Update (2026-09-13)
 - **Scope**: HTML mockup only, selected by user.
@@ -55,20 +60,8 @@ No extension choices have been recorded for this review.
 - **Visual refinement**: Login now uses app-style gradient/orbit composition and animated mark; account forms show account type and currency choices; category forms show color swatches and icon choices.
 - **Final auth reference**: Replaced auth gradient with full neutral background; added compact centered branding, input icons, focus feedback, loading/pressed/disabled button behavior, validation copy, divider, and ordered account links.
 
-## Saved Decisions (HU-005)
-- **D1** Sprint scope = HU-005 income sources only (HU-003 accounts / HU-004 categories are separate units)
-- **D2** New FinanceAI PostgreSQL draft is the migration target
-- **D3 (amended)** Keep `income_source.is_active` per the draft, but unused; HU-005 uses permanent delete
-- **D4** Unique names are trimmed and case-insensitive per user (`lower(name)`)
-- **D5** Future optional historical references cleared with `SET NULL` on delete (documented contract)
-- **D6** Sprint docs live in AI-DLC per-unit folder `aidlc-docs/construction/{unit}/`
-- **D7** Trello integration dropped per user instruction; HU-005 content pasted directly
-- **D8** UI is a simple testing-grade screen now; proper UI waits for the mockup
-- **D9** Execution order is backend -> `openapi.json` -> frontend
-- **D10 (superseded)** Full schema migration deferred; only `income_source` migrates here
-- **D11** `is_active` retained per draft, always `true`; permanent delete keeps names reusable
-- **D12** Full unique index `uq_income_source_user_name` on `(user_id, lower(name))`
-
-## Execution Plan Artifact (HU-005)
-- **Implementation steps**: `aidlc-docs/construction/hu-005-income-sources/implementation-plan.md`
-- **Current phase**: COMPLETE — all 9 phases done and verified
+## Saved Decisions (HU-006)
+- **D1**: Preserve all existing implemented features without breaking changes; only build HU-006 and future extensions.
+- **D2**: Dedicated branches `feat/hu-006-manual-expense` created in both backend and frontend repositories.
+- **D3**: Atomic creation of `FinancialTransaction`, `AccountMovement` (negative amount), `Receipt`, and `Expense` in a single Unit of Work.
+- **D4**: Re-use existing `paymentmethod.id = 1` for receipt envelope so that it aligns seamlessly with the current PostgreSQL schema and HU-008 queries.
