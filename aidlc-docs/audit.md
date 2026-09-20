@@ -740,3 +740,19 @@ is a separate Linux-desktop keyring issue (secure credential storage), not this 
 **Context**: Construction - Fast manual entry form UX enhancement and Gasto/Ingreso unification completed and verified.
 
 ---
+
+## Category/Account Quick-Add & Hub Empty State Diagnosis
+**Timestamp**: 2026-09-20T13:08:27-05:00
+**User Input**: "Y en categopria y cuenta deberi a haber la opcion en ese msimo menu si que slagan las que ya estan pero que de la opcion de agregar catoegoria y que salte el menu noi ? o agregar cuenta tipo asi y  como aparece cuando no hay gastos eso era del mok up no eberia verse asi se ve poco profesional no se ve lindo como te lo apse en la aimagen osea creo que es un bug eso deberia parecer lo mismo que aprece en gastos al inciar creo que en el mokup esta mejor hecho nose esto se ve buggi asegurate nose de alguna manera corre la vercion web o algo testea todo el flujo pls"
+**AI Response**: Identified root causes: (1) In image `media_1789927620372.png`, the user landed on legacy `ExpensesScreen` (`/expenses`) where the balance summary card was hidden on empty results and the empty state lacked a card container/CTA. Re-routing `/expenses` directly to `HomeScreen` (Gastos Hub) so the full Hub layout with balance card, styled empty state card, and radial wheel FAB is always displayed. (2) Adding quick `＋ Nueva categoría` and `＋ Nueva cuenta` directly inside the creation form menus.
+**Context**: Construction - UX refinement of category/account selectors and Hub empty state consistency.
+
+---
+
+## Progress Inquiry
+**Timestamp**: 2026-09-20T13:14:39-05:00
+**User Input**: "que haces ??"
+**AI Response**: Clarified actions being taken to resolve both issues: diagnosing the empty state discrepancy from the user's screenshot and implementing the quick-add options for categories and accounts.
+**Context**: User check-in on task execution.
+
+---
