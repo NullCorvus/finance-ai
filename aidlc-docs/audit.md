@@ -792,3 +792,16 @@ mira este error"
 
 ---
 
+## Monetary Amount Input Formatting & Account Form Localization
+**Timestamp**: 2026-09-20T13:25:00-05:00
+**User Input**: "quiero que esta parte se ponga con formato pls en todo donde se ponga plata"
+**AI Response**: Implemented live monetary input formatting and sanitization across the application:
+1. Created `MoneyFormatter` and `MoneyInputFormatter` in `lib/core/formatters/money_formatter.dart` following Colombian / Latin American formatting standards (dot thousands separators e.g. `1.600.000` and comma or dot decimals e.g. `1.600.000,50`).
+2. Applied `MoneyInputFormatter` to `AccountFormScreen` (`account-opening-balance-field`), `ExpenseCreateScreen` (`expense-create-amount-field`), and `ExpenseFormScreen` (`expense-amount-field`).
+3. Added input cleaning with `MoneyFormatter.clean` to `AccountFormScreen._submit`, `ExpenseCreateScreen._saveExpense` and `_saveIncome`, `ExpenseFormScreen._submit`, `IncomeFormScreen._save`, and `ExpensesController._validateCreate` and `_validateUpdate` to ensure `MoneyAmount.tryParseUserInput` parses both formatted and unformatted inputs cleanly without breaking backend contracts or existing test suites.
+4. Translated all user-facing labels in `AccountFormScreen` into Spanish (`Saldo inicial`, `Nombre de la cuenta`, `Tipo de cuenta`, `Moneda`, `Guardar cambios` / `Guardar cuenta`).
+5. Added unit tests in `test/core/formatters/money_formatter_test.dart`. All 160 Flutter tests pass.
+**Context**: Construction - Monetary amount input formatting (Colombian currency standard), sanitization, and AccountFormScreen localization.
+
+---
+
