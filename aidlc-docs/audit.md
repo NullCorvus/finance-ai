@@ -716,3 +716,27 @@ is a separate Linux-desktop keyring issue (secure credential storage), not this 
 **Context**: Checkpoint creation and git state validation prior to executing the implementation plan.
 
 ---
+
+## Flutter Hub & Navigation Redesign Completion
+**Timestamp**: 2026-09-20T13:01:20-05:00
+**User Input**: N/A (Implementation execution of approved plan)
+**AI Response**: Successfully transformed the Flutter frontend initial screen and navigation shell to match the approved HTML mockup: (1) Updated `AppShell` and `AppRouter` to 3 tabs: Gastos (Hub), Dashboard, and Ajustes. (2) Transformed `HomeScreen` into the Gastos Hub with month balance card, recent movements feed with category emojis and source badges, and working radial capture launcher FAB (`+` rotating to `✕` with Foto, Voz, Texto, and Manual options). (3) Created `DashboardScreen` with monthly summary and category breakdown. (4) Updated `SettingsScreen` with catalog/account links and explicit logout button with confirmation dialog. (5) All 149 Flutter tests pass.
+**Context**: Construction - Mockup alignment for Hub and navigation shell completed and verified.
+
+---
+
+## Form Account Selection & Unified Gasto/Ingreso Screen
+**Timestamp**: 2026-09-20T13:05:44-05:00
+**User Input**: "aqui no me deja selcionar cuenta y en una misma pantalla deberia ser registra gasto o ingreso no ?? osea mismo menu"
+**AI Response**: Investigating empty account chips in `ExpenseCreateScreen` and implementing: (1) empty state with quick `＋ Crear cuenta` CTA when user has no accounts, (2) unified segmented control `[ Gasto ] [ Ingreso ]` at the top of the manual entry form to switch between Expense and Income modes in the same screen, exactly matching mockup screen-gasto-nuevo.
+**Context**: Construction - Fast manual entry form UX enhancement and Gasto/Ingreso unification.
+
+---
+
+## Form Account Selection & Unified Gasto/Ingreso Screen Completion
+**Timestamp**: 2026-09-20T13:10:00-05:00
+**User Input**: "aqui no me deja selcionar cuenta y en una misma pantalla deberia ser registra gasto o ingreso no ?? osea mismo menu"
+**AI Response**: Completed the unification of the manual entry screen and fixed the account selection UX: (1) Added top segmented control `[ Gasto ] [ Ingreso ]` to toggle between expense and income registration in the same screen, with reactive labels, colors, and fields (Merchant vs Income Source chips/input). (2) Added an empty account state banner with a direct `＋ Crear` button navigating to `/accounts/new` and auto-reloading upon return. (3) Added quick `＋ Nueva` chip when accounts exist. (4) Fixed `AccountType` mapping and button constraints. (5) Added widget tests covering segmented income creation and the empty account state banner. All 151 frontend tests pass.
+**Context**: Construction - Fast manual entry form UX enhancement and Gasto/Ingreso unification completed and verified.
+
+---
