@@ -1551,5 +1551,28 @@ A2: (Recommended) Chips modernos con fondo suave: Fondo claro sutil con borde y 
 6. Committed (`ff00490`) and pushed to `develop` on `finance-ai-frontend`.
 **Context**: Completed unified movements feed on HomeScreen.
 
----
+## Inquiry: Movements Display Limit on HomeScreen
+**Timestamp**: 2026-09-21T13:26:43-05:00
+**User Input**: "Y CUANTOS SE MUESTRAN EN ESA PANTALLA DE RECIENTES ??"
+**AI Response**: Explained that the initial batch currently loads up to 50 expenses (the default page size of the controller) plus all registered incomes, displaying all of them in the feed with a "Cargar más gastos" button if there are more than 50. Offered the option to set a dedicated visual limit (e.g., top 5 or 10 recent movements) if preferred for a cleaner hub overview.
+**Context**: User inquiry - display capacity and pagination on HomeScreen.
 
+## User Instruction: Limit Recent Movements to Top 10 & Remove Load More Button
+**Timestamp**: 2026-09-21T13:40:35-05:00
+**User Input**: "que muestre solo los 10 ultimos y sin boton de cargar mas y ya "
+**AI Response**: Proceeding to update `home_screen.dart` to cap "Historial reciente" at the 10 most recent movements (`.take(10)`), update the badge to reflect the displayed count, and remove the "Cargar más gastos" button completely.
+**Context**: UI refinement - capping recent movements on HomeScreen and removing pagination button.
+
+## Completed: Top 10 Limit & Removal of Load More Button on HomeScreen
+**Timestamp**: 2026-09-21T13:41:50-05:00
+**User Input**: "[Automated continuation following approval 'que muestre solo los 10 ultimos y sin boton de cargar mas y ya ']"
+**AI Response**: Implemented top 10 cap and removed load more button in `home_screen.dart`:
+1. Computed `recentMovements = allMovements.take(10).toList()` to display up to 10 latest movements.
+2. Updated movement counter badge to reflect `recentMovements.length`.
+3. Removed "Cargar más gastos" button from the bottom of the list.
+4. Added widget test in `expenses_screens_test.dart` verifying that when >10 movements exist, exactly 10 are rendered and no load more button exists.
+5. All 172 tests passed (0 failures). Flutter analyze clean (0 issues).
+6. Committed (`90728d9`) and pushed to `develop` on `finance-ai-frontend`.
+**Context**: Completed UI refinement on HomeScreen.
+
+---
