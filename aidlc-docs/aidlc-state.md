@@ -117,4 +117,16 @@ No extension choices have been recorded for this review.
   - Category header: Removed `ThemeToggleButton` and its unused import from `category_form_screen.dart`.
 - **Verification**: `flutter analyze` clean (0 issues); `flutter test` 170/170 passing; pushed to `develop`.
 
+## Transaction Form Visual Overhaul & Semantic Colors (2026-09-21)
+- **Scope**: Flutter frontend — Manual transaction form (`lib/features/expenses/presentation/expense_create_screen.dart`).
+- **Reason**: User feedback — In the capture form, 'Ingreso' mixed two conflicting greens (emerald and olive), while 'Gasto' lacked a distinctive semantic color and reused green buttons.
+- **Change**:
+  - Adopted financial semantic colors: Coral Red (`palette.discard` / `#DC2626`) for Gasto (indicating money out) and Emerald Green (`palette.income` / `#0E9F6E`) for Ingreso (indicating money in).
+  - Segmented toggle: Text switches between coral red (Gasto) and emerald green (Ingreso) when active.
+  - Hero amount box: Displays `- $` in coral red for Gasto and `+ $` in emerald green for Ingreso, bordered by a soft matching tint.
+  - Modern soft chips: Selected chips for accounts, categories, and income sources now use a subtle tinted background (`errorSoft` for expenses, `incomeSoft` for incomes), 1.5px border, and colored bold text, eliminating the solid dark olive blocks.
+  - Action buttons: 'Registrar gasto' styled in coral red, 'Registrar ingreso' in emerald green.
+- **Verification**: `flutter analyze` clean (0 issues); `flutter test` 170/170 passing; pushed to `develop`.
+
+
 
