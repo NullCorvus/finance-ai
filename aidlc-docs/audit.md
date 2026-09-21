@@ -1466,3 +1466,90 @@ A2: (Recommended) Chips modernos con fondo suave: Fondo claro sutil con borde y 
 **Context**: Completed UI/UX transaction form redesign.
 
 ---
+
+## Cloud Database User and Permissions Inquiry
+**Timestamp**: 2026-09-21T11:01:10-05:00
+**User Input**: "Una duda que user tengo en la bd cloud que permisos tiene ?"
+**AI Response**: Detailed explanation of the cloud PostgreSQL database user (`neondb_owner`) in Neon/Cloud Run, its role memberships (`neon_superuser`, `pg_read_all_data`, `pg_write_all_data`), its privileges (DDL/DML full owner privileges), and the application users (`app_user`) registered in the database.
+**Context**: User inquiry - cloud database configuration and permissions.
+
+---
+
+## Cloud Database Least Privilege & Role Architecture Inquiry
+**Timestamp**: 2026-09-21T11:03:46-05:00
+**User Input**: "osea ese no lo deberia user con la app no ? debrria crear otro rol que solo pueda insertar leer?? "
+**AI Response**: Detailed explanation of the Principle of Least Privilege (PoLP) applied to database connections, explaining the difference between migration/admin roles (DDL) and runtime application roles (DML: SELECT, INSERT, UPDATE, DELETE + sequence USAGE), security risks of using the owner user in the app, and how to set up and configure a dedicated runtime role.
+**Context**: User inquiry - database security best practices and least privilege architecture.
+
+---
+
+## Session Token & Authentication Architecture Inquiry
+**Timestamp**: 2026-09-21T11:28:03-05:00
+**User Input**: "How the token session works ?? like the sessions login "
+**AI Response**: Detailed explanation of Finance AI's stateful dual-token session architecture: opaque random tokens (access & renewable credentials), SHA-256 server-side hashing, in-memory vs secure storage lifecycle on Flutter, three-tier expiration policy (access, idle, absolute), automatic background token rotation, and replay attack detection.
+**Context**: User inquiry - authentication and session lifecycle architecture.
+
+---
+
+## JWT Usage Clarification Inquiry
+**Timestamp**: 2026-09-21T11:32:18-05:00
+**User Input**: "we use jwt ? "
+**AI Response**: Confirmed that the project does NOT use JWT (JSON Web Tokens). Explained the architectural decision to use opaque cryptographic tokens instead of JWTs, highlighting the benefits (instant server-side revocation, zero secret leakage risk, resistance to token compromise via SHA-256 storage, and absence of external token parsing dependencies).
+**Context**: User inquiry - authentication token technology clarification.
+
+---
+
+## One-Way Cryptographic Hashing and Token Verification Inquiry
+**Timestamp**: 2026-09-21T11:34:48-05:00
+**User Input**: "I saw some thing like the token in db why?  and what do you mean sha is only one way ? like and how do login ? like why is tored if its only one way  ?"
+**AI Response**: Pedagogical explanation of one-way cryptographic hash functions (SHA-256), the blender/fingerprint analogy, how authentication verification works by hashing the presented raw token and comparing hashes in the database without needing decryption, and why storing only hashes protects users against database compromise.
+**Context**: User inquiry - cryptographic hashing fundamentals and token verification workflow.
+
+---
+
+## Discrepancy Inquiry: Movements Count in Recent History vs Full History Search
+**Timestamp**: 2026-09-21T13:19:29-05:00
+**User Input**: "por que en historial reciente aparece un movimeinto peor me meto a la lupa para buscar y aparece 2 ??"
+**AI Response**: Explained the technical discrepancy: HomeScreen's feed was querying only `/api/v1/expenses` while HistoryScreen (via search icon) queries `/api/v1/history` (unified movements). Proposed unifying HomeScreen's "Historial reciente" to display both expenses and incomes.
+**Context**: User inquiry - transaction display discrepancy between HomeScreen and HistoryScreen.
+
+---
+
+## User Confirmation & Scope Explanation Request
+**Timestamp**: 2026-09-21T13:21:40-05:00
+**User Input**: "SI y que se cambia se si realiza eso ?"
+**AI Response**: Detailed explanation of visual and technical changes (frontend HomeScreen only, backend unchanged).
+**Context**: Architecture & UI explanation before implementation.
+
+---
+
+## Front vs Back Scope Inquiry
+**Timestamp**: 2026-09-21T13:25:18-05:00
+**User Input**: "CAMBIA FRONT O BACK ?"
+**AI Response**: Clarified that only the FRONTEND changes. The Backend is not touched at all because the unified endpoint already exists and serves both expenses and incomes.
+**Context**: Scope confirmation.
+
+---
+
+## User Authorization to Implement and Push Unified Feed
+**Timestamp**: 2026-09-21T13:26:24-05:00
+**User Input**: "OK HAZ EL CMABIO Y SUBELO "
+**AI Response**: Proceeding to update `home_screen.dart` to unify "Historial reciente" using `historyControllerProvider`, displaying all movements (expenses and incomes), verifying with analyzer and tests, and pushing to develop.
+**Context**: Execution of unified movements feed on HomeScreen.
+
+---
+
+## Completed: Unified Recent Movements (Expenses & Incomes) on Home Screen
+**Timestamp**: 2026-09-21T13:32:00-05:00
+**User Input**: "[Automated continuation following approval 'OK HAZ EL CMABIO Y SUBELO ']"
+**AI Response**: Implemented unified recent movements list on HomeScreen (`home_screen.dart`):
+1. Combined expenses from `expensesControllerProvider` and incomes from `incomesListProvider` into `allMovements`, sorted chronologically descending.
+2. Updated movement counter badge to display the combined count (`${allMovements.length} movimientos`).
+3. Rendered expenses via `_HubExpenseCard` and incomes via a newly created `_HubIncomeCard` (featuring emerald green accent `palette.income`, soft badge, `💰` icon, and tap navigation to `/incomes/$id`).
+4. Added widget test in `expenses_screens_test.dart` verifying unified rendering and income navigation.
+5. All 171 tests passed (0 failures). Flutter analyze clean (0 issues).
+6. Committed (`ff00490`) and pushed to `develop` on `finance-ai-frontend`.
+**Context**: Completed unified movements feed on HomeScreen.
+
+---
+
