@@ -4520,3 +4520,12 @@ Footer navigation
 **Context**: Construction/Code Generation for finding #4 (the last open finding on PR #24). Branch state: frontend PR #24 branch 4 commits ahead of origin, backend `feat/hu-015-expense-items-editing` 1 commit ahead; nothing pushed.
 
 ---
+
+## PR Hygiene: format fix, pushes and the backend-PR decision
+**Timestamp**: 2026-09-29T01:45:00-05:00
+**User Input**: "continue" then "but is a new pr ?? I already ahve the pr" then "(a) Add the single backend commit to my existing PR #19 — one push, no new PR"
+**AI Response**: "Ran the remaining PR hygiene. (1) Formatted the last 6 files (`api_client.dart`, `expenses_screen.dart`, `home_screen.dart`, `receipt_proposal_dto.dart`, `receipt_review_form_data.dart` and the receipt-capture data source test) and committed it as `0ae9a51`; the format gate now exits 0, and the same check run with the repository's pinned SDK (`/home/d3ad/flutter-3.47.2`, Dart 3.13.2 - the exact CI version) reports 0 files changed, so the Linux job's format step is green. Full suite re-verified after formatting: 261 tests pass at 80.54% coverage, `flutter analyze` clean. (2) Pushed both branches: the frontend PR #24 branch (`17f0fd6..0ae9a51`, so PR #24 now carries all five commits) and the new backend branch `feat/hu-015-expense-items-editing`. (3) `gh` remains unauthenticated (invalid token for NullCorvus), so no PR could be created programmatically. Clarified for the user that no new PR was created and that PR #24 was only pushed to, then, on their decision (option a), pushed the single backend commit onto the existing PR #19 branch with a verified fast-forward (`3a19338..5ce8b44`), so PR #19 now carries the item editing as well and no stacked PR exists; the prepared stacked-PR text was deleted. Merge order is unchanged: the frontend PR depends on PR #19 for the whole receipt backend, so #19 merges first. Residual unverified step: the Linux job's final `flutter build apk --debug` (never run locally). Cleanup available: the redundant remote branch `feat/hu-015-expense-items-editing` can be deleted now that its commit lives on the PR #19 branch."
+**Context**: Construction/PR hygiene after all four PR #24 findings and the backend item-editing work were completed; both repositories are pushed and in sync with origin.
+
+---
+

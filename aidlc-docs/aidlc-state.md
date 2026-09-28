@@ -309,10 +309,13 @@ failing CI job. Triage is recorded in `aidlc-docs/construction/plans/hu-015-pr24
 | 2 | P1 | Receipt line-item edits are never persisted | **Fixed** - `PATCH /expenses/{id}` now accepts a replaced item list (backend `5ce8b44`, frontend `2f2b39d`) |
 | 3 | P1 | Cached receipt photo survives an expense deletion | **Fixed** - the detail screen deletes it after a successful delete (`3356851`) |
 | 4 | P2 | "Reintentar análisis" is inert | **Fixed** - retry re-uploads with the user's rotation; `canRetry` false where retrying cannot help (`a5830a4`) |
-| 5 | - | CI: format gate fails on 6 files; **coverage now passes at 80.53%** | Partially resolved - one `dart format` run left |
+| 5 | - | CI: format gate **now passes**; coverage 80.54% | **Resolved** (`0ae9a51`, verified with the pinned Dart 3.13.2) |
 
-**All four Codex findings on PR #24 are fixed** (`df20bc7`, `2f2b39d`, `3356851`, `a5830a4`), plus the
-backend item-editing work (`5ce8b44`). Nothing is pushed and no PR exists yet for the backend branch.
+**All four Codex findings on PR #24 are fixed** (`df20bc7`, `2f2b39d`, `3356851`, `a5830a4`) plus the
+format fix (`0ae9a51`), all pushed to the PR #24 branch. The backend item-editing commit (`5ce8b44`)
+was pushed onto the existing **PR #19** branch per the user's decision (option a), so there is no
+stacked PR to manage. Remaining: the Pillow decision on PR #19, the optional photo-storage hardening,
+and the amount-only PATCH guard.
 
 ### Verification evidence (frontend)
 

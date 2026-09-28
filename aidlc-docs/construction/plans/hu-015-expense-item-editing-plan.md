@@ -102,7 +102,11 @@ PATCH /api/v1/expenses/{expense_id}
 - [x] Line coverage **80.08%** (gate 80%, up from 78.49%); touched files formatted
 
 ### Step 6 - Sequencing, docs and audit
-- [x] Backend on `feat/hu-015-expense-items-editing`, stacked on the HU-015 backend branch
+- [x] Backend commit `5ce8b44` written on `feat/hu-015-expense-items-editing`, stacked on the HU-015
+      backend branch
+- [x] **User decision (option a)**: no stacked PR - the single commit was pushed onto the existing
+      **PR #19** branch (`git push origin feat/hu-015-expense-items-editing:feat/hu-015-ai-receipt-photo-capture`,
+      fast-forward `3a19338..5ce8b44`), so PR #19 now carries the item editing too
 - [x] Frontend wired on the PR #24 branch (`2f2b39d`); merge the backend PR first
 - [x] Plan checkboxes, `audit.md` entries, `aidlc-state.md` updated
 
