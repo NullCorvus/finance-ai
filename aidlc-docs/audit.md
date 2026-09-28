@@ -4477,3 +4477,28 @@ Footer navigation
 
 ---
 
+
+## Frontend Finding #2 Explained, Then Re-Decided as Option B
+**Timestamp**: 2026-09-28T23:35:00-05:00
+**User Input**: "I dont understand this really... what this does where ? and why you mention backend also ??"
+**AI Response**: "Re-explained the finding from zero: where the screen is (Gastos -> expense detail -> 'Editar recibo' -> card 'Productos del recibo (N)' with Agregar/pencil/trash), what the products are (the AI-extracted receipt lines stored with the expense), what happens today step by step, and why the backend appears in the conversation at all - the phone keeps no copy of expenses, every screen reads from the server, and the update request the app sends has no field the server accepts for products, so persisting an edit requires the API to accept them. Framed the options in plain words: A) remove the buttons that cannot work (app only), B) teach the server to accept product changes (app + server)."
+**Context**: Requirements-analysis explanation of finding #2 (plan mode), no files modified.
+
+---
+
+## Decision: Finding #2 option B (real item editing), then plan revised and approved
+**Timestamp**: 2026-09-28T23:45:00-05:00
+**User Input**: "Do B — implement real product editing (app + server) now" then "continue" then "Approve as written — Decision A (products define the total), backend PR first, frontend wiring then in PR #24"
+**AI Response**: "Studied the storage before designing: a receipt's items are existing `expense` rows sharing one `receipt_id` ordered by `position` with `UNIQUE (receipt_id, position)`, confirmation already creates them, `ExpenseItemResponse` already returns them, and the repository already derives `receipt.total = SUM(expense.amount)` and the account movement from the rows - so items could be replaced through the existing PATCH with no migration and no new route. Wrote `aidlc-docs/construction/plans/hu-015-expense-item-editing-plan.md` with the proposed contract, the in-place rewrite strategy through temporary positions, and the two open decisions (line sum vs client amount for the total; branch base). Recorded Decision A (a submitted item list defines the total) and 'backend PR first'. One plan step was corrected during implementation: `origin/develop` carries none of the HU-015 receipt backend (no `create_from_receipt_proposal`, no `ExpenseItemResponse`, no `items`), so the branch is stacked on the HU-015 backend feature branch instead of `develop`."
+**Context**: Inception/Workflow-Planning approval gate plus the first correction discovered during Construction; act mode authorised for the item-editing work.
+
+---
+
+## Code Generation: receipt item editing (backend + frontend)
+**Timestamp**: 2026-09-29T00:20:00-05:00
+**User Input**: "The user approved switching to act mode. Continue with the approved plan now." / "continue"
+**AI Response**: "Delivered the feature in two commits. Backend (`finance-ai-backend`, new branch `feat/hu-015-expense-items-editing` stacked on `feat/hu-015-ai-receipt-photo-capture`, commit `5ce8b44`): `ExpenseItemUpdateRequest` with the confirmation contract's limits, optional `items` on `ExpenseUpdateRequest`/`ExpenseUpdateCommand` (absent or explicit null leaves the stored lines untouched, and an items-only null payload is rejected), `ExpenseItemInput` + `replace_items` on the repository port, an in-place rewrite in `SQLAlchemyExpenseRepository` that keeps every kept row's id (row 1 stays the expense the client holds), rewrites positions through temporary values so `uq_expense_receipt_position` is never violated, deletes surplus rows, inserts extras and renumbers 1..M, then recomputes `receipt.total` and the movement from the new line sum, an empty list collapsing into a single fallback row named after the store, per-item category ownership checks in the service, and the rule that a submitted item list defines the total so a submitted amount is not applied separately. Frontend (`finance-ai-frontend`, PR #24 branch, commit `2f2b39d`): `ExpenseItemUpdateCommand` serializing money as exact 2-decimal strings, optional `items` on `ExpenseUpdateCommand` so plain expenses keep their payload, controller validation of every line, `_LineItemDraft` pass-through of `categoryId`/`note` (also preserved when the edit dialog rewrites a line - a gap my own widget test caught), `ExpenseItem` now parsing `category.id` (its `category_name` field was never populated by the contract), and `_submit` sending the line list for receipt expenses only. Verification evidence: backend 300 tests pass at 87% coverage (4 SQLite adapter tests, 3 API contract tests, 2 PostgreSQL integration tests against a throwaway `finance_ai_test` database), ruff format/check and `mypy src` clean, `alembic check` reports no new upgrade operations (no migration), OpenAPI regenerated with +103 additive lines; frontend `flutter analyze` clean, `flutter test --coverage` 256 passed with line coverage rising from 78.49% to **80.08%** (gate now met), `dart format` debt down from 12 files to 7. Deployment order is recorded as a risk: a backend without this change rejects the new field with `request_invalid`, so the backend PR must ship first. Not pushed; PR creation pending (the local `gh` token is unauthenticated)."
+**Context**: Construction/Code Generation for the receipt item editing follow-up. Plan: `aidlc-docs/construction/plans/hu-015-expense-item-editing-plan.md`.
+
+---
+

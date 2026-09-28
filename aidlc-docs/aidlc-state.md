@@ -306,18 +306,30 @@ failing CI job. Triage is recorded in `aidlc-docs/construction/plans/hu-015-pr24
 | # | Severity | Finding | Status |
 |---|---|---|---|
 | 1 | P1 | Raw exception / device path reached a user-visible error state | **Fixed** - shared `ErrorDiagnostic` contract |
-| 2 | P1 | Receipt line-item edits are never persisted | Open, needs a decision |
+| 2 | P1 | Receipt line-item edits are never persisted | **Fixed** - `PATCH /expenses/{id}` now accepts a replaced item list (backend `5ce8b44`, frontend `2f2b39d`) |
 | 3 | P1 | Cached receipt photo survives an expense deletion | Open, needs a decision |
 | 4 | P2 | "Reintentar análisis" is inert | Open, needs a decision |
-| 5 | - | CI: format gate fails on 9 files; coverage 78.49% < 80% | Open, needs a decision |
+| 5 | - | CI: format gate fails on 7 files; **coverage now passes at 80.08%** | Partially resolved - one `dart format` run left |
 
 ### Verification evidence (frontend)
 
-`flutter analyze --no-pub` clean; `flutter test test/features/receipt_capture` 38 passed (7 new);
-`flutter test --coverage` 249 passed at **78.49% line coverage** (below the 80% gate: 142 more covered
-lines needed, concentrated in `receipt_review_screen.dart`, `expense_form_screen.dart`,
-`receipt_camera_screen.dart` and `expense_create_screen.dart`); `dart format` check still fails on 9
-files (down from 12 - the files touched here are formatted).
+`flutter analyze --no-pub` clean; `flutter test test/features/expenses` 53 passed; `flutter test
+--coverage` **256 passed at 80.08% line coverage** (gate 80% now met, up from 78.49% before the item
+editing tests); `dart format` check still fails on 7 files (down from 12 - the files touched here are
+formatted).
+
+### Receipt item editing (finding #2, option B) - complete
+
+Plan: `aidlc-docs/construction/plans/hu-015-expense-item-editing-plan.md`.
+Backend `feat/hu-015-expense-items-editing` (stacked on `feat/hu-015-ai-receipt-photo-capture`),
+commit `5ce8b44`: optional `items` on the expense update contract, an in-place line rewrite that keeps
+row ids and renumbers positions through temporary values, total and movement derived from the new line
+sum, an empty list collapsing to a single fallback row, per-item category ownership checks. No
+migration (`alembic check` clean); OpenAPI +103 additive lines; 300 backend tests at 87%.
+Frontend PR #24 branch, commit `2f2b39d`: exact 2-decimal money strings, line validation, category and
+note pass-through, and the receipt form submitting its product list.
+**Deployment order**: the backend must ship first, otherwise the new field is rejected as
+`request_invalid`.
 
 Note: the backend PR #19 remediation remains complete and pushed; the Pillow `pip-audit` decision is
 still outstanding there.
