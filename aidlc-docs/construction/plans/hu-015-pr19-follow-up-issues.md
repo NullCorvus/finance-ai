@@ -90,6 +90,13 @@ Suggested work: relax the constraint to `pillow>=12.3,<13`, re-lock, then re-run
 preprocessor/guard suites (EXIF stripping, dimension limits, HEIC registration) plus a live
 extraction against `test_receipts/inputs` before merging.
 
+**Decision (user, 2026-09-29): leave it as is.** CI evidence recorded at decision time: the backend
+`quality` job is green on every step except `Audit locked dependencies`, and PR #19 reports
+`mergeable: MERGEABLE` with `mergeStateStatus: UNSTABLE` - i.e. the audit is **not a required check**,
+so it does not block the merge. The consequence accepted with this decision is a permanently red step
+that can mask future real advisories; the upgrade remains available here whenever it is wanted
+(~30-60 min, including one real JPEG and one HEIC through the capture flow).
+
 ---
 
 ## Issue 4 - Housekeeping: untracked local tooling fails the repo-wide lint command

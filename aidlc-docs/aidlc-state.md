@@ -288,12 +288,18 @@ drift); OpenAPI export produces no diff; 290 tests pass at **87% coverage** (int
 >= 80% required); `uv build` succeeds; frontend `flutter analyze` clean and 7/7 receipt-capture data
 source tests pass.
 
-### Outstanding, needs a decision
+### Pillow dependency audit (decision recorded)
 
 `uv run pip-audit` fails: Pillow 11.3.0 carries **35 advisories**, all fixed by 12.3.0. `pillow-heif`
 1.8.0 already allows Pillow 12 (`Requires-Dist: pillow>=11.1.0`), but `pyproject.toml` pins
 `pillow>=11.0,<12`. This is a major dependency bump on the code path that parses untrusted receipt
 images, so it was not applied without approval; see follow-up issue 3.
+
+**Decision (user, 2026-09-29): leave it as is.** Verified through `gh`: PR #19 is
+`mergeable: MERGEABLE` with `mergeStateStatus: UNSTABLE`, and the `quality` job passes every step
+except `Audit locked dependencies` - the audit is not a required check, so the Pillow advisories do
+not block the merge. Accepted consequence: one permanently red step that can mask future real
+advisories.
 
 
 ---
@@ -309,13 +315,25 @@ failing CI job. Triage is recorded in `aidlc-docs/construction/plans/hu-015-pr24
 | 2 | P1 | Receipt line-item edits are never persisted | **Fixed** - `PATCH /expenses/{id}` now accepts a replaced item list (backend `5ce8b44`, frontend `2f2b39d`) |
 | 3 | P1 | Cached receipt photo survives an expense deletion | **Fixed** - the detail screen deletes it after a successful delete (`3356851`) |
 | 4 | P2 | "Reintentar análisis" is inert | **Fixed** - retry re-uploads with the user's rotation; `canRetry` false where retrying cannot help (`a5830a4`) |
-| 5 | - | CI: format gate **now passes**; coverage 80.54% | **Resolved** (`0ae9a51`, verified with the pinned Dart 3.13.2) |
+| 5 | - | CI: **fully green** - format, analyze, tests, coverage and the debug APK build all pass | **Resolved** (`0ae9a51`; verified remotely via `gh pr checks 24`) |
 
 **All four Codex findings on PR #24 are fixed** (`df20bc7`, `2f2b39d`, `3356851`, `a5830a4`) plus the
 format fix (`0ae9a51`), all pushed to the PR #24 branch. The backend item-editing commit (`5ce8b44`)
 was pushed onto the existing **PR #19** branch per the user's decision (option a), so there is no
-stacked PR to manage. Remaining: the Pillow decision on PR #19, the optional photo-storage hardening,
-and the amount-only PATCH guard.
+stacked PR to manage. Remaining optional work: the photo-storage hardening and the amount-only PATCH
+guard.
+
+### Remote CI status (verified with `gh`, 2026-09-29)
+
+`gh` was re-authenticated (the stored token had expired); PR checks are now read directly instead of
+inferred.
+
+| PR | Checks | Merge state |
+|---|---|---|
+| **#24** (frontend) | `Shared quality and Android build` **pass** (12m32s: Flutter install, locked deps, format+analyze, tests+coverage, debug APK) and `Windows native tests and build` **pass** (5m5s) | `MERGEABLE` |
+| **#19** (backend) | `quality` fails only at `Audit locked dependencies` (Pillow); every other step passes - locked deps, format/lint/mypy, migrations+seed+drift, OpenAPI diff, tests with coverage, sdist+wheel | `MERGEABLE` / `UNSTABLE` (the audit is not a required check) |
+
+Pillow decision: leave as is (see above). Nothing else is red on either PR.
 
 ### Verification evidence (frontend)
 

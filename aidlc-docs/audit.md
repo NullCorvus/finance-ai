@@ -4529,3 +4529,31 @@ Footer navigation
 
 ---
 
+
+## User Request: Generate APK and Update Cloud Backend ("Puedes geenrar el apk y actulziar el abck end en la nube pls ")
+**Timestamp**: 2026-09-28T18:48:23-05:00
+**User Input**: "Puedes geenrar el apk y actulziar el abck end en la nube pls "
+**AI Response**: "Completed end-to-end backend cloud deployment and multi-flavor Android APK generation:
+1. Backend: Verified test suite (265 tests passed), built production container with `--target runtime` tagged as `southamerica-east1-docker.pkg.dev/finance-ai-api/finance-ai/backend:latest`, pushed to Artifact Registry (digest `sha256:70750b857b84512f1b5d9f3965ef7ced2325504402089db5c1ce17c18c2979e9`), and deployed to Cloud Run `finance-api` (`southamerica-east1`). New revision `finance-api-00013-v7q` is 100% active and healthy (`/health/ready` returns 200 OK).
+2. Mobile APKs: Compiled Flutter debug universal APK (171MB) and split-per-abi APKs (`app-arm64-v8a-debug.apk` 101MB, `app-armeabi-v7a-debug.apk` 81MB, `app-x86_64-debug.apk` 88MB) baked with `--dart-define=FINANCE_AI_API_BASE_URL=https://finance-api-1006444199777.southamerica-east1.run.app`.
+3. Distribution & Installation: Started HTTP download server on port 8888 (`http://192.168.2.3:8888/`) and installed `app-arm64-v8a-debug.apk` directly to connected ADB device `6d3dd54` (Success)."
+**Context**: Cloud Run deployment of `feat/hu-015-expense-items-editing` and APK compilation with Cloud Run base URL.
+
+---
+
+## User Request: Install / Run Debug Version via ADB ("tengo conectado el celualr por adb y haz la vericon debug pls ")
+**Timestamp**: 2026-09-28T18:49:44-05:00
+**User Input**: "tengo conectado el celualr por adb y haz la vericon debug pls "
+**AI Response**: "Installed the universal debug APK (`app-debug.apk`, 171MB, baked with Cloud Run API URL) directly onto the connected Android device `6d3dd54` using `adb install -r -d` (handling split ABI versionCode offset downgrade check). Successfully launched `com.nullcorvus.finance_ai` (PID 6178) on the device, confirmed running and rendering cleanly via logcat."
+**Context**: Universal debug APK installation and launch on connected Android phone via ADB.
+
+---
+
+## gh Re-Authentication, Remote CI Status and the Pillow Decision
+**Timestamp**: 2026-09-29T02:20:00-05:00
+**User Input**: "lets configure the git thing lets forget the pillow thing what was yt that anyway ??" then "I'll run `gh auth login -h github.com` myself now — wait for me" then (after the login succeeded) "You were already logged in to this account ?? itw roking now ??" then "Nothing yet — just record the Pillow decision and the CI status in the docs"
+**AI Response**: "Inspected the tooling first: git identity (`NullCorvus <123fernanby@gmail.com>`) and SSH remotes were already correct - only the GitHub API token was broken, because `~/.config/gh/hosts.yml` held an expired token for the same account. Explained that `gh auth login` is interactive and could not be run for the user, offered a PAT-in-a-file alternative, and answered the Pillow question in plain language (the Python imaging library used solely by `receipts/preprocessor.py` to normalise the receipt photo before the Gemini call; `pip-audit` reports 35 advisories in 11.3.0, all fixed by 12.x, while `pyproject.toml` pins `pillow>=11.0,<12`). After the user completed the login, read the real CI state instead of inferring it: **PR #24 is fully green** (`Shared quality and Android build` pass in 12m32s including the debug APK build, `Windows native tests and build` pass in 5m5s - the format and coverage gates that were red at the start of this remediation now pass remotely), and **PR #19 fails only at `Audit locked dependencies`** (the Pillow advisories) while every other step passes - locked dependencies, format/lint/mypy, migrations+seed+drift, generated OpenAPI, tests with coverage and sdist/wheel. Both PRs report `mergeable: MERGEABLE`; PR #19 is `UNSTABLE` because the audit is not a required check, so the Pillow advisories do not block the merge. Recorded the user's decision to leave Pillow as is, with the accepted consequence of one permanently red step, in `hu-015-pr19-follow-up-issues.md` (issue 3) and `aidlc-state.md`, plus a new remote-CI-status table in the state file."
+**Context**: Tooling setup plus verification of the pushed work; no code changes. `gh` is now authenticated as NullCorvus, so PR checks, comments and issue creation are available for future steps.
+
+---
+
