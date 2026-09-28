@@ -104,6 +104,16 @@ directory, and a widget test with an injected fake photo store asserts the delet
 deletions made outside the app leave an orphan (needs a startup sweep) and the documents folder can
 still be included in device backups - both tracked as open decisions.
 
+### Finding #4 - the retry button works and keeps the rotation (fixed, `a5830a4`)
+
+The error screen offered "Reintentar análisis" but the handler called `analyzeReceipt()`, which returns
+unless the state is `ReceiptCapturePreCheck` - after a failure it is `ReceiptCaptureError`, so tapping
+did nothing and a transient failure cost the whole capture. The request is now a shared
+`_requestProposal(path, rotation)` used by both entry points; the error state keeps `rotationDegrees`
+so a retry sends the photo exactly as the user prepared it; and `canRetry` is false for failures where
+another attempt cannot help (image over 10 MB, unreadable file), so the button is no longer offered
+there. Four tests cover it (two notifier, two widget).
+
 ### Finding #2 - receipt product edits persist (fixed, backend `5ce8b44` + frontend `2f2b39d`)
 
 See `hu-015-expense-item-editing-plan.md`: `PATCH /api/v1/expenses/{id}` accepts a replaced item list,
@@ -111,10 +121,10 @@ the repository rewrites the receipt's line rows in place and derives the total a
 
 ## Open items after this change (each needs its own decision)
 
-1. **Coverage gate: resolved.** The receipt-capture tests plus the item-editing tests took line coverage
-   from 78.49% to **80.49%**, so the 80% gate now passes.
+1. **Coverage gate: resolved.** Line coverage went from 78.49% to **80.53%**, so the 80% gate passes.
 2. **Format gate fails on 6 files** (was 12). One `dart format` run fixes it, but those files are
    outside this change's scope.
-3. Finding #4 ("Reintentar análisis" is inert) remains open; the photo-storage hardening (startup
-   sweep, backup exclusion) is an open product decision.
+3. **All four Codex findings on PR #24 are fixed.** Remaining optional follow-ups: the photo-storage
+   hardening (startup sweep for orphans created outside the app, backup exclusion) and a guard for the
+   amount-only PATCH path on multi-line receipts.
 

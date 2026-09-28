@@ -4511,3 +4511,12 @@ Footer navigation
 
 ---
 
+
+
+## Decision: Finding #4 option A + D, then code generation
+**Timestamp**: 2026-09-29T01:15:00-05:00
+**User Input**: "A + D as recommended — real faithful retry, and no retry offered where it cannot help"
+**AI Response**: "Explained finding #4 first (the button's handler, the guard that makes it a no-op, the fact that `canRetry` is never set false so the button always shows, the lost rotation in the error state, and that no test referenced the button at all), then implemented A + D in `finance-ai-frontend` (PR #24 branch, commit `a5830a4`): the analysis request became a shared `_requestProposal(path, rotation)` used by `analyzeReceipt()` and by a new `retryFailedAnalysis()` that rebuilds the attempt from the failed state, `ReceiptCaptureError` now keeps `rotationDegrees` so a retry sends the photo exactly as the user prepared it, and `canRetry` is false for the oversize-image and unreadable-file failures so the button is not offered where another attempt cannot help. Tests added: the retry re-uploads the same path and rotation and reaches the review screen (asserting the recorded upload list), an unretryable failure ignores the retry, the retry CTA calls the notifier, and the CTA disappears when `canRetry` is false. Verified: `flutter analyze` clean, `flutter test test/features/receipt_capture` 42 passed, full suite 261 passed with line coverage 80.53%, format debt unchanged at 6 files. With this, all four Codex findings on PR #24 are fixed."
+**Context**: Construction/Code Generation for finding #4 (the last open finding on PR #24). Branch state: frontend PR #24 branch 4 commits ahead of origin, backend `feat/hu-015-expense-items-editing` 1 commit ahead; nothing pushed.
+
+---
