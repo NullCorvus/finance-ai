@@ -295,3 +295,30 @@ source tests pass.
 `pillow>=11.0,<12`. This is a major dependency bump on the code path that parses untrusted receipt
 images, so it was not applied without approval; see follow-up issue 3.
 
+
+---
+
+## Frontend PR #24 Review Remediation (2026-09-28)
+
+Codex review on `finance-ai-frontend` PR #24 (reviewed commit `f0fc2564dd`) raised four findings and a
+failing CI job. Triage is recorded in `aidlc-docs/construction/plans/hu-015-pr24-frontend-remediation-plan.md`.
+
+| # | Severity | Finding | Status |
+|---|---|---|---|
+| 1 | P1 | Raw exception / device path reached a user-visible error state | **Fixed** - shared `ErrorDiagnostic` contract |
+| 2 | P1 | Receipt line-item edits are never persisted | Open, needs a decision |
+| 3 | P1 | Cached receipt photo survives an expense deletion | Open, needs a decision |
+| 4 | P2 | "Reintentar análisis" is inert | Open, needs a decision |
+| 5 | - | CI: format gate fails on 9 files; coverage 78.49% < 80% | Open, needs a decision |
+
+### Verification evidence (frontend)
+
+`flutter analyze --no-pub` clean; `flutter test test/features/receipt_capture` 38 passed (7 new);
+`flutter test --coverage` 249 passed at **78.49% line coverage** (below the 80% gate: 142 more covered
+lines needed, concentrated in `receipt_review_screen.dart`, `expense_form_screen.dart`,
+`receipt_camera_screen.dart` and `expense_create_screen.dart`); `dart format` check still fails on 9
+files (down from 12 - the files touched here are formatted).
+
+Note: the backend PR #19 remediation remains complete and pushed; the Pillow `pip-audit` decision is
+still outstanding there.
+

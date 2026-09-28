@@ -4225,3 +4225,255 @@ Use the web editor or the command line to resolve conflicts before continuing.
 
 ---
 
+
+## Frontend PR #24 Review Triage (plan mode)
+**Timestamp**: 2026-09-28T18:40:00-05:00
+**User Input**:
+
+```text
+like this right thi is what i pasted right ??
+Skip to content
+
+    Maicol2363
+    finance-ai-frontend
+
+Repository navigation
+
+    Code
+    Issues
+    Pull requests1 (1)
+    Agents
+    Actions
+    Projects
+    Security and quality
+    Insights
+    Settings
+
+feat(hu-015): Flutter receipt capture - camera, review and confirm - #24#24
+Open
+NullCorvus
+wants to merge 3 commits into
+develop
+from
+feat/hu-015-ai-receipt-photo-capture
++5,769-318Lines changed: 5769 additions & 318 deletions
+Conversation7 (7)
+Commits3 (3)
+Checks2 (2)
+Files changed33 (33)
+Open
+feat(hu-015): Flutter receipt capture - camera, review and confirm
+#24
+NullCorvus
+wants to merge 3 commits into
+develop
+from
+feat/hu-015-ai-receipt-photo-capture
+Conversation
+@NullCorvus
+NullCorvus
+commented
+1 hour ago
+
+No description provided.
+@NullCorvus
+feat(hu-015): Flutter receipt capture - camera, review and confirm
+f0fc256
+chatgpt-codex-connector[bot]
+chatgpt-codex-connector Bot reviewed 1 hour ago
+chatgpt-codex-connector Bot
+left a comment
+💡 Codex Review
+
+Here are some automated review suggestions for this pull request.
+
+Reviewed commit: f0fc2564dd
+ℹ️ About Codex in GitHub
+
+lib/features/receipt_capture/application/receipt_capture_notifier.dart
+Comment on lines +110 to +114
+    } catch (e) {
+      state = ReceiptCaptureError(
+        errorMessage: e is ExpenseFailure ? e.userMessage : e.toString(),
+        localImagePath: imagePath,
+      );
+@chatgpt-codex-connector
+chatgpt-codex-connector Bot
+1 hour ago
+
+P1 Badge Route receipt failures through safe diagnostics
+
+When the selected image disappears or another non-ExpenseFailure occurs during upload, this puts e.toString() into a user-visible error state; for example, a FileSystemException includes the local receipt path. The error screen then renders that raw text without a stable code, correlation ID, or copyable diagnostic panel, violating the required privacy-safe failure contract.
+
+AGENTS.md reference: AGENTS.md:L13-L16
+
+Useful? React with 👍 / 👎.
+@NullCorvus
+Reply...
+lib/features/expenses/presentation/expense_form_screen.dart
+Comment on lines +849 to +855
+      setState(() {
+        if (item != null && index != null) {
+          _items[index] = _LineItemDraft(
+            name: name,
+            quantity: qty,
+            amount: total,
+            unitPrice: unitPrice,
+@chatgpt-codex-connector
+chatgpt-codex-connector Bot
+1 hour ago
+
+P1 Badge Persist receipt line-item edits or disable them
+
+Editing an item only replaces the local _items entry and recalculates the header amount; _submit sends an ExpenseUpdateCommand containing no items, and its wire payload has no item field. Thus saving an edited receipt can change its total while silently retaining the original product names, quantities, and prices when the detail is reopened. The item controls should be backed by a supported API operation or be read-only.
+
+AGENTS.md reference: AGENTS.md:L21-L21
+
+Useful? React with 👍 / 👎.
+@NullCorvus
+Reply...
+lib/features/receipt_capture/data/receipt_photo_cache_repository.dart
+Comment on lines +12 to +18
+  Future<Directory> _getReceiptsDirectory() async {
+    final appDir = await getApplicationDocumentsDirectory();
+    final receiptsDir = Directory('${appDir.path}/receipts');
+    if (!await receiptsDir.exists()) {
+      await receiptsDir.create(recursive: true);
+    }
+    return receiptsDir;
+@chatgpt-codex-connector
+chatgpt-codex-connector Bot
+1 hour ago
+
+P1 Badge Remove the local photo when its receipt is deleted
+
+A confirmed receipt is copied into the application Documents directory, but no caller invokes deleteCachedReceiptPhoto; deleting the expense only removes the backend record. Consequently, after a user chooses “Eliminar recibo definitivamente,” the sensitive receipt image remains persistently stored on the device (and may be included in document backups).
+
+Useful? React with 👍 / 👎.
+@NullCorvus
+Reply...
+lib/features/receipt_capture/presentation/screens/receipt_pre_check_screen.dart
+Comment on lines +134 to +136
+                    onPressed: () {
+                      notifier.analyzeReceipt();
+                    },
+@chatgpt-codex-connector
+chatgpt-codex-connector Bot
+1 hour ago
+
+P2 Badge Restore the image state before retrying analysis
+
+After an upload failure, analyzeReceipt changes the state from ReceiptCapturePreCheck to ReceiptCaptureError. This button invokes analyzeReceipt again, but that method immediately returns unless the state is ReceiptCapturePreCheck, so normal retryable network or processing failures leave “Reintentar análisis” inert and force the user to restart the capture flow.
+
+Useful? React with 👍 / 👎.
+@NullCorvus
+Reply...
+@NullCorvus
+Merge remote-tracking branch 'origin/develop' into feat/hu-015-ai-rec…
+f66bcba
+@NullCorvus
+NullCorvus
+commented
+36 minutes ago
+Author
+
+@codex what model is this ??
+@chatgpt-codex-connector
+chatgpt-codex-connector Bot
+commented
+36 minutes ago
+
+You have reached your Codex usage limits. You can see your limits in the Codex usage dashboard.
+@NullCorvus
+feat(hu-015): map the receipt_proposal_not_found error code
+17f0fd6
+Merge info
+Some checks were not successful
+
+1 failing, 1 successful checks
+failing checks
+
+    Frontend CI / Shared quality and Android build (pull_request)
+    Frontend CI / Shared quality and Android build (pull_request)Failing after 1m
+
+successful checks
+
+    Frontend CI / Windows native tests and build (pull_request)
+    Frontend CI / Windows native tests and build (pull_request)Successful in 6m
+
+No conflicts with base branch
+
+Merging can be performed automatically.
+You can also merge this with the command line.
+Still in progress?
+@NullCorvus
+Add a comment
+Comment
+
+Add your comment here...
+Remember, contributions to this repository should follow our GitHub Community Guidelines.
+ProTip! Add comments to specific lines under Files changed.
+Reviewers
+@chatgpt-codex-connector
+chatgpt-codex-connector[bot]
+Still in progress?
+Assignees
+No one—
+Labels
+None yet
+Projects
+None yet
+Milestone
+No milestone
+Development
+
+Successfully merging this pull request may close these issues.
+
+None yet
+Notifications
+
+Customize
+
+You’re receiving notifications because you authored the thread.
+1 participant
+@NullCorvus
+Footer
+© 2026 GitHub, Inc.
+Footer navigation
+
+    Terms
+    Privacy
+    Security
+    Status
+    Docs
+    Community
+    Guidelines
+    Contact
+    Manage cookies
+    Do not share my personal information
+
+ i meant this
+```
+
+**AI Response**: "Identified the paste as frontend PR #24 (`finance-ai-frontend`, branch `feat/hu-015-ai-receipt-photo-capture`, Codex review on `f0fc2564dd`), not the backend PR #19 discussed earlier. Verified the four Codex findings against the working tree and found a fifth item the review box shows: the `Frontend CI / Shared quality and Android build` job fails after 1m. Evidence gathered: `receipt_capture_notifier.dart:112/138/289` interpolate `e.toString()` and `:50/75` interpolate `$e` into user-visible state, while `lib/features/receipt_capture/` uses the `lib/core/diagnostics/` contract in zero files although ~20 other screens do (frontend `AGENTS.md` lines 13-16 make that contract mandatory); `ExpenseUpdateCommand` and the backend `ExpenseUpdateRequest` schema have no `items` field and no endpoint updates receipt line items, so form edits cannot persist; `deleteCachedReceiptPhoto` exists but has no production caller and the photo is written to the application Documents directory (not a temporary cache); the pre-check error screen calls `analyzeReceipt()` while the state is `ReceiptCaptureError`, which returns immediately. Reproduced the CI failure locally: `dart format --output=none --set-exit-if-changed lib test integration_test` exits 1 with 12 files needing formatting while `flutter analyze` is clean, and explained why the Windows job looks green (it runs `dart format` then `flutter analyze` in pwsh, so the step reports the last command's exit code). Presented finding #1 in plain language with a file-level fix plan."
+**Context**: Requirements-analysis-style triage of the frontend PR #24 review (plan mode). No files modified in this entry.
+
+---
+
+## Decision: Frontend PR #24 finding #1 approved
+**Timestamp**: 2026-09-28T18:52:00-05:00
+**User Input**: "Fix #1 as recommended — reuse the ErrorDiagnostic contract, then explain #2"
+**AI Response**: "Recorded the scope decision: receipt-capture failures must stop rendering raw exception text and must use the shared `ErrorDiagnostic`/`ErrorDiagnosticPanel` contract, with findings #2, #3, #4 and the formatting gate handled as separate decisions afterwards. Presented the file-level plan (state, notifier call sites, three screens, tests, verification) and switched to act mode after explicit approval."
+**Context**: Inception/Workflow-Planning approval gate for the frontend remediation; act mode authorised for finding #1 only.
+
+---
+
+
+## Code Generation: Frontend PR #24 review finding #1 (safe diagnostics)
+**Timestamp**: 2026-09-28T19:15:00-05:00
+**User Input**: "The user approved switching to act mode. Continue with the approved plan now."
+**AI Response**: "Implemented finding #1 in `finance-ai-frontend` on branch `feat/hu-015-ai-receipt-photo-capture`. (1) `receipt_capture_state.dart`: `ReceiptCaptureError.errorMessage (String)` became `diagnostic (ErrorDiagnostic)`, and `ReceiptCaptureReview` gained `submissionDiagnostic (ErrorDiagnostic?)` while `submissionError` is now reserved for the client-side validation hint; `localImagePath` and `canRetry` were left untouched so finding #4 behaves exactly as before. (2) `receipt_capture_notifier.dart`: added `_failureDiagnostic`, `_diagnosticFor` and `_unexpected` helpers that mirror `ExpensesController`, and rewrote all six notifier failure sites - `pickImage` catch (`select_receipt_image`), the >10 MB reject and `useImageFile` catch (`validate_receipt_image`, code `receipt_image_too_large` for the size case), `analyzeReceipt` (`analyze_receipt`), `retryAnalysis` (`retry_receipt_analysis`) and `confirmExpense` (`confirm_receipt_expense`). Server failures keep their stable code, technical reason and correlation ID; client-side failures report fixed, path-free reasons, so no raw exception or file path can reach the user. (3) `receipt_pre_check_screen.dart`, `receipt_capture_flow.dart` and `receipt_review_screen.dart` now render `ErrorDiagnosticPanel` (copyable report with a stable code) instead of the raw text, and a post-change sweep for `$e`/`errorMessage` found a seventh site in the in-app camera's gallery snackbar (`'Error al seleccionar la imagen: $e'`), now a fixed path-free message. (4) Tests: 7 new plus one updated - a raw `FileSystemException` during analysis, an `ExpenseFailure` correlation-ID propagation, the oversize image, an unreadable picked file, a confirm failure (`submissionDiagnostic` set, `submissionError` null), and two widget tests asserting the panel renders and no exception text or path appears. Verification evidence: `dart format` on the touched files (format debt 12 -> 9), `flutter analyze --no-pub` clean, `flutter test test/features/receipt_capture` 38 passed, `flutter test --coverage` 249 passed. Two new findings surfaced while verifying: the branch is at **78.49% line coverage against the 80% gate** (142 more covered lines needed; the gap is concentrated in `receipt_review_screen.dart` 201, `expense_form_screen.dart` 200, `receipt_camera_screen.dart` 168 and `expense_create_screen.dart` 149 uncovered lines, i.e. pre-existing debt this change did not introduce), and the cached photo is written to the application Documents directory even though the unit summary describes a temporary directory. Findings #2, #3, #4 and the format/coverage gates remain open for separate decisions."
+**Context**: Construction/Code Generation for the frontend PR #24 remediation, finding #1 only. Plan: `aidlc-docs/construction/plans/hu-015-pr24-frontend-remediation-plan.md`. Commit made locally on the frontend branch; not pushed.
+
+---
+
