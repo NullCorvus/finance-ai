@@ -92,14 +92,29 @@ contract; findings #2, #3 and #4 are discussed one at a time afterwards. This pl
 | after change `flutter test --coverage` | 249 passed; 78.49% line coverage |
 | after change `dart format --output=none --set-exit-if-changed lib test integration_test` | FAILS: 9 files (was 12) |
 
+## Follow-up remediations on the same PR branch
+
+### Finding #3 - deleting a receipt now deletes its local photo (fixed, `3356851`)
+
+`deleteCachedReceiptPhoto` had no caller outside a test, so the JPEG copied into the app documents
+folder survived "Eliminar recibo definitivamente" while the dialog promised a definitive deletion; the
+backend stores no image, so that file is the only copy. `ExpenseDetailScreen` now removes it after a
+successful delete (best effort), the photo store's comment no longer claims a temporary cache
+directory, and a widget test with an injected fake photo store asserts the delete call. Not covered:
+deletions made outside the app leave an orphan (needs a startup sweep) and the documents folder can
+still be included in device backups - both tracked as open decisions.
+
+### Finding #2 - receipt product edits persist (fixed, backend `5ce8b44` + frontend `2f2b39d`)
+
+See `hu-015-expense-item-editing-plan.md`: `PATCH /api/v1/expenses/{id}` accepts a replaced item list,
+the repository rewrites the receipt's line rows in place and derives the total and movement from them.
+
 ## Open items after this change (each needs its own decision)
 
-1. **Coverage gate fails: 78.49% < 80%.** 9349 measurable lines, 7338 covered; **142 more covered
-   lines** are needed. The gap is concentrated in receipt capture (57.06% of 1218 lines) and the
-   expense screens: `receipt_review_screen.dart` 201, `expense_form_screen.dart` 200,
-   `receipt_camera_screen.dart` 168, `expense_create_screen.dart` 149 uncovered lines. This is
-   pre-existing branch debt, not introduced here (this change only adds tests).
-2. **Format gate fails on 9 files** (was 12). One command fixes it, but those files are outside
-   this change's scope.
-3. Findings #2, #3 and #4 remain open.
+1. **Coverage gate: resolved.** The receipt-capture tests plus the item-editing tests took line coverage
+   from 78.49% to **80.49%**, so the 80% gate now passes.
+2. **Format gate fails on 6 files** (was 12). One `dart format` run fixes it, but those files are
+   outside this change's scope.
+3. Finding #4 ("Reintentar análisis" is inert) remains open; the photo-storage hardening (startup
+   sweep, backup exclusion) is an open product decision.
 

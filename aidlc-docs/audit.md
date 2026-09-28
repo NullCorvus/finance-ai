@@ -4502,3 +4502,12 @@ Footer navigation
 
 ---
 
+
+## Decision: Finding #3 option A, then code generation
+**Timestamp**: 2026-09-29T00:50:00-05:00
+**User Input**: "A now — delete the cached photo after a successful expense delete (+ fix the wrong 'temporary cache' comment), then explain #4"
+**AI Response**: "Explained finding #3 in plain language first (who writes, reads and should delete the photo, the step-by-step behaviour after 'Eliminar recibo definitivamente', and why it is a privacy issue rather than a cosmetic one: the JPEG sits in the app documents folder, can be included in device backups, and the backend keeps no image at all, so that file is the only copy). Then implemented option A in `finance-ai-frontend` (PR #24 branch, commit `3356851`): `ExpenseDetailScreen` calls `deleteCachedReceiptPhoto` after a successful delete as a best-effort step that cannot break the flow, the photo store's class comment no longer claims a temporary cache directory and now records why deletion matters, and the widget harness injects a fake photo store so a new test can assert the delete call and the removal without the path_provider plugin. Verified: `flutter analyze` clean, `flutter test test/features/expenses` 54 passed, full suite 257 passed with line coverage rising from 80.08% to **80.49%**, format debt down from 7 to 6 files. Explicitly not covered and recorded as open decisions: deletions made outside the app leave an orphan (needs a startup sweep) and the documents folder can still be included in device backups."
+**Context**: Construction/Code Generation for finding #3, option A only. Findings #2 and #3 are now fixed; #4 remains.
+
+---
+

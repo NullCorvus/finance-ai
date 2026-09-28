@@ -307,16 +307,15 @@ failing CI job. Triage is recorded in `aidlc-docs/construction/plans/hu-015-pr24
 |---|---|---|---|
 | 1 | P1 | Raw exception / device path reached a user-visible error state | **Fixed** - shared `ErrorDiagnostic` contract |
 | 2 | P1 | Receipt line-item edits are never persisted | **Fixed** - `PATCH /expenses/{id}` now accepts a replaced item list (backend `5ce8b44`, frontend `2f2b39d`) |
-| 3 | P1 | Cached receipt photo survives an expense deletion | Open, needs a decision |
+| 3 | P1 | Cached receipt photo survives an expense deletion | **Fixed** - the detail screen deletes it after a successful delete (`3356851`) |
 | 4 | P2 | "Reintentar análisis" is inert | Open, needs a decision |
-| 5 | - | CI: format gate fails on 7 files; **coverage now passes at 80.08%** | Partially resolved - one `dart format` run left |
+| 5 | - | CI: format gate fails on 6 files; **coverage now passes at 80.49%** | Partially resolved - one `dart format` run left |
 
 ### Verification evidence (frontend)
 
-`flutter analyze --no-pub` clean; `flutter test test/features/expenses` 53 passed; `flutter test
---coverage` **256 passed at 80.08% line coverage** (gate 80% now met, up from 78.49% before the item
-editing tests); `dart format` check still fails on 7 files (down from 12 - the files touched here are
-formatted).
+`flutter analyze --no-pub` clean; `flutter test test/features/expenses` 54 passed; `flutter test
+--coverage` **257 passed at 80.49% line coverage** (gate 80% met, up from 78.49% before these tests);
+`dart format` check still fails on 6 files (down from 12 - the files touched here are formatted).
 
 ### Receipt item editing (finding #2, option B) - complete
 
