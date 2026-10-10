@@ -1,0 +1,21 @@
+{
+  "name": "finance-ai-presentation",
+  "private": true,
+  "type": "module",
+  "version": "1.0.0",
+  "description": "Presentación de Finance AI para docentes (Slidev)",
+  "scripts": {
+    "dev": "slidev slides.md --port 3030",
+    "build": "slidev build slides.md",
+    "export": "slidev export slides.md --output Finance-AI.pdf --timeout 120000 --executable-path \"C:/Program Files/Google/Chrome/Application/chrome.exe\""
+  },
+  "dependencies": {
+    "@iconify-json/lucide": "^1.2.142",
+    "@slidev/cli": "^53.0.0",
+    "@slidev/theme-default": "^0.25.0",
+    "vue": "^3.5.0"
+  },
+  "devDependencies": {
+    "playwright-chromium": "^1.64.0"
+  }
+}
