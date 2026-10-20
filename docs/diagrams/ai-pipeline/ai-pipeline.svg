@@ -1,0 +1,240 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1640" height="900" viewBox="0 0 1640 900" role="img" aria-labelledby="ttl desc">
+<title id="ttl">From a sentence, a voice note or a receipt photo to a saved record</title>
+<desc id="desc">Three input paths (text, voice, receipt photo) plus a manual form. Text and voice go through a prompt, an external LLM and a rules check. A receipt photo is shrunk in memory, read by a vision LLM and sanitized. All AI paths end in a short-lived draft proposal that the user reviews, then a validated atomic save into the PostgreSQL ledger. The manual form uses the same save.</desc>
+<defs><marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#475569"/></marker><style>text{font-family:'Segoe UI', Inter, Roboto, Arial, Helvetica, sans-serif;}.t{font-size:20px;font-weight:700}.d{font-size:14.5px}.di{font-style:italic}.tag{font-size:11.5px;font-weight:700;letter-spacing:.6px}.badge{font-size:12px;font-weight:800}.lane{font-size:14.5px;font-weight:700;letter-spacing:1.6px}.note{font-size:14.5px;font-style:italic}.cap{font-size:12.5px;font-weight:700;letter-spacing:1.4px}.leg{font-size:14px}</style></defs>
+<rect id="bg" width="1640" height="900" fill="#FFFFFF"/>
+<text x="40" y="46" style="font-family:'Segoe UI', Inter, Roboto, Arial, Helvetica, sans-serif;font-size:30px;font-weight:700" fill="#0F172A">From a sentence, a voice note or a receipt photo to a saved record</text>
+<text x="40" y="76" style="font-family:'Segoe UI', Inter, Roboto, Arial, Helvetica, sans-serif;font-size:17px" fill="#475569">What happens between your input and the ledger, and what keeps it safe</text>
+<g id="legend">
+<rect x="40" y="113" width="16" height="16" rx="4" fill="#FEF3C7" stroke="#D97706" stroke-width="2"/>
+<text x="64" y="126" class="leg" fill="#0F172A">AI step (external model)</text>
+<rect x="262" y="113" width="16" height="16" rx="4" fill="#CCFBF1" stroke="#0F766E" stroke-width="2"/>
+<text x="286" y="126" class="leg" fill="#0F172A">Rules (our code)</text>
+<rect x="444" y="113" width="16" height="16" rx="4" fill="#EDE9FE" stroke="#6D28D9" stroke-width="2"/>
+<text x="468" y="126" class="leg" fill="#0F172A">You</text>
+<rect x="546" y="113" width="16" height="16" rx="4" fill="#F1F5F9" stroke="#94A3B8" stroke-width="2"/>
+<text x="570" y="126" class="leg" fill="#0F172A">Preparation</text>
+<rect x="698" y="113" width="16" height="16" rx="4" fill="#DBEAFE" stroke="#1D4ED8" stroke-width="2"/>
+<text x="722" y="126" class="leg" fill="#0F172A">Data</text>
+<rect x="830" y="111" width="65.6" height="22" rx="11" fill="#FFFFFF" stroke="#475569" stroke-width="1.5"/>
+<text x="862.8" y="126" text-anchor="middle" class="tag" fill="#0F172A">DEVICE</text>
+<text x="905.6" y="126" class="leg" fill="#475569">your phone or PC</text>
+<rect x="1058.0" y="111" width="73.2" height="22" rx="11" fill="#FFFFFF" stroke="#475569" stroke-width="1.5"/>
+<text x="1094.6" y="126" text-anchor="middle" class="tag" fill="#0F172A">BACKEND</text>
+<text x="1141.2" y="126" class="leg" fill="#475569">our server</text>
+<rect x="1249.2" y="111" width="80.8" height="22" rx="11" fill="#FFFFFF" stroke="#475569" stroke-width="1.5"/>
+<text x="1289.6" y="126" text-anchor="middle" class="tag" fill="#0F172A">EXTERNAL</text>
+<text x="1340.0" y="126" class="leg" fill="#475569">AI provider</text>
+</g>
+<rect x="16" y="150" width="1015" height="90" rx="14" fill="#F8FAFC" stroke="#E2E8F0" stroke-width="1.5"/><text transform="translate(36,195.0) rotate(-90)" text-anchor="middle" class="lane" fill="#475569">VOICE</text>
+<rect x="16" y="248" width="1015" height="160" rx="14" fill="#F8FAFC" stroke="#E2E8F0" stroke-width="1.5"/><text transform="translate(36,328.0) rotate(-90)" text-anchor="middle" class="lane" fill="#475569">TEXT</text>
+<rect x="16" y="416" width="1015" height="160" rx="14" fill="#F8FAFC" stroke="#E2E8F0" stroke-width="1.5"/><text transform="translate(36,496.0) rotate(-90)" text-anchor="middle" class="lane" fill="#475569">RECEIPT PHOTO</text>
+<rect x="16" y="584" width="1015" height="80" rx="14" fill="#F8FAFC" stroke="#E2E8F0" stroke-width="1.5"/><text transform="translate(36,624.0) rotate(-90)" text-anchor="middle" class="lane" fill="#475569">MANUAL</text>
+<rect x="1066" y="150" width="518" height="662" rx="16" fill="#F8FAFC" stroke="#E2E8F0" stroke-width="1.5"/>
+<text x="1090" y="168" class="cap" fill="#475569">ONE ENDING FOR EVERY PATH</text>
+<g id="connectors">
+<line x1="260" y1="195.0" x2="287" y2="195.0" stroke="#475569" stroke-width="2.4" marker-end="url(#arr)"/>
+<line x1="260" y1="328.0" x2="287" y2="328.0" stroke="#475569" stroke-width="2.4" marker-end="url(#arr)"/>
+<line x1="513" y1="328.0" x2="540" y2="328.0" stroke="#475569" stroke-width="2.4" marker-end="url(#arr)"/>
+<line x1="766" y1="328.0" x2="793" y2="328.0" stroke="#475569" stroke-width="2.4" marker-end="url(#arr)"/>
+<line x1="260" y1="496.0" x2="287" y2="496.0" stroke="#475569" stroke-width="2.4" marker-end="url(#arr)"/>
+<line x1="513" y1="496.0" x2="540" y2="496.0" stroke="#475569" stroke-width="2.4" marker-end="url(#arr)"/>
+<line x1="766" y1="496.0" x2="793" y2="496.0" stroke="#475569" stroke-width="2.4" marker-end="url(#arr)"/>
+<line x1="400.5" y1="231" x2="400.5" y2="257" stroke="#475569" stroke-width="2.4" marker-end="url(#arr)"/>
+<text x="392" y="252" text-anchor="end" class="note" style="font-size:13px" fill="#475569">transcript</text>
+<line x1="1019" y1="328.0" x2="1045" y2="328.0" stroke="#475569" stroke-width="2.4"/>
+<line x1="1019" y1="496.0" x2="1045" y2="496.0" stroke="#475569" stroke-width="2.4"/>
+<path d="M1045,496.0 L1045,245.0 L1088,245.0" fill="none" stroke="#475569" stroke-width="2.4" marker-end="url(#arr)"/>
+<circle cx="1045" cy="328.0" r="4.5" fill="#475569"/>
+<circle cx="1045" cy="496.0" r="4.5" fill="#475569"/>
+<line x1="1310.0" y1="310" x2="1310.0" y2="363" stroke="#475569" stroke-width="2.4" marker-end="url(#arr)"/>
+<line x1="1310.0" y1="494" x2="1310.0" y2="551" stroke="#475569" stroke-width="2.4" marker-end="url(#arr)"/>
+<line x1="1310.0" y1="692" x2="1310.0" y2="735" stroke="#475569" stroke-width="2.4" marker-end="url(#arr)"/>
+<path d="M1530,429 L1550,429 L1550,245 L1532,245" fill="none" stroke="#475569" stroke-width="2.4" stroke-dasharray="3 5" marker-end="url(#arr)"/>
+<text transform="translate(1565,337.0) rotate(-90)" text-anchor="middle" class="note" style="font-size:12.5px" fill="#475569">Edit or answer</text>
+<line x1="513" y1="622.0" x2="1088" y2="622.0" stroke="#475569" stroke-width="2.4" stroke-dasharray="8 6" marker-end="url(#arr)"/>
+<text x="541" y="613.0" class="note" fill="#475569">Always available, and the fallback if the AI is down</text>
+<text x="541" y="642.0" class="note" fill="#475569">No AI involved. Same validated save.</text>
+</g>
+<g id="lane-voice">
+<g id="voice-1">
+<rect x="70" y="159" width="190" height="72" rx="12" fill="#EDE9FE" stroke="#6D28D9" stroke-width="2"/>
+<rect x="184.4" y="148" width="65.6" height="22" rx="11" fill="#FFFFFF" stroke="#6D28D9" stroke-width="1.5"/>
+<text x="217.2" y="163" text-anchor="middle" class="tag" fill="#3B0764">DEVICE</text>
+<text x="86" y="187" class="t" fill="#3B0764">You speak</text>
+<text x="86" y="207" class="d" fill="#3B0764">a short spoken</text>
+<text x="86" y="223" class="d" fill="#3B0764">sentence</text>
+</g>
+<g id="voice-2">
+<rect x="288" y="159" width="225" height="72" rx="12" fill="#F1F5F9" stroke="#94A3B8" stroke-width="2"/>
+<rect x="437.4" y="148" width="65.6" height="22" rx="11" fill="#FFFFFF" stroke="#94A3B8" stroke-width="1.5"/>
+<text x="470.2" y="163" text-anchor="middle" class="tag" fill="#334155">DEVICE</text>
+<text x="304" y="187" class="t" fill="#334155">Speech to text</text>
+<text x="304" y="207" class="d" fill="#334155">Recognized on the device.</text>
+<text x="304" y="223" class="d" fill="#334155">Audio never leaves it.</text>
+</g>
+<text x="541" y="189" class="note" fill="#475569">After this step, voice follows the text path:</text>
+<text x="541" y="211" class="note" fill="#475569">the transcript is sent as if you had typed it.</text>
+</g>
+<g id="lane-text">
+<g id="text-1">
+<rect x="70" y="258" width="190" height="140" rx="12" fill="#EDE9FE" stroke="#6D28D9" stroke-width="2"/>
+<rect x="184.4" y="247" width="65.6" height="22" rx="11" fill="#FFFFFF" stroke="#6D28D9" stroke-width="1.5"/>
+<text x="217.2" y="262" text-anchor="middle" class="tag" fill="#3B0764">DEVICE</text>
+<text x="86" y="288" class="t" fill="#3B0764">You type</text>
+<text x="86" y="312" class="d di" fill="#3B0764">“pasé 200 mil de</text>
+<text x="86" y="330" class="d di" fill="#3B0764">Nequi a Bancolombia”</text>
+</g>
+<g id="text-2">
+<rect x="288" y="258" width="225" height="140" rx="12" fill="#F1F5F9" stroke="#94A3B8" stroke-width="2"/>
+<rect x="429.8" y="247" width="73.2" height="22" rx="11" fill="#FFFFFF" stroke="#94A3B8" stroke-width="1.5"/>
+<text x="466.4" y="262" text-anchor="middle" class="tag" fill="#334155">BACKEND</text>
+<text x="304" y="288" class="t" fill="#334155">Build the prompt</text>
+<text x="304" y="312" class="d" fill="#334155">Our rules, today's date and</text>
+<text x="304" y="330" class="d" fill="#334155">only your own account,</text>
+<text x="304" y="348" class="d" fill="#334155">category and source names</text>
+</g>
+<g id="text-3">
+<rect x="541" y="258" width="225" height="140" rx="12" fill="#FEF3C7" stroke="#D97706" stroke-width="2"/>
+<rect x="675.2" y="247" width="80.8" height="22" rx="11" fill="#FFFFFF" stroke="#D97706" stroke-width="1.5"/>
+<text x="715.6" y="262" text-anchor="middle" class="tag" fill="#78350F">EXTERNAL</text>
+<circle cx="547" cy="260" r="15" fill="#D97706" stroke="#FFFFFF" stroke-width="2"/>
+<text x="547" y="265" text-anchor="middle" class="badge" fill="#FFFFFF">AI</text>
+<text x="557" y="288" class="t" fill="#78350F">LLM reads it</text>
+<text x="557" y="312" class="d" fill="#78350F">Returns one JSON: intent,</text>
+<text x="557" y="330" class="d" fill="#78350F">confidence, amount, date,</text>
+<text x="557" y="348" class="d" fill="#78350F">account, category.</text>
+<text x="557" y="366" class="d" fill="#78350F">Gemini ↔ DeepSeek fallback</text>
+</g>
+<g id="text-4">
+<rect x="794" y="258" width="225" height="140" rx="12" fill="#CCFBF1" stroke="#0F766E" stroke-width="2"/>
+<rect x="935.8" y="247" width="73.2" height="22" rx="11" fill="#FFFFFF" stroke="#0F766E" stroke-width="1.5"/>
+<text x="972.4" y="262" text-anchor="middle" class="tag" fill="#134E4A">BACKEND</text>
+<text x="810" y="288" class="t" fill="#134E4A">Ground &amp; check</text>
+<text x="810" y="312" class="d" fill="#134E4A">Matches names to your real</text>
+<text x="810" y="330" class="d" fill="#134E4A">data; never invents one.</text>
+<text x="810" y="348" class="d" fill="#134E4A">Own-account move =</text>
+<text x="810" y="366" class="d" fill="#134E4A">transfer, not spending.</text>
+<text x="810" y="384" class="d" fill="#134E4A">Unsure? Asks 1 question.</text>
+</g>
+</g>
+<g id="lane-receipt">
+<g id="receipt-1">
+<rect x="70" y="426" width="190" height="140" rx="12" fill="#EDE9FE" stroke="#6D28D9" stroke-width="2"/>
+<rect x="184.4" y="415" width="65.6" height="22" rx="11" fill="#FFFFFF" stroke="#6D28D9" stroke-width="1.5"/>
+<text x="217.2" y="430" text-anchor="middle" class="tag" fill="#3B0764">DEVICE</text>
+<text x="86" y="456" class="t" fill="#3B0764">You photograph</text>
+<text x="86" y="480" class="d" fill="#3B0764">Camera, quick check,</text>
+<text x="86" y="498" class="d" fill="#3B0764">rotate if needed</text>
+</g>
+<g id="receipt-2">
+<rect x="288" y="426" width="225" height="140" rx="12" fill="#F1F5F9" stroke="#94A3B8" stroke-width="2"/>
+<rect x="429.8" y="415" width="73.2" height="22" rx="11" fill="#FFFFFF" stroke="#94A3B8" stroke-width="1.5"/>
+<text x="466.4" y="430" text-anchor="middle" class="tag" fill="#334155">BACKEND</text>
+<text x="304" y="456" class="t" fill="#334155">Check &amp; shrink</text>
+<text x="304" y="480" class="d" fill="#334155">JPEG, PNG or HEIC up to</text>
+<text x="304" y="498" class="d" fill="#334155">10 MB. Rotated and resized</text>
+<text x="304" y="516" class="d" fill="#334155">in memory. Never stored.</text>
+</g>
+<g id="receipt-3">
+<rect x="541" y="426" width="225" height="140" rx="12" fill="#FEF3C7" stroke="#D97706" stroke-width="2"/>
+<rect x="675.2" y="415" width="80.8" height="22" rx="11" fill="#FFFFFF" stroke="#D97706" stroke-width="1.5"/>
+<text x="715.6" y="430" text-anchor="middle" class="tag" fill="#78350F">EXTERNAL</text>
+<circle cx="547" cy="428" r="15" fill="#D97706" stroke="#FFFFFF" stroke-width="2"/>
+<text x="547" y="433" text-anchor="middle" class="badge" fill="#FFFFFF">AI</text>
+<text x="557" y="456" class="t" fill="#78350F">Vision LLM reads</text>
+<text x="557" y="480" class="d" fill="#78350F">Returns JSON: merchant,</text>
+<text x="557" y="498" class="d" fill="#78350F">date, total, currency,</text>
+<text x="557" y="516" class="d" fill="#78350F">category, payment, items.</text>
+<text x="557" y="534" class="d" fill="#78350F">Gemini ↔ DeepSeek fallback</text>
+</g>
+<g id="receipt-4">
+<rect x="794" y="426" width="225" height="140" rx="12" fill="#CCFBF1" stroke="#0F766E" stroke-width="2"/>
+<rect x="935.8" y="415" width="73.2" height="22" rx="11" fill="#FFFFFF" stroke="#0F766E" stroke-width="1.5"/>
+<text x="972.4" y="430" text-anchor="middle" class="tag" fill="#134E4A">BACKEND</text>
+<text x="810" y="456" class="t" fill="#134E4A">Sanitize &amp; verify</text>
+<text x="810" y="480" class="d" fill="#134E4A">Blocks injected text,</text>
+<text x="810" y="498" class="d" fill="#134E4A">checks the arithmetic,</text>
+<text x="810" y="516" class="d" fill="#134E4A">warns of duplicates.</text>
+<text x="810" y="534" class="d" fill="#134E4A">Not a receipt? Rejected.</text>
+</g>
+</g>
+<g id="lane-manual">
+<g id="manual-1">
+<rect x="70" y="594" width="443" height="56" rx="12" fill="#F1F5F9" stroke="#94A3B8" stroke-width="2" stroke-dasharray="7 5"/>
+<rect x="437.4" y="583" width="65.6" height="22" rx="11" fill="#FFFFFF" stroke="#94A3B8" stroke-width="1.5"/>
+<text x="470.2" y="598" text-anchor="middle" class="tag" fill="#334155">DEVICE</text>
+<text x="86" y="618" class="t" fill="#334155">Short manual form</text>
+<text x="86" y="638" class="d" fill="#334155">Always available. No AI needed.</text>
+</g>
+</g>
+<g id="ending">
+<g id="proposal">
+<rect x="1090" y="180" width="440" height="130" rx="12" fill="#F1F5F9" stroke="#94A3B8" stroke-width="2"/>
+<rect x="1446.8" y="169" width="73.2" height="22" rx="11" fill="#FFFFFF" stroke="#94A3B8" stroke-width="1.5"/>
+<text x="1483.4" y="184" text-anchor="middle" class="tag" fill="#334155">BACKEND</text>
+<text x="1106" y="210" class="t" fill="#334155">Proposal (draft)</text>
+<text x="1106" y="236" class="d" fill="#334155">Type, amount, date, account, category;</text>
+<text x="1106" y="256" class="d" fill="#334155">items too for receipts. Kept for 24 h.</text>
+<text x="1106" y="276" class="d" fill="#334155">Nothing financial is saved yet.</text>
+</g>
+<g id="review">
+<rect x="1090" y="364" width="440" height="130" rx="12" fill="#EDE9FE" stroke="#6D28D9" stroke-width="2"/>
+<rect x="1454.4" y="353" width="65.6" height="22" rx="11" fill="#FFFFFF" stroke="#6D28D9" stroke-width="1.5"/>
+<text x="1487.2" y="368" text-anchor="middle" class="tag" fill="#3B0764">DEVICE</text>
+<text x="1106" y="394" class="t" fill="#3B0764">You review</text>
+<text x="1106" y="420" class="d" fill="#3B0764">Accept (one tap when the AI is confident),</text>
+<text x="1106" y="440" class="d" fill="#3B0764">Edit, or Discard. An unclear message gets</text>
+<text x="1106" y="460" class="d" fill="#3B0764">one short question instead.</text>
+</g>
+<g id="save">
+<rect x="1090" y="552" width="440" height="140" rx="12" fill="#CCFBF1" stroke="#0F766E" stroke-width="2"/>
+<rect x="1446.8" y="541" width="73.2" height="22" rx="11" fill="#FFFFFF" stroke="#0F766E" stroke-width="1.5"/>
+<text x="1483.4" y="556" text-anchor="middle" class="tag" fill="#134E4A">BACKEND</text>
+<text x="1106" y="582" class="t" fill="#134E4A">Validated, atomic save</text>
+<text x="1106" y="608" class="d" fill="#134E4A">Same services as the manual forms:</text>
+<text x="1106" y="628" class="d" fill="#134E4A">ownership, account and currency checks.</text>
+<text x="1106" y="648" class="d" fill="#134E4A">All or nothing.</text>
+</g>
+<g id="ledger">
+<rect x="1090" y="736" width="440" height="60" rx="12" fill="#DBEAFE" stroke="#1D4ED8" stroke-width="2"/>
+<rect x="1439.2" y="725" width="80.8" height="22" rx="11" fill="#FFFFFF" stroke="#1D4ED8" stroke-width="1.5"/>
+<text x="1479.6" y="740" text-anchor="middle" class="tag" fill="#1E3A8A">DATABASE</text>
+<text x="1106" y="762" class="t" fill="#1E3A8A">PostgreSQL ledger</text>
+<text x="1106" y="782" class="d" fill="#1E3A8A">Transaction + signed movements. Balance is derived.</text>
+</g>
+</g>
+<g id="safety">
+<rect x="16" y="688" width="1015" height="124" rx="14" fill="#FFFFFF" stroke="#0F766E" stroke-width="1.5"/>
+<rect x="16" y="698" width="5" height="104" rx="2.5" fill="#0F766E"/>
+<text x="42" y="716" class="cap" fill="#134E4A">WHAT KEEPS IT SAFE</text>
+<circle cx="50" cy="737" r="9" fill="#0F766E"/>
+<path d="M45.5,737 l3,3.2 l5.5,-6" fill="none" stroke="#FFFFFF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+<text x="66" y="742" class="d" style="font-size:15px" fill="#0F172A">The AI only proposes. It never saves anything.</text>
+<circle cx="50" cy="762" r="9" fill="#0F766E"/>
+<path d="M45.5,762 l3,3.2 l5.5,-6" fill="none" stroke="#FFFFFF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+<text x="66" y="767" class="d" style="font-size:15px" fill="#0F172A">The prompt carries only your own account and category names.</text>
+<circle cx="50" cy="787" r="9" fill="#0F766E"/>
+<path d="M45.5,787 l3,3.2 l5.5,-6" fill="none" stroke="#FFFFFF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+<text x="66" y="792" class="d" style="font-size:15px" fill="#0F172A">Text from messages and photos is treated as untrusted.</text>
+<circle cx="550" cy="737" r="9" fill="#0F766E"/>
+<path d="M545.5,737 l3,3.2 l5.5,-6" fill="none" stroke="#FFFFFF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+<text x="566" y="742" class="d" style="font-size:15px" fill="#0F172A">Voice audio is recognized on the device, never uploaded.</text>
+<circle cx="550" cy="762" r="9" fill="#0F766E"/>
+<path d="M545.5,762 l3,3.2 l5.5,-6" fill="none" stroke="#FFFFFF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+<text x="566" y="767" class="d" style="font-size:15px" fill="#0F172A">Receipt photos are processed in memory, never stored.</text>
+<circle cx="550" cy="787" r="9" fill="#0F766E"/>
+<path d="M545.5,787 l3,3.2 l5.5,-6" fill="none" stroke="#FFFFFF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+<text x="566" y="792" class="d" style="font-size:15px" fill="#0F172A">If the AI or a provider fails, the manual form still works.</text>
+</g>
+<g id="takeaway">
+<rect x="345" y="834" width="270" height="48" rx="24" fill="#FEF3C7" stroke="#D97706" stroke-width="2.5"/>
+<text x="480" y="866" text-anchor="middle" style="font-family:'Segoe UI', Inter, Roboto, Arial, Helvetica, sans-serif;font-size:24px;font-weight:700" fill="#78350F">AI proposes</text>
+<line x1="627" y1="858" x2="673" y2="858" stroke="#475569" stroke-width="2.4" marker-end="url(#arr)"/>
+<rect x="685" y="834" width="270" height="48" rx="24" fill="#CCFBF1" stroke="#0F766E" stroke-width="2.5"/>
+<text x="820" y="866" text-anchor="middle" style="font-family:'Segoe UI', Inter, Roboto, Arial, Helvetica, sans-serif;font-size:24px;font-weight:700" fill="#134E4A">Rules decide</text>
+<line x1="967" y1="858" x2="1013" y2="858" stroke="#475569" stroke-width="2.4" marker-end="url(#arr)"/>
+<rect x="1025" y="834" width="270" height="48" rx="24" fill="#EDE9FE" stroke="#6D28D9" stroke-width="2.5"/>
+<text x="1160" y="866" text-anchor="middle" style="font-family:'Segoe UI', Inter, Roboto, Arial, Helvetica, sans-serif;font-size:24px;font-weight:700" fill="#3B0764">You confirm</text>
+</g>
+</svg>
