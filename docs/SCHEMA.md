@@ -1,8 +1,11 @@
 # Database Schema — Finance AI Tracker
 
-> **Source of Truth:**
-> - **DBML (dbdiagram.io):** [`docs/schema.dbml`](./schema.dbml) — Open directly in [dbdiagram.io](https://dbdiagram.io).
-> - **Executable PostgreSQL DDL:** [`docs/schema.sql`](./schema.sql) — Complete PostgreSQL schema with enums, tables, constraints, and indexes.
+> **Design snapshot:**
+> - **DBML (dbdiagram.io):** [`docs/schema.dbml`](./schema.dbml) — original editable design.
+> - **PostgreSQL DDL:** [`docs/schema.sql`](./schema.sql) — original executable design schema.
+> - **Implemented schema authority:** backend Alembic migrations and SQLAlchemy models. The
+>   diagrams and table descriptions below have not been reconciled table by table with those
+>   sources; use them as design history, not as an inventory of the deployed database.
 
 ---
 

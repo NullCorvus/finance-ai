@@ -6,6 +6,32 @@
 > Code architecture & layers guide: `docs/guides/code-architecture-guide.md`.
 > Stack decisions: `docs/STACK.md`.
 
+> **Current implementation (2026-10-20):** source snapshot: backend `origin/develop` `1fae699`,
+> frontend `origin/develop` `a23a8a6`. This file began as a proposal. The diagrams below
+> still include planned deployment and optional Phase 3 flows. The implemented component view
+> is the existing editable `docs/diagrams/architecture-components.puml`; its local evidence
+> snapshot is in `docs/diagrams/README.md`. That local, untracked diagram snapshot and the dirty
+> Flutter feature checkout differ from `origin/develop`, including photo-cache encryption; reconcile
+> them before using the diagram as an approved PGC deliverable. The Mermaid flowcharts here are not
+> formal UML.
+
+The implemented backend is one modular FastAPI application: `/api/v1` routers delegate to
+authentication, financial services, text capture and receipt capture. Services use SQLAlchemy
+repositories and units of work for PostgreSQL. Gemini and DeepSeek are external providers behind
+text and vision gateways, with fallback conditional on configuration. Capture produces a proposal;
+only an explicit confirmation creates the financial operation. Flutter owns navigation, presentation,
+session state, HTTP repositories and the local encrypted cache of confirmed receipt photos.
+Android speech recognition produces text locally before the text-proposal flow. The backend processes
+receipt image bytes in memory and does not persist the uploaded photo as a server file.
+
+Code references: `finance-ai-backend/src/finance_ai/api/router.py`,
+`finance-ai-backend/src/finance_ai/capture/service.py`,
+`finance-ai-backend/src/finance_ai/receipts/router.py`,
+`finance-ai-backend/src/finance_ai/receipts/gateway.py`,
+`finance-ai-frontend/lib/features/auth/session/data/auth_session_repository.dart`,
+`finance-ai-frontend/lib/features/voice_capture/domain/speech_service.dart`, and
+`finance-ai-frontend/lib/features/receipt_capture/data/receipt_photo_cache_repository.dart`.
+
 ## Pending decisions (TBD)
 
 - **Interface** — **Flutter app** (team proposal; professor confirmation pending — see `docs/STACK.md`)
@@ -16,7 +42,7 @@ Anything the professor changes at semester start gets resolved via TASKS.md **St
 
 ---
 
-## Layer diagram
+## Layer diagram (initial deployment proposal)
 
 One subgraph per layer, `[( )]` databases, labeled arrows, TBD where open.
 
@@ -46,24 +72,29 @@ flowchart TD
 Notes:
 
 - The AI logic is **merged inside the backend** (Q3 decision) — no separate AI layer.
-- In the core, the LLM provider is used **only for AI-assisted input parsing** (photo/audio/natural-language text → structured JSON). The manual form bypasses AI, and the phone never calls the LLM directly.
+- In the implemented capture flow, the backend sends text or receipt images to a configured external
+  provider for extraction. Android speech recognition is local and sends its transcript through
+  text capture. The manual form bypasses AI, and the phone does not call the LLM directly.
 - The **agent (chat + AI acting on data)** is optional Phase 3 — if built, it lives inside the backend too. Marked optional in the component diagram.
 - LLM provider is external (outside the system boundary, Q2).
-- No vector DB, no cache (Q5: not needed — structured DB via tool calls).
+- No vector DB is part of the implemented capture path. The Flutter client does keep an encrypted
+  local cache of confirmed receipt photos; the older "no cache" decision did not account for it.
 - Admin deliberately excluded (Q1 decision).
 
 ---
 
-## Component diagram
+## Component diagram (initial proposal)
 
-The inside view of the backend container — the modules and how they relate. The **AI Parsing** module is core; the **Chat / Agent** modules are optional Phase 3 (dashed, marked optional).
+This older inside view of the backend preserves the initial design. Its coarse module boundaries
+do not describe all implemented services or provider gateways; use the current component
+source cited above for the PGC. The **Chat / Agent** modules remain optional Phase 3 proposals.
 
 > Uses `flowchart` instead of `C4Component` so it renders in Zed / GitHub mermaid preview. See the guide §6 note on the Zed gotcha with experimental C4C diagrams.
 
 ```mermaid
 flowchart TD
     subgraph API["Backend on VM (FastAPI, Python)"]
-        auth["Auth Module<br/>JWT login, roles"]
+        auth["Auth Module<br/>opaque sessions (implemented)"]
         expenses["Expense Module<br/>register/edit/delete expenses"]
         income["Income Module<br/>register income"]
         parsing["AI Parsing Module<br/>input → structured JSON<br/>(core)"]
@@ -72,7 +103,7 @@ flowchart TD
     end
 
     db[("Main DB (PostgreSQL)<br/>users, receipts, expenses, income, limits")]
-    llm["LLM Provider (external)<br/>Gemini flash (default) - pay per call"]
+    llm["LLM Providers (external)<br/>Gemini / DeepSeek"]
 
     auth -->|"validates session"| expenses
     expenses -->|"requests AI parsing"| parsing
@@ -96,7 +127,8 @@ Notes:
 
 - Only the backend is expanded; the Flutter app, DB, and File Storage stay as in the layer diagram.
 - LLM provider is external — outside our system boundary (Q2).
-- **Core:** the only LLM interaction is `parsing → llm → structured JSON`. No agent, no writes.
+- **Core:** provider extraction returns structured proposals. Proposal records may be stored
+  temporarily; financial writes require explicit confirmation. No autonomous agent is implemented.
 - **Optional Phase 3:** the agent → DB edge ("reads (tool calls)") is where the chat agent queries data — read-only. Agent *writes* (limits, subcategories) would go through a confirmation preview (ALCANCE.md "Data Protection").
 - Stack decided in `docs/STACK.md` (FastAPI, PostgreSQL, Gemini flash default).
 - Admin deliberately excluded (Q1 decision).
@@ -107,7 +139,11 @@ Notes:
 
 Two journeys (Q6). Conventions per guide §7: entity = rectangle, process = stadium `([ ])`, store = cylinder `[( )]`, every flow labeled.
 
-### DFD 1 — Register an expense (CORE)
+### DFD 1 — Register an expense (initial proposal)
+
+This DFD is a historical process sketch. In the implementation, proposal endpoints are separate
+from confirmation endpoints; photo bytes are processed in memory by the backend, and the confirmed
+photo is cached locally by Flutter. Its image-file store below represents the original VM design.
 
 ```mermaid
 flowchart LR

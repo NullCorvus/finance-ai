@@ -165,24 +165,29 @@ flowchart TD
 
 ## 6. Authentication & Session Security
 
-### A. Why Tokens Cannot Be Forged (Cryptographic Signature)
-* The token contains data (like `user_id = 7`) and a **mathematical signature**.
-* The signature is created using a **Secret Key** that lives strictly inside the backend server (`.env`).
-* If an attacker modifies the token (e.g. changing `user_id: 7` to `user_id: 1`), the mathematical signature breaks. FastAPI rejects it immediately with **`401 Unauthorized`**.
+### A. Why Opaque Credentials Cannot Be Forged
+* The access and renewable credentials are random opaque values, not signed JWT payloads.
+* The backend stores their hashes and resolves the active session in PostgreSQL; a client cannot
+  alter an embedded `user_id` because the credential contains no such client-readable claim.
+* An unknown, expired or revoked access credential is rejected with `401 Unauthorized`.
+* Source: `finance-ai-backend/src/finance_ai/auth/credentials.py` and
+  `finance-ai-backend/src/finance_ai/auth/session_service.py`.
 
 ### B. How Sessions Persist Across App Restarts (The Two-Token System)
-* **`access_credential` (Short-lived, 15–30 min):**
+* **`access_credential` (short-lived; 15 min by default):**
   * Kept in **RAM** (Riverpod state). Wiped when the app is closed.
-* **`renewable_credential` / Refresh Token (Long-lived, days/weeks):**
-  * Saved in **`FlutterSecureStorage`** (Apple Keychain on iOS / Keystore on Android / Credential Manager on Windows).
-  * When the app reopens with empty RAM, Flutter reads the renewable credential from the hardware vault and calls `POST /api/v1/auth/refresh` to get a fresh `access_credential` automatically.
+* **`renewable_credential` (longer-lived):**
+  * Saved through **`FlutterSecureStorage`** using the platform's secure-storage implementation.
+  * When the app reopens with empty RAM, Flutter reads that credential and calls
+    `POST /api/v1/auth/refresh` for a fresh access credential.
 
-### C. Defense Against Session Hijacking (Token Theft)
-Even if tokens work like keys, stealing them is prevented through 4 layers of defense:
-1. **HTTPS (TLS Encryption):** All network headers and tokens are encrypted in transit; Wi-Fi eavesdroppers cannot read them.
-2. **OS Sandboxing:** Mobile operating systems prevent other installed apps from accessing your app's secure storage.
-3. **Short Expiration:** The active access token expires in minutes.
-4. **Database Revocation Kill-Switch:** Sessions are tracked in PostgreSQL (`user_session` table). When a user clicks **Log Out**, the backend updates `revoked_at = NOW()`, instantly killing that session in the database so any copied token is permanently rejected.
+### C. Session Protection and Revocation
+1. **HTTPS:** Protects credentials in transit when the API is served over TLS.
+2. **Platform secure storage:** Holds the renewable credential outside ordinary app preferences.
+3. **Short access lifetime:** Limits how long an issued access credential remains valid.
+4. **Server-side revocation:** The session record in PostgreSQL lets logout revoke a session;
+   a copied access credential then fails validation. These controls reduce risk rather than
+   guaranteeing that a credential cannot be stolen.
 
 ---
 
@@ -218,22 +223,23 @@ Even if tokens work like keys, stealing them is prevented through 4 layers of de
 
 ---
 
-### Topic 3: Unit of Work (UoW), Sessions & Async Context Managers
+### Topic 3: Unit of Work (UoW) and Database Sessions
 * **The Question:**  
-  * *"What is `async`? What does `if exc_type is not None:` mean? What are `__aenter__` and `__aexit__`? How long does the session stay active?"*
+  * *"What does `if exc_type is not None:` mean? What are `__enter__` and `__exit__`? How long does the session stay active?"*
 * **How It Actually Works & How You Understood It:**  
-  * `async` / `await` allows non-blocking I/O so Python can serve other users while waiting for PostgreSQL.
-  * When you write `async with uow:`, Python automatically runs `__aenter__()` (opens a fresh DB session and readies repositories).
-  * When that code block ends or crashes, Python automatically runs `__aexit__()`.
-  * `if exc_type is not None:` means: *"Did an error happen inside the block?"* If YES $\rightarrow$ it automatically calls `await self.rollback()`.
-  * **Session lifespan:** The session is active **only for the 2–15 milliseconds** needed to execute the indented block. When `__aexit__()` finishes, the session closes and returns the connection to the pool. Connections are never hogged.
+  * The `AccountUnitOfWork` uses a synchronous context manager around its SQLAlchemy session.
+  * When you write `with uow:`, Python runs `__enter__()` to open the session and repositories.
+  * When the block ends, Python runs `__exit__()` to close the session.
+  * `if exc_type is not None:` means an exception occurred; the unit of work rolls back.
+  * **Database-session lifespan:** The session lasts for the `with` block and closes on exit;
+    its duration depends on the operation and environment. No fixed millisecond range is guaranteed.
 * **Code Reference:** [`src/finance_ai/db/account_uow.py`](file:///home/d3ad/codigos/finance-ai/finance-ai-backend/src/finance_ai/db/account_uow.py#L25-L48)
 
 ---
 
 ### Topic 4: Database-Backed Renewable Sessions
 * **The Question:**  
-  * *"You never parse the JWT token or inspect HTTP headers manually inside the route function. How does that token session in the database work?"*
+  * *"The route does not parse credentials itself. How does the opaque access credential resolve to a database session?"*
 * **How It Actually Works & How You Understood It:**  
   * Client sends `Authorization: Bearer <token>` in the header.
   * FastAPI's `Depends(get_current_user_id)` intercepts the request before the route executes.

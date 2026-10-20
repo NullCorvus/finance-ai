@@ -3,7 +3,14 @@
 > **Status:** GENERATED — auto-inferred from existing repository data (2026-08-25).
 > **Sources:** `docs/schema.sql` · `docs/SCHEMA.md` · `docs/ARCHITECTURE.md` · `docs/ALCANCE.md` ·
 > `docs/FEATURES.md` · `docs/BACKLOG-AND-STORIES.md` · `docs/STACK.md` · `docs/step5-plan.md`.
-> **Validation:** every diagram below was rendered with `mmdc` (Mermaid CLI 11.16.0 + Chrome) — zero errors.
+> **Historical design snapshot:** these diagrams were generated from documents on 2026-08-25,
+> before the current frontend/backend implementation. They are not the source for the PGC component
+> diagram. The existing editable component source is the locally untracked
+> `docs/diagrams/architecture-components.puml` (see `docs/diagrams/README.md` for its evidence
+> and validation limits). Mermaid flowcharts,
+> the DFDs in `ARCHITECTURE.md`, and the ERD in `SCHEMA.md` are not formal UML component diagrams.
+> **Original validation:** the 2026-08-25 diagrams were rendered with `mmdc` 11.16.0 and Chrome.
+> The revised sequences below require separate render validation before academic submission.
 > **Roles caveat:** Admin appears here per `docs/ALCANCE.md` ("Roles & Permissions"). Note that
 > `docs/step5-plan.md` Q1 deliberately **excludes Admin from the architecture diagrams** (project
 > decision) — the use case diagram below keeps both actors until that decision is revisited.
@@ -13,11 +20,11 @@
 | # | Diagram | Shows | Source data |
 |---|---------|-------|-------------|
 | 1 | Use Case | 2 actors (User, Admin) + 12 use cases, Phase 2/3 marked | ALCANCE roles · FEATURES phases · backlog |
-| 2 | Class (data model) | 11 classes with attributes, PK/FK, cardinalities, XOR rule | schema.sql |
+| 2 | Class (historical data model) | 11 classes from the original design, not the Alembic schema | schema.sql |
 | 3 | Activity | Expense capture: input → AI parsing → preview → Confirm/Edit/Discard | ALCANCE processing flow · DFD 1 |
 | 4 | State machine | Expense lifecycle: received → parsing → preview → saved / discarded → edited / deleted | ALCANCE pre/post-save |
-| 5 | Deployment | Android phone ↔ VM (API + PostgreSQL + local disk) + external LLM | STACK.md · step5 Q2–Q3 |
-| 6 | Sequence ×3 | (a) register expense with photo, (b) login JWT, (c) ask AI (Phase 3) | ALCANCE · HU-001/HU-002 acceptance criteria · DFDs |
+| 5 | Deployment (historical VM proposal) | Android phone ↔ VM (API + PostgreSQL + local disk) + external LLM | STACK.md · step5 Q2–Q3 |
+| 6 | Sequence ×3 | (a) receipt proposal and confirmation, (b) renewable session login, (c) proposed Phase 3 AI chat | Implemented API · historical Phase 3 proposal |
 
 > The ER diagram already lives in `docs/SCHEMA.md` (Mermaid `erDiagram`) — not duplicated here.
 > Re-render it anytime by importing `docs/schema.sql` into dbdiagram.io (Import → PostgreSQL).
@@ -63,7 +70,11 @@ flowchart TD
 Legend: ellipses = use cases · rectangles = actors · UC8 = Phase 2 · UC9 = Phase 3 (optional) ·
 UC10–UC12 = Admin only (per `ALCANCE.md`, Admin does not view individual user data).
 
-## 2. Class Diagram (data model, from schema.sql)
+## 2. Class Diagram (historical data model, from schema.sql)
+
+The effective database structure must be checked against backend SQLAlchemy models and Alembic
+migrations. This diagram preserves the earlier `schema.sql` design and should not be used as a
+current table inventory.
 
 ```mermaid
 classDiagram
@@ -196,7 +207,12 @@ stateDiagram-v2
     Eliminado --> [*]
 ```
 
-## 5. Deployment Diagram (from STACK.md)
+## 5. Deployment Diagram (historical VM proposal from STACK.md)
+
+This diagram retains the original VM and server-file-storage design. In the implemented flow,
+confirmed receipt photos are cached encrypted on the device, local development uses Compose with
+PostgreSQL, and the backend repository has a separate Cloud Run deployment workflow. Do not use
+this older diagram to claim the current production topology.
 
 ```mermaid
 flowchart TD
@@ -212,7 +228,7 @@ flowchart TD
 
     LLM["Externo: LLM Provider<br/>Gemini flash (default)"]
 
-    App -->|"HTTPS / JSON (REST + JWT)"| API
+    App -->|"HTTPS / JSON (REST + opaque Bearer)"| API
     API -->|"SQL / CRUD"| DB
     API -->|"upload / read media"| FS
     API -->|"provider API — prompt + input"| LLM
@@ -220,7 +236,7 @@ flowchart TD
 
 ## 6. Sequence Diagrams
 
-### 6a — Register an expense with receipt photo (CORE)
+### 6a — Receipt photo proposal and confirmation (implemented API)
 
 ```mermaid
 sequenceDiagram
@@ -231,20 +247,22 @@ sequenceDiagram
     participant DB as PostgreSQL
 
     U->>App: toma foto del recibo
-    App->>API: POST /expenses (imagen)
+    App->>API: POST /api/v1/receipts/proposal (imagen)
     API->>LLM: prompt + imagen
     LLM-->>API: JSON estructurado (items, tienda, total, fecha, método)
-    API-->>App: preview con campos editables
+    API->>DB: guardar propuesta temporal estructurada
+    API-->>App: propuesta estructurada con campos editables
     App-->>U: mostrar Confirmar / Editar / Descartar
     U->>App: Confirmar
-    App->>API: POST /expenses/confirm
-    API->>DB: INSERT recibo + gastos (transacción)
+    App->>API: POST /api/v1/receipts/proposal/{id}/confirm
+    API->>DB: guardar operación financiera confirmada
     DB-->>API: ok
     API-->>App: guardado confirmado
+    App->>App: guardar foto confirmada cifrada en el dispositivo
     App-->>U: confirmación
 ```
 
-### 6b — Login (JWT, per HU-002)
+### 6b — Login with renewable opaque session (implemented API)
 
 ```mermaid
 sequenceDiagram
@@ -254,12 +272,13 @@ sequenceDiagram
     participant DB as PostgreSQL
 
     U->>App: email + contraseña
-    App->>API: POST /login
+    App->>API: POST /api/v1/auth/login
     API->>DB: SELECT usuario por email
-    DB-->>API: fila (email, password_hash, role)
+    DB-->>API: usuario y hash de contraseña
     API->>API: verificar hash
-    API-->>App: JWT (expiración 30 días)
-    App->>App: guardar token (secure storage)
+    API->>DB: guardar hashes de credenciales y sesión
+    API-->>App: acceso opaco + credencial renovable
+    App->>App: acceso en memoria y renovable en secure storage
     App-->>U: sesión iniciada
 ```
 
@@ -290,13 +309,13 @@ sequenceDiagram
 
 ## Notes
 
-- **Auto-inference:** all diagrams above were derived 1:1 from repository documents — nothing was
-  invented. The class diagram mirrors `docs/schema.sql` column-for-column; the use cases mirror
+- **Original generation:** these diagrams were derived from repository documents in 2026-08-25.
+  The historical class diagram mirrors the earlier `docs/schema.sql`; the use cases mirror
   `ALCANCE.md` roles + `FEATURES.md` phases; the flows mirror `ALCANCE.md` + the DFDs in
   `docs/ARCHITECTURE.md`.
-- **Not yet possible:** code-level diagrams (classes with real methods, object, communication,
-  timing) — the repo has zero code by design ("Zero code" per `docs/CONTEXT.md`), and exact API
-  sequences need `docs/api-spec.yaml`, which does not exist yet.
+- **Current code exists:** backend `openapi.json`, routers, models and migrations provide the
+  implementation evidence. `docs/CONTEXT.md` records the pre-code planning period, not current
+  workspace status. The PGC component source and evidence are under `docs/diagrams/`.
 - **ER diagram:** already present in `docs/SCHEMA.md` — regenerate via dbdiagram.io with
   `docs/schema.sql`.
 - **Render:** paste any block into mermaid.live, or preview in Zed / GitHub (flowchart-based
