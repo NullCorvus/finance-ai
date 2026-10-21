@@ -1,0 +1,68 @@
+{
+  "schemaVersion": 1,
+  "ok": false,
+  "command": "browser-check",
+  "evidenceKind": "automated-browser",
+  "status": "skipped",
+  "visualReview": "not-requested",
+  "provenance": "current",
+  "deliveryReceiptId": "d89eb247-9e32-4c23-8fd5-2fbe29385e80",
+  "artifact": {
+    "path": "/home/d3ad/.codex/worktrees/docs-diagrams-publication/finance-ai/docs/diagrams/architecture/system-components/archify/architecture-archify.html",
+    "sha256": "62537529551fe2d4c860f4e879130a75f48833ee90d82afb360ebba96b774a47",
+    "bytes": 856175
+  },
+  "state": {
+    "detail": "read",
+    "motion": "still"
+  },
+  "chrome": {
+    "status": "unavailable",
+    "executable": null
+  },
+  "diagnostics": [
+    {
+      "code": "viewer/chrome-unavailable",
+      "severity": "warning",
+      "message": "No supported browser found. Install Chrome/Chromium (or Microsoft Edge), or set ARCHIFY_CHROME to its executable path.",
+      "subject": {
+        "artifact": "/home/d3ad/.codex/worktrees/docs-diagrams-publication/finance-ai/docs/diagrams/architecture/system-components/archify/architecture-archify.html"
+      },
+      "evidence": {
+        "executable": null
+      },
+      "supportedFixes": [
+        "set ARCHIFY_CHROME to a Chrome/Chromium executable (or Microsoft Edge) and rerun browser-check"
+      ]
+    }
+  ],
+  "containment": {
+    "status": "skipped",
+    "policy": "fit-or-reader-declared-readable-vertical-scroll",
+    "viewports": []
+  },
+  "themeStates": {
+    "status": "skipped",
+    "viewports": []
+  },
+  "readability": {
+    "status": "skipped",
+    "minimumProjectedNodeTextPx": 6,
+    "viewports": []
+  },
+  "viewerChrome": {
+    "status": "skipped",
+    "viewports": []
+  },
+  "captures": {
+    "status": "not-requested",
+    "screenshots": [],
+    "contactSheet": null
+  },
+  "sidecars": {
+    "directory": "/home/d3ad/.codex/worktrees/docs-diagrams-publication/finance-ai/docs/diagrams/architecture/system-components/archify/validation",
+    "receipt": "architecture-archify.browser-check.json",
+    "files": []
+  },
+  "error": "No supported browser found. Install Chrome/Chromium (or Microsoft Edge), or set ARCHIFY_CHROME to its executable path."
+}

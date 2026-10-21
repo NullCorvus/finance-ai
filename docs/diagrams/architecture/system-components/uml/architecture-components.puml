@@ -1,0 +1,83 @@
+@startuml
+<style>
+root {
+  FontName Helvetica
+  FontSize 17
+  FontColor #000000
+  BackGroundColor #FFFFFF
+  LineColor #000000
+  LineThickness 0.75
+  Shadowing 0
+}
+componentDiagram {
+  component { BackGroundColor #FFFFFF; LineColor #000000; FontColor #000000 }
+  package { BackGroundColor #FFFFFF; LineColor #000000; FontColor #000000 }
+  arrow { LineColor #000000; LineThickness 0.75 }
+}
+</style>
+skinparam componentStyle uml2
+skinparam monochrome true
+skinparam shadowing false
+title Componentes de Finance AI
+top to bottom direction
+skinparam nodesep 100
+skinparam ranksep 18
+
+package "Frontend Flutter" {
+  component "Navegación y presentación" as Navigation
+  component "Funciones financieras\ncuentas · categorías · movimientos\npresupuestos · consultas" as FinanceUI
+  component "Cliente de captura\ntexto y recibos" as CaptureUI
+  component "Sesión y credenciales" as ClientSession
+  component "Cliente HTTP/REST\nJSON / multipart" as RestClient
+}
+
+package "Backend FastAPI" {
+  component "API REST v1" as BackendAPI
+  interface "REST v1" as FinanceAPI
+  component "Autenticación" as Auth
+  component "Servicios financieros" as FinancialServices
+  component "Captura de texto\npropuestas / confirmación" as TextCapture
+  component "Captura de recibos\nvisión / confirmación" as ReceiptCapture
+  component "Gateway de texto" as TextGateway
+  component "Gateway de visión" as VisionGateway
+}
+
+package "Persistencia" {
+  component "Repositorios / Unit of Work" as Repositories
+  component "PostgreSQL" as PostgreSQL
+}
+
+package "Proveedores externos" {
+  component "Gemini API" as Gemini
+  component "DeepSeek API" as DeepSeek
+}
+
+Navigation ..> ClientSession
+Navigation ..> FinanceUI
+Navigation ..> CaptureUI
+FinanceUI ..> RestClient
+CaptureUI ..> RestClient
+ClientSession ..> RestClient
+RestClient ..> FinanceAPI : «use»
+BackendAPI -- FinanceAPI
+BackendAPI ..> Auth
+BackendAPI ..> FinancialServices
+BackendAPI ..> TextCapture
+BackendAPI ..> ReceiptCapture
+Auth ..> Repositories
+FinancialServices ..> Repositories
+TextCapture ..> Repositories
+ReceiptCapture ..> Repositories
+TextCapture ..> FinancialServices : confirma operaciones
+ReceiptCapture ..> FinancialServices : confirma gastos
+TextCapture ..> TextGateway
+ReceiptCapture ..> VisionGateway
+TextGateway ..> Gemini
+TextGateway ..> DeepSeek
+VisionGateway ..> Gemini
+VisionGateway ..> DeepSeek
+Repositories ..> PostgreSQL
+
+' Layout only: align client and API layers; this does not model a system dependency.
+RestClient -[hidden]down-> BackendAPI
+@enduml

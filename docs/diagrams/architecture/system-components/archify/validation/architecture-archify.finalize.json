@@ -1,0 +1,674 @@
+{
+  "schemaVersion": 1,
+  "ok": false,
+  "command": "finalize",
+  "status": "skipped",
+  "type": "architecture",
+  "quality": "showcase",
+  "startedAt": "2026-10-21T00:44:42.688Z",
+  "specification": {
+    "path": "/home/d3ad/.codex/worktrees/docs-diagrams-publication/finance-ai/docs/diagrams/architecture/system-components/archify/architecture-archify.candidate.json",
+    "sha256": "a5e95ab8b19ffd37e9180622f0dc1081e37a6872b621126f5d4cb12a2324f8e5",
+    "bytes": 11215
+  },
+  "artifact": {
+    "path": "/home/d3ad/.codex/worktrees/docs-diagrams-publication/finance-ai/docs/diagrams/architecture/system-components/archify/architecture-archify.html",
+    "sha256": "62537529551fe2d4c860f4e879130a75f48833ee90d82afb360ebba96b774a47",
+    "bytes": 856175
+  },
+  "stages": {
+    "validate": {
+      "status": "pass",
+      "exitCode": 0,
+      "durationMs": null,
+      "execution": "embedded-in-deliver",
+      "command": [
+        "/usr/bin/node",
+        "/home/d3ad/.agents/skills/archify/bin/archify.mjs",
+        "deliver",
+        "architecture",
+        "/home/d3ad/.codex/worktrees/docs-diagrams-publication/finance-ai/docs/diagrams/architecture/system-components/archify/architecture-archify.candidate.json",
+        "/home/d3ad/.codex/worktrees/docs-diagrams-publication/finance-ai/docs/diagrams/architecture/system-components/archify/architecture-archify.html",
+        "--quality",
+        "showcase",
+        "--repo-root",
+        "/home/d3ad/.codex/worktrees/docs-diagrams-publication/finance-ai",
+        "--json"
+      ],
+      "receipt": {
+        "schemaVersion": 1,
+        "ok": true,
+        "command": "validate",
+        "specification": {
+          "sha256": "a5e95ab8b19ffd37e9180622f0dc1081e37a6872b621126f5d4cb12a2324f8e5",
+          "bytes": 11215
+        },
+        "validation": {
+          "checksPassed": 9,
+          "checkCount": 9,
+          "compositionProfile": "showcase",
+          "compositionStatus": "pass",
+          "errors": 0,
+          "warnings": 0
+        }
+      }
+    },
+    "deliver": {
+      "status": "pass",
+      "exitCode": 0,
+      "durationMs": 540,
+      "command": [
+        "/usr/bin/node",
+        "/home/d3ad/.agents/skills/archify/bin/archify.mjs",
+        "deliver",
+        "architecture",
+        "/home/d3ad/.codex/worktrees/docs-diagrams-publication/finance-ai/docs/diagrams/architecture/system-components/archify/architecture-archify.candidate.json",
+        "/home/d3ad/.codex/worktrees/docs-diagrams-publication/finance-ai/docs/diagrams/architecture/system-components/archify/architecture-archify.html",
+        "--quality",
+        "showcase",
+        "--repo-root",
+        "/home/d3ad/.codex/worktrees/docs-diagrams-publication/finance-ai",
+        "--json"
+      ],
+      "receipt": {
+        "schemaVersion": 1,
+        "receiptId": "d89eb247-9e32-4c23-8fd5-2fbe29385e80",
+        "ok": true,
+        "command": "deliver",
+        "type": "architecture",
+        "input": "/home/d3ad/.codex/worktrees/docs-diagrams-publication/finance-ai/docs/diagrams/architecture/system-components/archify/architecture-archify.candidate.json",
+        "output": "/home/d3ad/.codex/worktrees/docs-diagrams-publication/finance-ai/docs/diagrams/architecture/system-components/archify/architecture-archify.html",
+        "specification": {
+          "sha256": "a5e95ab8b19ffd37e9180622f0dc1081e37a6872b621126f5d4cb12a2324f8e5",
+          "bytes": 11215
+        },
+        "artifact": {
+          "sha256": "62537529551fe2d4c860f4e879130a75f48833ee90d82afb360ebba96b774a47",
+          "bytes": 856175
+        },
+        "validation": {
+          "checksPassed": 9,
+          "checkCount": 9,
+          "compositionProfile": "showcase",
+          "compositionStatus": "pass",
+          "errors": 0,
+          "warnings": 0
+        },
+        "update": {
+          "status": "unavailable",
+          "installedVersion": null,
+          "availableVersion": null,
+          "releaseNotes": null,
+          "checkedAt": null,
+          "source": null,
+          "noticeRequired": false,
+          "noticeText": null,
+          "reason": "disabled"
+        }
+      }
+    },
+    "check": {
+      "status": "pass",
+      "exitCode": 0,
+      "durationMs": 148,
+      "command": [
+        "/usr/bin/node",
+        "/home/d3ad/.agents/skills/archify/bin/archify.mjs",
+        "check",
+        "/home/d3ad/.codex/worktrees/docs-diagrams-publication/finance-ai/docs/diagrams/architecture/system-components/archify/architecture-archify.html",
+        "--require-provenance"
+      ],
+      "receipt": {
+        "ok": true,
+        "file": "/home/d3ad/.codex/worktrees/docs-diagrams-publication/finance-ai/docs/diagrams/architecture/system-components/archify/architecture-archify.html",
+        "artifact": {
+          "sha256": "62537529551fe2d4c860f4e879130a75f48833ee90d82afb360ebba96b774a47",
+          "bytes": 856175
+        },
+        "checks": [
+          {
+            "name": "single_svg",
+            "ok": true,
+            "details": [
+              "found 1 <svg> block(s)"
+            ]
+          },
+          {
+            "name": "finite_svg",
+            "ok": true,
+            "details": []
+          },
+          {
+            "name": "orthogonal_arrows",
+            "ok": true,
+            "details": []
+          },
+          {
+            "name": "label_route_clearance",
+            "ok": true,
+            "details": []
+          },
+          {
+            "name": "relationship_crossings",
+            "ok": true,
+            "details": []
+          },
+          {
+            "name": "relationship_corridors",
+            "ok": true,
+            "details": []
+          },
+          {
+            "name": "container_border_runs",
+            "ok": true,
+            "details": []
+          },
+          {
+            "name": "route_rhythm",
+            "ok": true,
+            "details": []
+          },
+          {
+            "name": "legend_clearance",
+            "ok": true,
+            "details": []
+          }
+        ],
+        "composition": {
+          "schemaVersion": 1,
+          "profile": "showcase",
+          "status": "pass",
+          "summary": {
+            "errors": 0,
+            "warnings": 0
+          },
+          "metrics": {
+            "properCrossings": 0,
+            "resolvedCrossovers": 10,
+            "ambiguousCorridors": 0,
+            "arrowheadCollisions": 0,
+            "containerBorderRuns": 0,
+            "labelRouteClearanceIssues": 0,
+            "labelCanvasOverflowIssues": 0,
+            "minLabelRouteClearance": 6.9,
+            "desktopReadabilityIssues": 0,
+            "viewportHeightIssues": 0,
+            "minProjectedNodeTextPx": 8,
+            "maxBends": 4,
+            "routesOverSuggestedBends": 6,
+            "maxStretch": 1.506,
+            "routesOverSuggestedStretch": 1,
+            "minSegmentPx": 19,
+            "minInteriorSegmentPx": 35,
+            "shortSegmentCount": 0,
+            "shortEndpointSegmentCount": 0,
+            "shortInteriorSegmentCount": 0,
+            "microSegmentCount": 0
+          },
+          "suggestedLimits": {
+            "bendsPerRelationship": 2,
+            "stretch": 1.35,
+            "segmentPx": 16,
+            "microSegmentPx": 8
+          },
+          "routeReview": {
+            "crossings": [
+              {
+                "left": {
+                  "from": "api",
+                  "to": "auth",
+                  "label": "",
+                  "collectionIndex": 7,
+                  "artifactIndex": 8
+                },
+                "right": {
+                  "from": "api",
+                  "to": "receipt_capture",
+                  "label": "",
+                  "collectionIndex": 10,
+                  "artifactIndex": 11
+                },
+                "point": [
+                  274,
+                  463
+                ],
+                "sharedNode": "api"
+              },
+              {
+                "left": {
+                  "from": "api",
+                  "to": "receipt_capture",
+                  "label": "",
+                  "collectionIndex": 10,
+                  "artifactIndex": 11
+                },
+                "right": {
+                  "from": "auth",
+                  "to": "persist",
+                  "label": "",
+                  "collectionIndex": 11,
+                  "artifactIndex": 12
+                },
+                "point": [
+                  77,
+                  505
+                ]
+              },
+              {
+                "left": {
+                  "from": "finance",
+                  "to": "persist",
+                  "label": "lee / escribe",
+                  "collectionIndex": 12,
+                  "artifactIndex": 13
+                },
+                "right": {
+                  "from": "receipt_capture",
+                  "to": "vision_gateway",
+                  "label": "solicita análisis",
+                  "collectionIndex": 14,
+                  "artifactIndex": 15
+                },
+                "point": [
+                  304,
+                  716
+                ]
+              },
+              {
+                "left": {
+                  "from": "finance",
+                  "to": "persist",
+                  "label": "lee / escribe",
+                  "collectionIndex": 12,
+                  "artifactIndex": 13
+                },
+                "right": {
+                  "from": "receipt_capture",
+                  "to": "finance",
+                  "label": "sólo tras confirmar",
+                  "collectionIndex": 18,
+                  "artifactIndex": 19
+                },
+                "point": [
+                  309,
+                  519.3846153846154
+                ],
+                "sharedNode": "finance"
+              },
+              {
+                "left": {
+                  "from": "text_capture",
+                  "to": "text_gateway",
+                  "label": "solicita interpretación",
+                  "collectionIndex": 13,
+                  "artifactIndex": 14
+                },
+                "right": {
+                  "from": "text_capture",
+                  "to": "persist",
+                  "label": "guarda borrador",
+                  "collectionIndex": 15,
+                  "artifactIndex": 16
+                },
+                "point": [
+                  557,
+                  586.5
+                ],
+                "sharedNode": "text_capture"
+              },
+              {
+                "left": {
+                  "from": "text_capture",
+                  "to": "text_gateway",
+                  "label": "solicita interpretación",
+                  "collectionIndex": 13,
+                  "artifactIndex": 14
+                },
+                "right": {
+                  "from": "text_capture",
+                  "to": "finance",
+                  "label": "sólo tras confirmar",
+                  "collectionIndex": 17,
+                  "artifactIndex": 18
+                },
+                "point": [
+                  562,
+                  519.3846153846154
+                ],
+                "sharedNode": "text_capture"
+              },
+              {
+                "left": {
+                  "from": "receipt_capture",
+                  "to": "vision_gateway",
+                  "label": "solicita análisis",
+                  "collectionIndex": 14,
+                  "artifactIndex": 15
+                },
+                "right": {
+                  "from": "text_capture",
+                  "to": "persist",
+                  "label": "guarda borrador",
+                  "collectionIndex": 15,
+                  "artifactIndex": 16
+                },
+                "point": [
+                  206,
+                  716
+                ]
+              },
+              {
+                "left": {
+                  "from": "receipt_capture",
+                  "to": "vision_gateway",
+                  "label": "solicita análisis",
+                  "collectionIndex": 14,
+                  "artifactIndex": 15
+                },
+                "right": {
+                  "from": "text_gateway",
+                  "to": "gemini",
+                  "label": "",
+                  "collectionIndex": 19,
+                  "artifactIndex": 20
+                },
+                "point": [
+                  522,
+                  716
+                ]
+              },
+              {
+                "left": {
+                  "from": "receipt_capture",
+                  "to": "vision_gateway",
+                  "label": "solicita análisis",
+                  "collectionIndex": 14,
+                  "artifactIndex": 15
+                },
+                "right": {
+                  "from": "text_gateway",
+                  "to": "deepseek",
+                  "label": "",
+                  "collectionIndex": 20,
+                  "artifactIndex": 21
+                },
+                "point": [
+                  433,
+                  716
+                ]
+              },
+              {
+                "left": {
+                  "from": "text_capture",
+                  "to": "persist",
+                  "label": "guarda borrador",
+                  "collectionIndex": 15,
+                  "artifactIndex": 16
+                },
+                "right": {
+                  "from": "receipt_capture",
+                  "to": "finance",
+                  "label": "sólo tras confirmar",
+                  "collectionIndex": 18,
+                  "artifactIndex": 19
+                },
+                "point": [
+                  309,
+                  587.7222222222222
+                ]
+              }
+            ],
+            "detours": [
+              {
+                "relationship": {
+                  "from": "ui",
+                  "to": "client_fin",
+                  "label": "",
+                  "collectionIndex": 1,
+                  "artifactIndex": 2
+                },
+                "bends": 4,
+                "stretch": 1.245,
+                "directCorridorBlockers": [
+                  {
+                    "id": "session",
+                    "label": "Sesión y credenciales",
+                    "box": [
+                      328,
+                      70,
+                      210,
+                      78
+                    ]
+                  }
+                ]
+              },
+              {
+                "relationship": {
+                  "from": "api",
+                  "to": "receipt_capture",
+                  "label": "",
+                  "collectionIndex": 10,
+                  "artifactIndex": 11
+                },
+                "bends": 4,
+                "stretch": 1.506
+              },
+              {
+                "relationship": {
+                  "from": "finance",
+                  "to": "persist",
+                  "label": "lee / escribe",
+                  "collectionIndex": 12,
+                  "artifactIndex": 13
+                },
+                "bends": 3,
+                "stretch": 1.115
+              },
+              {
+                "relationship": {
+                  "from": "receipt_capture",
+                  "to": "vision_gateway",
+                  "label": "solicita análisis",
+                  "collectionIndex": 14,
+                  "artifactIndex": 15
+                },
+                "bends": 3,
+                "stretch": 1.189,
+                "directCorridorBlockers": [
+                  {
+                    "id": "text_gateway",
+                    "label": "Gateway de texto",
+                    "box": [
+                      328,
+                      598,
+                      210,
+                      78
+                    ]
+                  }
+                ]
+              },
+              {
+                "relationship": {
+                  "from": "text_capture",
+                  "to": "persist",
+                  "label": "guarda borrador",
+                  "collectionIndex": 15,
+                  "artifactIndex": 16
+                },
+                "bends": 4,
+                "stretch": 1
+              },
+              {
+                "relationship": {
+                  "from": "text_capture",
+                  "to": "finance",
+                  "label": "sólo tras confirmar",
+                  "collectionIndex": 17,
+                  "artifactIndex": 18
+                },
+                "bends": 3,
+                "stretch": 1.286
+              }
+            ]
+          },
+          "leadingSpace": {
+            "measured": true,
+            "emptyTopPx": 40,
+            "emptyTopRatio": 0.038,
+            "occupiedTop": 40,
+            "viewBoxTop": 0,
+            "canvasHeight": 1050,
+            "typicalNodeHeight": 78,
+            "reviewSuggested": false
+          },
+          "desktopReadability": {
+            "budgetBasis": "legacy-930",
+            "readerContract": "declared-wide-v1",
+            "availableDiagramWidth": 930,
+            "actualBudgetPx": 930,
+            "limit": "legacy",
+            "requestedTargetPx": 7.5,
+            "requestedTargetMet": true,
+            "hardFloorPx": 6,
+            "hardFloorMet": true,
+            "minimumOwner": {
+              "kind": "edge",
+              "id": null,
+              "from": "rest",
+              "to": "api"
+            },
+            "minimumSourceTextPx": 8,
+            "minimumProjectedTextPx": 8,
+            "semanticTextCount": 45
+          },
+          "issues": []
+        },
+        "provenance": "current",
+        "deliveryReceiptId": "d89eb247-9e32-4c23-8fd5-2fbe29385e80"
+      }
+    },
+    "browser-check": {
+      "status": "skipped",
+      "exitCode": 2,
+      "durationMs": 19,
+      "command": [
+        "/usr/bin/node",
+        "/home/d3ad/.agents/skills/archify/bin/archify.mjs",
+        "browser-check",
+        "/home/d3ad/.codex/worktrees/docs-diagrams-publication/finance-ai/docs/diagrams/architecture/system-components/archify/architecture-archify.html",
+        "--json",
+        "--require-provenance",
+        "--out-dir",
+        "/home/d3ad/.codex/worktrees/docs-diagrams-publication/finance-ai/docs/diagrams/architecture/system-components/archify/validation"
+      ],
+      "execution": "in-process",
+      "receipt": {
+        "schemaVersion": 1,
+        "ok": false,
+        "command": "browser-check",
+        "evidenceKind": "automated-browser",
+        "status": "skipped",
+        "visualReview": "not-requested",
+        "provenance": "current",
+        "deliveryReceiptId": "d89eb247-9e32-4c23-8fd5-2fbe29385e80",
+        "artifact": {
+          "path": "/home/d3ad/.codex/worktrees/docs-diagrams-publication/finance-ai/docs/diagrams/architecture/system-components/archify/architecture-archify.html",
+          "sha256": "62537529551fe2d4c860f4e879130a75f48833ee90d82afb360ebba96b774a47",
+          "bytes": 856175
+        },
+        "state": {
+          "detail": "read",
+          "motion": "still"
+        },
+        "chrome": {
+          "status": "unavailable",
+          "executable": null
+        },
+        "diagnostics": [
+          {
+            "code": "viewer/chrome-unavailable",
+            "severity": "warning",
+            "message": "No supported browser found. Install Chrome/Chromium (or Microsoft Edge), or set ARCHIFY_CHROME to its executable path.",
+            "subject": {
+              "artifact": "/home/d3ad/.codex/worktrees/docs-diagrams-publication/finance-ai/docs/diagrams/architecture/system-components/archify/architecture-archify.html"
+            },
+            "evidence": {
+              "executable": null
+            },
+            "supportedFixes": [
+              "set ARCHIFY_CHROME to a Chrome/Chromium executable (or Microsoft Edge) and rerun browser-check"
+            ]
+          }
+        ],
+        "containment": {
+          "status": "skipped",
+          "policy": "fit-or-reader-declared-readable-vertical-scroll",
+          "viewports": []
+        },
+        "themeStates": {
+          "status": "skipped",
+          "viewports": []
+        },
+        "readability": {
+          "status": "skipped",
+          "minimumProjectedNodeTextPx": 6,
+          "viewports": []
+        },
+        "viewerChrome": {
+          "status": "skipped",
+          "viewports": []
+        },
+        "captures": {
+          "status": "not-requested",
+          "screenshots": [],
+          "contactSheet": null
+        },
+        "sidecars": {
+          "directory": "/home/d3ad/.codex/worktrees/docs-diagrams-publication/finance-ai/docs/diagrams/architecture/system-components/archify/validation",
+          "receipt": "architecture-archify.browser-check.json",
+          "files": []
+        },
+        "error": "No supported browser found. Install Chrome/Chromium (or Microsoft Edge), or set ARCHIFY_CHROME to its executable path."
+      }
+    }
+  },
+  "browserCheck": {
+    "requested": true,
+    "ran": false
+  },
+  "diagnostics": [
+    {
+      "code": "viewer/chrome-unavailable",
+      "severity": "warning",
+      "message": "No supported browser found. Install Chrome/Chromium (or Microsoft Edge), or set ARCHIFY_CHROME to its executable path.",
+      "subject": {
+        "artifact": "/home/d3ad/.codex/worktrees/docs-diagrams-publication/finance-ai/docs/diagrams/architecture/system-components/archify/architecture-archify.html"
+      },
+      "evidence": {
+        "executable": null
+      },
+      "supportedFixes": [
+        "set ARCHIFY_CHROME to a Chrome/Chromium executable (or Microsoft Edge) and rerun browser-check"
+      ]
+    }
+  ],
+  "evidence": {
+    "receipt": "/home/d3ad/.codex/worktrees/docs-diagrams-publication/finance-ai/docs/diagrams/architecture/system-components/archify/validation/architecture-archify.finalize.json",
+    "summaryReceipt": "/home/d3ad/.codex/worktrees/docs-diagrams-publication/finance-ai/docs/diagrams/architecture/system-components/archify/validation/architecture-archify.finalize-summary.json",
+    "browserCheckReceipt": "/home/d3ad/.codex/worktrees/docs-diagrams-publication/finance-ai/docs/diagrams/architecture/system-components/archify/validation/architecture-archify.browser-check.json"
+  },
+  "visualReview": "not-requested",
+  "failedStage": "browser-check",
+  "finishedAt": "2026-10-21T00:44:43.478Z",
+  "durationMs": 790,
+  "update": {
+    "status": "current",
+    "installedVersion": "3.2.0",
+    "availableVersion": "3.2.0",
+    "releaseNotes": null,
+    "checkedAt": "2026-10-20T22:46:38.693Z",
+    "source": "cache",
+    "noticeRequired": false,
+    "noticeText": null
+  }
+}
