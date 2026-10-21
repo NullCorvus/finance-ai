@@ -1,5 +1,10 @@
 # Architecture Diagrams Guide — Step 5
 
+> **Historical design guide:** project-specific examples below illustrate the pre-implementation
+> Step 5 exercise. They retain proposed VM/file storage and older capture assumptions; use
+> `docs/ARCHITECTURE.md` and `docs/STACK.md` for the current technical state. These examples are
+> not the current PGC UML component source.
+
 > How to draw the three architecture diagrams (layer, component, data flow) in Mermaid,
 > when the technology stack is **not defined yet**.
 > Time budget: 1 day. Output: 3 Mermaid files, versioned in the repo.

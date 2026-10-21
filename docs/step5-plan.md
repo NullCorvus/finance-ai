@@ -1,10 +1,15 @@
 # Step 5 — Architecture Plan (answers to guide §1 questions)
 
+> **Historical planning record:** the answers below preserve the original team decisions for
+> Step 5, including the VM and server-file-storage proposal. They are not an implementation
+> inventory. Current auth, capture, storage and deployment are described in `docs/ARCHITECTURE.md`
+> and `docs/STACK.md`; this record does not override those verified descriptions.
+
 > Source of truth for the Stage 2 answers. Each answer is a decision made by the team
 > (the architect), recorded here so any agent working on Step 5 follows them.
 > Guide: `docs/guides/architecture-diagrams-guide.md`
 
-> **Scope note (latest decision):** the core is an **Android app + backend on a VM** that
+> **Original scope decision:** the core is an **Android app + backend on a VM** that
 > tracks expenses. The AI is used in core **only for AI-assisted input parsing** (photo/audio/natural-language text →
 > structured JSON, user confirms). The **agent/chat features are optional Phase 3 ideas** and
 > are marked as such below.

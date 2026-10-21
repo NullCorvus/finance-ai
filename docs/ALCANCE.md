@@ -1,9 +1,14 @@
 # Scope — Finance AI Tracker
 
-## Core Vision
-A personal finance tracking system with a **Flutter app** and a **backend (API + DB) running on a VM**. Users register expenses through the app — either manually or AI-assisted (receipt photo, audio note, or text, where the AI converts the input to structured JSON for the user to confirm). The backend owns the data, computes analytics, and answers dashboard queries. Users can also register income to enable balance analysis (spending vs. earnings).
+> **Academic scope and implementation status:** this document preserves the project's stated
+> goals and original design choices. Technical statements marked as original plans are not a
+> description of the current runtime. For the implementation snapshot, see `docs/ARCHITECTURE.md`
+> and `docs/STACK.md` (backend `origin/develop` `1fae699`; frontend `origin/develop` `a23a8a6`).
 
-**The AI is used only for input parsing in the core** — one call from the backend to the LLM provider that turns a photo/audio/natural-language text input into structured data. The user always confirms, edits, or retries before anything is saved. Manual form entry always works as a direct fallback. The phone never calls the AI API directly.
+## Core Vision
+A personal finance tracking system with a **Flutter app** and a **backend (API + DB)**. A VM was the original hosting target; local development now uses Docker Compose with PostgreSQL, and the backend repository has a separate Cloud Run deployment workflow. Users register expenses through the app — either manually or AI-assisted (receipt photo, spoken input, or text, where AI proposes structured data for review). The backend owns financial data, computes analytics, and answers dashboard queries. Users can also register income to enable balance analysis (spending vs. earnings).
+
+**The AI is used for assisted capture in the core**, not autonomous financial writes. The original one-call design is superseded by backend text and receipt gateways for Gemini and DeepSeek, with conditional retries/fallback. Android recognizes speech locally and sends the transcript through text capture; the backend does not send raw audio to a model. A proposal may be stored temporarily, but no financial operation is committed until the user confirms. Manual form entry remains a direct fallback. The phone never calls the AI provider directly.
 
 ## Optional "Agent" Vision (Phase 3 — ideas, not core)
 
@@ -19,7 +24,7 @@ See `docs/FEATURES.md` — Phase 3. The architecture keeps these possible later 
 
 ## Input Methods
 1. **Receipt photo** — AI vision extracts line items, store, total, date
-2. **Audio** — short sentence or voice memo describing an expense; AI parsing is planned for HU-009
+2. **Spoken input** — a short utterance is transcribed locally, then its text enters the proposal flow (HU-014). Direct server-side audio parsing was an earlier design, not the implemented path.
 3. **Manual form** — direct entry that bypasses AI and saves after validation
 4. **Natural-language text** — a sentence typed in the capture bar; AI converts it into structured data for confirmation
 
@@ -33,10 +38,10 @@ User input → AI extracts structured data (JSON) → Preview → [Confirm] [Edi
 ```
 
 ### Pre-save
-- AI extracts data from AI-assisted input (photo, audio, or natural-language text) — **one call from the backend to the AI API**
+- Text and receipt-photo proposals use backend gateways; configured provider retries or fallback can make more than one external request. Spoken input is first transcribed on the device and then follows the text path.
 - Structured data includes the purchase facts: store, date, **payment method**, **currency**, total, and line items (when the receipt has them). The AI infers payment method + currency from the receipt; the *user* confirms or corrects them on the confirmation card (defaults "Efectivo" / "COP" if the input doesn't expose them).
 - User sees a preview with editable fields
-- User can: **Confirm** (saves to DB) / **Edit** (change fields, re-preview) / **Discard** (delete everything, nothing saved)
+- User can: **Confirm** (commits the financial operation) / **Edit** (change fields, re-preview) / **Discard** (remove the proposal without committing an operation). Temporary proposal data can exist before confirmation.
 - Manual form entry bypasses the AI entirely and saves directly after validation; typed natural-language text in the capture bar uses AI and requires confirmation
 - This handles edge cases: blurry receipts, inaudible audio, AI API failures, etc.
 
@@ -46,9 +51,11 @@ User input → AI extracts structured data (JSON) → Preview → [Confirm] [Edi
 ## Design Decisions
 
 ### Categories
-- Main categories are predefined (Food, Transport, Entertainment, etc.)
-- Subcategories can be AI-suggested on-the-fly, but **the backend sends the user's existing subcategories to the AI in the prompt** so suggestions come from the known list first
-- AI suggests a category/subcategory; user can override or add a new one
+- Original design: main categories are predefined (Food, Transport, Entertainment, etc.);
+  subcategories may be AI-suggested and the user may override or add classification.
+- Implemented text capture supplies the user's **categories** in `CaptureContext` for proposals;
+  it does not send a list of existing subcategories as the original design assumed. This does not
+  change the future subcategory objective.
 
 ### Currencies
 - Multiple currencies supported (USD + COP minimum)
@@ -81,14 +88,14 @@ User input → AI extracts structured data (JSON) → Preview → [Confirm] [Edi
 | Piece | Role |
 |-------|------|
 | Flutter app | Sends input, shows previews, Confirm/Edit/Discard, dashboard + charts. Needs internet. |
-| Backend (VM, FastAPI/Python) | Gatekeeper: auth (JWT), owns the data, computes analytics (plain SQL), calls the AI API only for parsing. Holds DB credentials + AI API key. |
-| Database (PostgreSQL) | Lives on the VM next to the backend. The phone never connects to it directly. |
+| Backend (FastAPI/Python) | Gatekeeper: opaque, renewable database-backed sessions; owns financial data, computes analytics, and calls configured AI gateways for text/receipt proposals. Holds DB credentials and provider keys. |
+| Database (PostgreSQL) | Used by the backend. Local Compose runs PostgreSQL for development; the phone never connects to it directly. Production deployment must be assessed separately. |
 
-No VM is strictly required for a demo (backend can run on a laptop), but the design targets hosting the backend + DB on a VM so the app works from anywhere.
+The VM target is preserved as an original design decision. It does not describe the current development setup or prove a production topology.
 
 ## Roles & Permissions
 
-Two separate roles:
+The original scope considered two roles; only the regular user is part of the current core:
 
 ### User
 - Register and log in via email/password
@@ -114,11 +121,11 @@ Two separate roles:
 - Configure the shared AI API key
 - Admin does NOT view individual user expense data
 
-**Data scoping rule:** every query is filtered by `user_id` — the server never returns another user's rows. **Auth mechanism decided: JWT** (stateless tokens) — see `docs/STACK.md`.
+**Data scoping rule:** user-owned financial records must be isolated by owner. The original JWT decision was replaced by opaque access and renewable credentials backed by revocable server sessions; see `docs/STACK.md` and the backend auth module.
 
 ## Data Protection
 
-- **Core (now):** the confirmation gate. Nothing is saved without the user's explicit action (Confirm/Edit/Discard preview). The AI only *reads* inputs — it never writes to the DB in the core. Post-save edits/deletes are normal user actions. **No audit/change-log table in core** — data is personal, single-account; undo = delete + re-enter.
+- **Core (now):** the confirmation gate prevents a financial operation from being committed without the user's explicit action. Application services may persist a temporary proposal before confirmation; the external AI provider does not directly write financial records. Post-save edits/deletes are normal user actions. **No audit/change-log table in core** — this remains the original scope decision, not a claim that no operational records exist.
 - **Agent writes (Phase 3 only):** if the optional agent features are built, the AI agent never modifies data without approval. Every agent write (create/edit limits, subcategories, etc.) shows a preview first and goes through the same Confirm/Edit/Discard menu as expenses.
 - **Undo (Phase 3 only):** if agent features are built, an `audit_log` table records what changed, who (agent vs user), when, and the old → new value — enables undo of agent or user changes. Created in construction *only if* Phase 3 is actually built.
 - **Not in scope:** deleted-row retention, data export, GDPR-style right-to-be-forgotten — out of scope for this prototype.
@@ -133,7 +140,7 @@ Two separate roles:
 - Offline mode for the app (it needs internet; caching last-loaded data is a possible future idea)
 - VM provisioning / deployment in the pre-semester phase (design targets a VM, but setup is post-semester)
 
-## Business Model
+## Business Model (original proposal)
 - Self-hosted app (runs on your server or locally)
 - Shared AI API key configured once in the backend — you pay for API usage
 - No subscription, no payment system

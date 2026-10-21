@@ -6,6 +6,9 @@
 > Product backlog names, priorities, statuses, notes, story wording, implementation scope,
 > acceptance criteria, and points below are the supplied values.
 > **Estimation scale:** Story Points — standard **Fibonacci** (1, 2, 3, 5, 8, 13…).
+> **Historical register:** the Status column reflects the supplied 2026-09-13 snapshot, not the
+> current implementation state. Use `docs/ARCHITECTURE.md` and `docs/STACK.md` for verified
+> technical behavior; preserve story scope and acceptance criteria independently of code progress.
 
 ---
 
