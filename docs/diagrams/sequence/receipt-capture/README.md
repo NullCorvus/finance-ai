@@ -3,11 +3,12 @@
 ## Entregables
 
 - [Fuente PlantUML](receipt-capture-hu015.puml) y [PNG para el PGC](receipt-capture-hu015.png): representación UML de la secuencia del caso HU-015.
+- [HTML Archify](receipt-capture-hu015.html) y [fuente editable](receipt-capture-hu015.archify.json): vista interactiva de la ruta de confirmación.
 - Contexto: [vista UML de componentes](../../architecture/system-components/uml/architecture-components.png), [fuente editable](../../architecture/system-components/uml/architecture-components.puml) y [HTML Archify](../../architecture/system-components/archify/architecture-archify.html).
 
 La secuencia muestra la creación de un borrador persistido, su revisión y, solo después de la confirmación explícita del usuario, el registro del gasto en otra transacción. El descarte marca el borrador como descartado. La edición de valores ocurre en Flutter hasta el envío de la confirmación. Ante un fallo recuperable de extracción, el backend puede crear una propuesta editable manualmente. El diagrama omite los reintentos para mantener un nivel de detalle apropiado para el informe.
 
-Esta publicación conserva la vista UML formal en PlantUML y PNG. No incluye una versión interactiva Archify de esta secuencia; los flujos alternativos se describen aquí y en el fuente UML.
+El HTML Archify presenta cronológicamente la ruta de confirmación y distingue los dos commits. Su formato de secuencia no expresa fragmentos UML `alt` y `opt` con guardas, por lo que el descarte y las ramas de extracción se documentan en el PlantUML formal. El HTML es una visualización complementaria, no una segunda versión normativa del diagrama UML.
 
 ## Identificación
 
@@ -120,4 +121,4 @@ La semántica de líneas de vida, mensajes y fragmentos proviene de [OMG UML 2.5
 
 Para abrir el PNG, usa cualquier visor de imágenes o insértalo como figura en el informe. La exportación mide 3886 × 3594 px; por sus nueve líneas de vida, el texto queda pequeño si se reduce a una página A4. Para impresión, úsalo en una lámina grande o un pliego desplegable; para la sustentación digital, ábrelo a resolución completa. Edita el `.puml` para cambiar el diagrama.
 
-Para consultar la secuencia, abre el PNG o edita el archivo PlantUML enlazado en Entregables.
+Para explorar la vista interactiva, abre `receipt-capture-hu015.html` en un navegador compatible. Edita `receipt-capture-hu015.archify.json` para cambiar esa vista.

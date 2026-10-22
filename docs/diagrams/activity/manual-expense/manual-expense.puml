@@ -1,0 +1,68 @@
+@startuml
+<style>
+root {
+  FontName Helvetica
+  FontSize 13
+  FontColor #000000
+  BackGroundColor #FFFFFF
+  LineColor #000000
+  LineThickness 0.75
+  RoundCorner 0
+  Shadowing 0
+}
+title { FontSize 17; FontStyle bold; FontColor #000000; BackGroundColor transparent; LineColor transparent; LineThickness 0 }
+activityDiagram {
+  activity { BackGroundColor #FFFFFF; LineColor #000000; FontColor #000000; RoundCorner 10 }
+  diamond { BackGroundColor #FFFFFF; LineColor #000000; FontColor #000000 }
+  arrow { LineColor #000000; LineThickness 0.75; FontColor #000000 }
+}
+</style>
+title Registro manual de un gasto
+
+|Usuario|
+start
+:Elegir registro manual;
+|Aplicación Flutter|
+:Abrir formulario de gasto;
+:Cargar cuentas y categorías;
+
+while (¿Continuar con el registro?) is (sí)
+  |Usuario|
+  :Introducir comercio, importe y fecha;
+  :Seleccionar cuenta y, si procede, categoría;
+  |Aplicación Flutter|
+  :Validar campos del formulario;
+  if (¿Campos válidos?) then (sí)
+    |Usuario|
+    :Solicitar registro;
+    |Aplicación Flutter|
+    :Enviar gasto autenticado;
+    |Backend FastAPI|
+    :Validar importe, comercio, cuenta y categoría;
+    if (¿Reglas financieras satisfechas?) then (sí)
+      :Registrar gasto y movimiento financiero;
+      :Confirmar transacción en PostgreSQL;
+      |Aplicación Flutter|
+      if (¿Éxito reconocido por la app?) then (sí)
+        :Actualizar lista y progreso;
+        :Mostrar confirmación;
+        |Usuario|
+        stop
+      else (resultado incierto)
+        :Indicar que se revise el historial;
+        |Usuario|
+        stop
+      endif
+    else (no)
+      |Aplicación Flutter|
+      :Mostrar error de validación o guardado;
+    endif
+  else (no)
+    :Mostrar errores de campo;
+  endif
+endwhile (no)
+
+|Usuario|
+:Cancelar o salir del formulario;
+stop
+@enduml

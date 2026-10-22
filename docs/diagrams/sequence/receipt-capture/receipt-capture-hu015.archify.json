@@ -1,0 +1,239 @@
+{
+  "schema_version": 1,
+  "diagram_type": "sequence",
+  "meta": {
+    "title": "HU-015 · Captura de recibo y confirmación",
+    "subtitle": "Ruta de confirmación · propuesta temporal y gasto definitivo",
+    "locale": "es",
+    "output": "docs/diagrams/sequence/receipt-capture/receipt-capture-hu015.html",
+    "quality_profile": "showcase"
+  },
+  "participants": [
+    {
+      "id": "usuario",
+      "type": "external",
+      "label": "Usuario",
+      "icon": "person"
+    },
+    {
+      "id": "flutter",
+      "type": "frontend",
+      "label": "Flutter",
+      "sublabel": "Captura y revisión"
+    },
+    {
+      "id": "api",
+      "type": "backend",
+      "label": "API REST",
+      "sublabel": "FastAPI"
+    },
+    {
+      "id": "vision",
+      "type": "backend",
+      "label": "Visión",
+      "sublabel": "Gateway"
+    },
+    {
+      "id": "proveedor",
+      "type": "external",
+      "label": "Proveedor",
+      "sublabel": "externo de IA"
+    },
+    {
+      "id": "propuestas",
+      "type": "backend",
+      "label": "Propuestas",
+      "sublabel": "Servicio / UoW"
+    },
+    {
+      "id": "gastos",
+      "type": "backend",
+      "label": "Gastos",
+      "sublabel": "Servicio / UoW"
+    },
+    {
+      "id": "postgres",
+      "type": "database",
+      "label": "PostgreSQL"
+    }
+  ],
+  "segments": [
+    {
+      "from": 145,
+      "to": 950,
+      "label": "1 · Crear propuesta temporal"
+    },
+    {
+      "from": 960,
+      "to": 1426,
+      "label": "2 · Confirmar y registrar gasto"
+    }
+  ],
+  "messages": [
+    {
+      "from": "usuario",
+      "to": "flutter",
+      "y": 165,
+      "label": "Capturar o elegir recibo"
+    },
+    {
+      "from": "flutter",
+      "to": "api",
+      "y": 220,
+      "label": "Enviar imagen",
+      "note": "Flutter valida tamaño y prepara la rotación."
+    },
+    {
+      "from": "api",
+      "to": "vision",
+      "y": 300,
+      "label": "Extraer datos del recibo",
+      "note": "API autentica, valida y preprocesa la imagen."
+    },
+    {
+      "from": "vision",
+      "to": "proveedor",
+      "y": 377,
+      "label": "Solicitar interpretación visual"
+    },
+    {
+      "from": "proveedor",
+      "to": "vision",
+      "y": 432,
+      "label": "Resultado interpretado",
+      "variant": "return"
+    },
+    {
+      "from": "vision",
+      "to": "api",
+      "y": 487,
+      "label": "Datos extraídos",
+      "variant": "return"
+    },
+    {
+      "from": "api",
+      "to": "propuestas",
+      "y": 547,
+      "label": "Crear borrador normalizado",
+      "note": "El fallo recuperable produce una propuesta editable manualmente."
+    },
+    {
+      "from": "propuestas",
+      "to": "postgres",
+      "y": 632,
+      "label": "INSERT propuesta; COMMIT",
+      "note": "Persistencia temporal mediante repositorio y UoW."
+    },
+    {
+      "from": "postgres",
+      "to": "propuestas",
+      "y": 709,
+      "label": "Borrador persistido",
+      "variant": "return"
+    },
+    {
+      "from": "propuestas",
+      "to": "api",
+      "y": 764,
+      "label": "Propuesta estructurada",
+      "variant": "return"
+    },
+    {
+      "from": "api",
+      "to": "flutter",
+      "y": 819,
+      "label": "201 · Propuesta para revisar",
+      "variant": "return"
+    },
+    {
+      "from": "flutter",
+      "to": "usuario",
+      "y": 874,
+      "label": "Mostrar valores sugeridos",
+      "variant": "return",
+      "note": "Las ediciones del formulario ocurren localmente."
+    },
+    {
+      "from": "usuario",
+      "to": "flutter",
+      "y": 973,
+      "label": "Confirmar explícitamente el gasto"
+    },
+    {
+      "from": "flutter",
+      "to": "api",
+      "y": 1028,
+      "label": "Enviar valores definitivos"
+    },
+    {
+      "from": "api",
+      "to": "gastos",
+      "y": 1083,
+      "label": "Confirmar propuesta y validar reglas",
+      "note": "Valida estado, titularidad, cuenta, moneda y categorías."
+    },
+    {
+      "from": "gastos",
+      "to": "postgres",
+      "y": 1158,
+      "label": "INSERT gasto; UPDATE propuesta; COMMIT",
+      "note": "Una transacción mediante repositorios y UoW."
+    },
+    {
+      "from": "postgres",
+      "to": "gastos",
+      "y": 1235,
+      "label": "Transacción confirmada",
+      "variant": "return"
+    },
+    {
+      "from": "gastos",
+      "to": "api",
+      "y": 1290,
+      "label": "Gasto registrado",
+      "variant": "return"
+    },
+    {
+      "from": "api",
+      "to": "flutter",
+      "y": 1345,
+      "label": "201 · Gasto registrado",
+      "variant": "return"
+    },
+    {
+      "from": "flutter",
+      "to": "usuario",
+      "y": 1400,
+      "label": "Mostrar gasto",
+      "variant": "return",
+      "note": "Actualiza el feed de gastos y abre el detalle."
+    }
+  ],
+  "activations": [
+    {
+      "participant": "api",
+      "from": 220,
+      "to": 819
+    },
+    {
+      "participant": "vision",
+      "from": 300,
+      "to": 487
+    },
+    {
+      "participant": "propuestas",
+      "from": 525,
+      "to": 764
+    },
+    {
+      "participant": "api",
+      "from": 1028,
+      "to": 1345
+    },
+    {
+      "participant": "gastos",
+      "from": 1083,
+      "to": 1290
+    }
+  ]
+}
