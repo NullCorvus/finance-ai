@@ -1,83 +1,90 @@
 @startuml
-<style>
-root {
-  FontName Helvetica
-  FontSize 17
-  FontColor #000000
-  BackGroundColor #FFFFFF
-  LineColor #000000
-  LineThickness 0.75
-  Shadowing 0
-}
-componentDiagram {
-  component { BackGroundColor #FFFFFF; LineColor #000000; FontColor #000000 }
-  package { BackGroundColor #FFFFFF; LineColor #000000; FontColor #000000 }
-  arrow { LineColor #000000; LineThickness 0.75 }
-}
-</style>
+
 skinparam componentStyle uml2
+skinparam componentBackgroundColor White
+skinparam componentBorderColor Black
+skinparam componentFontColor Black
+skinparam packageBackgroundColor White
+skinparam packageBorderColor Black
+skinparam packageFontColor Black
+skinparam defaultFontName Helvetica
+skinparam defaultFontSize 18
+skinparam ArrowColor Black
+skinparam componentBackgroundColor White
+skinparam componentBorderColor Black
+skinparam componentFontColor Black
+skinparam packageBackgroundColor White
+skinparam packageBorderColor Black
+skinparam packageFontColor Black
+skinparam backgroundColor White
 skinparam monochrome true
 skinparam shadowing false
+skinparam linetype ortho
+skinparam nodesep 55
+skinparam ranksep 42
+
 title Componentes de Finance AI
 top to bottom direction
-skinparam nodesep 100
-skinparam ranksep 18
 
 package "Frontend Flutter" {
   component "Navegación y presentación" as Navigation
-  component "Funciones financieras\ncuentas · categorías · movimientos\npresupuestos · consultas" as FinanceUI
-  component "Cliente de captura\ntexto y recibos" as CaptureUI
-  component "Sesión y credenciales" as ClientSession
-  component "Cliente HTTP/REST\nJSON / multipart" as RestClient
+  component "Interfaz de gestión financiera\ncuentas · categorías · gastos · ingresos\ntransferencias · presupuestos · historial" as FinanceUI
+  component "Interfaz de captura\ntexto y recibos" as CaptureUI
+  component "Gestión de sesión\ny credenciales" as ClientSession
+  component "Cliente HTTP/REST\nJSON · multipart" as RestClient
 }
 
 package "Backend FastAPI" {
   component "API REST v1" as BackendAPI
-  interface "REST v1" as FinanceAPI
-  component "Autenticación" as Auth
+  component "Autenticación y sesiones" as Auth
   component "Servicios financieros" as FinancialServices
-  component "Captura de texto\npropuestas / confirmación" as TextCapture
-  component "Captura de recibos\nvisión / confirmación" as ReceiptCapture
-  component "Gateway de texto" as TextGateway
-  component "Gateway de visión" as VisionGateway
+  component "Captura de texto\npropuestas y confirmación" as TextCapture
+  component "Captura de recibos\npropuestas y confirmación" as ReceiptCapture
+  component "Gateway de texto\nselección y fallback" as TextGateway
+  component "Gateway de visión\nselección y fallback" as VisionGateway
+  component "Repositorios y UoW por módulo" as Repositories
 }
 
 package "Persistencia" {
-  component "Repositorios / Unit of Work" as Repositories
-  component "PostgreSQL" as PostgreSQL
+  component "PostgreSQL\nalmacenamiento relacional" as PostgreSQL
 }
 
-package "Proveedores externos" {
-  component "Gemini API" as Gemini
-  component "DeepSeek API" as DeepSeek
+package "IA" {
+  component "Proveedor externo de IA" as AIProvider
+
 }
 
-Navigation ..> ClientSession
+' Dependencies (client -> supplier); structural, not execution order.
 Navigation ..> FinanceUI
 Navigation ..> CaptureUI
+Navigation ..> ClientSession
 FinanceUI ..> RestClient
 CaptureUI ..> RestClient
 ClientSession ..> RestClient
-RestClient ..> FinanceAPI : «use»
-BackendAPI -- FinanceAPI
+RestClient ..> BackendAPI : HTTPS / REST
 BackendAPI ..> Auth
 BackendAPI ..> FinancialServices
 BackendAPI ..> TextCapture
 BackendAPI ..> ReceiptCapture
 Auth ..> Repositories
+Auth -[hidden]right-> TextCapture
+TextCapture -[hidden]right-> ReceiptCapture
 FinancialServices ..> Repositories
 TextCapture ..> Repositories
 ReceiptCapture ..> Repositories
-TextCapture ..> FinancialServices : confirma operaciones
-ReceiptCapture ..> FinancialServices : confirma gastos
+TextCapture ..> FinancialServices
+ReceiptCapture ..> FinancialServices
 TextCapture ..> TextGateway
 ReceiptCapture ..> VisionGateway
-TextGateway ..> Gemini
-TextGateway ..> DeepSeek
-VisionGateway ..> Gemini
-VisionGateway ..> DeepSeek
+TextGateway ..> AIProvider
+VisionGateway ..> AIProvider
 Repositories ..> PostgreSQL
 
-' Layout only: align client and API layers; this does not model a system dependency.
+' Layout-only rank constraints; hidden links do not describe system dependencies.
+Navigation -[hidden]down-> CaptureUI
+FinanceUI -[hidden]right-> CaptureUI
+CaptureUI -[hidden]right-> ClientSession
+CaptureUI -[hidden]down-> RestClient
 RestClient -[hidden]down-> BackendAPI
+PostgreSQL -[hidden]right-> AIProvider
 @enduml
