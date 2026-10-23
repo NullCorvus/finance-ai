@@ -1,0 +1,91 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="900" viewBox="0 0 1600 900" role="img" aria-labelledby="ttl desc">
+<title id="ttl">Finance AI: HU-003 Cuentas de Dinero</title>
+<desc id="desc">Diagrama de casos de uso UML: HU-003 Cuentas de Dinero. Actores: Usuario Registrado. Casos de uso: Gestionar Cuentas, Crear Cuenta, Consultar Cuentas, Validar Datos de la Cuenta, Calcular Saldo de la Cuenta, Editar Cuenta, Desactivar Cuenta, Reactivar Cuenta, Eliminar Cuenta, Verificar Cuenta sin Movimientos.</desc>
+<defs><marker id="open" viewBox="0 0 12 12" refX="11" refY="6" markerWidth="11" markerHeight="11" orient="auto"><path d="M1.5,1.5 L11,6 L1.5,10.5" fill="none" stroke="#000000" stroke-width="1.6" stroke-linejoin="round" stroke-linecap="round"/></marker><filter id="shadow" x="-8%" y="-12%" width="122%" height="140%"><feGaussianBlur in="SourceAlpha" stdDeviation="2.6" result="b"/><feOffset in="b" dx="3" dy="4" result="o"/><feComponentTransfer in="o" result="s"><feFuncA type="linear" slope="0.28"/></feComponentTransfer><feMerge><feMergeNode in="s"/><feMergeNode in="SourceGraphic"/></feMerge></filter><style>text{font-family:'Helvetica Neue', Helvetica, Arial, sans-serif;fill:#000000;}.uc{font-size:17.5px;font-weight:700}.ep{font-size:12.5px}.actor{font-size:20px;font-weight:700}.stereo{font-size:20px}.note{font-size:14.5px}.frame{font-size:17px}.rel{font-size:16px;paint-order:stroke;stroke:#FFFFFF;stroke-width:5px;stroke-linejoin:round}.sys{font-size:24px;font-weight:700}</style></defs>
+<rect id="bg" width="1600" height="900" fill="#FFFFFF"/>
+<g id="frame">
+<rect x="24" y="24" width="1552" height="852" fill="#FFFFFF" stroke="#000000" stroke-width="1.5"/>
+<path d="M24,24 L298.0,24 L298.0,48 L284.0,60 L24,60 Z" fill="#FFFFFF" stroke="#000000" stroke-width="1.5"/>
+<text x="36" y="48" class="frame"><tspan style="font-weight:700">uc</tspan>  HU-003 Cuentas de Dinero</text>
+</g>
+<rect id="system-boundary" x="440" y="96" width="1110" height="750" fill="#FFFFFF" stroke="#000000" stroke-width="1.7" filter="url(#shadow)"/>
+<text x="995.0" y="134" text-anchor="middle" class="sys">Finance AI</text>
+<g id="associations">
+<line x1="224.0" y1="450.0" x2="476.0" y2="450.0" stroke="#000000" stroke-width="1.4"/>
+</g>
+<g id="relationships">
+<line x1="600.0" y1="224.0" x2="600.0" y2="416.0" stroke="#000000" stroke-width="1.4" stroke-dasharray="6 4" marker-end="url(#open)"/>
+<text x="652.0" y="325.0" text-anchor="middle" class="rel">«extend»</text>
+<line x1="840.0" y1="450.0" x2="720.0" y2="450.0" stroke="#000000" stroke-width="1.4" stroke-dasharray="6 4" marker-end="url(#open)"/>
+<text x="780.0" y="440.0" text-anchor="middle" class="rel">«extend»</text>
+<line x1="1276.2" y1="221.7" x2="1003.8" y2="418.3" stroke="#000000" stroke-width="1.4" stroke-dasharray="6 4" marker-end="url(#open)"/>
+<text x="1140.0" y="310.0" text-anchor="middle" class="rel">«extend»</text>
+<line x1="1245.9" y1="346.7" x2="1034.1" y2="423.3" stroke="#000000" stroke-width="1.4" stroke-dasharray="6 4" marker-end="url(#open)"/>
+<text x="1140.0" y="375.0" text-anchor="middle" class="rel">«extend»</text>
+<line x1="1200.0" y1="450.0" x2="1080.0" y2="450.0" stroke="#000000" stroke-width="1.4" stroke-dasharray="6 4" marker-end="url(#open)"/>
+<text x="1140.0" y="440.0" text-anchor="middle" class="rel">«extend»</text>
+<line x1="1245.9" y1="553.3" x2="1034.1" y2="476.7" stroke="#000000" stroke-width="1.4" stroke-dasharray="6 4" marker-end="url(#open)"/>
+<text x="1140.0" y="505.0" text-anchor="middle" class="rel">«extend»</text>
+<line x1="720.0" y1="190.0" x2="840.0" y2="190.0" stroke="#000000" stroke-width="1.4" stroke-dasharray="6 4" marker-end="url(#open)"/>
+<text x="780.0" y="180.0" text-anchor="middle" class="rel">«include»</text>
+<line x1="1200.0" y1="190.0" x2="1080.0" y2="190.0" stroke="#000000" stroke-width="1.4" stroke-dasharray="6 4" marker-end="url(#open)"/>
+<text x="1140.0" y="180.0" text-anchor="middle" class="rel">«include»</text>
+<line x1="960.0" y1="484.0" x2="960.0" y2="676.0" stroke="#000000" stroke-width="1.4" stroke-dasharray="6 4" marker-end="url(#open)"/>
+<text x="1012.0" y="585.0" text-anchor="middle" class="rel">«include»</text>
+<line x1="1320.0" y1="614.0" x2="1320.0" y2="676.0" stroke="#000000" stroke-width="1.4" stroke-dasharray="6 4" marker-end="url(#open)"/>
+<text x="1372.0" y="650.0" text-anchor="middle" class="rel">«include»</text>
+</g>
+<g id="use-cases">
+<g id="uc-G">
+<ellipse cx="600" cy="450" rx="120" ry="34" fill="#FFFFFF" stroke="#000000" stroke-width="1.7" filter="url(#shadow)"/>
+<text x="600" y="456" text-anchor="middle" class="uc">Gestionar Cuentas</text>
+</g>
+<g id="uc-C">
+<ellipse cx="600" cy="190" rx="120" ry="34" fill="#FFFFFF" stroke="#000000" stroke-width="1.7" filter="url(#shadow)"/>
+<text x="600" y="196" text-anchor="middle" class="uc">Crear Cuenta</text>
+</g>
+<g id="uc-Q">
+<ellipse cx="960" cy="450" rx="120" ry="34" fill="#FFFFFF" stroke="#000000" stroke-width="1.7" filter="url(#shadow)"/>
+<text x="960" y="456" text-anchor="middle" class="uc">Consultar Cuentas</text>
+</g>
+<g id="uc-V">
+<ellipse cx="960" cy="190" rx="120" ry="34" fill="#FFFFFF" stroke="#000000" stroke-width="1.7" filter="url(#shadow)"/>
+<text x="960" y="186" text-anchor="middle" class="uc">Validar Datos</text>
+<text x="960" y="207" text-anchor="middle" class="uc">de la Cuenta</text>
+</g>
+<g id="uc-K">
+<ellipse cx="960" cy="710" rx="120" ry="34" fill="#FFFFFF" stroke="#000000" stroke-width="1.7" filter="url(#shadow)"/>
+<text x="960" y="706" text-anchor="middle" class="uc">Calcular Saldo</text>
+<text x="960" y="727" text-anchor="middle" class="uc">de la Cuenta</text>
+</g>
+<g id="uc-E">
+<ellipse cx="1320" cy="190" rx="120" ry="34" fill="#FFFFFF" stroke="#000000" stroke-width="1.7" filter="url(#shadow)"/>
+<text x="1320" y="196" text-anchor="middle" class="uc">Editar Cuenta</text>
+</g>
+<g id="uc-D">
+<ellipse cx="1320" cy="320" rx="120" ry="34" fill="#FFFFFF" stroke="#000000" stroke-width="1.7" filter="url(#shadow)"/>
+<text x="1320" y="326" text-anchor="middle" class="uc">Desactivar Cuenta</text>
+</g>
+<g id="uc-R">
+<ellipse cx="1320" cy="450" rx="120" ry="34" fill="#FFFFFF" stroke="#000000" stroke-width="1.7" filter="url(#shadow)"/>
+<text x="1320" y="456" text-anchor="middle" class="uc">Reactivar Cuenta</text>
+</g>
+<g id="uc-X">
+<ellipse cx="1320" cy="580" rx="120" ry="34" fill="#FFFFFF" stroke="#000000" stroke-width="1.7" filter="url(#shadow)"/>
+<text x="1320" y="586" text-anchor="middle" class="uc">Eliminar Cuenta</text>
+</g>
+<g id="uc-Z">
+<ellipse cx="1320" cy="710" rx="120" ry="34" fill="#FFFFFF" stroke="#000000" stroke-width="1.7" filter="url(#shadow)"/>
+<text x="1320" y="706" text-anchor="middle" class="uc">Verificar Cuenta</text>
+<text x="1320" y="727" text-anchor="middle" class="uc">sin Movimientos</text>
+</g>
+</g>
+<g id="actor-usuario">
+<circle cx="190" cy="418" r="17" fill="#FFFFFF" stroke="#000000" stroke-width="1.7"/>
+<line x1="190" y1="435" x2="190" y2="484" stroke="#000000" stroke-width="1.7"/>
+<line x1="163" y1="450" x2="217" y2="450" stroke="#000000" stroke-width="1.7"/>
+<line x1="190" y1="484" x2="167" y2="520" stroke="#000000" stroke-width="1.7"/>
+<line x1="190" y1="484" x2="213" y2="520" stroke="#000000" stroke-width="1.7"/>
+<text x="190" y="550" text-anchor="middle" class="actor">Usuario Registrado</text>
+</g>
+</svg>

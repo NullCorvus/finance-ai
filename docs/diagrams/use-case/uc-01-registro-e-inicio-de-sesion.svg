@@ -1,0 +1,82 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="900" viewBox="0 0 1600 900" role="img" aria-labelledby="ttl desc">
+<title id="ttl">Finance AI: HU-001 - HU-002 Registro e Inicio de Sesión</title>
+<desc id="desc">Diagrama de casos de uso UML: HU-001 - HU-002 Registro e Inicio de Sesión. Actores: Visitante, Usuario Registrado. Casos de uso: Registrarse, Validar Datos de Registro, Crear Categorías y Fuentes Iniciales, Iniciar Sesión, Validar Credenciales, Restaurar Sesión, Validar Credencial de Renovación, Cerrar Sesión.</desc>
+<defs><marker id="open" viewBox="0 0 12 12" refX="11" refY="6" markerWidth="11" markerHeight="11" orient="auto"><path d="M1.5,1.5 L11,6 L1.5,10.5" fill="none" stroke="#000000" stroke-width="1.6" stroke-linejoin="round" stroke-linecap="round"/></marker><filter id="shadow" x="-8%" y="-12%" width="122%" height="140%"><feGaussianBlur in="SourceAlpha" stdDeviation="2.6" result="b"/><feOffset in="b" dx="3" dy="4" result="o"/><feComponentTransfer in="o" result="s"><feFuncA type="linear" slope="0.28"/></feComponentTransfer><feMerge><feMergeNode in="s"/><feMergeNode in="SourceGraphic"/></feMerge></filter><style>text{font-family:'Helvetica Neue', Helvetica, Arial, sans-serif;fill:#000000;}.uc{font-size:17.5px;font-weight:700}.ep{font-size:12.5px}.actor{font-size:20px;font-weight:700}.stereo{font-size:20px}.note{font-size:14.5px}.frame{font-size:17px}.rel{font-size:16px;paint-order:stroke;stroke:#FFFFFF;stroke-width:5px;stroke-linejoin:round}.sys{font-size:24px;font-weight:700}</style></defs>
+<rect id="bg" width="1600" height="900" fill="#FFFFFF"/>
+<g id="frame">
+<rect x="24" y="24" width="1552" height="852" fill="#FFFFFF" stroke="#000000" stroke-width="1.5"/>
+<path d="M24,24 L469.0,24 L469.0,48 L455.0,60 L24,60 Z" fill="#FFFFFF" stroke="#000000" stroke-width="1.5"/>
+<text x="36" y="48" class="frame"><tspan style="font-weight:700">uc</tspan>  HU-001 - HU-002 Registro e Inicio de Sesión</text>
+</g>
+<rect id="system-boundary" x="440" y="96" width="1110" height="750" fill="#FFFFFF" stroke="#000000" stroke-width="1.7" filter="url(#shadow)"/>
+<text x="995.0" y="134" text-anchor="middle" class="sys">Finance AI</text>
+<g id="associations">
+<line x1="221.8" y1="397.9" x2="606.3" y2="251.4" stroke="#000000" stroke-width="1.4"/>
+<line x1="224.0" y1="411.6" x2="606.0" y2="429.8" stroke="#000000" stroke-width="1.4"/>
+<line x1="222.0" y1="421.4" x2="606.2" y2="558.7" stroke="#000000" stroke-width="1.4"/>
+<line x1="224.0" y1="736.0" x2="606.0" y2="736.0" stroke="#000000" stroke-width="1.4"/>
+</g>
+<g id="relationships">
+<line x1="892.4" y1="234.0" x2="1157.6" y2="202.0" stroke="#000000" stroke-width="1.4" stroke-dasharray="6 4" marker-end="url(#open)"/>
+<text x="1019.0" y="204.0" text-anchor="middle" class="rel">«include»</text>
+<line x1="892.4" y1="266.0" x2="1157.6" y2="298.0" stroke="#000000" stroke-width="1.4" stroke-dasharray="6 4" marker-end="url(#open)"/>
+<text x="1019.0" y="310.0" text-anchor="middle" class="rel">«include»</text>
+<line x1="910.0" y1="430.0" x2="1140.0" y2="430.0" stroke="#000000" stroke-width="1.4" stroke-dasharray="6 4" marker-end="url(#open)"/>
+<text x="1025.0" y="420.0" text-anchor="middle" class="rel">«include»</text>
+<line x1="910.0" y1="560.0" x2="1140.0" y2="560.0" stroke="#000000" stroke-width="1.4" stroke-dasharray="6 4" marker-end="url(#open)"/>
+<text x="1025.0" y="550.0" text-anchor="middle" class="rel">«include»</text>
+</g>
+<g id="use-cases">
+<g id="uc-reg">
+<ellipse cx="760" cy="250" rx="150" ry="34" fill="#FFFFFF" stroke="#000000" stroke-width="1.7" filter="url(#shadow)"/>
+<text x="760" y="256" text-anchor="middle" class="uc">Registrarse</text>
+</g>
+<g id="uc-val_reg">
+<ellipse cx="1290" cy="186" rx="150" ry="34" fill="#FFFFFF" stroke="#000000" stroke-width="1.7" filter="url(#shadow)"/>
+<text x="1290" y="182" text-anchor="middle" class="uc">Validar Datos</text>
+<text x="1290" y="203" text-anchor="middle" class="uc">de Registro</text>
+</g>
+<g id="uc-cat_ini">
+<ellipse cx="1290" cy="314" rx="150" ry="34" fill="#FFFFFF" stroke="#000000" stroke-width="1.7" filter="url(#shadow)"/>
+<text x="1290" y="310" text-anchor="middle" class="uc">Crear Categorías y</text>
+<text x="1290" y="331" text-anchor="middle" class="uc">Fuentes Iniciales</text>
+</g>
+<g id="uc-ini">
+<ellipse cx="760" cy="430" rx="150" ry="34" fill="#FFFFFF" stroke="#000000" stroke-width="1.7" filter="url(#shadow)"/>
+<text x="760" y="436" text-anchor="middle" class="uc">Iniciar Sesión</text>
+</g>
+<g id="uc-val_cred">
+<ellipse cx="1290" cy="430" rx="150" ry="34" fill="#FFFFFF" stroke="#000000" stroke-width="1.7" filter="url(#shadow)"/>
+<text x="1290" y="436" text-anchor="middle" class="uc">Validar Credenciales</text>
+</g>
+<g id="uc-res">
+<ellipse cx="760" cy="560" rx="150" ry="34" fill="#FFFFFF" stroke="#000000" stroke-width="1.7" filter="url(#shadow)"/>
+<text x="760" y="566" text-anchor="middle" class="uc">Restaurar Sesión</text>
+</g>
+<g id="uc-val_ren">
+<ellipse cx="1290" cy="560" rx="150" ry="34" fill="#FFFFFF" stroke="#000000" stroke-width="1.7" filter="url(#shadow)"/>
+<text x="1290" y="556" text-anchor="middle" class="uc">Validar Credencial</text>
+<text x="1290" y="577" text-anchor="middle" class="uc">de Renovación</text>
+</g>
+<g id="uc-cer">
+<ellipse cx="760" cy="736" rx="150" ry="34" fill="#FFFFFF" stroke="#000000" stroke-width="1.7" filter="url(#shadow)"/>
+<text x="760" y="742" text-anchor="middle" class="uc">Cerrar Sesión</text>
+</g>
+</g>
+<g id="actor-visitante">
+<circle cx="190" cy="378" r="17" fill="#FFFFFF" stroke="#000000" stroke-width="1.7"/>
+<line x1="190" y1="395" x2="190" y2="444" stroke="#000000" stroke-width="1.7"/>
+<line x1="163" y1="410" x2="217" y2="410" stroke="#000000" stroke-width="1.7"/>
+<line x1="190" y1="444" x2="167" y2="480" stroke="#000000" stroke-width="1.7"/>
+<line x1="190" y1="444" x2="213" y2="480" stroke="#000000" stroke-width="1.7"/>
+<text x="190" y="510" text-anchor="middle" class="actor">Visitante</text>
+</g>
+<g id="actor-usuario">
+<circle cx="190" cy="704" r="17" fill="#FFFFFF" stroke="#000000" stroke-width="1.7"/>
+<line x1="190" y1="721" x2="190" y2="770" stroke="#000000" stroke-width="1.7"/>
+<line x1="163" y1="736" x2="217" y2="736" stroke="#000000" stroke-width="1.7"/>
+<line x1="190" y1="770" x2="167" y2="806" stroke="#000000" stroke-width="1.7"/>
+<line x1="190" y1="770" x2="213" y2="806" stroke="#000000" stroke-width="1.7"/>
+<text x="190" y="836" text-anchor="middle" class="actor">Usuario Registrado</text>
+</g>
+</svg>
