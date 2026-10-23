@@ -22,7 +22,6 @@ sequenceDiagram {
 </style>
 
 title HU-015: captura de recibo y confirmación del gasto
-scale 2
 hide footbox
 
 actor "Usuario" as U
@@ -34,6 +33,8 @@ participant "Servicio de\npropuestas" as P
 participant "Servicio financiero\nde gastos" as E
 participant "Repositorios\n/ Unit of Work" as R
 database "PostgreSQL" as D
+
+ref over U,F,A,R,D : Iniciar sesión
 
 == Obtener una propuesta temporal ==
 U -> F: Fotografiar o seleccionar recibo
@@ -85,6 +86,7 @@ alt el usuario confirma la propuesta
   activate F
   F -> A: POST /receipts/proposal/{id}/confirm
   activate A
+  A -> A: Verificar sesión del usuario
   A -> E: Confirmar con valores definitivos
   activate E
   E -> R: Bloquear y leer propuesta,\ncuenta y categorías
@@ -116,6 +118,7 @@ else el usuario descarta la propuesta
   activate F
   F -> A: DELETE /receipts/proposal/{id}
   activate A
+  A -> A: Verificar sesión del usuario
   A -> P: Marcar borrador descartado
   activate P
   P -> R: Actualizar estado del borrador

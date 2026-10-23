@@ -17,52 +17,28 @@ activityDiagram {
   arrow { LineColor #000000; LineThickness 0.75; FontColor #000000 }
 }
 </style>
-title Registro manual de un gasto
+title Registrar gasto manual
 
 |Usuario|
 start
-:Elegir registro manual;
-|Aplicación Flutter|
-:Abrir formulario de gasto;
-:Cargar cuentas y categorías;
-
-while (¿Continuar con el registro?) is (sí)
-  |Usuario|
-  :Introducir comercio, importe y fecha;
-  :Seleccionar cuenta y, si procede, categoría;
-  |Aplicación Flutter|
-  :Validar campos del formulario;
-  if (¿Campos válidos?) then (sí)
-    |Usuario|
-    :Solicitar registro;
-    |Aplicación Flutter|
-    :Enviar gasto autenticado;
-    |Backend FastAPI|
-    :Validar importe, comercio, cuenta y categoría;
-    if (¿Reglas financieras satisfechas?) then (sí)
-      :Registrar gasto y movimiento financiero;
-      :Confirmar transacción en PostgreSQL;
-      |Aplicación Flutter|
-      if (¿Éxito reconocido por la app?) then (sí)
-        :Actualizar lista y progreso;
-        :Mostrar confirmación;
-        |Usuario|
-        stop
-      else (resultado incierto)
-        :Indicar que se revise el historial;
-        |Usuario|
-        stop
-      endif
-    else (no)
-      |Aplicación Flutter|
-      :Mostrar error de validación o guardado;
-    endif
+:Iniciar sesión
+si no hay una sesión activa;
+:Abrir registro manual;
+repeat
+  :Completar comercio, importe y fecha;
+  :Seleccionar cuenta y categoría opcional;
+  :Pulsar Registrar;
+  |Sistema|
+  :Validar datos y acceso del usuario;
+  if (¿Datos válidos?) then (sí)
+    :Registrar gasto;
+    :Mostrar confirmación;
+    stop
   else (no)
-    :Mostrar errores de campo;
+    :Mostrar errores para corregir;
   endif
-endwhile (no)
-
-|Usuario|
-:Cancelar o salir del formulario;
+  |Usuario|
+repeat while (¿Corregir y volver a guardar?) is (sí) not (no)
+:Cancelar el registro;
 stop
 @enduml

@@ -4557,3 +4557,34 @@ Footer navigation
 
 ---
 
+
+## Diagram review — resumed documentation workflow
+**Timestamp**: 2026-10-23T21:50:56Z
+**User Input**: "Ok realzia los cmabios y me los muestras pls y adema snalzia el de actividades si esta bien hehco ya que no lo he revisado "
+**AI Response**: "Revisar los diagramas actuales y el código, añadir secuencia y actividad del login, referenciar autenticación y corregir actividades; renderizar y mostrar resultados."
+**Context**: Explicit approval of the concrete diagram changes proposed in this conversation. Documentation only; no application changes, commits or push. Existing brownfield artifacts reused; extensions: Security enabled, partial PBT, Resiliency disabled (skipped).
+
+---
+
+## Diagram review — verification and delivery
+**Timestamp**: 2026-10-23T21:58:31Z
+**AI Response**: "Añadidos login de secuencia y actividades; referencia condicional al login en HU-01**User Input (JSON string, lossless)**: "una duda y yo hacia los diagramas esos con esa linea como del proceso de empieza y ahsta que temrina eso se peude hacer es obligatorio o no ?? osea el de secuencia recibo si tiene eso osea \n\nUser Comment 1: real o ficticia que queire decir eso ??\nUser Comment 2: que es eso de emitir credenciales opacas??\nUser Comment 3: que es esto ??\nUser Comment 4: poor que esas flechas van pa atras ??? pero no se devuelven mostrar error ???\nUser Comment 5: deja solo el ref\nUser Comment 6: quita esto\nUser Comment 7: que es esto ??\nUser Comment 8: aqui un cuadro se cruza con uan linea\nUser Comment 9: esto es preguntar si esta seguro o q ?\nUser Comment 10: continuar con registro soea que hace se sale o q o se queda no veo mucho sentido peor bueno\nUser Comment 11: dodne pasa eso en la app ose aeso de consultar historial canonico osea que es eso ? osea yo quitaria eso\nUser Comment 12: esto esta muy alrgo muy garnde nos e puede simplicar esta mas grande que el mismo de secuencia que verga no alcanzo ni a leer"
+**AI Response**: "Explicar barras de activación, claves de sesión, errores y decisiones; simplificar actividades; retirar opt y nota inicial según comentarios."
+**Context**: Comentarios sobre file:///home/d3ad/codigos/finance-ai/docs/diagrams/revision-login.html y capturas adjuntas. Continuación documental aprobada.
+
+---
+
+## Diagramas — segunda revisión completada
+**Timestamp**: 2026-10-23T22:23:19Z
+**AI Response**: "Explicadas barras de activación y distinción frente a líneas de vida. Simplificados login, manual y asistido a Usuario/Sistema. Login de secuencia con activaciones y mensajes comprensibles; errores retornan a app y usuario. Recibo conserva solo ref al inicio, sin opt ni nota, y renombra la comprobación de sesión. Respuestas a doce comentarios en revision-login.md."
+**Context**: Cinco PlantUML parseados antes de escritura; PNG/SVG locales y galería sincronizados. Verificación de enlaces locales/XML y ausencia de las etiquetas retiradas. Imágenes inspeccionadas individualmente, sin recorte ni líneas atravesando acciones; recibo inicial inspeccionado en recorte adicional. Asistido 4352x2777 -> 1160x1017. Navegador rechazó acceso a file por política: no se intentó otro transporte ni superficie para esa página. Entrega mediante archivos locales y PNG. Seguridad aplicable (validación, autenticación y ausencia de secretos) conservada en el modelo; controles runtime/IaC N/A. PBT N/A. Resiliency deshabilitada y omitida. Sin código, pruebas de app, commits ni push.
+
+---
+
+## Diagramas — explicación de participantes y publicación
+**Timestamp**: 2026-10-23T22:59:20Z
+**User Input**: "**API REST — FastAPI**La entrada al backend. Recibe las solicitudes de la app, comprueba la sesión y coordina el procesamiento.&#x20;\n\nok esto es como si fuera el router.py ??&#x20;\n\n**Gateway de visión**El conector que permite al backend comunicarse con la IA. Envía la solicitud de interpretación y recoge su respuesta.&#x20;\n\nok necesito entender que es eso mejor y en que archivos lo hace 6\n\n**Servicio financiero de gastos**Valida los datos definitivos y registra el gasto cuando tú pulsas **Confirmar**.&#x20;\n\nque archivo seria service .py o algo asi ?&#x20;\n\ny haz commit y push a master de lo que hicimos pls me aprece que quedo bastante bien"
+**AI Response**: "Verifiqué las responsabilidades en el backend y amplié el README de HU-015 con una explicación sencilla y las rutas de `main.py`, `api/router.py`, `receipts/router.py`, `receipts/gateway.py` y `expenses/service.py`. Prepararé y publicaré los cambios documentales autorizados a `origin/master`, excluyendo los cinco directorios de worktree sin seguimiento."
+**Context**: Continuación de revisión de diagramas. Petición explícita de commit y push a master; explicación asociada a HU-015. Solo documentación.
+
+---

@@ -3,8 +3,8 @@
 ## Entregables
 
 - [Fuente PlantUML](receipt-capture-hu015.puml) y [PNG para el PGC](receipt-capture-hu015.png): representación UML de la secuencia del caso HU-015.
-- [HTML Archify](receipt-capture-hu015.html) y [fuente editable](receipt-capture-hu015.archify.json): vista interactiva de la ruta de confirmación.
-- Contexto: [vista UML de componentes](../../architecture/system-components/uml/architecture-components.png), [fuente editable](../../architecture/system-components/uml/architecture-components.puml) y [HTML Archify](../../architecture/system-components/archify/architecture-archify.html).
+- [HTML Archify de la revisión anterior](receipt-capture-hu015.html) y [fuente editable](receipt-capture-hu015.archify.json): vista interactiva de la ruta de confirmación.
+- Contexto: [vista UML de componentes](../../architecture/system-components/uml/architecture-components.png), [fuente editable](../../architecture/system-components/uml/architecture-components.puml) y [HTML Archify de la revisión anterior](../../architecture/system-components/archify/architecture-archify.html).
 
 La secuencia muestra la creación de un borrador persistido, su revisión y, solo después de la confirmación explícita del usuario, el registro del gasto en otra transacción. El descarte marca el borrador como descartado. La edición de valores ocurre en Flutter hasta el envío de la confirmación. Ante un fallo recuperable de extracción, el backend puede crear una propuesta editable manualmente. El diagrama omite los reintentos para mantener un nivel de detalle apropiado para el informe.
 
@@ -22,17 +22,21 @@ Esta descripción es una vista de ejecución de un caso relevante, conforme al e
 |---|---|---|
 | Usuario | Selecciona la imagen, revisa la propuesta y decide si confirma o descarta. | Actor externo a Finance AI. |
 | Flutter: captura y revisión | Verifica el tamaño local, envía la imagen, presenta y edita el formulario; tras confirmar, actualiza el feed de gastos. | `finance-ai-frontend/lib/features/receipt_capture/`. |
-| API REST FastAPI | Autentica la solicitud, valida y preprocesa la imagen, coordina la extracción y expone las operaciones de propuesta, confirmación y descarte. | `finance-ai-backend/src/finance_ai/receipts/router.py`. |
-| Gateway de visión | Encapsula la solicitud de interpretación visual. | `finance-ai-backend/src/finance_ai/receipts/gateway.py`. |
+| API REST FastAPI | Es la puerta de entrada del backend: define las rutas HTTP, recibe la petición de Flutter, obtiene el usuario autenticado y llama a los componentes que procesan la solicitud. En este flujo, `router.py` es la parte que declara las rutas de recibos; FastAPI también se configura en `main.py` y registra las rutas en `api/router.py`. | `finance-ai-backend/src/finance_ai/receipts/router.py`, junto con `main.py` y `api/router.py`. |
+| Gateway de visión | Es el conector entre el backend y el proveedor de IA. Recibe la imagen preparada, envía la solicitud de lectura al modelo y devuelve los datos que el modelo reconoció. No decide guardar un gasto. | `finance-ai-backend/src/finance_ai/receipts/gateway.py`, especialmente `extract_receipt_dto` y `get_vision_gateway`. |
 | Proveedor externo de IA | Devuelve información interpretada de la imagen; no registra gastos. | Dependencia externa consumida por el gateway. |
 | Servicio de propuestas | Crea el borrador temporal o lo marca como descartado y delimita esas transacciones. | `finance-ai-backend/src/finance_ai/receipts/service.py`. |
-| Servicio financiero de gastos | Comprueba los valores y el estado de la propuesta; registra el gasto tras la confirmación. | `finance-ai-backend/src/finance_ai/expenses/service.py`. |
+| Servicio financiero de gastos | Aplica las reglas para aceptar la confirmación: revisa el valor y el estado de la propuesta, valida la cuenta y las categorías, crea el gasto y marca la propuesta como confirmada dentro de la transacción. | `finance-ai-backend/src/finance_ai/expenses/service.py`, método `confirm_receipt_proposal`. |
 | Repositorios / Unit of Work | Acceden a propuestas, cuentas, categorías y gastos dentro de las transacciones que controlan los servicios. | `finance-ai-backend/src/finance_ai/db/receipt_uow.py` y `db/expense_uow.py`. |
 | PostgreSQL | Conserva el borrador y, en una transacción posterior, el gasto definitivo y el estado confirmado de la propuesta. | Persistencia del backend. |
 
+### Cómo se conectan estas piezas
+
+Sí: **API REST — FastAPI** corresponde a las rutas `router.py`, aunque FastAPI abarca más que ese archivo. `main.py` crea la aplicación y `api/router.py` reúne las rutas; `receipts/router.py` define lo que ocurre con las solicitudes del recibo. El **Gateway de visión** está separado para que el backend pueda pedirle la lectura de la imagen al proveedor de IA y recibir su respuesta. Por último, **Servicio financiero de gastos** es `expenses/service.py`: solo cuando llega la acción Confirmar aplica las validaciones y crea el gasto. El servicio de propuestas administra el borrador que se puede revisar antes de esa confirmación.
+
 ## Precondiciones
 
-- El usuario dispone de una sesión válida para llamar a los endpoints protegidos de la API.
+- El escenario comienza únicamente con `ref Iniciar sesión`, desarrollado en la [secuencia del login](../login/README.md). Para continuar con la captura, el usuario debe tener sesión válida; si el login falla, el resto del escenario no se ejecuta. La sesión vigente evita repetir las credenciales.
 - Flutter tiene acceso a una fotografía o imagen seleccionada. Comprueba localmente el límite de 10 MiB; la API valida el archivo y su contenido al recibirlo. La validez no se supone antes de esas comprobaciones.
 - El backend y su almacenamiento están disponibles para guardar la propuesta. La disponibilidad del proveedor de IA no es requisito absoluto para obtener un borrador: un fallo recuperable permite una propuesta editable manualmente.
 - Para **confirmar** más adelante, la propuesta debe pertenecer al usuario, conservar un estado confirmable y no haber expirado; la cuenta, moneda y categorías deben satisfacer las validaciones del servicio financiero.
@@ -119,6 +123,16 @@ La interfaz recibe la respuesta antes de mostrar el gasto y cargar de nuevo el f
 
 La semántica de líneas de vida, mensajes y fragmentos proviene de [OMG UML 2.5.1](https://www.omg.org/spec/UML/2.5.1/). La sintaxis textual de flechas, activaciones y `alt`/`opt` se documenta en [PlantUML Sequence Diagram](https://plantuml.com/sequence-diagram). [IBM explica los operadores de interacción](https://www.ibm.com/docs/en/dma?topic=diagrams-interaction-operators-in-sequence): `alt` elige una rama y `opt` ejecuta su contenido si se satisface la guarda. La validez sintáctica de PlantUML por sí sola no demuestra conformidad semántica con UML.
 
-Para abrir el PNG, usa cualquier visor de imágenes o insértalo como figura en el informe. La exportación mide 3886 × 3594 px; por sus nueve líneas de vida, el texto queda pequeño si se reduce a una página A4. Para impresión, úsalo en una lámina grande o un pliego desplegable; para la sustentación digital, ábrelo a resolución completa. Edita el `.puml` para cambiar el diagrama.
+Para abrir el PNG, usa cualquier visor de imágenes o insértalo como figura en el informe. La exportación actual mide 1838 × 2071 px; por sus nueve líneas de vida, el texto queda pequeño si se reduce a una página A4. Para impresión, úsalo en una lámina grande o un pliego desplegable; para la sustentación digital, ábrelo a resolución completa. Edita el `.puml` para cambiar el diagrama.
 
 Para explorar la vista interactiva, abre `receipt-capture-hu015.html` en un navegador compatible. Edita `receipt-capture-hu015.archify.json` para cambiar esa vista.
+
+## Revisión del 2026-10-23
+
+Se añadió la referencia condicional al login y se hizo explícita la autenticación de confirmación y descarte. El resto del flujo financiero conserva el alcance anterior: escenarios principales de extracción, confirmación y descarte, sin enumerar todos los errores HTTP. Se entregan [SVG ampliable](receipt-capture-hu015.svg) y [galería revisada](../../revision-login.html). El HTML Archify anterior se conserva como histórico; no contiene la referencia nueva. PNG y SVG se regeneraron localmente y se inspeccionaron visualmente, sin recorte.
+
+## Segunda revisión por comentarios del usuario
+
+Se retiraron el contenedor `opt` del login y la nota inicial; solo se conserva `ref Iniciar sesión`. La precondición de sesión válida queda en este README. La referencia resume el acceso; si ya hay sesión vigente, no implica pedir credenciales otra vez.
+
+«Verificar sesión del usuario», en la confirmación y el descarte, comprueba la autorización de la solicitud. No es preguntar «¿está seguro?». La confirmación humana es el mensaje anterior del usuario «Confirmar gasto», al pulsar el botón; no se inventó una segunda ventana.

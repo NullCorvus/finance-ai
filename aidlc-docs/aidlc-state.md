@@ -357,3 +357,15 @@ note pass-through, and the receipt form submitting its product list.
 Note: the backend PR #19 remediation remains complete and pushed; the Pillow `pip-audit` decision is
 still outstanding there.
 
+
+## Diagramas — login y revisión (2026-10-23)
+
+- [x] Workspace y requisitos documentales revisados; alcance aprobado por petición explícita.
+- [x] Diagramas y documentación actualizados y verificados visualmente.
+- Plan: `inception/plans/diagram-login-review-20261023.md`.
+
+### Segunda revisión de diagramas (comentarios del usuario)
+
+- [x] Actividades reducidas a dos carriles, términos aclarados y activaciones añadidas al login.
+- [x] Recibo con solo ref de login; nota retirada; fuentes, renders, README y galería sincronizados.
+- [x] Sintaxis y enlaces verificados; PNG inspeccionados visualmente. Pestaña file local no recargada por política del navegador.

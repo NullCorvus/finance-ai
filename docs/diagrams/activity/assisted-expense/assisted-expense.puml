@@ -17,112 +17,43 @@ activityDiagram {
   arrow { LineColor #000000; LineThickness 0.75; FontColor #000000 }
 }
 </style>
-title Registro de gasto asistido mediante IA
+title Registrar gasto con asistencia de IA
 
 |Usuario|
 start
-:Seleccionar modalidad de entrada;
-if (¿Texto?) then (sí)
-  :Introducir descripción del gasto;
-  |Aplicación Flutter|
-  :Enviar captura de texto;
-  |Backend FastAPI|
-  :Validar solicitud y preparar contexto;
-  |Proveedor externo de IA|
-  :Interpretar el texto;
-  |Backend FastAPI|
-  :Contrastar datos con cuentas y categorías;
-  if (¿Comprensión disponible?) then (sí)
-    :Preparar propuesta revisable;
-  else (no reconocida)
-    |Aplicación Flutter|
-    :Mostrar fallo y opción de reintento;
-    |Usuario|
-    stop
-  endif
-else (fotografía)
-  |Usuario|
-  :Capturar o seleccionar recibo;
-  |Aplicación Flutter|
-  :Comprobar tamaño y enviar imagen;
-  |Backend FastAPI|
-  :Validar y preprocesar imagen;
-  if (¿Imagen válida?) then (sí)
-    |Proveedor externo de IA|
-    :Interpretar el recibo;
-    |Backend FastAPI|
-    if (¿Es recibo?) then (sí)
-      if (¿Extracción disponible?) then (sí)
-        :Sanear y validar datos extraídos;
-        :Marcar posible duplicado como aviso;
-      else (fallo recuperable)
-        :Preparar propuesta editable manualmente;
-      endif
-    else (no es recibo)
-      :Guardar propuesta no confirmable;
-      |Aplicación Flutter|
-      :Mostrar aviso de no recibo;
-      |Usuario|
-      stop
-    endif
-  else (no)
-    |Aplicación Flutter|
-    :Mostrar error de imagen y opción de reintento;
-    |Usuario|
-    stop
-  endif
+:Iniciar sesión
+si no hay una sesión activa;
+:Escribir el gasto o seleccionar un recibo;
+|Sistema|
+:Validar la entrada y analizarla con IA;
+if (¿Hay propuesta revisable?) then (sí)
+  :Mostrar propuesta y avisos;
+else (no)
+  :Mostrar error o aviso de captura;
+  stop
 endif
-
-|Backend FastAPI|
-:Guardar propuesta temporal (vence en 24 h);
-|Aplicación Flutter|
-:Presentar propuesta y avisos;
-
-while (¿Mantener propuesta abierta?) is (sí)
-  |Usuario|
-  :Revisar datos propuestos;
-  if (¿Descartar?) then (sí)
-    |Aplicación Flutter|
-    :Solicitar descarte;
-    |Backend FastAPI|
-    :Marcar propuesta descartada;
-    |Aplicación Flutter|
-    :Mostrar resultado del descarte;
-    |Usuario|
-    stop
-  else (no)
-    :Editar o completar valores\n(incluye responder aclaración);
-    if (¿Confirmar gasto?) then (sí)
-      |Aplicación Flutter|
-      :Validar valores del formulario;
-      if (¿Valores completos?) then (sí)
-        :Enviar confirmación explícita;
-        |Backend FastAPI|
-        :Validar propuesta y reglas financieras\n(estado confirmable, vigencia 24 h,\ncuenta, moneda y categoría);
-        if (¿Confirmación válida?) then (sí)
-          :Registrar gasto y confirmar propuesta\nen una transacción;
-          |Aplicación Flutter|
-          :Mostrar gasto registrado;
-          |Usuario|
-          stop
-        else (no)
-          |Aplicación Flutter|
-          if (¿Error corregible?) then (sí)
-            :Mostrar campos para corregir;
-          else (no)
-            :Mostrar error de propuesta no confirmable\n(vencida, descartada o no recibo);
-            |Usuario|
-            stop
-          endif
-        endif
-      else (no)
-        :Mostrar campos pendientes;
-      endif
-    endif
-  endif
-endwhile (no)
-
 |Usuario|
-:Salir sin registrar gasto;
+repeat
+  :Revisar y, si hace falta, corregir datos;
+  if (Acción elegida) then (Confirmar)
+    |Sistema|
+    :Validar datos y acceso del usuario;
+    if (¿Confirmación válida?) then (sí)
+      :Registrar el gasto confirmado;
+      :Mostrar confirmación;
+      stop
+    else (no)
+      :Mostrar error de confirmación;
+    endif
+    |Usuario|
+  else (Descartar o salir)
+    :Descartar o cerrar revisión;
+    |Sistema|
+    :Retirar propuesta de la pantalla;
+    stop
+  endif
+  |Usuario|
+repeat while (¿Volver a revisar?) is (sí) not (no)
+:Salir sin enviar otra confirmación;
 stop
 @enduml
