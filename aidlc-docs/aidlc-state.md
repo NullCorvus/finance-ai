@@ -369,3 +369,5 @@ still outstanding there.
 - [x] Actividades reducidas a dos carriles, términos aclarados y activaciones añadidas al login.
 - [x] Recibo con solo ref de login; nota retirada; fuentes, renders, README y galería sincronizados.
 - [x] Sintaxis y enlaces verificados; PNG inspeccionados visualmente. Pestaña file local no recargada por política del navegador.
+- [x] Explicación de FastAPI/router, gateway de visión y servicio financiero añadida al README de HU-015.
+- [x] Publicación documental en `origin/master`; commit de diagramas `9fa14f2`.
