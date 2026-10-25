@@ -1,12 +1,33 @@
 # Database Schema — Finance AI Tracker
 
-> **Source of Truth:**
-> - **DBML (dbdiagram.io):** [`docs/schema.dbml`](./schema.dbml) — Open directly in [dbdiagram.io](https://dbdiagram.io).
-> - **Executable PostgreSQL DDL:** [`docs/schema.sql`](./schema.sql) — Complete PostgreSQL schema with enums, tables, constraints, and indexes.
+> **Design snapshot:**
+> - **DBML (dbdiagram.io):** [`docs/schema.dbml`](./schema.dbml) — original editable design.
+> - **PostgreSQL DDL:** [`docs/schema.sql`](./schema.sql) — original executable design schema.
+> - **Implemented schema authority:** backend Alembic migrations and SQLAlchemy models. The
+>   diagrams and table descriptions below have not been reconciled table by table with those
+>   sources; use them as design history, not as an inventory of the deployed database.
+
+## Implemented schema: material differences
+
+The implemented schema is defined by `finance-ai-backend/src/finance_ai/db/models/` together with
+the ordered `finance-ai-backend/migrations/versions/` history on backend `origin/develop`
+`1fae699`. The original ERD, DBML, SQL and column tables below are retained as a design record.
+In particular:
+
+| Area | Original design in this document | Implemented source |
+|---|---|---|
+| Identity | `app_user` without a role assignment | `role` table and `app_user.role_id`; normalized email rules in `db/models/identity.py` and migration `0008_complete_dbml_schema.py` |
+| Classification and planning | Grouped categories and flexible `budget` design | Additional `subcategory`, `paymentmethod` and `spendinglimit` tables in migration `0008_complete_dbml_schema.py`; inspect current models and later migrations for effective constraints |
+| Receipt and expense | Receipt tied 1:1 to a transaction with `name`, `purchased_at`, `total_amount` and `image_path` | `db/models/receipts.py` has nullable `receipt.transaction_id`, `store`, `date`, `total`, `payment_method_id` and nullable text `image`; `expense` has `user_id`, `subcategory_id` and `item_reason` |
+| Assisted capture | No temporary proposal tables | `receipt_proposals` and `text_capture_proposals` were added by migrations `0014_receipt_proposals_table.py` and `0016_hu013_text_capture_proposals.py`; migration `0017_text_capture_financial_idempotency.py` adds confirmation idempotency |
+| Receipt media | `image_path` describes an external file reference | The backend processes uploaded image bytes in memory and stores structured proposal data, not a durable media blob. On frontend `origin/develop`, the confirmed photo is cached encrypted on the device; see `docs/STACK.md` |
+
+This table describes verified differences, not an exhaustive migration audit. A role table does not
+imply that the future Admin UI or permissions in `docs/ALCANCE.md` are implemented.
 
 ---
 
-## 1. Domain Overview & Entity Groups
+## 1. Domain Overview & Entity Groups (original design)
 
 The database is divided into four logical table groups:
 
@@ -53,7 +74,7 @@ classDiagram
 
 ---
 
-## 2. Entity Relationship Diagram (ERD)
+## 2. Entity Relationship Diagram (ERD, original design)
 
 ```mermaid
 erDiagram
@@ -231,11 +252,11 @@ erDiagram
 
 ---
 
-## 3. Core Architectural Principles
+## 3. Core Architectural Principles (original design)
 
 ### 1. The Ledger Engine (Movements over Mutable Balances)
 * The database **never stores a mutable balance column** like `account.balance = 500`.
-* Every balance-affecting event creates a parent [`financial_transaction`](file:///home/d3ad/codigos/finance-ai/docs/schema.sql#L125-L147) and one or more [`account_movement`](file:///home/d3ad/codigos/finance-ai/docs/schema.sql#L154-L163) rows.
+* Every balance-affecting event creates a parent [`financial_transaction`](./schema.sql#L125-L147) and one or more [`account_movement`](./schema.sql#L154-L163) rows.
 * Movements carry a **signed amount** in the account's currency:
   * **Expenses**: strictly negative (`amount < 0`).
   * **Income**: strictly positive (`amount > 0`).
@@ -264,7 +285,7 @@ erDiagram
 
 ---
 
-## 4. Table Specifications
+## 4. Table Specifications (original design)
 
 ### Identity & Reference
 

@@ -165,106 +165,112 @@ flowchart TD
 
 ## 6. Authentication & Session Security
 
-### A. Why Tokens Cannot Be Forged (Cryptographic Signature)
-* The token contains data (like `user_id = 7`) and a **mathematical signature**.
-* The signature is created using a **Secret Key** that lives strictly inside the backend server (`.env`).
-* If an attacker modifies the token (e.g. changing `user_id: 7` to `user_id: 1`), the mathematical signature breaks. FastAPI rejects it immediately with **`401 Unauthorized`**.
+### A. Why Opaque Credentials Cannot Be Forged
+* The access and renewable credentials are random opaque values, not signed JWT payloads.
+* The backend stores their hashes and resolves the active session in PostgreSQL; a client cannot
+  alter an embedded `user_id` because the credential contains no such client-readable claim.
+* An unknown, expired or revoked access credential is rejected with `401 Unauthorized`.
+* Source: `finance-ai-backend/src/finance_ai/auth/credentials.py` and
+  `finance-ai-backend/src/finance_ai/auth/session_service.py`.
 
 ### B. How Sessions Persist Across App Restarts (The Two-Token System)
-* **`access_credential` (Short-lived, 15–30 min):**
+* **`access_credential` (short-lived; 15 min by default):**
   * Kept in **RAM** (Riverpod state). Wiped when the app is closed.
-* **`renewable_credential` / Refresh Token (Long-lived, days/weeks):**
-  * Saved in **`FlutterSecureStorage`** (Apple Keychain on iOS / Keystore on Android / Credential Manager on Windows).
-  * When the app reopens with empty RAM, Flutter reads the renewable credential from the hardware vault and calls `POST /api/v1/auth/refresh` to get a fresh `access_credential` automatically.
+* **`renewable_credential` (longer-lived):**
+  * Saved through **`FlutterSecureStorage`** using the platform's secure-storage implementation.
+  * When the app reopens with empty RAM, Flutter reads that credential and calls
+    `POST /api/v1/auth/refresh` for a fresh access credential.
 
-### C. Defense Against Session Hijacking (Token Theft)
-Even if tokens work like keys, stealing them is prevented through 4 layers of defense:
-1. **HTTPS (TLS Encryption):** All network headers and tokens are encrypted in transit; Wi-Fi eavesdroppers cannot read them.
-2. **OS Sandboxing:** Mobile operating systems prevent other installed apps from accessing your app's secure storage.
-3. **Short Expiration:** The active access token expires in minutes.
-4. **Database Revocation Kill-Switch:** Sessions are tracked in PostgreSQL (`user_session` table). When a user clicks **Log Out**, the backend updates `revoked_at = NOW()`, instantly killing that session in the database so any copied token is permanently rejected.
+### C. Session Protection and Revocation
+1. **HTTPS:** Protects credentials in transit when the API is served over TLS.
+2. **Platform secure storage:** Holds the renewable credential outside ordinary app preferences.
+3. **Short access lifetime:** Limits how long an issued access credential remains valid.
+4. **Server-side revocation:** The session record in PostgreSQL lets logout revoke a session;
+   a copied access credential then fails validation. These controls reduce risk rather than
+   guaranteeing that a credential cannot be stolen.
 
 ---
 
 ## 7. The 20% Architecture Guide: Questions, Answers & Mental Model
 
 ### Topic 1: The Ledger Pattern (Why Two Tables?)
-* **The Question:**  
+* **The Question:**
   * *"So we use two tables to represent one transaction? `FinancialTransaction` is like the expense and `AccountMovement` is the movement that changes things in an account? What will `AccountMovement.amount` be?"*
-* **How It Actually Works & How You Understood It:**  
+* **How It Actually Works & How You Understood It:**
   * The project **never** stores a mutable balance column (like `account.balance = account.balance - 50`).
   * `FinancialTransaction` represents the **story / event** (e.g. `transaction_type = 'expense'`).
   * `AccountMovement` represents the **cash delta**. For an expense, the amount is **negative** (`-20.00`) because it subtracts money from the account.
   * Live balance is always calculated dynamically:
     $$\text{Balance} = \text{opening\_balance} + \sum(\text{account\_movement.amount})$$
   * Separating them allows a single event to move money across multiple accounts (e.g. transfers, split expenses).
-* **Code Reference:** [`src/finance_ai/db/models/transactions.py`](file:///home/d3ad/codigos/finance-ai/finance-ai-backend/src/finance_ai/db/models/transactions.py#L22-L80)
+* **Code Reference:** [`src/finance_ai/db/models/transactions.py`](https://github.com/Maicol2363/finance-ai-backend/blob/develop/src/finance_ai/db/models/transactions.py#L22-L80)
 
 ---
 
 ### Topic 2: Composite Foreign Keys & Multi-Tenant Isolation
-* **The Question:**  
+* **The Question:**
   * *"I see 4 IDs in `ForeignKeyConstraint(["account_id", "user_id"], ["account.id", "account.user_id"])`. What is the composite key? Where is it defined on the other table?"*
-* **How It Actually Works & How You Understood It:**  
+* **How It Actually Works & How You Understood It:**
   * A composite key is a key made of **two or more columns paired together**.
   * Look at the 4 names:
     * `["account_id", "user_id"]` $\rightarrow$ The two columns in this table (`account_movement`).
     * `["account.id", "account.user_id"]` $\rightarrow$ The target columns in table `account` (prefixed with `account.`).
   * The target table must define a lock first: `UniqueConstraint("id", "user_id")` on `Account` and `FinancialTransaction`.
   * **The security win:** If User A tries to create an expense using User B's `account_id`, **PostgreSQL itself rejects the insert**. Multi-tenant security is enforced by the database engine, not by developer memory.
-* **Code References:**  
-  * Lock on Account: [`src/finance_ai/db/models/accounts.py#L35`](file:///home/d3ad/codigos/finance-ai/finance-ai-backend/src/finance_ai/db/models/accounts.py#L35)  
-  * Key on Movement: [`src/finance_ai/db/models/transactions.py#L55-L66`](file:///home/d3ad/codigos/finance-ai/finance-ai-backend/src/finance_ai/db/models/transactions.py#L55-L66)
+* **Code References:**
+  * Lock on Account: [`src/finance_ai/db/models/accounts.py#L35`](https://github.com/Maicol2363/finance-ai-backend/blob/develop/src/finance_ai/db/models/accounts.py#L35)
+  * Key on Movement: [`src/finance_ai/db/models/transactions.py#L55-L66`](https://github.com/Maicol2363/finance-ai-backend/blob/develop/src/finance_ai/db/models/transactions.py#L55-L66)
 
 ---
 
-### Topic 3: Unit of Work (UoW), Sessions & Async Context Managers
-* **The Question:**  
-  * *"What is `async`? What does `if exc_type is not None:` mean? What are `__aenter__` and `__aexit__`? How long does the session stay active?"*
-* **How It Actually Works & How You Understood It:**  
-  * `async` / `await` allows non-blocking I/O so Python can serve other users while waiting for PostgreSQL.
-  * When you write `async with uow:`, Python automatically runs `__aenter__()` (opens a fresh DB session and readies repositories).
-  * When that code block ends or crashes, Python automatically runs `__aexit__()`.
-  * `if exc_type is not None:` means: *"Did an error happen inside the block?"* If YES $\rightarrow$ it automatically calls `await self.rollback()`.
-  * **Session lifespan:** The session is active **only for the 2–15 milliseconds** needed to execute the indented block. When `__aexit__()` finishes, the session closes and returns the connection to the pool. Connections are never hogged.
-* **Code Reference:** [`src/finance_ai/db/account_uow.py`](file:///home/d3ad/codigos/finance-ai/finance-ai-backend/src/finance_ai/db/account_uow.py#L25-L48)
+### Topic 3: Unit of Work (UoW) and Database Sessions
+* **The Question:**
+  * *"What does `if exc_type is not None:` mean? What are `__enter__` and `__exit__`? How long does the session stay active?"*
+* **How It Actually Works & How You Understood It:**
+  * The `AccountUnitOfWork` uses a synchronous context manager around its SQLAlchemy session.
+  * When you write `with uow:`, Python runs `__enter__()` to open the session and repositories.
+  * When the block ends, Python runs `__exit__()` to close the session.
+  * `if exc_type is not None:` means an exception occurred; the unit of work rolls back.
+  * **Database-session lifespan:** The session lasts for the `with` block and closes on exit;
+    its duration depends on the operation and environment. No fixed millisecond range is guaranteed.
+* **Code Reference:** [`src/finance_ai/db/account_uow.py`](https://github.com/Maicol2363/finance-ai-backend/blob/develop/src/finance_ai/db/account_uow.py#L25-L48)
 
 ---
 
 ### Topic 4: Database-Backed Renewable Sessions
-* **The Question:**  
-  * *"You never parse the JWT token or inspect HTTP headers manually inside the route function. How does that token session in the database work?"*
-* **How It Actually Works & How You Understood It:**  
+* **The Question:**
+  * *"The route does not parse credentials itself. How does the opaque access credential resolve to a database session?"*
+* **How It Actually Works & How You Understood It:**
   * Client sends `Authorization: Bearer <token>` in the header.
   * FastAPI's `Depends(get_current_user_id)` intercepts the request before the route executes.
-  * It hashes the token (SHA-256) and queries PostgreSQL:  
+  * It hashes the token (SHA-256) and queries PostgreSQL:
     `WHERE access_token_hash = hash AND access_expires_at > NOW()`.
   * If valid, it injects `user_id` (e.g. `42`) directly into the function argument. If expired or revoked, FastAPI returns `401 Unauthorized`.
   * Plain text tokens are never stored in the database. When a user logs out, setting `revoked_at = NOW()` immediately revokes the session everywhere.
-* **Code References:**  
-  * Dependency: [`src/finance_ai/income_sources/dependencies.py#L12-L17`](file:///home/d3ad/codigos/finance-ai/finance-ai-backend/src/finance_ai/income_sources/dependencies.py#L12-L17)  
-  * Session Check: [`src/finance_ai/auth/session_service.py#L167-L178`](file:///home/d3ad/codigos/finance-ai/finance-ai-backend/src/finance_ai/auth/session_service.py#L167-L178)
+* **Code References:**
+  * Dependency: [`src/finance_ai/income_sources/dependencies.py#L12-L17`](https://github.com/Maicol2363/finance-ai-backend/blob/develop/src/finance_ai/income_sources/dependencies.py#L12-L17)
+  * Session Check: [`src/finance_ai/auth/session_service.py#L167-L178`](https://github.com/Maicol2363/finance-ai-backend/blob/develop/src/finance_ai/auth/session_service.py#L167-L178)
 
 ---
 
 ### Topic 5: The Request Pipeline (Router, Schemas, Service & UoW)
-* **The Question:**  
+* **The Question:**
   * *"Is router the entry point that defines URLs? Does schemas.py run before router? What is `service`—is it an instance of `service.py`? Does service contain data?"*
-* **How It Actually Works & How You Understood It:**  
+* **How It Actually Works & How You Understood It:**
   * `router = APIRouter(prefix="/income-sources")` defines the URLs and entry points.
   * `schemas.py` runs **FIRST**: It validates the incoming JSON (the bouncer at the door). If invalid, it returns `422 Unprocessable Entity` before the router function runs.
   * `service` is a live instance of `IncomeSourceService`, injected via `Depends(get_income_source_service)`.
   * `Service` does **NOT** store business data in RAM. It is a stateless worker/machine (the Chef) that holds the `uow_factory`, enforces business rules (duplicate names, active accounts), and coordinates the database write.
-* **Code References:**  
-  * Router: [`src/finance_ai/income_sources/router.py#L39-L50`](file:///home/d3ad/codigos/finance-ai/finance-ai-backend/src/finance_ai/income_sources/router.py#L39-L50)  
-  * Service: [`src/finance_ai/income_sources/service.py#L23-L37`](file:///home/d3ad/codigos/finance-ai/finance-ai-backend/src/finance_ai/income_sources/service.py#L23-L37)
+* **Code References:**
+  * Router: [`src/finance_ai/income_sources/router.py#L39-L50`](https://github.com/Maicol2363/finance-ai-backend/blob/develop/src/finance_ai/income_sources/router.py#L39-L50)
+  * Service: [`src/finance_ai/income_sources/service.py#L23-L37`](https://github.com/Maicol2363/finance-ai-backend/blob/develop/src/finance_ai/income_sources/service.py#L23-L37)
 
 ---
 
 ### Topic 6: The Return Chain (PostgreSQL back to Flutter UI)
-* **The Question:**  
+* **The Question:**
   * *"How does it return exactly? Is it a chain of returns from the database all the way back to the router and then to the frontend repository?"*
-* **How It Actually Works & How You Understood It:**  
+* **How It Actually Works & How You Understood It:**
   * It is an exact chain of `return` statements in reverse order:
     1. `repository.add()` $\rightarrow$ `return IncomeSourceRecord(id=5, name="Freelance")`.
     2. `service.create()` $\rightarrow$ `return record`.
@@ -272,7 +278,7 @@ Even if tokens work like keys, stealing them is prevented through 4 layers of de
     4. FastAPI converts to JSON $\rightarrow$ sends `HTTP 201 Created {"id": 5, "name": "Freelance"}` over network.
     5. Flutter `HttpIncomeSourcesRepository.create()` parses JSON $\rightarrow$ `return IncomeSource.fromJson(...)`.
     6. Flutter `IncomeSourcesController` $\rightarrow$ updates Riverpod `state` $\rightarrow$ UI redraws the screen with the new item.
-* **Code References:**  
-  * Backend DB Return: [`src/finance_ai/db/repositories/income_sources.py#L48`](file:///home/d3ad/codigos/finance-ai/finance-ai-backend/src/finance_ai/db/repositories/income_sources.py#L48)  
-  * Backend Router Return: [`src/finance_ai/income_sources/router.py#L49`](file:///home/d3ad/codigos/finance-ai/finance-ai-backend/src/finance_ai/income_sources/router.py#L49)  
-  * Frontend Controller Update: [`lib/features/income_sources/presentation/income_sources_controller.dart#L90`](file:///home/d3ad/codigos/finance-ai/finance-ai-frontend/lib/features/income_sources/presentation/income_sources_controller.dart#L90)
+* **Code References:**
+  * Backend DB Return: [`src/finance_ai/db/repositories/income_sources.py#L48`](https://github.com/Maicol2363/finance-ai-backend/blob/develop/src/finance_ai/db/repositories/income_sources.py#L48)
+  * Backend Router Return: [`src/finance_ai/income_sources/router.py#L49`](https://github.com/Maicol2363/finance-ai-backend/blob/develop/src/finance_ai/income_sources/router.py#L49)
+  * Frontend Controller Update: [`lib/features/income_sources/presentation/income_sources_controller.dart#L90`](https://github.com/Maicol2363/finance-ai-frontend/blob/develop/lib/features/income_sources/presentation/income_sources_controller.dart#L90)

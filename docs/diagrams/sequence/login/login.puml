@@ -1,0 +1,98 @@
+@startuml
+<style>
+root {
+  FontName Helvetica
+  FontSize 12
+  FontColor #000000
+  BackGroundColor #FFFFFF
+  LineColor #000000
+  LineThickness 0.75
+  RoundCorner 0
+  Shadowing 0
+}
+title { FontSize 14; FontStyle bold; FontColor #000000; BackGroundColor transparent; LineColor transparent; LineThickness 0 }
+note { BackGroundColor #FFFFFF; LineColor #000000; FontColor #000000 }
+sequenceDiagram {
+  actor       { BackGroundColor #FFFFFF; LineColor #000000; FontColor #000000 }
+  participant { BackGroundColor #FFFFFF; LineColor #000000; FontColor #000000 }
+  lifeLine    { BackGroundColor #FFFFFF; LineColor #000000; LineStyle 5-5; LineThickness 0.75 }
+  group       { BackGroundColor #FFFFFF; LineColor #000000; FontColor #000000 }
+  arrow       { LineColor #000000; LineThickness 0.75; FontColor #000000 }
+}
+</style>
+
+title Inicio de sesión — Finance AI
+hide footbox
+actor "Usuario" as U
+participant "Aplicación\nLogin" as F
+participant "API" as A
+participant "Servicio de\nautenticación" as S
+participant "Acceso a\ndatos" as R
+database "Base de datos" as D
+participant "Almacenamiento\nseguro" as L
+
+U -> F: Abrir inicio de sesión
+activate F
+F --> U: Mostrar formulario
+ deactivate F
+U -> F: Enviar correo y contraseña
+activate F
+F -> F: Validar campos del formulario
+alt campos incorrectos
+  F --> U: Mostrar campos para corregir
+else campos correctos
+  F -> A: Solicitar inicio de sesión
+  activate A
+  A -> S: Validar acceso
+  activate S
+  S -> R: Buscar usuario por correo
+  activate R
+  R -> D: Consultar usuario
+  activate D
+  D --> R: Datos del usuario o no encontrado
+  deactivate D
+  R --> S: Resultado de la consulta
+  deactivate R
+  S -> S: Verificar contraseña y usuario activo
+  alt credenciales válidas
+    S -> S: Generar claves de sesión
+    S -> R: Crear sesión del usuario
+    activate R
+    R -> D: Guardar sesión
+    activate D
+    D --> R: Sesión guardada
+    deactivate D
+    R --> S: Sesión creada
+    deactivate R
+  else credenciales inválidas
+    S -> S: Rechazar inicio de sesión
+  end
+  S --> A: Sesión creada o error de acceso
+  deactivate S
+  A --> F: Resultado del inicio de sesión
+  deactivate A
+  alt acceso rechazado
+    F --> U: Mostrar error y mantener el formulario
+  else sesión creada
+    F -> L: Guardar clave para renovar la sesión
+    activate L
+    L --> F: Resultado del guardado
+    deactivate L
+    alt guardado correcto
+      F -> F: Activar sesión en la aplicación
+      F --> U: Mostrar Inicio
+    else error de almacenamiento
+      F -> A: Intentar anular la sesión creada
+      activate A
+      A --> F: Resultado o fallo de comunicación
+      deactivate A
+      F -> L: Intentar eliminar la clave local
+      activate L
+      L --> F: Resultado de limpieza
+      deactivate L
+      F --> U: Mostrar error y mantener el formulario
+    end
+  end
+end
+deactivate F
+@enduml

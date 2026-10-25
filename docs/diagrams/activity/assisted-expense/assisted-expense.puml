@@ -1,0 +1,59 @@
+@startuml
+<style>
+root {
+  FontName Helvetica
+  FontSize 13
+  FontColor #000000
+  BackGroundColor #FFFFFF
+  LineColor #000000
+  LineThickness 0.75
+  RoundCorner 0
+  Shadowing 0
+}
+title { FontSize 17; FontStyle bold; FontColor #000000; BackGroundColor transparent; LineColor transparent; LineThickness 0 }
+activityDiagram {
+  activity { BackGroundColor #FFFFFF; LineColor #000000; FontColor #000000; RoundCorner 10 }
+  diamond { BackGroundColor #FFFFFF; LineColor #000000; FontColor #000000 }
+  arrow { LineColor #000000; LineThickness 0.75; FontColor #000000 }
+}
+</style>
+title Registrar gasto con asistencia de IA
+
+|Usuario|
+start
+:Iniciar sesión
+si no hay una sesión activa;
+:Escribir el gasto o seleccionar un recibo;
+|Sistema|
+:Validar la entrada y analizarla con IA;
+if (¿Hay propuesta revisable?) then (sí)
+  :Mostrar propuesta y avisos;
+else (no)
+  :Mostrar error o aviso de captura;
+  stop
+endif
+|Usuario|
+repeat
+  :Revisar y, si hace falta, corregir datos;
+  if (Acción elegida) then (Confirmar)
+    |Sistema|
+    :Validar datos y acceso del usuario;
+    if (¿Confirmación válida?) then (sí)
+      :Registrar el gasto confirmado;
+      :Mostrar confirmación;
+      stop
+    else (no)
+      :Mostrar error de confirmación;
+    endif
+    |Usuario|
+  else (Descartar o salir)
+    :Descartar o cerrar revisión;
+    |Sistema|
+    :Retirar propuesta de la pantalla;
+    stop
+  endif
+  |Usuario|
+repeat while (¿Volver a revisar?) is (sí) not (no)
+:Salir sin enviar otra confirmación;
+stop
+@enduml

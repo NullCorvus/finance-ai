@@ -1,0 +1,46 @@
+@startuml
+<style>
+root {
+  FontName Helvetica
+  FontSize 13
+  FontColor #000000
+  BackGroundColor #FFFFFF
+  LineColor #000000
+  LineThickness 0.75
+  RoundCorner 0
+  Shadowing 0
+}
+title { FontSize 17; FontStyle bold; FontColor #000000; BackGroundColor transparent; LineColor transparent; LineThickness 0 }
+activityDiagram {
+  activity { BackGroundColor #FFFFFF; LineColor #000000; FontColor #000000; RoundCorner 10 }
+  diamond { BackGroundColor #FFFFFF; LineColor #000000; FontColor #000000 }
+  arrow { LineColor #000000; LineThickness 0.75; FontColor #000000 }
+}
+</style>
+title Inicio de sesión
+
+|Usuario|
+start
+:Abrir inicio de sesión;
+repeat
+  :Introducir correo y contraseña;
+  :Pulsar Iniciar sesión;
+  |Sistema|
+  :Validar datos de acceso;
+  if (¿Acceso válido?) then (sí)
+    :Crear sesión;
+    :Guardar acceso de forma segura;
+    if (¿Acceso guardado?) then (sí)
+      :Mostrar Inicio;
+      stop
+    else (no)
+      :Mostrar error de acceso;
+    endif
+  else (no)
+    :Mostrar error en los datos de acceso;
+  endif
+  |Usuario|
+repeat while (¿Volver a intentarlo?) is (sí) not (no)
+:Salir sin iniciar sesión;
+stop
+@enduml

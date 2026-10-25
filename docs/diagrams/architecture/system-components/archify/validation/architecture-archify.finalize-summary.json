@@ -1,0 +1,67 @@
+{
+  "schemaVersion": 1,
+  "ok": false,
+  "command": "finalize",
+  "status": "skipped",
+  "type": "architecture",
+  "quality": "showcase",
+  "specification": {
+    "path": "/home/d3ad/.codex/worktrees/docs-diagrams-publication/finance-ai/docs/diagrams/architecture/system-components/archify/architecture-archify.candidate.json",
+    "sha256": "a5e95ab8b19ffd37e9180622f0dc1081e37a6872b621126f5d4cb12a2324f8e5",
+    "bytes": 11215
+  },
+  "artifact": {
+    "path": "/home/d3ad/.codex/worktrees/docs-diagrams-publication/finance-ai/docs/diagrams/architecture/system-components/archify/architecture-archify.html",
+    "sha256": "62537529551fe2d4c860f4e879130a75f48833ee90d82afb360ebba96b774a47",
+    "bytes": 856175
+  },
+  "gates": {
+    "validate": "pass",
+    "deliver": "pass",
+    "check": "pass",
+    "browser-check": "skipped"
+  },
+  "failedStage": "browser-check",
+  "diagnostics": [
+    {
+      "code": "viewer/chrome-unavailable",
+      "severity": "warning",
+      "message": "No supported browser found. Install Chrome/Chromium (or Microsoft Edge), or set ARCHIFY_CHROME to its executable path.",
+      "subject": {
+        "artifact": "/home/d3ad/.codex/worktrees/docs-diagrams-publication/finance-ai/docs/diagrams/architecture/system-components/archify/architecture-archify.html"
+      },
+      "evidence": {
+        "executable": null
+      },
+      "supportedFixes": [
+        "set ARCHIFY_CHROME to a Chrome/Chromium executable (or Microsoft Edge) and rerun browser-check"
+      ]
+    }
+  ],
+  "diagnosticSummary": {
+    "total": 1,
+    "shown": 1,
+    "truncated": false
+  },
+  "evidence": {
+    "receipt": "/home/d3ad/.codex/worktrees/docs-diagrams-publication/finance-ai/docs/diagrams/architecture/system-components/archify/validation/architecture-archify.finalize.json",
+    "summaryReceipt": "/home/d3ad/.codex/worktrees/docs-diagrams-publication/finance-ai/docs/diagrams/architecture/system-components/archify/validation/architecture-archify.finalize-summary.json",
+    "browserCheckReceipt": "/home/d3ad/.codex/worktrees/docs-diagrams-publication/finance-ai/docs/diagrams/architecture/system-components/archify/validation/architecture-archify.browser-check.json"
+  },
+  "update": {
+    "status": "current",
+    "installedVersion": "3.2.0",
+    "availableVersion": "3.2.0",
+    "releaseNotes": null,
+    "checkedAt": "2026-10-20T22:46:38.693Z",
+    "source": "cache",
+    "noticeRequired": false,
+    "noticeText": null
+  },
+  "visualReview": "not-requested",
+  "durationMs": 790,
+  "browserCheck": {
+    "requested": true,
+    "ran": false
+  }
+}

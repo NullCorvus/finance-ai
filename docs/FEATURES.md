@@ -1,12 +1,19 @@
 # Features — Finance AI Tracker
 
+> **Roadmap, not an implementation inventory:** phases and feature descriptions preserve product
+> targets. Technical implementation differs where noted below. For the current architecture and
+> stack, see `docs/ARCHITECTURE.md` and `docs/STACK.md`.
+
 Features organized by build phase. Phase 1 is the foundation and must ship first. Phase 2 adds extras that are easy to implement. Phase 3 is optional ideas — the "agent" features live there and can be skipped without affecting the core.
 
 ## Interface
 
 - **Android app** — thin client. Sends input, shows previews, renders charts. Needs internet (talks to the backend).
-- **Backend (API + DB)** — runs on a VM. Owns the data, computes analytics (plain SQL), and calls the AI API only for parsing (and Phase 3 chat).
-- All core features below work through the Android app; the AI API is never called from the phone.
+- **Backend (API + DB)** — the original VM target remains a deployment proposal. Local development
+  uses Compose/PostgreSQL; a separate backend workflow targets Cloud Run. The backend owns financial
+  data and calls configured gateways for assisted capture. Phase 3 chat remains optional.
+- The roadmap intends core features to work through the Android app; implemented capture reaches
+  AI providers through the backend, never directly from the phone.
 
 ## Phase 0 — Platform & Auth (infrastructure)
 
@@ -19,8 +26,8 @@ Features organized by build phase. Phase 1 is the foundation and must ship first
 
 | # | Feature | Description |
 |---|---------|-------------|
-| 1 | Receipt photo → AI extraction + categorization | Upload receipt photo, AI with vision extracts line items (name, amount, subcategory), store, date, total, payment method, currency. purchase_reason and item_reason are optional. User confirms or corrects before saving. Image stored temporarily until confirmation. Atomic save (receipt + items + image + relationships). |
-| 2 | Audio input → AI parsing + categorization | Say "spent $15 on lunch at Subway" — AI parses to structured expense AND categorizes. Supports short sentences and voice memos up to 60 s (M4A/WAV). |
+| 1 | Receipt photo → AI extraction + categorization | Original target: upload a receipt photo; extract line items (name, amount, subcategory), store, date, total, payment method and currency; allow optional `purchase_reason` and `item_reason`; let the user correct and confirm; keep the image temporarily and save receipt, items, image and relationships atomically. Current `origin/develop` implementation processes backend image bytes transiently, stores a separate structured proposal, and caches the confirmed photo encrypted on the device. The original server-image save remains a design target, not the implemented storage path. |
+| 2 | Audio input → AI parsing + categorization | Original target: say "spent $15 on lunch at Subway", parse and categorize the expense, and support short sentences and voice memos up to 60 s (M4A/WAV). Current Android implementation recognizes speech locally and sends the resulting text to the proposal flow; raw audio is not sent to the backend for AI parsing. |
 | 4 | Registro manual y gestión de gastos (CRUD) | Crear, editar, eliminar gastos con monto, fecha, comercio, moneda, método de pago, categoría/subcategoría y purchase_reason/item_reason. Guardar recibos con imagen opcional. Aislamiento por usuario. Base para todas las capturas. |
 | 5b | Income registration | Register income (salary, freelance, gift...) with source and optional description. Enables balance analysis ("am I spending more than I earn?"). |
 | 8 | Dashboard | Overview of expenses: table of recent transactions, summary cards, graphs (spending by category/subcategory, trends over time, balance vs income). **Computed by the backend with plain SQL — no AI involved.** Low priority — build after capture features work. |
@@ -30,8 +37,13 @@ Features organized by build phase. Phase 1 is the foundation and must ship first
 
 - Manual form entry always works — AI is not required to register an expense.
 - Manual form path: the user enters the required expense fields directly; the form bypasses AI and saves after validation.
-- AI-assisted path: natural-language text, photo, or audio → backend calls AI API once → AI returns structured JSON + category → preview with editable fields → **Confirm / Edit / Discard**. Nothing is saved until the user confirms.
-- Auto-categorization is integrated into the AI prompt: the backend passes the user's existing subcategories, so suggestions come from the existing list first. User can override or add a new one.
+- Implemented assisted path: typed text or a receipt photo → backend gateway(s) with conditional
+  retries/fallback → temporary structured proposal → editable review → **Confirm / Edit / Discard**.
+  Spoken input is transcribed on Android first and follows the text path. Only confirmation commits
+  a financial operation; proposal data can be stored temporarily before that decision.
+- Original target: prefer the user's existing subcategories and permit an override or a new one.
+  Implemented text capture instead supplies the user's categories in `CaptureContext`; the
+  original subcategory behavior is not claimed as implemented.
 
 ## Phase 2 — Extras (easy wins from Phase 3)
 

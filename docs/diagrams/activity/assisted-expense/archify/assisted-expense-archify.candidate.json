@@ -1,0 +1,127 @@
+{
+  "schema_version": 2,
+  "diagram_type": "workflow",
+  "meta": {
+    "title": "Registro de gasto asistido mediante IA",
+    "subtitle": "Texto o foto generan una propuesta temporal que el usuario revisa y confirma",
+    "locale": "es",
+    "output": "docs/diagrams/activity/assisted-expense/archify/assisted-expense-archify.html",
+    "quality_profile": "standard",
+    "legend": {
+      "mode": "auto",
+      "entries": {
+        "frontend": { "label": "Aplicación Flutter" },
+        "backend": { "label": "Backend FastAPI" },
+        "cloud": { "label": "Proveedor externo de IA" },
+        "external": { "label": "Usuario" }
+      }
+    },
+    "views": [
+      {
+        "id": "ruta_texto",
+        "label": "Ruta texto feliz",
+        "focus": ["a_start", "a_mode", "a_text", "a_send", "a_validate", "a_interpret", "a_ground", "a_draft", "a_present", "a_decide", "a_form", "a_confirm", "a_register", "a_done"],
+        "note": "De la descripción en texto a la propuesta, su revisión y el registro."
+      },
+      {
+        "id": "rama_foto",
+        "label": "Rama foto y fallos",
+        "focus": ["a_mode", "a_photo", "a_send", "a_interpret", "a_ground", "a_capture_err", "a_exit"],
+        "note": "Captura fotográfica: error de imagen o aviso de no recibo."
+      },
+      {
+        "id": "revision",
+        "label": "Revisión y confirmación",
+        "focus": ["a_present", "a_decide", "a_form", "a_confirm", "a_register", "a_fix", "a_done"],
+        "note": "La persona decide: descartar, corregir y confirmar, o salir."
+      }
+    ]
+  },
+  "lanes": [
+    { "id": "usuario", "label": "Usuario" },
+    { "id": "app", "label": "Aplicación Flutter" },
+    { "id": "backend", "label": "Backend FastAPI" },
+    { "id": "ia", "label": "Proveedor externo de IA" }
+  ],
+  "phases": [
+    { "id": "entrada", "label": "Entrada", "fromCol": 0, "toCol": 2 },
+    { "id": "interpretacion", "label": "Interpretación", "fromCol": 3, "toCol": 4 },
+    { "id": "revision", "label": "Revisión", "fromCol": 5, "toCol": 5 }
+  ],
+  "mainPath": ["a_start", "a_mode", "a_text", "a_send", "a_validate", "a_interpret", "a_ground", "a_draft", "a_present", "a_decide", "a_form", "a_confirm", "a_register", "a_done"],
+  "nodes": [
+    { "id": "a_start", "lane": "usuario", "col": 0, "type": "external", "label": "Seleccionar modalidad", "sublabel": "Texto o fotografía", "icon": "start" },
+    { "id": "a_mode", "lane": "usuario", "col": 1, "type": "external", "label": "¿Texto o fotografía?", "icon": "decision" },
+    { "id": "a_text", "lane": "usuario", "col": 2, "type": "external", "label": "Describir el gasto en texto", "icon": "person", "yOffset": -70 },
+    { "id": "a_photo", "lane": "usuario", "col": 2, "type": "external", "label": "Capturar o seleccionar recibo", "icon": "person", "yOffset": 70 },
+    { "id": "a_send", "lane": "app", "col": 2, "type": "frontend", "label": "Enviar entrada a la API", "sublabel": "Imagen con control de tamaño" },
+    { "id": "a_validate", "lane": "backend", "col": 3, "type": "backend", "label": "Validar entrada y contexto", "sublabel": "Límites, formato y contexto" },
+    { "id": "a_interpret", "lane": "ia", "col": 3, "type": "cloud", "label": "Interpretar con IA", "sublabel": "Texto o recibo; solo propone", "icon": "cloud" },
+    { "id": "a_ground", "lane": "backend", "col": 4, "type": "backend", "label": "¿Interpretación válida?", "sublabel": "Comprensión, recibo y extracción", "icon": "decision", "yOffset": -70 },
+    { "id": "a_draft", "lane": "backend", "col": 4, "type": "backend", "label": "Guardar propuesta temporal", "sublabel": "Vence en 24 h; avisa duplicado", "yOffset": 70 },
+    { "id": "a_capture_err", "lane": "app", "col": 4, "type": "frontend", "label": "Mostrar fallo o aviso", "sublabel": "Reintento, o no-recibo terminal", "icon": "failure", "yOffset": -70 },
+    { "id": "a_present", "lane": "app", "col": 4, "type": "frontend", "label": "Presentar propuesta y avisos", "sublabel": "Editable antes de confirmar", "yOffset": 70 },
+    { "id": "a_decide", "lane": "usuario", "col": 5, "type": "external", "label": "Revisar y decidir", "sublabel": "Descartar, confirmar o salir", "icon": "decision", "yOffset": -150 },
+    { "id": "a_discard", "lane": "app", "col": 5, "type": "frontend", "label": "Descartar y mostrar resultado", "yOffset": -110 },
+    { "id": "a_form", "lane": "app", "col": 5, "type": "frontend", "label": "Editar y enviar confirmación", "sublabel": "Valida valores completos", "yOffset": 0 },
+    { "id": "a_fix", "lane": "app", "col": 5, "type": "frontend", "label": "Mostrar campos o error", "sublabel": "Corregible o no confirmable", "icon": "failure", "yOffset": 110 },
+    { "id": "a_drop", "lane": "backend", "col": 5, "type": "backend", "label": "Marcar propuesta descartada", "yOffset": -110 },
+    { "id": "a_confirm", "lane": "backend", "col": 5, "type": "backend", "label": "¿Confirmación válida?", "sublabel": "Estado, vigencia, reglas", "icon": "decision", "yOffset": 0 },
+    { "id": "a_register", "lane": "backend", "col": 5, "type": "backend", "label": "Registrar gasto y confirmar", "sublabel": "Gasto y propuesta en transacción", "yOffset": 110 },
+    { "id": "a_done", "lane": "usuario", "col": 5, "type": "external", "label": "Gasto registrado", "icon": "success", "yOffset": -50 },
+    { "id": "a_dropped", "lane": "usuario", "col": 5, "type": "external", "label": "Propuesta descartada", "icon": "stop", "yOffset": 50 },
+    { "id": "a_exit", "lane": "usuario", "col": 5, "type": "external", "label": "Salir sin registrar", "icon": "stop", "yOffset": 150 }
+  ],
+  "edges": [
+    { "id": "e1", "from": "a_start", "to": "a_mode", "role": "main" },
+    { "id": "e2", "from": "a_mode", "to": "a_text", "label": "texto", "role": "branch" },
+    { "id": "e3", "from": "a_mode", "to": "a_photo", "label": "foto", "role": "branch" },
+    { "id": "e4", "from": "a_text", "to": "a_send", "role": "main" },
+    { "id": "e5", "from": "a_photo", "to": "a_send", "role": "branch" },
+    { "id": "e6", "from": "a_send", "to": "a_validate", "role": "main" },
+    { "id": "e7", "from": "a_validate", "to": "a_interpret", "role": "main" },
+    { "id": "e8", "from": "a_interpret", "to": "a_ground", "role": "main" },
+    { "id": "e9", "from": "a_ground", "to": "a_draft", "label": "válida o editable", "role": "main" },
+    { "id": "e10", "from": "a_ground", "to": "a_capture_err", "label": "no válida o no recibo", "role": "error" },
+    { "id": "e11", "from": "a_draft", "to": "a_present", "role": "main" },
+    { "id": "e12", "from": "a_present", "to": "a_decide", "role": "main" },
+    { "id": "e13", "from": "a_decide", "to": "a_discard", "label": "descartar", "role": "branch" },
+    { "id": "e14", "from": "a_decide", "to": "a_form", "label": "editar o confirmar", "role": "main" },
+    { "id": "e15", "from": "a_decide", "to": "a_exit", "label": "salir", "role": "branch" },
+    { "id": "e16", "from": "a_discard", "to": "a_drop", "role": "branch" },
+    { "id": "e17", "from": "a_drop", "to": "a_dropped", "role": "branch" },
+    { "id": "e18", "from": "a_form", "to": "a_confirm", "role": "main" },
+    { "id": "e19", "from": "a_confirm", "to": "a_register", "label": "sí", "role": "main" },
+    { "id": "e20", "from": "a_confirm", "to": "a_fix", "label": "no", "role": "error" },
+    { "id": "e21", "from": "a_fix", "to": "a_form", "label": "corregible", "role": "return" },
+    { "id": "e22", "from": "a_fix", "to": "a_exit", "label": "no confirmable", "role": "error" },
+    { "id": "e23", "from": "a_register", "to": "a_done", "role": "main" }
+  ],
+  "cards": [
+    {
+      "dot": "cyan",
+      "title": "Alcance del diagrama",
+      "items": [
+        "Versión interactiva del diagrama asistido: mismas ramas y salidas, con pasos de interpretación agrupados.",
+        "El detalle fino de cada rama (aclaraciones de texto, saneado de foto) vive en el PlantUML y el README."
+      ]
+    },
+    {
+      "dot": "amber",
+      "title": "Reglas preservadas",
+      "items": [
+        "La IA solo propone; nunca registra ni confirma gastos.",
+        "Solo es confirmable lo completo, parcial o con extracción fallida recuperable; no-recibo no confirma.",
+        "Posible duplicado es solo un aviso; la propuesta vence a las 24 h."
+      ]
+    },
+    {
+      "dot": "emerald",
+      "title": "Evidencia en el código",
+      "items": [
+        "Texto: text_capture_controller, capture router, service y grounding.",
+        "Foto: receipt_capture_notifier, receipt_review_screen, receipts router y service."
+      ]
+    }
+  ]
+}

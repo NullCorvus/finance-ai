@@ -1,0 +1,139 @@
+@startuml
+<style>
+root {
+  FontName Helvetica
+  FontSize 12
+  FontColor #000000
+  BackGroundColor #FFFFFF
+  LineColor #000000
+  LineThickness 0.75
+  RoundCorner 0
+  Shadowing 0
+}
+title { FontSize 14; FontStyle bold; FontColor #000000; BackGroundColor transparent; LineColor transparent; LineThickness 0 }
+note { BackGroundColor #FFFFFF; LineColor #000000; FontColor #000000 }
+sequenceDiagram {
+  actor       { BackGroundColor #FFFFFF; LineColor #000000; FontColor #000000 }
+  participant { BackGroundColor #FFFFFF; LineColor #000000; FontColor #000000 }
+  lifeLine    { BackGroundColor #FFFFFF; LineColor #000000; LineStyle 5-5; LineThickness 0.75 }
+  group       { BackGroundColor #FFFFFF; LineColor #000000; FontColor #000000 }
+  arrow       { LineColor #000000; LineThickness 0.75; FontColor #000000 }
+}
+</style>
+
+title HU-015: captura de recibo y confirmación del gasto
+hide footbox
+
+actor "Usuario" as U
+participant "Flutter\nCaptura y revisión" as F
+participant "API REST\nFastAPI" as A
+participant "Gateway\nde visión" as V
+participant "Proveedor\nexterno de IA" as I
+participant "Servicio de\npropuestas" as P
+participant "Servicio financiero\nde gastos" as E
+participant "Repositorios\n/ Unit of Work" as R
+database "PostgreSQL" as D
+
+ref over U,F,A,R,D : Iniciar sesión
+
+== Obtener una propuesta temporal ==
+U -> F: Fotografiar o seleccionar recibo
+activate F
+F -> F: Comprobar archivo y preparar rotación
+F -> A: POST /receipts/proposal (imagen)
+activate A
+A -> A: Autenticar; validar y preprocesar imagen
+A -> V: Extraer datos del recibo
+activate V
+V -> I: Solicitar interpretación visual
+activate I
+I --> V: Resultado o fallo de extracción
+deactivate I
+V --> A: Datos extraídos o fallo
+deactivate V
+alt extracción correcta
+  A -> A: Sanear y normalizar propuesta
+else fallo de extracción recuperable
+  A -> A: Preparar propuesta editable manualmente
+end
+A -> P: Crear borrador de propuesta
+activate P
+P -> R: Guardar borrador temporal
+activate R
+R -> D: INSERT propuesta; COMMIT
+activate D
+D --> R: Borrador persistido
+deactivate D
+R --> P: Propuesta guardada
+deactivate R
+P --> A: Propuesta estructurada
+deactivate P
+A --> F: 201 Propuesta para revisión
+deactivate A
+F --> U: Mostrar valores sugeridos o entrada manual
+deactivate F
+
+opt el usuario modifica los valores
+  U -> F: Editar importe, comercio o ítems
+  activate F
+  F -> F: Actualizar formulario local
+  F --> U: Mostrar valores editados
+  deactivate F
+end
+
+alt el usuario confirma la propuesta
+  U -> F: Confirmar gasto
+  activate F
+  F -> A: POST /receipts/proposal/{id}/confirm
+  activate A
+  A -> A: Verificar sesión del usuario
+  A -> E: Confirmar con valores definitivos
+  activate E
+  E -> R: Bloquear y leer propuesta,\ncuenta y categorías
+  activate R
+  R -> D: Consultar propuesta y referencias
+  activate D
+  D --> R: Datos de validación
+  deactivate D
+  R --> E: Propuesta y referencias
+  deactivate R
+  E -> E: Validar estado, titularidad,\ncuenta, moneda y categorías
+  E -> R: Crear gasto y marcar propuesta confirmada
+  activate R
+  R -> D: INSERT gasto; UPDATE propuesta; COMMIT
+  activate D
+  D --> R: Transacción confirmada
+  deactivate D
+  R --> E: Gasto registrado
+  deactivate R
+  E --> A: Gasto confirmado
+  deactivate E
+  A --> F: 201 Gasto registrado
+  deactivate A
+  F -> F: Actualizar feed de gastos y abrir detalle
+  F --> U: Mostrar gasto confirmado
+  deactivate F
+else el usuario descarta la propuesta
+  U -> F: Descartar borrador
+  activate F
+  F -> A: DELETE /receipts/proposal/{id}
+  activate A
+  A -> A: Verificar sesión del usuario
+  A -> P: Marcar borrador descartado
+  activate P
+  P -> R: Actualizar estado del borrador
+  activate R
+  R -> D: UPDATE propuesta; COMMIT
+  activate D
+  D --> R: Cambio confirmado
+  deactivate D
+  R --> P: Borrador descartado
+  deactivate R
+  P --> A: Estado descartado
+  deactivate P
+  A --> F: 200 Descartado
+  deactivate A
+  F --> U: Cerrar revisión
+  deactivate F
+end
+@enduml

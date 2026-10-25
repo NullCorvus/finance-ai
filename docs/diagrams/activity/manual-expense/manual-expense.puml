@@ -1,0 +1,44 @@
+@startuml
+<style>
+root {
+  FontName Helvetica
+  FontSize 13
+  FontColor #000000
+  BackGroundColor #FFFFFF
+  LineColor #000000
+  LineThickness 0.75
+  RoundCorner 0
+  Shadowing 0
+}
+title { FontSize 17; FontStyle bold; FontColor #000000; BackGroundColor transparent; LineColor transparent; LineThickness 0 }
+activityDiagram {
+  activity { BackGroundColor #FFFFFF; LineColor #000000; FontColor #000000; RoundCorner 10 }
+  diamond { BackGroundColor #FFFFFF; LineColor #000000; FontColor #000000 }
+  arrow { LineColor #000000; LineThickness 0.75; FontColor #000000 }
+}
+</style>
+title Registrar gasto manual
+
+|Usuario|
+start
+:Iniciar sesión
+si no hay una sesión activa;
+:Abrir registro manual;
+repeat
+  :Completar comercio, importe y fecha;
+  :Seleccionar cuenta y categoría opcional;
+  :Pulsar Registrar;
+  |Sistema|
+  :Validar datos y acceso del usuario;
+  if (¿Datos válidos?) then (sí)
+    :Registrar gasto;
+    :Mostrar confirmación;
+    stop
+  else (no)
+    :Mostrar errores para corregir;
+  endif
+  |Usuario|
+repeat while (¿Corregir y volver a guardar?) is (sí) not (no)
+:Cancelar el registro;
+stop
+@enduml

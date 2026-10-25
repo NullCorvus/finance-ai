@@ -1,0 +1,107 @@
+{
+  "schema_version": 2,
+  "diagram_type": "workflow",
+  "meta": {
+    "title": "Registro manual de un gasto",
+    "subtitle": "Del formulario al registro confirmado o al abandono, con corrección de errores",
+    "locale": "es",
+    "output": "docs/diagrams/activity/manual-expense/archify/manual-expense-archify.html",
+    "quality_profile": "standard",
+    "legend": {
+      "mode": "auto",
+      "entries": {
+        "frontend": { "label": "Aplicación Flutter" },
+        "backend": { "label": "Backend FastAPI" },
+        "database": { "label": "PostgreSQL" },
+        "external": { "label": "Usuario" }
+      }
+    },
+    "views": [
+      {
+        "id": "ruta_feliz",
+        "label": "Ruta feliz",
+        "focus": ["m_start", "m_open", "m_input", "m_validate", "m_fields", "m_check", "m_register", "m_done", "m_success"],
+        "note": "Camino sin errores: formulario, validaciones, registro y confirmación."
+      },
+      {
+        "id": "errores",
+        "label": "Errores y reintentos",
+        "focus": ["m_fields", "m_field_err", "m_check", "m_service_err", "m_ack", "m_uncertain", "m_input"],
+        "note": "Fallos corregibles que devuelven al formulario y resultado incierto."
+      }
+    ]
+  },
+  "lanes": [
+    { "id": "usuario", "label": "Usuario" },
+    { "id": "app", "label": "Aplicación Flutter" },
+    { "id": "backend", "label": "Backend FastAPI" }
+  ],
+  "phases": [
+    { "id": "captura", "label": "Captura", "fromCol": 0, "toCol": 2 },
+    { "id": "validacion", "label": "Validación", "fromCol": 3, "toCol": 4 },
+    { "id": "registro", "label": "Registro", "fromCol": 5, "toCol": 5 }
+  ],
+  "mainPath": ["m_start", "m_open", "m_continue", "m_input", "m_validate", "m_fields", "m_check", "m_register", "m_ack", "m_done", "m_success"],
+  "nodes": [
+    { "id": "m_start", "lane": "usuario", "col": 0, "type": "external", "label": "Elegir registro manual", "icon": "start" },
+    { "id": "m_open", "lane": "app", "col": 1, "type": "frontend", "label": "Abrir formulario de gasto", "sublabel": "Carga cuentas y categorías" },
+    { "id": "m_continue", "lane": "usuario", "col": 1, "type": "external", "label": "¿Continuar con el registro?", "icon": "decision" },
+    { "id": "m_input", "lane": "usuario", "col": 2, "type": "external", "label": "Introducir datos del gasto", "sublabel": "Comercio, importe, fecha, cuenta", "icon": "person" },
+    { "id": "m_validate", "lane": "app", "col": 3, "type": "frontend", "label": "Validar campos del formulario", "sublabel": "Obligatorios y rangos" },
+    { "id": "m_fields", "lane": "app", "col": 4, "type": "frontend", "label": "¿Campos válidos?", "icon": "decision", "yOffset": -50 },
+    { "id": "m_field_err", "lane": "app", "col": 4, "type": "frontend", "label": "Mostrar errores de campo", "sublabel": "Permite corregir", "icon": "failure", "yOffset": 70 },
+    { "id": "m_check", "lane": "backend", "col": 5, "type": "backend", "label": "¿Validación del servicio?", "sublabel": "Importe, comercio, cuenta", "icon": "decision", "yOffset": -150 },
+    { "id": "m_register", "lane": "backend", "col": 5, "type": "database", "label": "Registrar gasto y confirmar", "sublabel": "Gasto y movimiento en PostgreSQL", "yOffset": -50 },
+    { "id": "m_service_err", "lane": "app", "col": 5, "type": "frontend", "label": "Mostrar error del servicio", "sublabel": "Vuelve al formulario", "icon": "failure", "yOffset": -150 },
+    { "id": "m_ack", "lane": "app", "col": 5, "type": "frontend", "label": "¿Éxito reconocido por la app?", "icon": "decision", "yOffset": -50 },
+    { "id": "m_done", "lane": "app", "col": 5, "type": "frontend", "label": "Mostrar confirmación", "sublabel": "Actualiza lista y progreso", "icon": "success", "yOffset": 50 },
+    { "id": "m_uncertain", "lane": "app", "col": 5, "type": "frontend", "label": "Pedir revisar el historial", "sublabel": "Resultado incierto, no reenviar", "icon": "waiting", "yOffset": 150 },
+    { "id": "m_cancel", "lane": "usuario", "col": 5, "type": "external", "label": "Cancelar o salir", "sublabel": "Sin guardar gasto", "icon": "stop", "yOffset": 120 },
+    { "id": "m_success", "lane": "usuario", "col": 5, "type": "external", "label": "Gasto registrado", "icon": "success", "yOffset": -120 }
+  ],
+  "edges": [
+    { "id": "e1", "from": "m_start", "to": "m_open", "role": "main" },
+    { "id": "e2", "from": "m_open", "to": "m_continue", "role": "main" },
+    { "id": "e3", "from": "m_continue", "to": "m_input", "label": "sí", "role": "main" },
+    { "id": "e4", "from": "m_continue", "to": "m_cancel", "label": "no", "role": "branch" },
+    { "id": "e5", "from": "m_input", "to": "m_validate", "role": "main" },
+    { "id": "e6", "from": "m_validate", "to": "m_fields", "role": "main" },
+    { "id": "e7", "from": "m_fields", "to": "m_check", "label": "sí, envía gasto", "role": "main" },
+    { "id": "e8", "from": "m_fields", "to": "m_field_err", "label": "no", "role": "error" },
+    { "id": "e9", "from": "m_field_err", "to": "m_input", "label": "corregir", "role": "return" },
+    { "id": "e10", "from": "m_check", "to": "m_register", "label": "sí", "role": "main" },
+    { "id": "e11", "from": "m_check", "to": "m_service_err", "label": "no", "role": "error" },
+    { "id": "e12", "from": "m_service_err", "to": "m_input", "label": "corregir", "role": "return" },
+    { "id": "e13", "from": "m_register", "to": "m_ack", "role": "main" },
+    { "id": "e14", "from": "m_ack", "to": "m_done", "label": "sí", "role": "main" },
+    { "id": "e15", "from": "m_ack", "to": "m_uncertain", "label": "resultado incierto", "role": "error" },
+    { "id": "e16", "from": "m_done", "to": "m_success", "role": "main" }
+  ],
+  "cards": [
+    {
+      "dot": "cyan",
+      "title": "Alcance del diagrama",
+      "items": [
+        "Versión interactiva del diagrama de actividad manual: mismas decisiones y salidas, con pasos agrupados por carril.",
+        "La solicitud del usuario y el envío autenticado viajan en la arista hacia el backend, sin nodo propio."
+      ]
+    },
+    {
+      "dot": "amber",
+      "title": "Reglas preservadas",
+      "items": [
+        "Salir del formulario no guarda el gasto.",
+        "Los errores de campo y del servicio devuelven al formulario; no hay reenvío implícito.",
+        "El resultado incierto exige revisar el historial antes de registrar de nuevo."
+      ]
+    },
+    {
+      "dot": "emerald",
+      "title": "Evidencia en el código",
+      "items": [
+        "Flutter: expense_create_screen, expenses_controller y expenses_repository.",
+        "Backend: expenses router y service, repositorio de gastos en PostgreSQL."
+      ]
+    }
+  ]
+}

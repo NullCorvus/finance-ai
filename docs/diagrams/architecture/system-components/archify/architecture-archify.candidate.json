@@ -1,0 +1,512 @@
+{
+  "schema_version": 1,
+  "diagram_type": "architecture",
+  "meta": {
+    "title": "Arquitectura de Finance AI",
+    "locale": "es",
+    "output": "docs/diagrams/architecture/system-components/archify/architecture-archify.html",
+    "quality_profile": "showcase",
+    "subtitle": "La IA prepara propuestas; el usuario confirma antes de persistir operaciones.",
+    "views": [
+      {
+        "id": "mapa",
+        "label": "Mapa",
+        "focus": [
+          "ui",
+          "api",
+          "finance",
+          "persist",
+          "db"
+        ],
+        "note": "Cuatro zonas: aplicación, API, persistencia y proveedores externos."
+      },
+      {
+        "id": "manual",
+        "label": "Registro manual",
+        "focus": [
+          "client_fin",
+          "rest",
+          "api",
+          "finance",
+          "persist",
+          "db"
+        ],
+        "note": "La app envía cambios financieros por REST; los servicios validan y persisten mediante repositorios."
+      },
+      {
+        "id": "captura",
+        "label": "Captura con IA",
+        "focus": [
+          "client_capture",
+          "rest",
+          "api",
+          "text_capture",
+          "receipt_capture",
+          "text_gateway",
+          "vision_gateway",
+          "gemini",
+          "deepseek",
+          "finance",
+          "persist"
+        ],
+        "note": "La IA devuelve una propuesta revisable. Sólo la confirmación explícita registra la operación."
+      }
+    ],
+    "legend": {
+      "mode": "all",
+      "entries": {
+        "frontend": {
+          "label": "Aplicación Flutter"
+        },
+        "backend": {
+          "label": "Backend FastAPI"
+        },
+        "database": {
+          "label": "Persistencia · acceso y datos"
+        },
+        "external": {
+          "label": "Proveedores externos"
+        }
+      }
+    }
+  },
+  "components": [
+    {
+      "id": "ui",
+      "type": "frontend",
+      "label": "Navegación y presentación",
+      "sublabel": "Rutas y pantallas",
+      "tag": "Flutter · experiencia",
+      "row": 0,
+      "col": 0,
+      "size": [
+        210,
+        78
+      ]
+    },
+    {
+      "id": "session",
+      "type": "frontend",
+      "label": "Sesión y credenciales",
+      "sublabel": "Identidad local segura",
+      "tag": "Flutter · sesión",
+      "row": 0,
+      "col": 1,
+      "size": [
+        210,
+        78
+      ],
+      "icon": "security"
+    },
+    {
+      "id": "client_fin",
+      "type": "frontend",
+      "label": "Funciones financieras",
+      "sublabel": "Finanzas y consultas",
+      "tag": "Flutter · finanzas",
+      "row": 0,
+      "col": 2,
+      "size": [
+        210,
+        78
+      ]
+    },
+    {
+      "id": "client_capture",
+      "type": "frontend",
+      "label": "Captura y revisión",
+      "sublabel": "Texto, recibos y revisión",
+      "tag": "Flutter · captura",
+      "row": 1,
+      "col": 0,
+      "size": [
+        210,
+        78
+      ]
+    },
+    {
+      "id": "rest",
+      "type": "frontend",
+      "label": "Cliente HTTP / REST",
+      "sublabel": "JSON y multipart",
+      "tag": "Flutter · transporte",
+      "row": 1,
+      "col": 1,
+      "size": [
+        210,
+        78
+      ]
+    },
+    {
+      "id": "api",
+      "type": "backend",
+      "label": "API REST FastAPI",
+      "sublabel": "Rutas REST v1",
+      "tag": "FastAPI · API",
+      "row": 2,
+      "col": 1,
+      "size": [
+        210,
+        78
+      ]
+    },
+    {
+      "id": "auth",
+      "type": "backend",
+      "label": "Autenticación y sesiones",
+      "sublabel": "Access opaco y renovación",
+      "tag": "FastAPI · identidad",
+      "row": 3,
+      "col": 0,
+      "size": [
+        210,
+        78
+      ]
+    },
+    {
+      "id": "finance",
+      "type": "backend",
+      "label": "Servicios financieros",
+      "sublabel": "Operaciones y consultas",
+      "tag": "FastAPI · dominio",
+      "row": 3,
+      "col": 1,
+      "size": [
+        210,
+        78
+      ]
+    },
+    {
+      "id": "text_capture",
+      "type": "backend",
+      "label": "Captura de texto",
+      "sublabel": "Borrador hasta confirmar",
+      "tag": "FastAPI · IA",
+      "row": 3,
+      "col": 2,
+      "size": [
+        210,
+        78
+      ]
+    },
+    {
+      "id": "receipt_capture",
+      "type": "backend",
+      "label": "Captura de recibos",
+      "sublabel": "Propuesta hasta confirmar",
+      "tag": "FastAPI · IA",
+      "row": 4,
+      "col": 0,
+      "size": [
+        210,
+        78
+      ]
+    },
+    {
+      "id": "text_gateway",
+      "type": "backend",
+      "label": "Gateway de texto",
+      "sublabel": "Selección y fallback",
+      "tag": "FastAPI · proveedor",
+      "row": 4,
+      "col": 1,
+      "size": [
+        210,
+        78
+      ]
+    },
+    {
+      "id": "vision_gateway",
+      "type": "backend",
+      "label": "Gateway de visión",
+      "sublabel": "Selección y fallback",
+      "tag": "FastAPI · proveedor",
+      "row": 4,
+      "col": 2,
+      "size": [
+        210,
+        78
+      ]
+    },
+    {
+      "id": "persist",
+      "type": "database",
+      "label": "Repositorios / Unit of Work",
+      "sublabel": "Repositorios por dominio",
+      "tag": "Persistencia · acceso",
+      "row": 5,
+      "col": 0,
+      "size": [
+        210,
+        78
+      ],
+      "icon": "backend"
+    },
+    {
+      "id": "db",
+      "type": "database",
+      "label": "PostgreSQL",
+      "sublabel": "Almacenamiento relacional",
+      "tag": "Persistencia · datos",
+      "row": 6,
+      "col": 0,
+      "size": [
+        210,
+        78
+      ]
+    },
+    {
+      "id": "gemini",
+      "type": "external",
+      "label": "Gemini API",
+      "sublabel": "Proveedor de IA",
+      "tag": "Externo · IA",
+      "row": 5,
+      "col": 2,
+      "size": [
+        210,
+        78
+      ]
+    },
+    {
+      "id": "deepseek",
+      "type": "external",
+      "label": "DeepSeek API",
+      "sublabel": "Proveedor de IA",
+      "tag": "Externo · IA",
+      "row": 6,
+      "col": 2,
+      "size": [
+        210,
+        78
+      ]
+    }
+  ],
+  "connections": [
+    {
+      "from": "ui",
+      "to": "session"
+    },
+    {
+      "from": "ui",
+      "to": "client_fin"
+    },
+    {
+      "from": "ui",
+      "to": "client_capture"
+    },
+    {
+      "from": "client_fin",
+      "to": "rest"
+    },
+    {
+      "from": "client_capture",
+      "to": "rest"
+    },
+    {
+      "from": "session",
+      "to": "rest"
+    },
+    {
+      "from": "rest",
+      "to": "api",
+      "label": "HTTPS / REST",
+      "variant": "emphasis"
+    },
+    {
+      "from": "api",
+      "to": "auth"
+    },
+    {
+      "from": "api",
+      "to": "finance"
+    },
+    {
+      "from": "api",
+      "to": "text_capture"
+    },
+    {
+      "from": "api",
+      "to": "receipt_capture"
+    },
+    {
+      "from": "auth",
+      "to": "persist"
+    },
+    {
+      "from": "finance",
+      "to": "persist",
+      "label": "lee / escribe"
+    },
+    {
+      "from": "text_capture",
+      "to": "text_gateway",
+      "label": "solicita interpretación"
+    },
+    {
+      "from": "receipt_capture",
+      "to": "vision_gateway",
+      "label": "solicita análisis"
+    },
+    {
+      "from": "text_capture",
+      "to": "persist",
+      "label": "guarda borrador"
+    },
+    {
+      "from": "receipt_capture",
+      "to": "persist",
+      "label": "guarda propuesta"
+    },
+    {
+      "from": "text_capture",
+      "to": "finance",
+      "label": "sólo tras confirmar",
+      "variant": "security"
+    },
+    {
+      "from": "receipt_capture",
+      "to": "finance",
+      "label": "sólo tras confirmar",
+      "variant": "security"
+    },
+    {
+      "from": "text_gateway",
+      "to": "gemini"
+    },
+    {
+      "from": "text_gateway",
+      "to": "deepseek"
+    },
+    {
+      "from": "vision_gateway",
+      "to": "gemini"
+    },
+    {
+      "from": "vision_gateway",
+      "to": "deepseek"
+    },
+    {
+      "from": "persist",
+      "to": "db",
+      "label": "SQL"
+    }
+  ],
+  "layout": {
+    "mode": "grid",
+    "cols": 3,
+    "origin": [
+      80,
+      70
+    ],
+    "cellW": 210,
+    "cellH": 78,
+    "gapX": 38,
+    "gapY": 54
+  },
+  "boundaries": [
+    {
+      "kind": "region",
+      "label": "1 · Aplicación Flutter",
+      "wraps": [
+        "ui",
+        "session",
+        "client_fin",
+        "client_capture",
+        "rest"
+      ],
+      "pad": 30
+    },
+    {
+      "kind": "region",
+      "label": "2 · Backend FastAPI",
+      "wraps": [
+        "api",
+        "auth",
+        "finance",
+        "text_capture",
+        "receipt_capture",
+        "text_gateway",
+        "vision_gateway"
+      ],
+      "pad": 30
+    },
+    {
+      "kind": "region",
+      "label": "3 · Persistencia",
+      "wraps": [
+        "persist",
+        "db"
+      ],
+      "pad": 30
+    },
+    {
+      "kind": "region",
+      "label": "4 · Servicios externos",
+      "wraps": [
+        "gemini",
+        "deepseek"
+      ],
+      "pad": 30
+    }
+  ],
+  "cards": [
+    {
+      "dot": "cyan",
+      "title": "Aplicación Flutter",
+      "items": [
+        "Navegación abre pantallas y rutas.",
+        "Sesión guarda credenciales localmente; el cliente REST envía JSON y multipart.",
+        "Finanzas cubre cuentas, categorías, gastos, ingresos, transferencias, presupuestos, dashboard e historial. Captura permite texto/recibos y revisar propuestas. Evidencia manual: README."
+      ]
+    },
+    {
+      "dot": "violet",
+      "title": "Backend FastAPI",
+      "items": [
+        "La API REST delega autenticación, servicios financieros, captura textual y captura de recibos.",
+        "Los gateways separados seleccionan proveedores y fallback de texto o visión según configuración. Sólo el backend consume Gemini y DeepSeek."
+      ]
+    },
+    {
+      "dot": "emerald",
+      "title": "Persistencia",
+      "items": [
+        "Repositorios y Unit of Work separan el acceso transaccional por dominio.",
+        "PostgreSQL almacena los datos relacionales."
+      ]
+    },
+    {
+      "dot": "orange",
+      "title": "Proveedores externos",
+      "items": [
+        "Gemini y DeepSeek son APIs externas invocadas desde los gateways del backend.",
+        "Los adaptadores y fallback varían por tarea/configuración; Flutter no invoca los modelos."
+      ]
+    },
+    {
+      "dot": "amber",
+      "title": "Registro manual",
+      "items": [
+        "La app envía cambios financieros por REST.",
+        "Los servicios financieros validan y usan repositorios para persistir en PostgreSQL."
+      ]
+    },
+    {
+      "dot": "rose",
+      "title": "Captura asistida: propuesta y decisión",
+      "items": [
+        "Texto o recibo pasa por su servicio y gateway IA; la IA produce una propuesta, no una operación financiera definitiva.",
+        "Flutter presenta la propuesta. Tras revisar y confirmar, el servicio financiero registra el gasto, ingreso o transferencia aplicable."
+      ]
+    },
+    {
+      "dot": "slate",
+      "title": "Lectura de relaciones",
+      "items": [
+        "Las flechas expresan dependencias estructurales, no el orden temporal de una sesión.",
+        "La vista y la tarjeta complementan las responsabilidades; no se añaden interacciones fuera del Viewer nativo."
+      ]
+    }
+  ]
+}
