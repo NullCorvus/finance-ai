@@ -1,0 +1,7 @@
+# HTML difiere como texto; binarios de Office/imagen como binarios
+*.html text diff
+*.pptx binary -diff -merge
+*.ppt binary -diff -merge
+*.pdf binary -diff -merge
+*.png binary -diff -merge
+*.jpg binary -diff -merge

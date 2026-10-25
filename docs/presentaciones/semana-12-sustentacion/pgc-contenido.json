@@ -1,0 +1,47 @@
+{
+  "schema": "pgc-semana12/v1",
+  "slides": [
+    {
+      "id": "portada",
+      "title": "NOMBRE DEL PGC.",
+      "body": "CICLO\nINTEGRALTES\nPROGRAMA\nFECHA",
+      "notes": ""
+    },
+    {
+      "id": "problema-justificacion",
+      "title": "PLANTEAMIENTO DEL PROBLEMA Y JUSTIFICACIÓN",
+      "body": "XXXX.",
+      "notes": ""
+    },
+    {
+      "id": "objetivo-general",
+      "title": "OBJETIVO GENERAL:",
+      "body": "XXXXX.",
+      "notes": ""
+    },
+    {
+      "id": "objetivos-especificos",
+      "title": "Objetivos específicos",
+      "body": "1. XXXXXX",
+      "notes": ""
+    },
+    {
+      "id": "propuesta-tecnologica",
+      "title": "PROPUESTA TECNOLÓGICA",
+      "body": "XXX",
+      "notes": ""
+    },
+    {
+      "id": "solucion",
+      "title": "SOLUCIÓN",
+      "body": "XXXX",
+      "notes": ""
+    },
+    {
+      "id": "conclusiones",
+      "title": "CONCLUSIONES",
+      "body": "XXXX",
+      "notes": ""
+    }
+  ]
+}
