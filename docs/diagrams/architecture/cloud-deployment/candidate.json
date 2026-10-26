@@ -1,0 +1,31 @@
+{
+  "schema_version": 1,
+  "diagram_type": "architecture",
+  "meta": {
+    "title": "Finance AI: current cloud deployment",
+    "locale": "en",
+    "output": "docs/diagrams/architecture/cloud-deployment/finance-ai-cloud.html",
+    "quality_profile": "showcase",
+    "repository": {"url": "git@github.com:NullCorvus/finance-ai.git", "revision": "0a367933401583bde07bb937c3286dffa049554f", "link_mode": "local-only"}
+  },
+  "components": [
+    {"id":"phone","type":"frontend","label":"Android app","sublabel":"Flutter APK","pos":[40,200],"size":[180,76],"sources":[{"path":"docs/STACK.md","line":15,"end_line":16},{"path":"docs/ALCANCE.md","line":9,"end_line":11}]},
+    {"id":"api","type":"backend","label":"Cloud Run: finance-api","sublabel":"FastAPI · container","pos":[360,200],"size":[210,76],"sources":[{"path":"docs/STACK.md","line":16,"end_line":21},{"path":"docs/ARCHITECTURE.md","line":16,"end_line":23}]},
+    {"id":"database","type":"database","label":"Neon PostgreSQL","sublabel":"Users and financial data","pos":[720,50],"size":[205,76],"sources":[{"path":"docs/ARCHITECTURE.md","line":16,"end_line":20},{"path":"docs/STACK.md","line":17,"end_line":19}]},
+    {"id":"deepseek","type":"external","label":"DeepSeek API","sublabel":"Primary AI provider","pos":[720,200],"size":[205,76],"sources":[{"path":"docs/STACK.md","line":18},{"path":"docs/ALCANCE.md","line":11}]},
+    {"id":"gemini","type":"external","label":"Gemini API","sublabel":"Conditional fallback","pos":[720,350],"size":[205,76],"sources":[{"path":"docs/STACK.md","line":34,"end_line":37},{"path":"docs/ALCANCE.md","line":11}]},
+    {"id":"docs","type":"backend","label":"API documentation","sublabel":"Swagger UI · /docs","pos":[360,400],"size":[210,76],"sources":[{"path":"docs/STACK.md","line":16}]}
+  ],
+  "connections": [
+    {"from":"phone","to":"api","label":"HTTPS","variant":"emphasis"},
+    {"from":"api","to":"database","label":"Read / write"},
+    {"from":"api","to":"deepseek","label":"AI request"},
+    {"from":"api","to":"gemini","label":"If primary fails"},
+    {"from":"api","to":"docs","label":"Serves /docs"}
+  ],
+  "cards": [
+    {"dot":"cyan","title":"What is deployed","items":["The Flutter APK connects to the public Cloud Run URL over HTTPS.","The API runs in a container; Neon stores application data outside the container."]},
+    {"dot":"violet","title":"AI and confirmation","items":["Cloud Run selected DeepSeek first when inspected on 26 October 2026. Gemini is a conditional fallback in the main text and receipt proposal flows.","AI produces a proposal; a person confirms before a financial operation is recorded. The legacy receipt scan is an exception that calls DeepSeek directly."]},
+    {"dot":"amber","title":"Snapshot and scope","items":["Live Cloud Run and Neon configuration was checked on 26 October 2026; it can change independently of source control.","This is a deployment overview. CI/CD, authentication details and local development are not shown."]}
+  ]
+}

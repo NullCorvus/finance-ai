@@ -5,6 +5,7 @@
 | Tema | Tipos disponibles | Estado |
 |---|---|---|
 | [Arquitectura de componentes](architecture/system-components/README.md) | UML editable/renderizado e HTML Archify interactivo | Disponible |
+| [Despliegue en la nube](architecture/cloud-deployment/README.md) | Arquitectura Archify y guía de actualización | Disponible |
 | [Inicio de sesión](sequence/login/README.md) | Secuencia y actividad UML con PNG y SVG | Disponible |
 | [Captura de recibo HU-015](sequence/receipt-capture/README.md) | Secuencia UML editable/renderizada y vista Archify interactiva | Disponible |
 | [Registro manual de un gasto](activity/manual-expense/README.md) | Actividad UML editable/renderizada y vista Archify interactiva | Disponible |
