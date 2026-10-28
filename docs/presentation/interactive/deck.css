@@ -193,10 +193,8 @@ body[data-scene="s-portada"] .qr { opacity: 0; transform: translateY(-8px); poin
 .hint { position: absolute; left: 50%; bottom: 66px; transform: translate(-50%, 8px); z-index: 31; padding: 8px 16px; border-radius: 999px; background: rgba(20, 28, 38, .86); color: #fff; font-size: 13px; letter-spacing: .02em; opacity: 0; pointer-events: none; transition: opacity .6s var(--ease), transform .6s var(--ease); }
 .hint.show { opacity: 1; transform: translate(-50%, 0); }
 
-/* ───────── accesibilidad: menos movimiento ───────── */
-@media (prefers-reduced-motion: reduce) {
-  html:not([data-motion="on"]) .ambient i, html:not([data-motion="on"]) .ambient .pt, html:not([data-motion="on"]) .float, html:not([data-motion="on"]) .bob,
-  html:not([data-motion="on"]) .scene *, html:not([data-motion="on"]) .scene *::before, html:not([data-motion="on"]) .scene *::after { animation: none !important; }
-  html:not([data-motion="on"]) .ambient .pt { display: none; }
-  html:not([data-motion="on"]) .rv, html:not([data-motion="on"]) .split .ch { transform: none !important; filter: none !important; transition-duration: .3s !important; transition-delay: 0s !important; }
-}
+/* ───────── movimiento: activo por defecto; ?motion=off o la tecla V lo reducen ───────── */
+html[data-motion="off"] .ambient i, html[data-motion="off"] .ambient .pt, html[data-motion="off"] .float, html[data-motion="off"] .bob,
+html[data-motion="off"] .scene *, html[data-motion="off"] .scene *::before, html[data-motion="off"] .scene *::after { animation: none !important; }
+html[data-motion="off"] .ambient .pt { display: none; }
+html[data-motion="off"] .rv, html[data-motion="off"] .split .ch { transform: none !important; filter: none !important; transition-duration: .3s !important; transition-delay: 0s !important; }

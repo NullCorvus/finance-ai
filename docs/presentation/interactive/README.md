@@ -38,6 +38,7 @@ La etiqueta junto al contador (`AUTO`, `MANUAL`, `RECORRIDO`) muestra el modo ac
 | **Respaldo técnico A–D** | `A` `B` `C` `D` (desde cualquier punto) |
 | Volver de un respaldo al mismo punto | `Esc` o `R` o botón «Volver a la presentación» |
 | Recorrido automático / modo manual | `P` / `M` |
+| Movimiento: reducir / activar | `V` |
 | Pantalla completa | `F` |
 | Saltar a una escena | clic en la barra de progreso inferior |
 
@@ -88,11 +89,17 @@ En todas las escenas, además: partículas que suben por el fondo, teléfonos co
 - **Colores**: variables al inicio de `deck.css`; replican la paleta de la app. La escena oscura usa `data-theme="dark"`.
 - Los números de las pantallas (442.000, 252.000, 190.000, 3.000.000, presupuestos) son los datos de demostración de las capturas. Las cifras de pruebas (415 y 573) son las documentadas el 16 y 18 de octubre de 2026; no se reejecutan al editar la presentación.
 
-## Accesibilidad y movimiento
+## Movimiento y accesibilidad
 
-Respeta `prefers-reduced-motion`: si el sistema pide menos movimiento, se apagan las partículas y los bucles, y las transiciones quedan breves. Las barras de progreso son botones con etiqueta, el título de cada escena se anuncia a lectores de pantalla y los elementos decorativos están ocultos para ellos.
+El movimiento está **activo por defecto, aunque el sistema pida reducirlo**. Es una presentación, y en muchos equipos Windows tiene las animaciones apagadas («Efectos de animación» en Accesibilidad → Efectos visuales), lo que hace que los navegadores reporten «reducir movimiento» y la presentación se vea quieta.
 
-Si en el equipo de la presentación Windows tiene desactivadas las animaciones (Accesibilidad → Efectos visuales → Efectos de animación) y se quiere el movimiento igualmente, abrir la presentación con `?motion=on` al final de la dirección (por ejemplo `index.html?motion=on`).
+| Cómo | Efecto |
+|---|---|
+| Tecla `V` | Alterna entre movimiento completo y reducido, en vivo |
+| `index.html?motion=off` | Abre con el movimiento reducido |
+| `index.html?motion=system` | Respeta la preferencia del sistema operativo |
+
+En modo reducido se apagan las partículas y todos los bucles, y las transiciones quedan breves. Además: las barras de progreso son botones con etiqueta, el título de cada escena se anuncia a lectores de pantalla y los elementos decorativos están ocultos para ellos.
 
 ## Alcance
 

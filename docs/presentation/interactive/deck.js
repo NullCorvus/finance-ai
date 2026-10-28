@@ -16,10 +16,12 @@
   const $$ = (s, r = document) => Array.from(r.querySelectorAll(s));
   const clamp = (n, a, b) => Math.max(a, Math.min(b, n));
   const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
-  // ?motion=on fuerza el movimiento aunque el sistema pida reducirlo (p. ej. animaciones desactivadas en Windows)
-  const forceMotion = /[?&]motion=on(?:&|$)/.test(location.search);
-  if (forceMotion) document.documentElement.setAttribute('data-motion', 'on');
-  const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches && !forceMotion;
+  // Movimiento: activo por defecto aunque el sistema pida reducirlo (es una presentación y en
+  // muchos equipos las animaciones de Windows están apagadas). ?motion=off lo apaga,
+  // ?motion=system respeta la preferencia del sistema y la tecla V lo alterna en vivo.
+  const motionParam = (location.search.match(/[?&]motion=(\w+)/) || [])[1];
+  let reduce = motionParam === 'off' || (motionParam === 'system' && matchMedia('(prefers-reduced-motion: reduce)').matches);
+  document.documentElement.setAttribute('data-motion', reduce ? 'off' : 'on');
 
   const stage = $('#stage');
   const scenes = $$('.scene');
@@ -69,9 +71,9 @@
   fit();
 
   /* ───── partículas de fondo (idle) ───── */
-  (function particles() {
+  function particles() {
     const box = $('.ambient');
-    if (!box || reduce) return;
+    if (!box || reduce || box.querySelector('.pt')) return;
     const colors = ['rgba(107,142,0,.55)', 'rgba(143,180,44,.6)', 'rgba(37,99,235,.4)', 'rgba(91,75,219,.4)'];
     for (let n = 0; n < 20; n++) {
       const b = document.createElement('b');
@@ -80,7 +82,8 @@
       b.style.cssText = `--x:${(Math.random() * 100).toFixed(1)}%;--s:${(6 + Math.random() * 16).toFixed(0)}px;--d:${d.toFixed(1)}s;--t:${(-Math.random() * d).toFixed(1)}s;--sw:${(Math.random() * 90 - 45).toFixed(0)}px;--c:${colors[n % colors.length]}`;
       box.appendChild(b);
     }
-  })();
+  }
+  particles();
 
   /* ───── letras sueltas para los títulos .split ───── */
   function splitLetters(el) {
@@ -199,6 +202,12 @@
     setTour(!tour);
     flash(tour ? 'Recorrido automático activado · P para pausar' : 'Recorrido en pausa');
   }
+  function toggleMotion() {
+    reduce = !reduce;
+    document.documentElement.setAttribute('data-motion', reduce ? 'off' : 'on');
+    particles();
+    flash(reduce ? 'Movimiento reducido · V para activarlo' : 'Movimiento activado');
+  }
   function toggleManual() {
     fluid = !fluid;
     if (!fluid) tour = false;
@@ -306,6 +315,7 @@
       if (document.fullscreenElement) document.exitFullscreen(); else document.documentElement.requestFullscreen && document.documentElement.requestFullscreen();
     } else if (k === 'p' || k === 'P') toggleTour();
     else if (k === 'm' || k === 'M') toggleManual();
+    else if (k === 'v' || k === 'V') toggleMotion();
     else if (/^[0-9]$/.test(k)) {
       const n = k === '0' ? 9 : +k - 1;
       if (n < mainCount) go(n, 0);
