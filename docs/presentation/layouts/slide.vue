@@ -1,9 +1,12 @@
 <script setup lang="ts">
+import DownloadQr from '../components/DownloadQr.vue'
+
 defineProps<{ eyebrow?: string }>()
 </script>
 
 <template>
   <div class="slidev-layout fa-slide">
+    <DownloadQr />
     <div v-if="eyebrow" class="fa-eyebrow">{{ eyebrow }}</div>
     <slot />
     <div class="fa-footer">

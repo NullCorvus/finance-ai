@@ -1,0 +1,557 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Finance AI · Presentación interactiva</title>
+<meta name="description" content="Presentación de Finance AI ante los jurados, en versión interactiva.">
+<link rel="stylesheet" href="deck.css?v=20261028f">
+<link rel="stylesheet" href="scenes.css?v=20261028f">
+<link rel="stylesheet" href="idle.css?v=20261028f">
+<link rel="stylesheet" href="backup.css?v=20261028f">
+</head>
+<body data-theme="light">
+
+<!-- Iconos: trazo de 1.8 px, sin relleno. Se usan con <svg class="i"><use href="#i-..."/></svg> -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
+  <symbol id="i-phone" viewBox="0 0 24 24"><rect x="7" y="2.5" width="10" height="19" rx="2.5"/><path d="M11 18.5h2"/></symbol>
+  <symbol id="i-spark" viewBox="0 0 24 24"><path d="M12 3l1.8 5.2L19 10l-5.2 1.8L12 17l-1.8-5.2L5 10l5.2-1.8z"/><path d="M18.5 16.5l.6 1.6 1.6.6-1.6.6-.6 1.6-.6-1.6-1.6-.6 1.6-.6z"/></symbol>
+  <symbol id="i-target" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="5"/><circle cx="12" cy="12" r="1.2"/></symbol>
+  <symbol id="i-check" viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7.5"/></symbol>
+  <symbol id="i-check-circle" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M8 12.5l3 3 5-6"/></symbol>
+  <symbol id="i-receipt" viewBox="0 0 24 24"><path d="M6 3h12v18l-3-2-3 2-3-2-3 2z"/><path d="M9 8h6M9 12h6"/></symbol>
+  <symbol id="i-mic" viewBox="0 0 24 24"><rect x="9" y="3" width="6" height="11" rx="3"/><path d="M5.5 11.5a6.5 6.5 0 0013 0M12 18v3"/></symbol>
+  <symbol id="i-text" viewBox="0 0 24 24"><path d="M3.5 18l5-12 5 12M5.3 14h6.4M15 18l3-7 3 7M16 16h4"/></symbol>
+  <symbol id="i-search" viewBox="0 0 24 24"><circle cx="11" cy="11" r="6.5"/><path d="M16 16l4.5 4.5"/></symbol>
+  <symbol id="i-alert" viewBox="0 0 24 24"><path d="M12 4l9 16H3z"/><path d="M12 10v4M12 17.2v.1"/></symbol>
+  <symbol id="i-sigma" viewBox="0 0 24 24"><path d="M17 5H7l6 7-6 7h10"/></symbol>
+  <symbol id="i-db" viewBox="0 0 24 24"><ellipse cx="12" cy="6" rx="7" ry="3"/><path d="M5 6v6c0 1.7 3.1 3 7 3s7-1.3 7-3V6M5 12v6c0 1.7 3.1 3 7 3s7-1.3 7-3v-6"/></symbol>
+  <symbol id="i-server" viewBox="0 0 24 24"><rect x="4" y="4" width="16" height="6" rx="2"/><rect x="4" y="14" width="16" height="6" rx="2"/><path d="M8 7h.01M8 17h.01"/></symbol>
+  <symbol id="i-chart" viewBox="0 0 24 24"><path d="M4 20V4M4 20h16M8 16v-5M12 16V8M16 16v-3"/></symbol>
+  <symbol id="i-eye" viewBox="0 0 24 24"><path d="M2.5 12S6 5.5 12 5.5 21.5 12 21.5 12 18 18.5 12 18.5 2.5 12 2.5 12z"/><circle cx="12" cy="12" r="2.8"/></symbol>
+  <symbol id="i-pencil" viewBox="0 0 24 24"><path d="M4 20l1-4L16.5 4.5a2.1 2.1 0 013 3L8 19z"/></symbol>
+  <symbol id="i-list" viewBox="0 0 24 24"><path d="M8 6h12M8 12h12M8 18h12M4 6h.01M4 12h.01M4 18h.01"/></symbol>
+  <symbol id="i-fork" viewBox="0 0 24 24"><path d="M7 3v8M5 3v5a2 2 0 004 0V3M7 11v10M16 21V3c-2.2 1.2-3 4-3 7 0 2 1 3 3 3"/></symbol>
+  <symbol id="i-bus" viewBox="0 0 24 24"><rect x="4" y="4" width="16" height="13" rx="3"/><path d="M4 11h16M8 20v-3M16 20v-3M8 14h.01M16 14h.01"/></symbol>
+  <symbol id="i-message" viewBox="0 0 24 24"><path d="M4 5h16v11H9l-5 4z"/><path d="M8 9h8M8 12h5"/></symbol>
+  <symbol id="i-file" viewBox="0 0 24 24"><path d="M7 3h7l4 4v14H7z"/><path d="M14 3v4h4M10 12h5M10 16h5"/></symbol>
+  <symbol id="i-scan" viewBox="0 0 24 24"><path d="M4 8V5a1 1 0 011-1h3M16 4h3a1 1 0 011 1v3M20 16v3a1 1 0 01-1 1h-3M8 20H5a1 1 0 01-1-1v-3"/><circle cx="12" cy="12" r="3"/></symbol>
+  <symbol id="i-shield" viewBox="0 0 24 24"><path d="M12 3l7 3v5c0 5-3 8-7 10-4-2-7-5-7-10V6z"/><path d="M9 12l2 2 4-4"/></symbol>
+  <symbol id="i-lock" viewBox="0 0 24 24"><rect x="5" y="11" width="14" height="9" rx="2.5"/><path d="M8 11V8a4 4 0 018 0v3"/></symbol>
+  <symbol id="i-cpu" viewBox="0 0 24 24"><rect x="7" y="7" width="10" height="10" rx="2"/><path d="M9 3v3M15 3v3M9 18v3M15 18v3M3 9h3M3 15h3M18 9h3M18 15h3"/></symbol>
+  <symbol id="i-play" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></symbol>
+  <symbol id="i-pause" viewBox="0 0 24 24"><path d="M8 5v14M16 5v14"/></symbol>
+</svg>
+
+<noscript><p style="position:fixed;inset:0;display:grid;place-items:center;margin:0;font-family:sans-serif">Esta presentación necesita JavaScript activado.</p></noscript>
+<div class="ambient" aria-hidden="true"><i></i><i></i><i></i></div>
+
+<div class="viewport">
+<main class="stage" id="stage" aria-label="Presentación Finance AI">
+
+<!-- ═════════ 1 · PORTADA ═════════ -->
+<section class="scene" id="s-portada" data-title="Portada">
+  <img class="cv-logo rv" data-s="0" src="assets/logo-universidad.jpg" alt="Universidad de Cundinamarca">
+
+  <div class="cv-main">
+    <div class="eyebrow rv" data-s="0" data-i="1">Proyecto de Gestión del Conocimiento</div>
+    <h1 class="cv-title rv f split" data-s="0" data-i="2">Finance <span class="ai">AI</span></h1>
+    <p class="cv-sub rv" data-s="0" data-i="6">Aplicación móvil para el registro y análisis de gastos personales con asistencia de IA para la captura automática de gastos</p>
+    <div class="cv-row rv" data-s="0" data-i="7">
+      <ul class="team">
+        <li>David Fernando Gonzalez Soler</li>
+        <li>Maicol Estiven Fonseca Muñoz</li>
+        <li>Ivan David Giraldo Garavito</li>
+      </ul>
+      <a class="qr-big" href="https://drive.google.com/file/d/1z__jJblXcb8MC2PZvE1tJzy3Kkh2GFgs/view?usp=drivesdk" target="_blank" rel="noopener noreferrer">
+        <img src="assets/app-download-qr.jpg" alt="Código QR para descargar Finance AI">
+        <span><b>Descarga la app</b>Escanea el código QR</span>
+      </a>
+    </div>
+  </div>
+
+  <p class="cv-meta rv" data-s="0" data-i="8">Ingeniería de Sistemas y Computación · Facatativá<br>Ciclo II · Profundización · 2026-2</p>
+
+  <div class="cv-art">
+    <div class="rv z" data-s="0" data-i="3">
+      <div class="float">
+        <div class="device" style="--h:556px;--ar:.462"><div class="screen"><img src="assets/dashboard-actual.png" alt="Inicio de Finance AI con saldo, ingresos y gastos del mes"></div></div>
+      </div>
+    </div>
+    <div class="chip chip-a rv z" data-s="0" data-i="5"><div class="bob b1">
+      <span class="bubble"><span class="tx">«Almuerzo 18 mil con Nequi»</span></span>
+    </div></div>
+    <div class="chip chip-b rv z" data-s="0" data-i="6"><div class="bob b2">
+      <span class="proposal"><svg class="i"><use href="#i-spark"/></svg><span><b>$ 18.000 COP</b>Nequi · Comida · Hoy</span></span>
+    </div></div>
+    <div class="chip chip-c rv z" data-s="0" data-i="7"><div class="bob b3">
+      <span class="mini"><svg class="i"><use href="#i-chart"/></svg><span><b>Alimentación</b><em>63&thinsp;% del presupuesto</em><i class="mb"><u></u></i></span></span>
+    </div></div>
+  </div>
+</section>
+
+<!-- ═════════ 2 · PROBLEMA ═════════ -->
+<section class="scene" id="s-problema" data-title="Problema y justificación" data-steps="2">
+  <header class="hd rv f" data-s="0"><div class="eyebrow">Planteamiento del problema</div><h2 class="h2">Problema y justificación</h2></header>
+
+  <div class="pb-col pb-left">
+    <p class="lbl rv" data-s="0" data-i="1">En cada compra</p>
+    <p class="big rv" data-s="0" data-i="2">Monto, cuenta,<br>categoría y fecha</p>
+    <div class="buy card rv z" data-s="0" data-i="3">
+      <div class="buy-h"><svg class="i"><use href="#i-receipt"/></svg><b>Almuerzo</b><span class="tag">nuevo gasto</span></div>
+      <div class="frow" style="--n:0"><span>Monto</span><em>$ 18.000</em></div>
+      <div class="frow" style="--n:1"><span>Cuenta</span><em>Nequi</em></div>
+      <div class="frow" style="--n:2"><span>Categoría</span><em>Comida</em></div>
+      <div class="frow" style="--n:3"><span>Fecha</span><em>Hoy</em></div>
+    </div>
+    <p class="body rv" data-s="0" data-i="4">Registrar un gasto exige completar y revisar esos datos una y otra vez.</p>
+  </div>
+
+  <div class="pb-arrow rv f" data-s="1" aria-hidden="true"><span></span></div>
+
+  <div class="pb-col pb-right">
+    <p class="lbl rv" data-s="1">Al final de la semana</p>
+    <p class="big q rv" data-s="1" data-i="1">¿En qué se fue<br>mi dinero?</p>
+    <div class="week card rv z" data-s="1" data-i="2">
+      <div class="bars">
+        <div class="d"><i class="wb" style="--h:62%"></i><b>L</b></div>
+        <div class="d"><i class="wb ghost"><u>?</u></i><b>M</b></div>
+        <div class="d"><i class="wb" style="--h:38%"></i><b>X</b></div>
+        <div class="d"><i class="wb ghost"><u>?</u></i><b>J</b></div>
+        <div class="d"><i class="wb" style="--h:80%"></i><b>V</b></div>
+        <div class="d"><i class="wb ghost"><u>?</u></i><b>S</b></div>
+        <div class="d"><i class="wb ghost"><u>?</u></i><b>D</b></div>
+      </div>
+      <div class="legend-s"><span><i class="k solid"></i>registrado</span><span><i class="k dash"></i>sin registrar</span><span class="ilus">ilustrativo</span></div>
+    </div>
+    <p class="body rv" data-s="1" data-i="3">Un registro incompleto dificulta responder.</p>
+  </div>
+
+  <div class="takeaway rv" data-s="2"><svg class="i"><use href="#i-spark"/></svg><p>La captura asistida facilita el registro y conecta los gastos con su análisis.</p></div>
+</section>
+
+<!-- ═════════ 3 · OBJETIVO GENERAL ═════════ -->
+<section class="scene" id="s-objetivo" data-title="Objetivo general" data-steps="3">
+  <header class="hd rv f" data-s="0"><div class="eyebrow">Propósito del proyecto</div><h2 class="h2">Objetivo general</h2></header>
+
+  <p class="obj rv" data-s="0" data-i="1">
+    <span class="seg" data-k="1"><strong>Desarrollar una aplicación móvil</strong> para el registro, la categorización y el análisis de gastos personales,</span>
+    <span class="seg" data-k="2"> con asistencia de IA para la captura automática de gastos, <strong>aplicando la metodología CDIO</strong>,</span>
+    <span class="seg" data-k="3"> con el fin de reducir el esfuerzo de captura de los gastos y contribuir a la formación del hábito de control financiero en los usuarios.</span>
+  </p>
+
+  <div class="ob-cards">
+    <div class="ob-card card rv" data-s="1"><div class="ico"><svg class="i"><use href="#i-phone"/></svg></div><small>Qué</small><b>Una app móvil</b><span>Registro, categorización y análisis de gastos personales</span></div>
+    <div class="ob-card card rv" data-s="2"><div class="ico ai"><svg class="i"><use href="#i-spark"/></svg></div><small>Cómo</small><b>IA y metodología CDIO</b><span>Captura automática de gastos, guiada por CDIO</span></div>
+    <div class="ob-card card rv" data-s="3"><div class="ico"><svg class="i"><use href="#i-target"/></svg></div><small>Para qué</small><b>Menos esfuerzo, mejor hábito</b><span>Reducir el esfuerzo de captura y formar el hábito de control financiero</span></div>
+  </div>
+</section>
+
+<!-- ═════════ 4 · OBJETIVOS ESPECÍFICOS (CDIO) ═════════ -->
+<section class="scene" id="s-cdio" data-title="Objetivos específicos" data-steps="5">
+  <header class="hd rv f" data-s="0"><div class="eyebrow">Metodología CDIO</div><h2 class="h2">Objetivos específicos</h2></header>
+
+  <div class="cdio rv f" data-s="0" data-i="1">
+    <div class="track"><i class="fill"><b class="orb"></b><b class="orb o2"></b></i></div>
+    <div class="cols">
+      <div class="col"><div class="node"><b>C</b></div><span class="ph">Concebir</span>
+        <div class="oc card rv" data-s="1"><p>Definir alcance, requisitos funcionales y no funcionales, y el flujo de confirmar, editar o descartar.</p></div></div>
+      <div class="col"><div class="node"><b>D</b></div><span class="ph">Diseñar</span>
+        <div class="oc card rv" data-s="2"><p>Definir arquitectura, modelo de datos y mockups de captura y confirmación.</p></div></div>
+      <div class="col"><div class="node"><b>I</b></div><span class="ph">Implementar</span>
+        <div class="oc card rv" data-s="3"><p>Capturar gastos con IA por foto, voz o texto y permitir su confirmación.</p></div></div>
+      <div class="col"><div class="node"><b>I</b></div><span class="ph">Implementar</span>
+        <div class="oc card rv" data-s="4"><p>Mostrar gastos agrupados por categoría en el período seleccionado.</p></div></div>
+      <div class="col"><div class="node"><b>O</b></div><span class="ph">Operar</span>
+        <div class="oc card rv" data-s="5"><p>Validar con pruebas funcionales y una encuesta de usabilidad con estudiantes de la Universidad de Cundinamarca.</p></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ═════════ 5 · PROPUESTA TECNOLÓGICA ═════════ -->
+<section class="scene" id="s-arq" data-title="Propuesta tecnológica" data-steps="4">
+  <header class="hd rv f" data-s="0"><div class="eyebrow">Arquitectura y responsabilidades</div><h2 class="h2">Propuesta tecnológica</h2></header>
+
+  <div class="arch">
+    <!-- enlaces -->
+    <div class="link two rv f" data-s="0" style="left:260px;top:164px;width:138px"><em>REST</em><span class="dot"></span><span class="dot d2"></span></div>
+    <div class="link rv f" data-s="1" style="left:658px;top:74px;width:158px"><em>SQL</em><span class="dot"></span><span class="dot d2"></span></div>
+    <div class="link rv f" data-s="2" style="left:658px;top:254px;width:158px"><em>API</em><span class="dot"></span><span class="dot d2"></span></div>
+
+    <!-- nodos -->
+    <div class="nd card blue rv z" data-s="0" id="n-flutter" style="left:0;top:0;width:260px;height:330px">
+      <div class="ico"><svg class="i"><use href="#i-phone"/></svg></div>
+      <h3>Flutter</h3><div class="sub">Android y Windows</div>
+      <p>Captura y revisión</p>
+      <div class="mini-phone"><i></i><i></i><span class="mbtn">Confirmar</span></div>
+    </div>
+    <div class="nd card green rv z" data-s="0" data-i="1" id="n-api" style="left:398px;top:0;width:260px;height:330px">
+      <div class="ico"><svg class="i"><use href="#i-server"/></svg></div>
+      <h3>FastAPI</h3><div class="sub">Python</div>
+      <p>Valida y ejecuta las<br>operaciones financieras</p>
+      <ul class="vchk"><li><svg class="i"><use href="#i-check"/></svg>Campos del gasto</li><li><svg class="i"><use href="#i-check"/></svg>Cuenta y categoría</li></ul>
+    </div>
+    <div class="nd sm card green rv z" data-s="1" id="n-db" style="left:816px;top:0;width:320px;height:150px">
+      <div class="ico"><svg class="i"><use href="#i-db"/></svg></div>
+      <h3>PostgreSQL</h3><p>Datos y movimientos por usuario</p>
+    </div>
+    <div class="nd sm card ai rv z" data-s="2" id="n-ai" style="left:816px;top:180px;width:320px;height:150px">
+      <div class="ico"><svg class="i"><use href="#i-spark"/></svg></div>
+      <h3>Modelo de IA</h3><p>Interpreta texto y recibos</p>
+      <span class="only">Solo propone, no guarda</span>
+    </div>
+
+    <div class="packet" id="packet"></div>
+  </div>
+
+  <div class="flowcap rv" data-s="3" aria-live="polite">
+    <div class="dots"><i></i><i></i><i></i><i></i><i></i><i></i></div>
+    <span class="cap" id="cap">Una captura recorre el sistema</span>
+  </div>
+
+  <div class="principles">
+    <div class="pr card rv" data-s="4"><div class="ico"><svg class="i"><use href="#i-check-circle"/></svg></div><div><b>Guardado</b><span>La persona confirma la propuesta</span></div></div>
+    <div class="pr card rv" data-s="4" data-i="1"><div class="ico"><svg class="i"><use href="#i-sigma"/></svg></div><div><b>Cálculos</b><span>El sistema calcula desde los movimientos</span></div></div>
+  </div>
+</section>
+
+<!-- ═════════ 6 · CAPTURA ASISTIDA ═════════ -->
+<section class="scene" id="s-captura" data-title="Captura asistida" data-steps="3">
+  <header class="hd rv f" data-s="0"><div class="eyebrow">Solución · Captura</div><h2 class="h2">Captura asistida</h2></header>
+
+  <div class="cp-left">
+    <div class="composer card rv" data-s="0" data-i="1">
+      <svg class="i"><use href="#i-pencil"/></svg>
+      <span class="typed" id="typed"></span><i class="caret"></i>
+    </div>
+    <div class="modes rv" data-s="0" data-i="2">
+      <span class="m m1"><svg class="i"><use href="#i-text"/></svg>Texto</span>
+      <span class="m m2"><svg class="i"><use href="#i-receipt"/></svg>Recibo</span>
+      <span class="m m3"><svg class="i"><use href="#i-mic"/></svg>Dictado<b class="eq"><i></i><i></i><i></i></b></span>
+    </div>
+
+    <div class="fgrid" id="fgrid">
+      <div class="fchip" style="--c:var(--green)"><small>Monto</small><b>$ 18.000 COP</b></div>
+      <div class="fchip" style="--c:var(--blue)"><small>Descripción</small><b>Almuerzo</b></div>
+      <div class="fchip" style="--c:var(--ai)"><small>Cuenta</small><b>Nequi</b></div>
+      <div class="fchip" style="--c:#c27c0e"><small>Categoría</small><b>Comida</b></div>
+      <div class="fchip" style="--c:#0e9f6e"><small>Fecha</small><b>Hoy</b></div>
+    </div>
+    <div class="capok" id="capok"><svg class="i"><use href="#i-check-circle"/></svg><b>Movimiento registrado</b><span>Entra al historial y actualiza el saldo</span></div>
+
+    <ol class="steps3">
+      <li class="rv" data-s="0" data-i="3"><i>1</i><b>Capturas</b><span>Texto, recibo o dictado.</span></li>
+      <li class="rv" data-s="0" data-i="4"><i>2</i><b>Revisas</b><span>Monto, cuenta y categoría.</span></li>
+      <li class="rv" data-s="0" data-i="5"><i>3</i><b>Confirmas</b><span>El movimiento queda registrado.</span></li>
+    </ol>
+  </div>
+
+  <div class="cp-phone rv r" data-s="0" data-i="2">
+    <div class="float">
+      <div class="device" style="--h:540px;--ar:.56">
+        <div class="screen">
+          <img src="assets/captura-propuesta-actual.png" alt="Propuesta de gasto en la interfaz actual de Finance AI">
+          <i class="cover cv1"></i><i class="cover cv2"></i>
+          <i class="ring" id="ring"></i>
+        </div>
+      </div>
+      <p class="shot-cap">Interfaz actual · datos de demostración</p>
+    </div>
+  </div>
+</section>
+
+<!-- ═════════ 7 · ANÁLISIS ═════════ -->
+<section class="scene" id="s-analisis" data-title="Gastos por categoría y período" data-steps="3">
+  <header class="hd rv f" data-s="0"><div class="eyebrow">Solución · Análisis</div><h2 class="h2">Gastos por categoría y período</h2></header>
+
+  <div class="an-left">
+    <div class="an-top">
+      <div class="donut rv z" data-s="1">
+        <svg viewBox="0 0 220 220" aria-hidden="true">
+          <circle class="trk" cx="110" cy="110" r="84"/>
+          <circle class="arc a1" id="arc1" cx="110" cy="110" r="84"/>
+          <circle class="arc a2" id="arc2" cx="110" cy="110" r="84"/>
+        </svg>
+        <div class="dc"><small>Gastos de octubre</small><b id="total">0</b><span>COP</span></div>
+      </div>
+      <ul class="legend">
+        <li class="rv" data-s="1" data-i="2"><i class="sw" style="background:var(--green)"></i><div><b>Alimentación</b><span>Restaurante demo</span></div><em>57&thinsp;%</em><strong>−$ 252.000</strong></li>
+        <li class="rv" data-s="1" data-i="3"><i class="sw" style="background:#b6cf6a"></i><div><b>Transporte</b><span>Restaurante demo</span></div><em>43&thinsp;%</em><strong>−$ 190.000</strong></li>
+      </ul>
+    </div>
+
+    <div class="periods rv" data-s="2">
+      <p class="lbl">Elige el período</p>
+      <div class="pchips"><span style="--n:0">Este mes</span><span style="--n:1">Mes anterior</span><span style="--n:2">Últimos 3 meses</span><span style="--n:3">Este año</span></div>
+    </div>
+
+    <div class="saldo">
+      <div class="sc card rv" data-s="3"><small>¿Cuánto dinero tengo?</small><b>$ 3.000.000 <i>COP</i></b><span>Saldo en cuentas</span></div>
+      <div class="sc card rv" data-s="3" data-i="1"><small>¿Cuánto he gastado?</small><b>$ 442.000 <i>COP</i></b><span>Gastos del mes</span></div>
+    </div>
+  </div>
+
+  <div class="an-phone rv r" data-s="0" data-i="1">
+    <div class="float">
+      <div class="device" style="--h:520px;--ar:.658">
+        <div class="screen">
+          <img class="shot s1" src="assets/analisis-actual.png" alt="Análisis de octubre: tendencia de gasto y gastos por categoría">
+          <img class="shot s2" src="assets/dashboard-actual.png" alt="Inicio: saldo en cuentas, ingresos y gastos del mes">
+        </div>
+      </div>
+      <p class="shot-cap">Interfaz actual · datos de demostración</p>
+    </div>
+  </div>
+</section>
+
+<!-- ═════════ 8 · MOVIMIENTOS Y PRESUPUESTOS ═════════ -->
+<section class="scene" id="s-seguimiento" data-title="Movimientos y presupuestos" data-steps="2">
+  <header class="hd rv f" data-s="0"><div class="eyebrow">Solución · Seguimiento</div><h2 class="h2">Movimientos y presupuestos</h2></header>
+
+  <div class="sg-left">
+    <div class="mov">
+      <p class="lbl rv" data-s="0" data-i="1">Búsqueda e historial</p>
+      <div class="search card rv" data-s="0" data-i="2"><svg class="i"><use href="#i-search"/></svg><span class="sq"><b style="--w:calc(16ch + 6px)">Restaurante demo</b><b style="--w:calc(5ch + 6px);animation-delay:3s">Nequi</b><b style="--w:calc(12ch + 6px);animation-delay:6s">Alimentación</b></span></div>
+      <div class="filters rv" data-s="0" data-i="3"><span class="on">Todo</span><span>Semana</span><span>Mes</span><span>Personalizado</span></div>
+      <div class="mrow card rv" data-s="0" data-i="4">
+        <div class="ico"><svg class="i"><use href="#i-fork"/></svg></div>
+        <div class="mm"><b>Restaurante demo</b><span>Nequi · Alimentación · Hoy 07:30</span></div>
+        <strong>−$ 18.000 <i>COP</i></strong>
+      </div>
+    </div>
+
+    <div class="bud">
+      <p class="lbl rv" data-s="1">Progreso y alertas por categoría</p>
+      <div class="brow card rv" data-s="1" data-i="1" style="--w:63%">
+        <div class="bh"><div class="ico"><svg class="i"><use href="#i-fork"/></svg></div><b>Alimentación</b><span>Mensual · 01/10 – 31/10</span></div>
+        <div class="bar"><i></i></div>
+        <div class="bf"><b>$ 252.000 de $ 400.000 COP</b><span>Quedan $ 148.000</span></div>
+      </div>
+      <div class="brow warn card rv" data-s="2" style="--w:95%">
+        <div class="bh"><div class="ico"><svg class="i"><use href="#i-bus"/></svg></div><b>Transporte</b><span class="alert"><svg class="i"><use href="#i-alert"/></svg>¡Casi al límite! Te acercas al tope</span></div>
+        <div class="bar"><i></i></div>
+        <div class="bf"><b>$ 190.000 de $ 200.000 COP</b><span>¡Quedan $ 10.000!</span></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="sg-phone rv r" data-s="0" data-i="1">
+    <div class="float">
+      <div class="device" style="--h:520px;--ar:.658">
+        <div class="screen">
+          <img class="shot s1" src="assets/historial-actual.png" alt="Historial de movimientos con búsqueda y filtros">
+          <img class="shot s2" src="assets/presupuestos-actual.png" alt="Presupuestos de Alimentación y Transporte con progreso y alerta">
+        </div>
+      </div>
+      <p class="shot-cap">Interfaz actual · datos de demostración</p>
+    </div>
+  </div>
+</section>
+
+<!-- ═════════ 9 · CONCLUSIONES ═════════ -->
+<section class="scene" id="s-conclusiones" data-title="Conclusiones" data-steps="3">
+  <header class="hd rv f" data-s="0"><div class="eyebrow">Resultados del software</div><h2 class="h2">Conclusiones</h2></header>
+
+  <ol class="cc-list">
+    <li class="rv" data-s="1"><i>1</i><p>La aplicación integra el <strong>registro de gastos</strong> con el historial y su análisis por categoría.</p></li>
+    <li class="rv" data-s="2"><i>2</i><p>La captura asistida produce una <strong>propuesta que la persona revisa</strong>, edita o confirma.</p></li>
+    <li class="rv" data-s="3"><i>3</i><p>Los movimientos confirmados alimentan las consultas y el <strong>seguimiento de presupuestos</strong>.</p></li>
+  </ol>
+
+  <div class="cycle rv z" data-s="1" aria-hidden="true">
+    <div class="ringc"></div>
+    <div class="orbit"><i></i></div>
+    <div class="core"><b>Finance <span>AI</span></b></div>
+    <div class="cn n1"><svg class="i"><use href="#i-pencil"/></svg>Captura</div>
+    <div class="cn n2"><svg class="i"><use href="#i-eye"/></svg>Revisión</div>
+    <div class="cn n3"><svg class="i"><use href="#i-list"/></svg>Movimientos</div>
+    <div class="cn n4"><svg class="i"><use href="#i-chart"/></svg><span>Análisis y<br>presupuestos</span></div>
+  </div>
+</section>
+
+<!-- ═════════ 10 · DEMOSTRACIÓN ═════════ -->
+<section class="scene" id="s-demo" data-theme="dark" data-title="Probemos con la app real">
+  <div class="dm-glow" aria-hidden="true"></div>
+  <div class="dm-main">
+    <div class="eyebrow live rv" data-s="0"><i class="pulse"></i>Demostración</div>
+    <h1 class="dm-title rv f split" data-s="0" data-i="1">Probemos con la <span class="ap">app real</span></h1>
+    <p class="dm-sub rv" data-s="0" data-i="5">El mismo recorrido de las diapositivas, ahora funcionando de principio a fin.</p>
+    <div class="dm-steps">
+      <div class="ds rv" data-s="0" data-i="6" style="--n:0"><small>1 · Escribir</small><b>Una frase, como la dirías</b><span>«Almuerzo 18 mil con Nequi»</span></div>
+      <div class="ds rv" data-s="0" data-i="7" style="--n:1"><small>2 · Revisar</small><b>La propuesta de la IA</b><span>Monto, cuenta y categoría; corregimos un campo</span></div>
+      <div class="ds rv" data-s="0" data-i="8" style="--n:2"><small>3 · Confirmar</small><b>Se guarda el movimiento</b><span>Una sola vez, sin duplicados</span></div>
+      <div class="ds rv" data-s="0" data-i="9" style="--n:3"><small>4 · Ver</small><b>Historial, saldo y dashboard</b><span>Todo queda actualizado</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- ═════════ RESPALDO A · MODELO DE DATOS ═════════ -->
+<section class="scene" id="s-resp-a" data-group="backup" data-title="Respaldo A · Modelo de datos" data-steps="4">
+  <header class="hd rv f" data-s="0"><div class="eyebrow">Respaldo · A</div><h2 class="h2 sm">Modelo de datos: el libro de movimientos</h2></header>
+
+  <div class="er">
+    <div class="en card rv z" data-s="0" data-i="0" style="grid-area:1/1;--c:var(--blue)"><b>Usuario</b><span>dueño de todo lo demás</span></div>
+    <i class="ea r rv f" data-s="0" data-i="2" style="grid-area:1/2"></i>
+    <div class="en card rv z" data-s="0" data-i="3" style="grid-area:1/3;--c:var(--green)"><b>Cuenta</b><span>moneda + saldo inicial</span></div>
+    <i class="ea l rv f" data-s="0" data-i="5" style="grid-area:1/4"></i>
+    <div class="en card rv z" data-s="0" data-i="6" style="grid-area:1/5;--c:var(--green)"><b>Movimiento</b><span>monto firmado (+ / −)</span></div>
+    <i class="ea u rv f" data-s="0" data-i="8" style="grid-area:2/5"></i>
+    <div class="en card rv z" data-s="0" data-i="9" style="grid-area:3/5;--c:var(--green)"><b>Transacción</b><span>gasto · ingreso · transferencia</span></div>
+    <i class="ea l rv f" data-s="0" data-i="11" style="grid-area:3/4"></i>
+    <div class="en card rv z" data-s="0" data-i="12" style="grid-area:3/3;--c:var(--warn-l)"><b>Recibo e ítems</b><span>grupo de compra</span></div>
+    <i class="ea l rv f" data-s="0" data-i="14" style="grid-area:3/2"></i>
+    <div class="en card rv z" data-s="0" data-i="15" style="grid-area:3/1;--c:var(--warn-l)"><b>Categoría</b><span>definida por el usuario</span></div>
+  </div>
+  <p class="er-note rv" data-s="0" data-i="17">Aislamiento por usuario con llaves foráneas compuestas en la base de datos. La fuente de captura distingue manual, texto IA y recibo IA.</p>
+
+  <div class="ledger card rv z" data-s="1">
+    <p class="lbl">Ejemplo ilustrativo · cuenta Nequi</p>
+    <div class="lrow rv" data-s="1" data-i="1"><span>Saldo inicial</span><b>500.000</b></div>
+    <div class="lrow rv" data-s="2"><span>Almuerzo (gasto)</span><b class="neg">− 18.000</b></div>
+    <div class="lrow rv" data-s="3"><span>Salario (ingreso)</span><b class="pos">+ 2.000.000</b></div>
+    <div class="lrow rv" data-s="4"><span>Transferencia a Bancolombia</span><b class="neg">− 200.000</b></div>
+    <div class="lsum"><span>Saldo</span><b id="ledger-total">0</b></div>
+    <p class="lnote rv" data-s="4" data-i="1">La transferencia mueve el saldo pero no cuenta como gasto ni ingreso.</p>
+  </div>
+</section>
+
+<!-- ═════════ RESPALDO B · PROPUESTA DE IA ═════════ -->
+<section class="scene" id="s-resp-b" data-group="backup" data-title="Respaldo B · De palabras a una propuesta" data-steps="5">
+  <header class="hd rv f" data-s="0"><div class="eyebrow">Respaldo · B</div><h2 class="h2 sm">De palabras a una propuesta confiable</h2></header>
+
+  <div class="pipe">
+    <i class="runner" aria-hidden="true"></i>
+    <div class="ps card rv z" data-s="0" data-i="0"><span class="pi"><svg class="i"><use href="#i-message"/></svg></span><b>Mensaje</b><small>frase en español o transcripción de voz</small></div>
+    <i class="pa rv f" data-s="0" data-i="1"></i>
+    <div class="ps card rv z" data-s="0" data-i="2"><span class="pi"><svg class="i"><use href="#i-file"/></svg></span><b>Prompt con contexto</b><small>tus cuentas, categorías, fuentes de ingreso y la fecha de hoy</small></div>
+    <i class="pa rv f" data-s="0" data-i="3"></i>
+    <div class="ps ai card rv z" data-s="0" data-i="4"><span class="pi"><svg class="i"><use href="#i-spark"/></svg></span><b>LLM</b><small>responde en JSON, temperatura 0</small></div>
+    <i class="pa rv f" data-s="0" data-i="5"></i>
+    <div class="ps card rv z" data-s="0" data-i="6"><span class="pi"><svg class="i"><use href="#i-scan"/></svg></span><b>Anclaje</b><small>se compara con tus datos reales</small></div>
+    <i class="pa rv f" data-s="0" data-i="7"></i>
+    <div class="ps user card rv z" data-s="0" data-i="8"><span class="pi"><svg class="i"><use href="#i-check-circle"/></svg></span><b>Propuesta</b><small>un toque para aceptar</small></div>
+  </div>
+
+  <div class="ex card rv" data-s="2">
+    <p class="lbl">Ejemplo ilustrativo</p>
+    <div class="msg">pasé 200 mil de Nequi a Bancolombia</div>
+    <p class="ret"><svg class="i"><use href="#i-spark"/></svg>El modelo devuelve:</p>
+    <div class="tks">
+      <span class="tk rv f" data-s="2" data-i="3">intención: transferencia</span>
+      <span class="tk rv f" data-s="2" data-i="4">monto: 200.000</span>
+      <span class="tk tm rv f" data-s="2" data-i="5">origen: Nequi</span>
+      <span class="tk tm rv f" data-s="2" data-i="6">destino: Bancolombia</span>
+      <span class="tk rv f" data-s="2" data-i="7">confianza: 0–1</span>
+    </div>
+    <p class="anc rv" data-s="3"><svg class="i"><use href="#i-scan"/></svg><span><b>Anclaje:</b> «Nequi» y «Bancolombia» coinciden con tus cuentas ⇒ se propone una <b>transferencia</b>, no un gasto.</span></p>
+  </div>
+
+  <div class="sf card rv" data-s="4">
+    <p class="lbl">Salvaguardas</p>
+    <ul>
+      <li class="rv" data-s="4" data-i="1"><svg class="i"><use href="#i-check"/></svg><span><b>Validación:</b> los nombres propuestos se comparan con tus cuentas y categorías</span></li>
+      <li class="rv" data-s="4" data-i="2"><svg class="i"><use href="#i-check"/></svg><span><b>Umbral configurado ≥ 0,8:</b> revisión de un toque; menos, revisar con cuidado</span></li>
+      <li class="rv" data-s="4" data-i="3"><svg class="i"><use href="#i-check"/></svg><span><b>Una sola pregunta</b> corta, con opciones, solo ante duda real</span></li>
+      <li class="rv" data-s="4" data-i="4"><svg class="i"><use href="#i-check"/></svg><span><b>Entre tus cuentas ≠ gasto;</b> moneda dudosa: se pregunta</span></li>
+      <li class="rv" data-s="4" data-i="5"><svg class="i"><use href="#i-check"/></svg><span><b>Texto no confiable:</b> defensa contra prompt injection</span></li>
+      <li class="rv" data-s="4" data-i="6"><svg class="i"><use href="#i-check"/></svg><span><b>Respaldo:</b> segundo proveedor, límites de tiempo y uso; si cae la IA, siguen los formularios</span></li>
+    </ul>
+  </div>
+
+  <p class="mdl rv" data-s="5"><svg class="i"><use href="#i-cpu"/></svg><span><b>Modelo:</b> LLM vía API (Gemini o DeepSeek, intercambiables). <b>Integración:</b> ingeniería de prompts y validación determinista.</span></p>
+</section>
+
+<!-- ═════════ RESPALDO C · RECIBOS Y VOZ ═════════ -->
+<section class="scene" id="s-resp-c" data-group="backup" data-title="Respaldo C · Recibos y voz" data-steps="5">
+  <header class="hd rv f" data-s="0"><div class="eyebrow">Respaldo · C</div><h2 class="h2 sm">Más allá del texto: recibos y voz</h2></header>
+
+  <div class="zones">
+    <div class="zone card rv z" data-s="0">
+      <h3><span class="ico ai"><svg class="i"><use href="#i-receipt"/></svg></span>Foto de recibo</h3>
+      <ol class="stl">
+        <li class="rv" data-s="1" style="--b:var(--ai)"><i>1</i><p>Foto <span class="mt">(JPEG, PNG o HEIC, hasta 10 MB)</span></p></li>
+        <li class="rv" data-s="2" style="--b:var(--ai)"><i>2</i><p>Se normaliza y comprime en el servidor</p></li>
+        <li class="rv" data-s="3" style="--b:var(--ai)"><i>3</i><p>LLM con visión → JSON estricto: <span class="mt">comercio, fecha, total impreso, moneda, medio de pago, categoría sugerida, ítems</span></p></li>
+        <li class="rv" data-s="4" style="--b:var(--green)"><i>4</i><p><b>Validación:</b> defensa anti-inyección y verificación aritmética</p></li>
+        <li class="rv" data-s="5" style="--b:var(--blue)"><i>5</i><p><b>Revisión:</b> editar, reintentar o aceptar. El total impreso se conserva</p></li>
+      </ol>
+    </div>
+    <div class="zone card rv z" data-s="0" data-i="1">
+      <h3><span class="ico blue"><svg class="i"><use href="#i-mic"/></svg></span>Voz</h3>
+      <ol class="stl">
+        <li class="rv" data-s="1" style="--b:var(--blue)"><i>1</i><p>Pulsas el micrófono y hablas</p></li>
+        <li class="rv" data-s="2" style="--b:var(--blue)"><i>2</i><p><b>El reconocimiento ocurre en el dispositivo</b> <span class="mt">(Android: reconocedor local · Windows: SAPI)</span></p></li>
+        <li class="rv" data-s="3" style="--b:var(--ai)"><i>3</i><p>La transcripción entra al <b>mismo flujo de texto</b> de la IA</p></li>
+        <li class="rv" data-s="4" style="--b:var(--blue)"><i>4</i><p><b>Revisión:</b> aceptar, editar o descartar</p></li>
+      </ol>
+      <div class="lockbox rv" data-s="3" data-i="2"><svg class="i"><use href="#i-lock"/></svg><span>Dictado local: el flujo de IA recibe texto</span></div>
+    </div>
+  </div>
+
+  <div class="zend rv" data-s="5" data-i="2"><svg class="i"><use href="#i-check-circle"/></svg><p>La captura termina en una propuesta que el usuario revisa y confirma.</p></div>
+</section>
+
+<!-- ═════════ RESPALDO D · SEGURIDAD Y CALIDAD ═════════ -->
+<section class="scene" id="s-resp-d" data-group="backup" data-title="Respaldo D · Seguridad y calidad" data-steps="2">
+  <header class="hd rv f" data-s="0"><div class="eyebrow">Respaldo · D</div><h2 class="h2 sm">Seguridad y calidad del software</h2></header>
+
+  <div class="sq-l card rv z" data-s="0">
+    <h3 class="cardh"><span class="ico ai"><svg class="i"><use href="#i-shield"/></svg></span>Seguridad y privacidad</h3>
+    <ul class="sl">
+      <li class="rv" data-s="0" data-i="2"><svg class="i"><use href="#i-check"/></svg>Contraseñas con Argon2</li>
+      <li class="rv" data-s="0" data-i="3"><svg class="i"><use href="#i-check"/></svg>Acceso de 15 min con credenciales renovables rotativas</li>
+      <li class="rv" data-s="0" data-i="4"><svg class="i"><use href="#i-check"/></svg>Aislamiento de los datos de cada usuario, también en la base de datos</li>
+      <li class="rv" data-s="0" data-i="5"><svg class="i"><use href="#i-check"/></svg>Reportes de error con datos sensibles filtrados</li>
+      <li class="rv" data-s="0" data-i="6"><svg class="i"><use href="#i-check"/></svg>Claves de IA en el servidor</li>
+      <li class="rv" data-s="0" data-i="7"><svg class="i"><use href="#i-check"/></svg>Reconocimiento de voz en el dispositivo</li>
+    </ul>
+  </div>
+
+  <div class="sq-r card rv z" data-s="1">
+    <h3 class="cardh"><span class="ico"><svg class="i"><use href="#i-check-circle"/></svg></span>Calidad</h3>
+    <div class="tiles">
+      <div class="tile rv" data-s="1" data-i="2">
+        <b class="n" id="n415">0</b><span>pruebas del servidor</span>
+        <div class="cov"><svg viewBox="0 0 44 44" aria-hidden="true"><circle class="t" cx="22" cy="22" r="17"/><circle class="v" cx="22" cy="22" r="17"/></svg><em>89&thinsp;% cobertura de ramas</em></div>
+        <small>16 oct 2026</small>
+      </div>
+      <div class="tile rv" data-s="1" data-i="3">
+        <b class="n" id="n573">0</b><span>pruebas de la app</span>
+        <em>Análisis estático aprobado</em>
+        <small>18 oct 2026</small>
+      </div>
+    </div>
+    <ul class="ql">
+      <li class="rv" data-s="2">CI con lint, tipado estricto, pruebas y auditoría de dependencias</li>
+      <li class="rv" data-s="2" data-i="1">Umbral de cobertura del 80&nbsp;% en integración continua</li>
+    </ul>
+    <p class="fn rv" data-s="2" data-i="2">Verificaciones documentadas: 16 y 18 oct 2026</p>
+  </div>
+</section>
+
+<!-- ═════════ HUD ═════════ -->
+<a class="qr" id="qr" href="https://drive.google.com/file/d/1z__jJblXcb8MC2PZvE1tJzy3Kkh2GFgs/view?usp=drivesdk" target="_blank" rel="noopener noreferrer" aria-label="Descargar Finance AI">
+  <img src="assets/app-download-qr.jpg" alt="Código QR para descargar Finance AI"><span>Descarga la app</span>
+</a>
+
+<div class="hud">
+  <span class="brand"><b>Finance AI</b> · Universidad de Cundinamarca</span>
+  <button class="back" id="back" type="button">← Volver a la presentación <kbd>Esc</kbd></button>
+  <nav class="progress" id="progress" aria-label="Progreso de la presentación"></nav>
+  <nav class="progress b" id="progress-b" aria-label="Respaldo técnico"></nav>
+  <span class="ctl">
+    <span class="mode" id="mode">auto</span>
+    <button class="play" id="play" type="button" aria-label="Recorrido automático (P)" title="Recorrido automático (P)"><svg class="i"><use id="play-use" href="#i-play"/></svg></button>
+    <span class="count" id="count">01 / 10</span>
+  </span>
+</div>
+<div class="hint" id="hint">→ avanzar · P recorrido automático · M modo manual · A–D respaldo · F pantalla completa</div>
+
+</main>
+</div>
+
+<div class="sr" id="live" aria-live="polite"></div>
+<script src="deck.js?v=20261028f"></script>
+<script src="scenes.js?v=20261028f"></script>
+</body>
+</html>

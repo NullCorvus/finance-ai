@@ -1,54 +1,113 @@
-# Presentación de Finance AI (Slidev)
+# Presentación breve de Finance AI (Slidev)
 
-Presentación del proyecto para los docentes, hecha con [Slidev](https://sli.dev).
-13 diapositivas principales + 4 de respaldo (A–D). Notas del orador en español en cada diapositiva.
-Duración estimada: ~17 min, de los cuales ~3 son la demo en vivo (diapositiva 9).
+**9 diapositivas principales · 6 minutos de exposición, más una diapositiva final (la 10) que da paso a la app real.**
+Después se muestra la app y se responden las preguntas de los jurados.
+Las 4 diapositivas restantes son respaldo técnico, no parte de la exposición.
 
-Una copia lista para abrir está en [`Finance-AI.pdf`](Finance-AI.pdf) (respaldo por si falla la demo o el equipo).
+El PDF completo se genera en [`Finance-AI.pdf`](Finance-AI.pdf).
 
-## Ejecutar
+Hay además una **versión interactiva en HTML**, con animaciones, pasos que se encadenan solos, recorrido automático y el respaldo técnico A–D (teclas `A`–`D`), sin dependencias: [`interactive/`](interactive/README.md). Se abre con doble clic en `interactive/index.html`. Las notas del orador siguen solo en esta versión de Slidev.
 
-Desde la raíz del repositorio `finance-ai`:
+## Guion principal
+
+| # | Diapositiva | Tiempo | Acumulado |
+|---|---|---:|---:|
+| 1 | Finance AI | 0:20 | 0:20 |
+| 2 | Problema y justificación | 0:45 | 1:05 |
+| 3 | Objetivo general | 0:25 | 1:30 |
+| 4 | Objetivos específicos | 0:40 | 2:10 |
+| 5 | Propuesta tecnológica | 0:55 | 3:05 |
+| 6 | Captura asistida | 0:55 | 4:00 |
+| 7 | Gastos por categoría y período | 0:50 | 4:50 |
+| 8 | Movimientos y presupuestos | 0:45 | 5:35 |
+| 9 | Conclusiones | 0:25 | 6:00 |
+| 10 | Probemos con la app real (transición a la demostración) | fuera del tiempo | — |
+
+Las notas del orador están en español, con tiempo por diapositiva y acumulado. Cada bloque separa el **GUION ORAL** del **APOYO Y FUENTES (no leer)**. El guion ronda las 710 palabras. Los objetivos completos y la información ampliada se conservan en el apoyo.
+La diapositiva 10 dura unos segundos y no cuenta en los seis minutos: es la invitación a ver la app. Después de ella, cambiar a la app. El showcase y las preguntas quedan fuera de los seis minutos.
+
+Se sigue el orden de las siete secciones de la plantilla PGC: portada, problema y justificación, objetivo general, objetivos específicos, propuesta tecnológica, solución y conclusiones. Solución ocupa las diapositivas 6 a 8. La portada usa **2026-2**, según la indicación del equipo.
+
+## Ejecutar y exportar
+
+Desde `finance-ai/docs/presentation`:
 
 ```bash
-cd docs/presentation
-npm install          # solo la primera vez
-npm run dev          # http://localhost:3030
+npm install            # solo la primera vez
+npm run dev            # http://localhost:3030
+npm run build          # comprueba la compilación
+npm run export         # PDF completo: 10 principales + 4 de respaldo
+npm run export:main    # PDF de solo las 10 principales
 ```
 
-- Vista del orador (con notas y cronómetro): http://localhost:3030/presenter
-- Vista general de todas las diapositivas: http://localhost:3030/overview
-- Exportar desde el navegador (PDF, PPTX o PNG): http://localhost:3030/export
-- Exportar a PDF por consola: `npm run export` → genera `Finance-AI.pdf`
-  (usa el Chrome instalado; si no está en `C:/Program Files/Google/Chrome/Application/`, ajusta `--executable-path` en `package.json`)
+- Notas y cronómetro: http://localhost:3030/presenter
+- Vista general para localizar respaldo: http://localhost:3030/overview
+- Exportación desde el navegador: http://localhost:3030/export
+- Teclas: derecha/izquierda para avanzar, `o` para vista general, `f` para pantalla completa.
 
-Teclas útiles: `→` / `←` avanzar/retroceder · `o` vista general · `f` pantalla completa.
-Las diapositivas 2 y 6 tienen revelados con clic (`v-click`).
+La exportación usa Chrome en `C:/Program Files/Google/Chrome/Application/`.
+Si se instala en otra ruta, ajustar `--executable-path` en `package.json`.
 
-## Capturas reales de la app (pendiente)
+## Editar con una persona o un LLM
 
-La diapositiva 5 muestra marcadores de posición. Para reemplazarlos, guarda capturas verticales (relación 9:16)
-en `public/screens/` con estos nombres exactos y aparecerán solas:
-
-| Archivo | Qué mostrar |
+| Archivo | Qué editar |
 |---|---|
-| `captura-1-entrada.png` | El chat de captura con una frase escrita |
-| `captura-2-propuesta.png` | La tarjeta de propuesta de la IA (sin guardar) |
-| `captura-3-revision.png` | Editando un campo en la propia tarjeta |
-| `captura-4-guardado.png` | El saldo / historial / dashboard ya actualizado |
+| `slides.md` | Las diez diapositivas principales y sus notas |
+| `pages/backup.md` | Las cuatro diapositivas para preguntas |
+| `style.css` | Tipografía, colores y composición compartida |
+| `public/screens/` | Capturas reales usadas por las diapositivas |
+| `components/DownloadQr.vue` | QR de descarga y enlace del PDF |
+| `public/app-download-qr.jpg` | Imagen original del QR, con su margen blanco |
+| `PLAN-PGC-6-MIN.md` | Plan aprobado, correspondencia con la plantilla y comprobaciones |
+
+El contenido sigue en texto editable, no dentro de imágenes de las diapositivas.
+Los separadores `---` delimitan las diapositivas; el último bloque de `slides.md` importa el respaldo.
+Los comentarios HTML al final de cada diapositiva contienen las notas del orador.
+La composición breve usa clases `pitch-*`, concentradas al final de `style.css`, para evitar estilos en línea en el guion principal.
+Conservar las nueve diapositivas de la exposición, el orden de la plantilla y el reparto de tiempos al revisar el texto. La décima, de transición a la demo, usa el layout `demo` y las clases `pitch-close-body` y `pitch-demo-steps`. El relato se centra en las funciones y decisiones del software actual. Las vistas de la app usan imágenes de tamaño medio, recortadas con CSS para enfocar los datos relevantes. La analítica muestra explícitamente categorías y período. Conservar los archivos completos en `public/screens/`. La tendencia de gasto, los detalles técnicos y el guion de la demostración se conservan en el respaldo o en las notas.
+
+La portada muestra el QR en grande; las demás diapositivas lo muestran en pequeño arriba a la derecha.
+También se puede hacer clic en el QR o en su etiqueta para abrir la descarga desde el PDF.
+Si cambia el destino, actualizar tanto la imagen original como el enlace en `DownloadQr.vue`.
+
+## Showcase de la app
+
+1. Mostrar una cuenta sintética y su saldo inicial.
+2. Escribir «almuerzo 18 mil con Nequi» con esa cuenta y una categoría disponibles.
+3. Revisar la propuesta y corregir un campo antes de confirmar.
+4. Confirmar una sola vez y mostrar el movimiento y el saldo actualizado.
+5. Abrir Inicio/dashboard y explicar la información del periodo.
+6. Si queda tiempo, mostrar un recibo elegido o una transferencia entre dos cuentas propias.
+
+Si falla la IA, continuar con el formulario manual. Si falla el servidor, usar una grabación de respaldo preparada antes.
+Esta presentación describe la versión online: el formulario manual no implica funcionamiento sin conexión.
+Incluir voz en vivo solo después de ensayarla en el dispositivo de la demostración.
+
+## Respaldo para preguntas
+
+| Letra | Tema | Número en el PDF |
+|---|---|---:|
+| A | Modelo de datos y libro de movimientos | 11 |
+| B | Propuesta de IA y validación | 12 |
+| C | Recibos y voz | 13 |
+| D | Seguridad y calidad del software | 14 |
+
+## Evidencia y procedencia
+
+- Título, datos académicos y objetivos: `docs/PGC-PROPUESTA.md` y `latex/pgc/main.tex`. El objetivo general se conserva completo y los cinco objetivos específicos mantienen su orden, con la redacción completa en las notas.
+- Las cinco vistas en `public/screens/` (`dashboard-actual.png`, `captura-propuesta-actual.png`, `analisis-actual.png`, `historial-actual.png` y `presupuestos-actual.png`) son renders del 27-oct-2026 de los componentes Flutter actuales del cliente conectado (`finance-ai-frontend@35df926`), con datos sintéticos. Se generaron con el tema de la app y fixtures aislados en `.tools/presentation_capture_test.dart`. Los recortes CSS amplían los datos relevantes y conservan los originales completos. El flujo completo conectado se muestra en el showcase.
+- Servidor: **415 pruebas aprobadas, 0 omitidas, 89% de cobertura de ramas**, punto de control del 16-oct-2026 en `finance-ai-backend/aidlc-docs/construction/release-audit-20261016/backend-audit.md`, sección «Follow-up verification».
+- App: **573 pruebas aprobadas**, punto de control del 18-oct-2026 en `finance-ai-frontend/aidlc-docs/construction/release-audit-20261017/final-validation.md`, sección «Revisión del aviso de fuentes de ingreso». Esa sección no informa una cobertura actual de Flutter.
+- Son verificaciones documentadas de esas fechas. Editar la presentación no vuelve a ejecutar ni certifica las suites de la aplicación.
+- El guion describe capacidades del producto mediante acciones y pantallas reales. Las cifras visibles de las capturas corresponden a datos de demostración.
+- La presentación conserva el alcance online del PDF original. No mezcla funciones ni cifras de la rama offline-first.
 
 ## Antes de presentar
 
-- [ ] Volver a ejecutar las pruebas y confirmar las cifras de la diapositiva 11 (408 servidor / 442 app, del 5-oct-2026).
-- [ ] Confirmar la escritura del nombre del docente en la portada.
-- [ ] Confirmar si el despliegue en Google Cloud Run está activo (la diapositiva 10 dice solo «configurado»).
-- [ ] Capturas reales en `public/screens/` (ver arriba).
-- [ ] Ensayar la demo (guion y lista de verificación en las notas de la diapositiva 9) y grabar un video de respaldo.
-- [ ] Voz: no incluirla en la demo en vivo salvo que el reconocimiento en español esté instalado y probado en ese equipo.
-
-## Notas sobre el contenido
-
-- Cifras del problema: Curry (2026), Singh et al. (2024), Banca de las Oportunidades (2024) — tomadas de la propuesta PGC.
-  El dato de 59–66 días proviene de hábitos de salud y así se indica en la diapositiva.
-- El panel «Análisis inteligente» del dashboard usa reglas, no un modelo de lenguaje (la diapositiva 6 lo aclara).
-- El modelo no se nombra en las diapositivas: «LLM comercial de bajo costo vía API (Gemini o DeepSeek, intercambiables)».
+- [ ] Ensayar las nueve diapositivas con cronómetro.
+- [ ] Confirmar que la versión de la app que se mostrará corresponde al alcance descrito.
+- [ ] Preparar cuenta sintética, dos cuentas de dinero, categorías y recibo de ejemplo.
+- [ ] Comprobar servidor, base de datos y conexión al proveedor de IA.
+- [ ] Ensayar la corrección de un campo y comprobar la actualización del historial y del saldo.
+- [ ] Preparar una grabación completa de respaldo.
+- [ ] Actualizar las cifras y sus fechas si se realiza una verificación nueva.
