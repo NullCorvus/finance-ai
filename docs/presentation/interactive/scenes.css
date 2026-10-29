@@ -279,10 +279,10 @@
 .scene[data-step="1"] .sg-phone .s2, .scene[data-step="2"] .sg-phone .s2 { opacity: 1; }
 
 /* ───────── 9 · Conclusiones ───────── */
-.cc-list { position: absolute; left: 72px; top: 186px; width: 640px; display: flex; flex-direction: column; gap: 30px; }
+.cc-list { position: absolute; left: 72px; top: 182px; width: 660px; display: flex; flex-direction: column; gap: 26px; }
 .cc-list li { display: grid; grid-template-columns: 44px 1fr; column-gap: 20px; align-items: start; transition: var(--rv-tr); transition-delay: calc(var(--i, 0) * 70ms); }
 .cc-list i { width: 44px; height: 44px; border-radius: 50%; display: grid; place-items: center; font-style: normal; font-size: 19px; font-weight: 800; background: var(--green-s); color: var(--green-d); }
-.cc-list p { font-size: 27px; line-height: 1.4; letter-spacing: -.01em; color: var(--ink2); }
+.cc-list p { font-size: 25px; line-height: 1.4; letter-spacing: -.01em; color: var(--ink2); }
 .cc-list strong { color: var(--green-d); font-weight: 750; }
 .scene[data-step="2"] .cc-list li:nth-child(1), .scene[data-step="3"] .cc-list li:nth-child(-n+2) { opacity: .45; }
 
@@ -296,8 +296,10 @@
 .cn { position: absolute; transform: translate(-50%, -50%); display: flex; align-items: center; gap: 9px; padding: 11px 17px; border-radius: 14px; background: var(--card); border: 1px solid var(--line); box-shadow: var(--shadow-m); font-size: 16px; font-weight: 700; white-space: nowrap; transition: opacity .7s var(--ease), border-color .7s var(--ease), color .7s var(--ease); }
 .cn .i { width: 18px; height: 18px; color: var(--green); }
 .n1 { left: 50%; top: 10.4%; } .n2 { left: 89.6%; top: 50%; } .n3 { left: 50%; top: 89.6%; } .n4 { left: 10.4%; top: 50%; }
-.scene[data-step="2"] .cn:not(.n1):not(.n2), .scene[data-step="3"] .cn:not(.n3):not(.n4) { opacity: .35; }
-.scene[data-step="2"] .n1, .scene[data-step="2"] .n2, .scene[data-step="3"] .n3, .scene[data-step="3"] .n4 { border-color: var(--green); }
+.scene[data-step="1"] .cn:not(.n1):not(.n2), .scene[data-step="2"] .cn:not(.n3):not(.n4), .scene[data-step="3"] .cn { opacity: .35; }
+.scene[data-step="1"] .n1, .scene[data-step="1"] .n2, .scene[data-step="2"] .n3, .scene[data-step="2"] .n4 { border-color: var(--green); }
+.core .cq { display: block; margin-top: 6px; font-style: normal; font-size: 14px; font-weight: 700; letter-spacing: 0; color: var(--warn); opacity: 0; transform: translateY(4px); transition: opacity .6s var(--ease), transform .6s var(--ease); }
+.scene[data-step="3"] .core .cq { opacity: 1; transform: none; }
 
 /* ───────── 10 · Demostración (oscura) ───────── */
 .dm-glow { position: absolute; left: -10%; right: -10%; top: 26%; height: 560px; background: radial-gradient(ellipse at 38% 45%, rgba(143, 180, 44, .2), rgba(143, 180, 44, 0) 62%); animation: glowp 8s ease-in-out infinite alternate; }

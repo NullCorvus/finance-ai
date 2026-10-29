@@ -78,7 +78,7 @@ Está pensado solo para estudiar: empieza oculto, no aparece en la pista de tecl
 | 6 | Captura asistida | 3 | Escribir, revisar campo por campo, confirmar sobre la pantalla real | Ecualizador en «Dictado», cursor en «Texto», modos que se alternan, puntos que laten |
 | 7 | Gastos por categoría y período | 3 | Anillo por categoría, períodos, saldo ≠ gasto | La categoría activa se ensancha en el anillo, con su leyenda; punto de luz que recorre el anillo; período que cambia solo |
 | 8 | Movimientos y presupuestos | 2 | Del movimiento al progreso del presupuesto | La búsqueda escribe consultas distintas; barras con rayas en movimiento; alerta que vibra; filtros que se iluminan |
-| 9 | Conclusiones | 3 | Ciclo captura → revisión → movimientos → análisis | Dos puntos orbitan y «entregan» a cada nodo con un anillo; nodos que flotan |
+| 9 | Conclusiones | 3 | Lo logrado (flujo central), el uso del gasto confirmado y lo que falta medir, con el ciclo captura → revisión → movimientos → análisis; en el paso 3 el centro pregunta «¿Reduce el esfuerzo?» | Dos puntos orbitan y «entregan» a cada nodo con un anillo; nodos que flotan |
 | 10 | Probemos con la app real | 0 | Transición a la demostración | Brillo que cruza «app real»; cada paso se ilumina con su barra de progreso |
 | A | Respaldo · Modelo de datos | 4 | El saldo se arma movimiento a movimiento | Pulso que recorre la cadena de entidades, flujo en las relaciones |
 | B | Respaldo · De palabras a una propuesta | 5 | El mensaje recorre el flujo; el anclaje reconoce las cuentas | Un punto recorre las cinco etapas |

@@ -298,24 +298,27 @@ Fuente visual: renders del 27-oct-2026 de HistoryScreen y BudgetsScreen del clie
 -->
 ---
 layout: slide
-eyebrow: Resultados del software
+eyebrow: Resultados y siguiente paso
 ---
 
 # Conclusiones
 
 <div class="pgc-conclusions">
-  <p>La aplicación integra el <strong>registro de gastos</strong> con el historial y su análisis por categoría.</p>
-  <p>La captura asistida produce una <strong>propuesta que la persona revisa</strong>, edita o confirma.</p>
-  <p>Los movimientos confirmados alimentan las consultas y el <strong>seguimiento de presupuestos</strong>.</p>
+  <p>Logramos el flujo central: una frase, un recibo o un dictado se convierte en una <strong>propuesta que la persona revisa y confirma</strong> antes de guardar.</p>
+  <p>El gasto confirmado <strong>alimenta</strong> el historial, el análisis por categoría y período y los presupuestos.</p>
+  <p>Falta medir lo principal: <strong>si reduce el esfuerzo de captura</strong>. Siguiente paso: la encuesta de usabilidad con estudiantes de la Universidad de Cundinamarca.</p>
 </div>
 
 <!--
 [0:25 | acumulado 6:00]
 GUION ORAL:
-Finance AI integra el registro con el historial y el análisis por categoría. La asistencia de inteligencia artificial prepara propuestas que la persona revisa antes de guardar. Los movimientos confirmados alimentan las consultas y los presupuestos.
+Como conclusiones: primero, logramos el flujo central; una frase, un recibo o un dictado se convierte en una propuesta que la persona revisa y confirma. Segundo, ese gasto confirmado alimenta el historial, el análisis y los presupuestos. Y tercero, falta medir lo principal: si reduce el esfuerzo de captura. El siguiente paso: la encuesta de usabilidad con estudiantes de la Universidad de Cundinamarca.
 
 APOYO Y FUENTES (no leer):
 Cierra la exposición de las nueve diapositivas principales. La siguiente diapositiva es la transición a la demostración con la app real.
+Cada conclusión responde a los objetivos: el flujo central corresponde a los objetivos 1 a 3 (concebir, diseñar e implementar la captura), el uso del gasto confirmado al objetivo 4 (análisis por categoría y período) y el límite al objetivo 5 (validar con pruebas funcionales y encuesta de usabilidad).
+Evidencia opcional: 415 pruebas aprobadas del servidor y 573 de la app, según los puntos de control del 16 y 18 de octubre de 2026 (ver respaldo D).
+Reducir el esfuerzo de captura y formar el hábito son el propósito del proyecto, todavía no un resultado medido: no afirmar que ya se logró. El tercer punto supone que la encuesta de usabilidad sigue pendiente; si ya hay resultados, cambiarlo.
 -->
 ---
 layout: demo

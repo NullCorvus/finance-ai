@@ -5,11 +5,11 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Finance AI · Presentación interactiva</title>
 <meta name="description" content="Presentación de Finance AI ante los jurados, en versión interactiva.">
-<link rel="stylesheet" href="deck.css?v=20261029e">
-<link rel="stylesheet" href="scenes.css?v=20261029e">
-<link rel="stylesheet" href="idle.css?v=20261029e">
-<link rel="stylesheet" href="backup.css?v=20261029e">
-<link rel="stylesheet" href="notes.css?v=20261029e">
+<link rel="stylesheet" href="deck.css?v=20261029h">
+<link rel="stylesheet" href="scenes.css?v=20261029h">
+<link rel="stylesheet" href="idle.css?v=20261029h">
+<link rel="stylesheet" href="backup.css?v=20261029h">
+<link rel="stylesheet" href="notes.css?v=20261029h">
 </head>
 <body data-theme="light">
 
@@ -138,8 +138,9 @@
   <template class="notes" data-time="0:45" data-key="Registrar cada gasto es un esfuerzo que se repite, y un registro incompleto no responde «¿en qué se fue mi dinero?».">
     <p data-s="0">Registrar un almuerzo exige introducir un monto, elegir una cuenta, asignar una categoría y revisar la fecha. Ese esfuerzo se repite con cada compra.</p>
     <p data-s="1">Cuando quedan movimientos sin registrar, al final de la semana tenemos menos información para responder en qué gastamos.</p>
+    <p data-s="2"><b>Opcional · cifra del sector:</b> según el benchmark de Adjust (App Retention Benchmarks 2023, datos de 2022), solo cerca del 9 % de los usuarios de apps fintech sigue usándolas a los 30 días; es decir, alrededor del 91 % las deja. Es una cifra del sector en general, no de nuestro piloto.</p>
     <p data-s="2">El proyecto se justifica por la utilidad de facilitar esa captura y conectar los registros con su análisis. Finance AI prepara una propuesta que la persona revisa antes de guardar. La solución se dirige a quienes quieren controlar sus gastos desde el celular, con estudiantes de la Universidad de Cundinamarca como población piloto prevista.</p>
-    <p class="tip">Es una situación cotidiana ilustrativa: no presentarla como un dato medido.</p>
+    <p class="tip">La semana con huecos es una situación ilustrativa, no un dato medido. La cifra opcional de abandono (~91 %) es un benchmark de Adjust para apps fintech en general (datos de 2022), no de Finance AI ni solo de apps de gastos: decir «según Adjust» y «aproximadamente». No está en la diapositiva a propósito. Verificarla en la fuente antes de usarla.</p>
     <p class="tr">Con ese problema claro, este es el objetivo que nos propusimos.</p>
   </template>
 </section>
@@ -409,27 +410,29 @@
 
 <!-- ═════════ 9 · CONCLUSIONES ═════════ -->
 <section class="scene" id="s-conclusiones" data-title="Conclusiones" data-steps="3">
-  <header class="hd rv f" data-s="0"><div class="eyebrow">Resultados del software</div><h2 class="h2">Conclusiones</h2></header>
+  <header class="hd rv f" data-s="0"><div class="eyebrow">Resultados y siguiente paso</div><h2 class="h2">Conclusiones</h2></header>
 
   <ol class="cc-list">
-    <li class="rv" data-s="1"><i>1</i><p>La aplicación integra el <strong>registro de gastos</strong> con el historial y su análisis por categoría.</p></li>
-    <li class="rv" data-s="2"><i>2</i><p>La captura asistida produce una <strong>propuesta que la persona revisa</strong>, edita o confirma.</p></li>
-    <li class="rv" data-s="3"><i>3</i><p>Los movimientos confirmados alimentan las consultas y el <strong>seguimiento de presupuestos</strong>.</p></li>
+    <li class="rv" data-s="1"><i>1</i><p>Logramos el flujo central: una frase, un recibo o un dictado se convierte en una <strong>propuesta que la persona revisa y confirma</strong> antes de guardar.</p></li>
+    <li class="rv" data-s="2"><i>2</i><p>El gasto confirmado <strong>alimenta</strong> el historial, el análisis por categoría y período y los presupuestos.</p></li>
+    <li class="rv" data-s="3"><i>3</i><p>Falta medir lo principal: <strong>si reduce el esfuerzo de captura</strong>. Siguiente paso: la encuesta de usabilidad con estudiantes de la Universidad de Cundinamarca.</p></li>
   </ol>
 
   <div class="cycle rv z" data-s="1" aria-hidden="true">
     <div class="ringc"></div>
     <div class="orbit"><i></i></div>
-    <div class="core"><b>Finance <span>AI</span></b></div>
+    <div class="core"><b>Finance <span>AI</span></b><em class="cq">¿Reduce el esfuerzo?</em></div>
     <div class="cn n1"><svg class="i"><use href="#i-pencil"/></svg>Captura</div>
     <div class="cn n2"><svg class="i"><use href="#i-eye"/></svg>Revisión</div>
     <div class="cn n3"><svg class="i"><use href="#i-list"/></svg>Movimientos</div>
     <div class="cn n4"><svg class="i"><use href="#i-chart"/></svg><span>Análisis y<br>presupuestos</span></div>
   </div>
-  <template class="notes" data-time="0:25" data-key="Tres ideas para cerrar: integra, propone con revisión y alimenta los presupuestos.">
-    <p data-s="1">Finance AI integra el registro con el historial y el análisis por categoría.</p>
-    <p data-s="2">La asistencia de inteligencia artificial prepara propuestas que la persona revisa antes de guardar.</p>
-    <p data-s="3">Los movimientos confirmados alimentan las consultas y los presupuestos.</p>
+  <template class="notes" data-time="0:25" data-key="Cerrar con lo logrado frente a los objetivos, su evidencia y lo que falta medir.">
+    <p data-s="1">Como conclusiones: primero, logramos el flujo central; una frase, un recibo o un dictado se convierte en una propuesta que la persona revisa y confirma.</p>
+    <p data-s="2">Segundo, ese gasto confirmado alimenta el historial, el análisis y los presupuestos.</p>
+    <p data-s="2"><b>Opcional · evidencia:</b> está validado con 415 pruebas del servidor y 573 de la app, según los puntos de control del 16 y 18 de octubre de 2026.</p>
+    <p data-s="3">Y tercero, falta medir lo principal: si reduce el esfuerzo de captura. El siguiente paso: la encuesta de usabilidad con estudiantes de la Universidad de Cundinamarca.</p>
+    <p class="tip">Reducir el esfuerzo y formar el hábito son el propósito del proyecto, todavía no un resultado medido: no decir que ya se logró. El tercer punto supone que la encuesta de usabilidad sigue pendiente; si ya hay resultados, cambiarlo. Las cifras de pruebas son verificaciones documentadas de esas fechas.</p>
     <p class="tr">Ahora mostraremos ese recorrido en la aplicación, desde la captura hasta el resultado financiero.</p>
   </template>
 </section>
@@ -669,7 +672,7 @@
 </div>
 
 <div class="sr" id="live" aria-live="polite"></div>
-<script src="deck.js?v=20261029e"></script>
-<script src="scenes.js?v=20261029e"></script>
+<script src="deck.js?v=20261029h"></script>
+<script src="scenes.js?v=20261029h"></script>
 </body>
 </html>

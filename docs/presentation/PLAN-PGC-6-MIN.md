@@ -4,6 +4,8 @@ Estado: aprobado y aplicado el 27-oct-2026. Presentación reorganizada en nueve 
 
 Actualización del 28-oct-2026, a petición del equipo: se añade una décima diapositiva final, «Probemos con la app real», como transición breve a la demostración. No cuenta en los seis minutos y las nueve diapositivas de la exposición no cambian; la invitación a ver la app pasa de la diapositiva 9 a esta.
 
+Actualización del 29-oct-2026, a petición del equipo: las conclusiones de la diapositiva 9 pasan de describir funciones a presentar resultados frente a los objetivos: (1) el flujo central logrado, (2) el uso del gasto confirmado en historial, análisis y presupuestos, (3) lo que falta medir —si reduce el esfuerzo de captura— y el siguiente paso, la encuesta de usabilidad. No se afirma que el esfuerzo ya se redujo ni que se formó el hábito. Cambia también el guion oral de esa diapositiva (unas 63 palabras, 0:25).
+
 ## Criterio principal
 
 Conservar el diseño actual de Finance AI y adoptar los puntos y el orden de la plantilla académica. Usar capturas de tamaño medio, con espacio alrededor, el QR de descarga y una explicación centrada en el software construido.
