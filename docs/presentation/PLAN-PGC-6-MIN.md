@@ -6,6 +6,8 @@ Actualización del 28-oct-2026, a petición del equipo: se añade una décima di
 
 Actualización del 29-oct-2026, a petición del equipo: las conclusiones de la diapositiva 9 pasan de describir funciones a presentar resultados frente a los objetivos: (1) el flujo central logrado, (2) el uso del gasto confirmado en historial, análisis y presupuestos, (3) lo que falta medir —si reduce el esfuerzo de captura— y el siguiente paso, la encuesta de usabilidad. No se afirma que el esfuerzo ya se redujo ni que se formó el hábito. Cambia también el guion oral de esa diapositiva (unas 63 palabras, 0:25).
 
+Ajuste posterior del 29-oct-2026, a petición del equipo: la tercera conclusión pasa a ser una mirada optimista al futuro (llegar a personas reales publicando la app en una tienda como Google Play y medir cuánto facilita registrar los gastos) en lugar de nombrar la encuesta de usabilidad con estudiantes. El objetivo específico 5 aprobado, en la diapositiva 4, conserva su redacción original.
+
 ## Criterio principal
 
 Conservar el diseño actual de Finance AI y adoptar los puntos y el orden de la plantilla académica. Usar capturas de tamaño medio, con espacio alrededor, el QR de descarga y una explicación centrada en el software construido.

@@ -306,19 +306,19 @@ eyebrow: Resultados y siguiente paso
 <div class="pgc-conclusions">
   <p>Logramos el flujo central: una frase, un recibo o un dictado se convierte en una <strong>propuesta que la persona revisa y confirma</strong> antes de guardar.</p>
   <p>El gasto confirmado <strong>alimenta</strong> el historial, el análisis por categoría y período y los presupuestos.</p>
-  <p>Falta medir lo principal: <strong>si reduce el esfuerzo de captura</strong>. Siguiente paso: la encuesta de usabilidad con estudiantes de la Universidad de Cundinamarca.</p>
+  <p>Con esta base, el siguiente paso es llegar a <strong>personas reales</strong>: publicar la app en una tienda como Google Play y medir cuánto <strong>facilita registrar los gastos</strong>.</p>
 </div>
 
 <!--
 [0:25 | acumulado 6:00]
 GUION ORAL:
-Como conclusiones: primero, logramos el flujo central; una frase, un recibo o un dictado se convierte en una propuesta que la persona revisa y confirma. Segundo, ese gasto confirmado alimenta el historial, el análisis y los presupuestos. Y tercero, falta medir lo principal: si reduce el esfuerzo de captura. El siguiente paso: la encuesta de usabilidad con estudiantes de la Universidad de Cundinamarca.
+Como conclusiones: primero, logramos el flujo central; una frase, un recibo o un dictado se convierte en una propuesta que la persona revisa y confirma. Segundo, ese gasto confirmado alimenta el historial, el análisis y los presupuestos. Y tercero, con esta base, el siguiente paso es llegar a personas reales: publicar la app en una tienda como Google Play y medir cuánto facilita registrar los gastos.
 
 APOYO Y FUENTES (no leer):
 Cierra la exposición de las nueve diapositivas principales. La siguiente diapositiva es la transición a la demostración con la app real.
-Cada conclusión responde a los objetivos: el flujo central corresponde a los objetivos 1 a 3 (concebir, diseñar e implementar la captura), el uso del gasto confirmado al objetivo 4 (análisis por categoría y período) y el límite al objetivo 5 (validar con pruebas funcionales y encuesta de usabilidad).
+Cada conclusión responde a los objetivos: el flujo central corresponde a los objetivos 1 a 3 (concebir, diseñar e implementar la captura), el uso del gasto confirmado al objetivo 4 (análisis por categoría y período) y la mirada al futuro al objetivo 5 (validar con pruebas funcionales y con personas reales; el objetivo aprobado nombra una encuesta de usabilidad, por si preguntan).
 Evidencia opcional: 415 pruebas aprobadas del servidor y 573 de la app, según los puntos de control del 16 y 18 de octubre de 2026 (ver respaldo D).
-Reducir el esfuerzo de captura y formar el hábito son el propósito del proyecto, todavía no un resultado medido: no afirmar que ya se logró. El tercer punto supone que la encuesta de usabilidad sigue pendiente; si ya hay resultados, cambiarlo.
+Reducir el esfuerzo de captura y formar el hábito son el propósito del proyecto, todavía no un resultado medido: no afirmar que ya se logró. El tercer punto es un plan, no un hecho: decir «el siguiente paso», no que la app ya está publicada. Confirmar con el equipo que publicar en una tienda (Google Play) es el plan real.
 -->
 ---
 layout: demo

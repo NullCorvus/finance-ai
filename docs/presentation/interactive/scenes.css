@@ -298,7 +298,7 @@
 .n1 { left: 50%; top: 10.4%; } .n2 { left: 89.6%; top: 50%; } .n3 { left: 50%; top: 89.6%; } .n4 { left: 10.4%; top: 50%; }
 .scene[data-step="1"] .cn:not(.n1):not(.n2), .scene[data-step="2"] .cn:not(.n3):not(.n4), .scene[data-step="3"] .cn { opacity: .35; }
 .scene[data-step="1"] .n1, .scene[data-step="1"] .n2, .scene[data-step="2"] .n3, .scene[data-step="2"] .n4 { border-color: var(--green); }
-.core .cq { display: block; margin-top: 6px; font-style: normal; font-size: 14px; font-weight: 700; letter-spacing: 0; color: var(--warn); opacity: 0; transform: translateY(4px); transition: opacity .6s var(--ease), transform .6s var(--ease); }
+.core .cq { display: block; margin-top: 6px; font-style: normal; font-size: 14px; font-weight: 700; letter-spacing: 0; color: var(--green-d); opacity: 0; transform: translateY(4px); transition: opacity .6s var(--ease), transform .6s var(--ease); }
 .scene[data-step="3"] .core .cq { opacity: 1; transform: none; }
 
 /* ───────── 10 · Demostración (oscura) ───────── */
