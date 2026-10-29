@@ -33,6 +33,8 @@ Por defecto la presentación es **fluida**: una pulsación lleva a la escena sig
 - Mantener una tecla pulsada no salta diapositivas, y un botón con foco (p. ej. tras hacer clic en ▶) ya no se activa de nuevo con Espacio o Enter.
 - Los modos manual y recorrido exigen `Mayús`, así que una tecla suelta no cambia el ritmo sin querer.
 
+**Escenas manuales:** una escena con el atributo `data-manual` no encadena sus pasos sola, aunque el modo general sea fluido. Hoy es la 3 (Objetivo general), que se lee en tres partes, una por pulsación. En esas escenas la etiqueta junto al contador marca `MANUAL` en ámbar. El recorrido (`Mayús+P`) sí la recorre sola. Para volver a fluida una escena, quitar `data-manual` en `index.html`.
+
 La etiqueta junto al contador (`AUTO`, `MANUAL`, `RECORRIDO`) muestra el modo activo. Los tiempos están en `DWELL` y `HOLD` al inicio de `deck.js`.
 
 ## Controles

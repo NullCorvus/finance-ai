@@ -175,8 +175,9 @@
       if (i === cur) b.setAttribute('aria-current', 'step'); else b.removeAttribute('aria-current');
     });
     count.textContent = bk ? `Respaldo ${letter(cur)}` : `${pad(cur + 1)} / ${pad(mainCount)}`;
-    modeEl.textContent = tour ? 'recorrido' : (fluid ? 'auto' : 'manual');
-    modeEl.classList.toggle('manual', !fluid && !tour);
+    const manualScene = !tour && scenes[cur] && scenes[cur].hasAttribute('data-manual');
+    modeEl.textContent = tour ? 'recorrido' : (fluid && !manualScene ? 'auto' : 'manual');
+    modeEl.classList.toggle('manual', !tour && (!fluid || manualScene));
     playBtn.classList.toggle('on', tour);
     playBtn.setAttribute('aria-pressed', String(tour));
     playUse.setAttribute('href', tour ? '#i-pause' : '#i-play');
@@ -240,6 +241,7 @@
     clearTimer();
     if (hold || (!fluid && !tour)) return;
     const sc = scenes[cur];
+    if (sc.hasAttribute('data-manual') && !tour) return; // escena manual: un paso por pulsación
     if (step < sc._max) {
       const ms = (DWELL[sc.id] && DWELL[sc.id][step]) || DWELL_DEFAULT;
       timer = setTimeout(() => { timer = null; setStep(step + 1); }, ms);
