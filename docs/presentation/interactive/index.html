@@ -5,10 +5,11 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Finance AI · Presentación interactiva</title>
 <meta name="description" content="Presentación de Finance AI ante los jurados, en versión interactiva.">
-<link rel="stylesheet" href="deck.css?v=20261028g">
-<link rel="stylesheet" href="scenes.css?v=20261028g">
-<link rel="stylesheet" href="idle.css?v=20261028g">
-<link rel="stylesheet" href="backup.css?v=20261028g">
+<link rel="stylesheet" href="deck.css?v=20261029a">
+<link rel="stylesheet" href="scenes.css?v=20261029a">
+<link rel="stylesheet" href="idle.css?v=20261029a">
+<link rel="stylesheet" href="backup.css?v=20261029a">
+<link rel="stylesheet" href="notes.css?v=20261029a">
 </head>
 <body data-theme="light">
 
@@ -88,6 +89,12 @@
       <span class="mini"><svg class="i"><use href="#i-chart"/></svg><span><b>Alimentación</b><em>63&thinsp;% del presupuesto</em><i class="mb"><u></u></i></span></span>
     </div></div>
   </div>
+  <template class="notes" data-time="0:20" data-key="Presentarnos y anunciar que al final habrá una demostración.">
+    <p data-s="0">Buenas. Somos David, Maicol e Ivan. Presentamos Finance AI, nuestro proyecto de registro y análisis de gastos personales con asistencia de inteligencia artificial.</p>
+    <p data-s="0">El código QR permite descargar la aplicación. Al finalizar la exposición mostraremos su funcionamiento.</p>
+    <p class="tip">Si corresponde, agradecer al docente Oscar Jobany Gómez Ochoa.</p>
+    <p class="tr">Empecemos por el problema que nos llevó a construirla.</p>
+  </template>
 </section>
 
 <!-- ═════════ 2 · PROBLEMA ═════════ -->
@@ -128,6 +135,13 @@
   </div>
 
   <div class="takeaway rv" data-s="2"><svg class="i"><use href="#i-spark"/></svg><p>La captura asistida facilita el registro y conecta los gastos con su análisis.</p></div>
+  <template class="notes" data-time="0:45" data-key="Registrar cada gasto es un esfuerzo que se repite, y un registro incompleto no responde «¿en qué se fue mi dinero?».">
+    <p data-s="0">Registrar un almuerzo exige introducir un monto, elegir una cuenta, asignar una categoría y revisar la fecha. Ese esfuerzo se repite con cada compra.</p>
+    <p data-s="1">Cuando quedan movimientos sin registrar, al final de la semana tenemos menos información para responder en qué gastamos.</p>
+    <p data-s="2">El proyecto se justifica por la utilidad de facilitar esa captura y conectar los registros con su análisis. Finance AI prepara una propuesta que la persona revisa antes de guardar. La solución se dirige a quienes quieren controlar sus gastos desde el celular, con estudiantes de la Universidad de Cundinamarca como población piloto prevista.</p>
+    <p class="tip">Es una situación cotidiana ilustrativa: no presentarla como un dato medido.</p>
+    <p class="tr">Con ese problema claro, este es el objetivo que nos propusimos.</p>
+  </template>
 </section>
 
 <!-- ═════════ 3 · OBJETIVO GENERAL ═════════ -->
@@ -145,6 +159,13 @@
     <div class="ob-card card rv" data-s="2"><div class="ico ai"><svg class="i"><use href="#i-spark"/></svg></div><small>Cómo</small><b>IA y metodología CDIO</b><span>Captura automática de gastos, guiada por CDIO</span></div>
     <div class="ob-card card rv" data-s="3"><div class="ico"><svg class="i"><use href="#i-target"/></svg></div><small>Para qué</small><b>Menos esfuerzo, mejor hábito</b><span>Reducir el esfuerzo de captura y formar el hábito de control financiero</span></div>
   </div>
+  <template class="notes" data-time="0:25" data-key="Leer el objetivo aprobado, en tres partes: qué, cómo y para qué.">
+    <p data-s="1">Desarrollar una aplicación móvil para el registro, la categorización y el análisis de gastos personales,</p>
+    <p data-s="2">con asistencia de IA para la captura automática de gastos, aplicando la metodología CDIO,</p>
+    <p data-s="3">con el fin de reducir el esfuerzo de captura de los gastos y contribuir a la formación del hábito de control financiero en los usuarios.</p>
+    <p class="tip">El objetivo está aprobado en la propuesta: se lee tal cual, sin cambiar palabras.</p>
+    <p class="tr">Ese objetivo se concreta en cinco objetivos específicos, siguiendo CDIO.</p>
+  </template>
 </section>
 
 <!-- ═════════ 4 · OBJETIVOS ESPECÍFICOS (CDIO) ═════════ -->
@@ -166,6 +187,16 @@
         <div class="oc card rv" data-s="5"><p>Validar con pruebas funcionales y una encuesta de usabilidad con estudiantes de la Universidad de Cundinamarca.</p></div></div>
     </div>
   </div>
+  <template class="notes" data-time="0:40" data-key="Cinco objetivos, uno por etapa de CDIO: concebir, diseñar, implementar (dos) y operar.">
+    <p data-s="0">Los cinco objetivos siguen CDIO.</p>
+    <p data-s="1">Primero, definir el alcance, los requisitos y el flujo de revisión.</p>
+    <p data-s="2">Segundo, diseñar la arquitectura, el modelo de datos y las pantallas.</p>
+    <p data-s="3">Tercero, implementar la captura con inteligencia artificial por foto, voz o texto, con confirmación del usuario.</p>
+    <p data-s="4">Cuarto, mostrar el gasto agrupado por categoría en el período elegido.</p>
+    <p data-s="5">Quinto, validar mediante pruebas funcionales y una encuesta de usabilidad con estudiantes de la Universidad de Cundinamarca.</p>
+    <p class="tip">La encuesta de usabilidad es un objetivo: no se afirman resultados de la encuesta.</p>
+    <p class="tr">Veamos cómo está construida la solución.</p>
+  </template>
 </section>
 
 <!-- ═════════ 5 · PROPUESTA TECNOLÓGICA ═════════ -->
@@ -213,6 +244,14 @@
     <div class="pr card rv" data-s="4"><div class="ico"><svg class="i"><use href="#i-check-circle"/></svg></div><div><b>Guardado</b><span>La persona confirma la propuesta</span></div></div>
     <div class="pr card rv" data-s="4" data-i="1"><div class="ico"><svg class="i"><use href="#i-sigma"/></svg></div><div><b>Cálculos</b><span>El sistema calcula desde los movimientos</span></div></div>
   </div>
+  <template class="notes" data-time="0:55" data-key="Cada parte tiene una responsabilidad: la app captura, el servidor valida, la base guarda y la IA solo propone.">
+    <p data-s="0">La propuesta tecnológica usa Flutter para compartir código entre Android y Windows. La aplicación se comunica mediante una API REST con FastAPI,</p>
+    <p data-s="1">y PostgreSQL almacena los datos y movimientos de cada usuario.</p>
+    <p data-s="2">El servidor conecta con un modelo externo para interpretar frases y recibos. El modelo prepara una propuesta; no escribe registros financieros directamente.</p>
+    <p data-s="3">FastAPI valida los campos y las referencias a las cuentas y categorías; la persona revisa y confirma. (En pantalla corre el recorrido de una captura.)</p>
+    <p data-s="4">Los servicios financieros guardan la operación y calculan los saldos desde los movimientos. El formulario manual y las propuestas confirmadas utilizan esas mismas operaciones. La autenticación y el aislamiento por usuario protegen los datos, y las claves del proveedor permanecen en el servidor.</p>
+    <p class="tr">Veamos cómo se siente esto en la app: la captura asistida.</p>
+  </template>
 </section>
 
 <!-- ═════════ 6 · CAPTURA ASISTIDA ═════════ -->
@@ -258,6 +297,13 @@
       <p class="shot-cap">Interfaz actual · datos de demostración</p>
     </div>
   </div>
+  <template class="notes" data-time="0:55" data-key="Una frase se convierte en una propuesta que la persona revisa antes de guardar.">
+    <p data-s="1">La captura asistida permite escribir una frase, adjuntar una foto de recibo o usar el texto de un dictado. En este ejemplo escribimos «almuerzo 18 mil con Nequi».</p>
+    <p data-s="2">La inteligencia artificial prepara una propuesta con monto, descripción, cuenta, categoría y fecha. La persona comprueba esos campos y puede editar, confirmar o descartar antes de guardar.</p>
+    <p data-s="3">Al confirmar, el movimiento entra al historial y alimenta los saldos y las herramientas de análisis. El formulario manual también está disponible. Así, las distintas formas de captura llegan al mismo registro financiero. Durante la demostración recorreremos ese caso completo y corregiremos un campo para mostrar el control del usuario.</p>
+    <p class="tip">La asistencia de IA es opcional y requiere conexión con el proveedor a través del servidor; el formulario manual sigue disponible.</p>
+    <p class="tr">Una vez confirmado el gasto, veamos cómo se analiza.</p>
+  </template>
 </section>
 
 <!-- ═════════ 7 · ANÁLISIS ═════════ -->
@@ -302,6 +348,13 @@
       <p class="shot-cap">Interfaz actual · datos de demostración</p>
     </div>
   </div>
+  <template class="notes" data-time="0:50" data-key="Los gastos confirmados se analizan por categoría y período; saldo y gasto responden preguntas distintas.">
+    <p data-s="1">Los gastos confirmados alimentan el análisis por categoría y período, que corresponde al cuarto objetivo específico. En estos datos de demostración, octubre registra 442 mil pesos de gastos: 252 mil en alimentación y 190 mil en transporte, equivalentes al 57 y al 43 por ciento.</p>
+    <p data-s="2">El desglose permite identificar dónde se concentra el gasto y consultar sus movimientos. La app también permite elegir el período y recorrer la tendencia de gasto, que mostraremos durante la demostración.</p>
+    <p data-s="3">En Inicio vemos el saldo de las cuentas, los ingresos y los gastos del mes. El saldo disponible y el gasto del período responden a preguntas diferentes: cuánto dinero tenemos y cuánto hemos gastado.</p>
+    <p class="tip">Todas las cifras de esta diapositiva son datos de demostración.</p>
+    <p class="tr">Y para seguir cada gasto tenemos el historial y los presupuestos.</p>
+  </template>
 </section>
 
 <!-- ═════════ 8 · MOVIMIENTOS Y PRESUPUESTOS ═════════ -->
@@ -346,6 +399,12 @@
       <p class="shot-cap">Interfaz actual · datos de demostración</p>
     </div>
   </div>
+  <template class="notes" data-time="0:45" data-key="El mismo registro sirve para buscar una compra y para seguir el presupuesto.">
+    <p data-s="0">En Movimientos consultamos las operaciones registradas. La búsqueda y los filtros ayudan a localizar una compra por período, cuenta o categoría. Aquí podemos seguir el gasto de 18 mil pesos en Nequi.</p>
+    <p data-s="1">En Presupuestos definimos el monto y el calendario. El progreso utiliza los gastos confirmados de la categoría. En este ejemplo, alimentación lleva 252 mil de 400 mil pesos.</p>
+    <p data-s="2">Transporte lleva 190 mil de 200 mil y muestra una alerta de cercanía al límite. Así, el mismo registro sirve para revisar una operación concreta y para seguir el presupuesto del período.</p>
+    <p class="tr">Con esto, pasamos a las conclusiones.</p>
+  </template>
 </section>
 
 <!-- ═════════ 9 · CONCLUSIONES ═════════ -->
@@ -367,6 +426,12 @@
     <div class="cn n3"><svg class="i"><use href="#i-list"/></svg>Movimientos</div>
     <div class="cn n4"><svg class="i"><use href="#i-chart"/></svg><span>Análisis y<br>presupuestos</span></div>
   </div>
+  <template class="notes" data-time="0:25" data-key="Tres ideas para cerrar: integra, propone con revisión y alimenta los presupuestos.">
+    <p data-s="1">Finance AI integra el registro con el historial y el análisis por categoría.</p>
+    <p data-s="2">La asistencia de inteligencia artificial prepara propuestas que la persona revisa antes de guardar.</p>
+    <p data-s="3">Los movimientos confirmados alimentan las consultas y los presupuestos.</p>
+    <p class="tr">Ahora mostraremos ese recorrido en la aplicación, desde la captura hasta el resultado financiero.</p>
+  </template>
 </section>
 
 <!-- ═════════ 10 · DEMOSTRACIÓN ═════════ -->
@@ -383,6 +448,18 @@
       <div class="ds rv" data-s="0" data-i="9" style="--n:3"><small>4 · Ver</small><b>Historial, saldo y dashboard</b><span>Todo queda actualizado</span></div>
     </div>
   </div>
+  <template class="notes" data-time="fuera de los 6:00" data-key="Pasar a la app real y recorrer un caso completo.">
+    <p>Eso es lo que construimos. Ahora lo probamos con la app real, con un gasto cotidiano: «almuerzo 18 mil con Nequi», desde que lo escribimos hasta que aparece en el saldo.</p>
+    <ol class="demo">
+      <li>Mostrar la cuenta y el saldo inicial (datos sintéticos).</li>
+      <li>Escribir «almuerzo 18 mil con Nequi», con la cuenta y la categoría ya creadas.</li>
+      <li>Revisar la propuesta y corregir un campo antes de confirmar.</li>
+      <li>Confirmar una sola vez; mostrar el movimiento y el saldo actualizado.</li>
+      <li>Abrir Inicio y explicar la información del período.</li>
+      <li>Si queda tiempo: un recibo elegido, o la transferencia «pasé 200 mil de Nequi a Bancolombia».</li>
+    </ol>
+    <p class="tip">Si falla la IA, seguir con el formulario manual y mostrar el mismo resultado. Si falla el servidor, usar la grabación de respaldo. Probar la voz en el equipo antes de incluirla. Al terminar, ofrecer profundizar en lo que les interese (respaldo A–D).</p>
+  </template>
 </section>
 
 <!-- ═════════ RESPALDO A · MODELO DE DATOS ═════════ -->
@@ -413,6 +490,13 @@
     <div class="lsum"><span>Saldo</span><b id="ledger-total">0</b></div>
     <p class="lnote rv" data-s="4" data-i="1">La transferencia mueve el saldo pero no cuenta como gasto ni ingreso.</p>
   </div>
+  <template class="notes" data-key="El saldo siempre sale de los movimientos; una transferencia no es gasto ni ingreso." data-when="cómo se calcula el saldo o cómo se guardan las transferencias.">
+    <p data-s="0">Cada hecho financiero es una transacción con uno o más movimientos firmados. Una transferencia genera un movimiento negativo en el origen y uno positivo en el destino. Las llaves foráneas compuestas refuerzan el aislamiento de datos por usuario, y la fuente de captura distingue manual, texto IA y recibo IA.</p>
+    <p data-s="1">Ejemplo ilustrativo con una cuenta Nequi: arranca con un saldo inicial de 500.000.</p>
+    <p data-s="2">Un almuerzo de 18.000 es un gasto y resta.</p>
+    <p data-s="3">Un salario de 2.000.000 es un ingreso y suma.</p>
+    <p data-s="4">Una transferencia de 200.000 a Bancolombia mueve el saldo, pero no cuenta como gasto ni ingreso. El saldo es el inicial más la suma de los movimientos: 2.282.000.</p>
+  </template>
 </section>
 
 <!-- ═════════ RESPALDO B · PROPUESTA DE IA ═════════ -->
@@ -459,6 +543,14 @@
   </div>
 
   <p class="mdl rv" data-s="5"><svg class="i"><use href="#i-cpu"/></svg><span><b>Modelo:</b> LLM vía API (Gemini o DeepSeek, intercambiables). <b>Integración:</b> ingeniería de prompts y validación determinista.</span></p>
+  <template class="notes" data-key="La IA propone, el sistema valida y la persona decide." data-when="cómo se evitan los errores de la IA.">
+    <p data-s="0">El servidor construye el contexto con las cuentas, categorías, fuentes de ingreso y fecha del usuario. El mensaje puede ser una frase en español o la transcripción de una voz.</p>
+    <p data-s="1">Ese contexto va al modelo, que responde en JSON con temperatura 0. Luego el anclaje compara lo propuesto con los datos reales del usuario, y el resultado es una propuesta que se acepta con un toque.</p>
+    <p data-s="2">Ejemplo ilustrativo: «pasé 200 mil de Nequi a Bancolombia». El modelo devuelve la intención, el monto, el origen, el destino y un nivel de confianza.</p>
+    <p data-s="3">Con el anclaje, «Nequi» y «Bancolombia» coinciden con las cuentas del usuario: se propone una transferencia, no un gasto.</p>
+    <p data-s="4">Las salvaguardas: los nombres propuestos se validan contra las cuentas y categorías; con el umbral configurado de 0,8 la revisión es de un toque y por debajo se revisa con cuidado, siempre con confirmación de la persona; una sola pregunta corta y solo ante duda real; defensa contra prompt injection; y un segundo proveedor con límites de tiempo y uso. Si cae la IA, siguen los formularios.</p>
+    <p data-s="5">El modelo es un LLM vía API (Gemini o DeepSeek, intercambiables). La integración es ingeniería de prompts y validación determinista.</p>
+  </template>
 </section>
 
 <!-- ═════════ RESPALDO C · RECIBOS Y VOZ ═════════ -->
@@ -489,6 +581,14 @@
   </div>
 
   <div class="zend rv" data-s="5" data-i="2"><svg class="i"><use href="#i-check-circle"/></svg><p>La captura termina en una propuesta que el usuario revisa y confirma.</p></div>
+  <template class="notes" data-key="Recibos y voz terminan en la misma revisión del usuario." data-when="recibos, fotos o voz.">
+    <p data-s="1">Hay dos entradas además del texto. Con el recibo se toma una foto (JPEG, PNG o HEIC, hasta 10 MB); con la voz, la persona pulsa el micrófono y habla.</p>
+    <p data-s="2">El servidor normaliza y comprime la imagen. En voz, el reconocimiento ocurre en el dispositivo: reconocedor local en Android y SAPI en Windows.</p>
+    <p data-s="3">Con el recibo, un modelo con visión devuelve un JSON estricto: comercio, fecha, total impreso, moneda, medio de pago, categoría sugerida e ítems. En voz, la transcripción entra al mismo flujo de texto; el dictado es local y el flujo de IA recibe solo texto.</p>
+    <p data-s="4">Se valida con defensa anti-inyección y verificación aritmética. En voz, la persona acepta, edita o descarta.</p>
+    <p data-s="5">En el recibo, la revisión permite editar, reintentar o aceptar, conservando el total impreso. Ambas entradas terminan en una propuesta que el usuario revisa y confirma.</p>
+    <p class="tip">Ensayar la voz en el dispositivo de la demostración antes de mostrarla en vivo.</p>
+  </template>
 </section>
 
 <!-- ═════════ RESPALDO D · SEGURIDAD Y CALIDAD ═════════ -->
@@ -527,7 +627,25 @@
     </ul>
     <p class="fn rv" data-s="2" data-i="2">Verificaciones documentadas: 16 y 18 oct 2026</p>
   </div>
+  <template class="notes" data-key="Seguridad y calidad, con cifras documentadas y su fecha." data-when="seguridad, pruebas o calidad.">
+    <p data-s="0">En seguridad y privacidad: contraseñas con Argon2; acceso de 15 minutos con credenciales renovables rotativas; aislamiento de los datos de cada usuario, también en la base de datos; reportes de error con datos sensibles filtrados; claves de IA en el servidor; y reconocimiento de voz en el dispositivo.</p>
+    <p data-s="1">En calidad: el servidor registra 415 pruebas aprobadas, ninguna omitida y 89 % de cobertura de ramas en el punto de control del 16 de octubre de 2026. La app registra 573 pruebas aprobadas y análisis estático aprobado el 18 de octubre de 2026.</p>
+    <p data-s="2">La integración continua incluye lint, tipado estricto, pruebas y auditoría de dependencias, con un umbral de cobertura del 80 %. Las fechas identifican los puntos de control documentados.</p>
+    <p class="tip">Son verificaciones documentadas de esas fechas: no se vuelven a ejecutar al editar la presentación. Si se actualizan las cifras, cambiarlas también aquí y en Slidev.</p>
+  </template>
 </section>
+
+<!-- ═════════ NOTAS DE ESTUDIO (tecla N) ═════════ -->
+<aside class="notes-modal" id="notes" role="dialog" aria-label="Notas de estudio" aria-hidden="true">
+  <header>
+    <span class="nt-k">Notas de estudio</span>
+    <b id="nt-title"></b>
+    <span class="nt-time" id="nt-time"></span>
+    <span class="nt-step" id="nt-step"></span>
+    <button type="button" id="nt-close" aria-label="Cerrar notas (N)">×</button>
+  </header>
+  <div class="nt-body" id="nt-body"></div>
+</aside>
 
 <!-- ═════════ HUD ═════════ -->
 <a class="qr" id="qr" href="https://drive.google.com/file/d/1z__jJblXcb8MC2PZvE1tJzy3Kkh2GFgs/view?usp=drivesdk" target="_blank" rel="noopener noreferrer" aria-label="Descargar Finance AI">
@@ -551,7 +669,7 @@
 </div>
 
 <div class="sr" id="live" aria-live="polite"></div>
-<script src="deck.js?v=20261028g"></script>
-<script src="scenes.js?v=20261028g"></script>
+<script src="deck.js?v=20261029a"></script>
+<script src="scenes.js?v=20261029a"></script>
 </body>
 </html>

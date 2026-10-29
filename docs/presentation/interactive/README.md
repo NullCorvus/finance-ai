@@ -39,10 +39,24 @@ La etiqueta junto al contador (`AUTO`, `MANUAL`, `RECORRIDO`) muestra el modo ac
 | Volver de un respaldo al mismo punto | `Esc` o `R` o botón «Volver a la presentación» |
 | Recorrido automático / modo manual | `P` / `M` |
 | Movimiento: reducir / activar | `V` |
+| **Notas de estudio** (mostrar / ocultar) | `N` |
 | Pantalla completa | `F` |
 | Saltar a una escena | clic en la barra de progreso inferior |
 
 Un control remoto de presentaciones (que envía `→` y `←`) funciona sin configurar nada. La URL guarda dónde vas (`#6/2` = escena 6, paso 2; `#b/3` = respaldo B, paso 3), así que recargar no pierde el punto.
+
+## Notas de estudio (tecla N)
+
+Para ensayar: `N` abre y cierra un panel con lo que se podría decir al jurado en la diapositiva que está en pantalla.
+
+- **Idea clave** de la diapositiva y **tiempo sugerido** (los de la exposición de 6 minutos).
+- **Guion**: el guion oral del equipo de `slides.md` para las diez principales; para el respaldo A–D, puntos para responder, tomados de sus notas y de su contenido.
+- Mientras la animación avanza, el párrafo que corresponde al paso actual se ilumina (`paso 2/3`) y los demás se atenúan; así se ve cuándo decir cada cosa.
+- **Ojo** (cuidados con cifras y alcance) y una frase sugerida **para pasar a la siguiente** diapositiva.
+- El panel se queda abierto al cambiar de diapositiva. `Esc` o `N` lo cierran; un clic dentro del panel no avanza la presentación.
+- `index.html?notes=on` abre el panel al cargar.
+
+Está pensado solo para estudiar: empieza oculto, no aparece en la pista de teclas de la pantalla de inicio y no hay ningún botón visible. Para cambiar un texto, editar el `<template class="notes">` de la escena en `index.html` (los párrafos con `data-s="n"` se sincronizan con el paso `n`). Si cambia el guion en `slides.md`, actualizarlo también aquí.
 
 ## Qué anima cada escena
 

@@ -136,6 +136,13 @@
   const playUse = $('#play-use');
   const modeEl = $('#mode');
   const hintDefault = hint.textContent;
+  const notesEl = $('#notes');
+  const ntBody = $('#nt-body');
+  const ntTitle = $('#nt-title');
+  const ntTime = $('#nt-time');
+  const ntStep = $('#nt-step');
+  let notesOpen = false;
+  let ntFor = -1;
   const pad = (n) => String(n).padStart(2, '0');
 
   const segs = scenes.map((sc, i) => {
@@ -148,6 +155,8 @@
     return b;
   });
   if (backBtn) backBtn.addEventListener('click', (e) => { e.stopPropagation(); closeBackup(); });
+  const ntClose = $('#nt-close');
+  if (ntClose) ntClose.addEventListener('click', (e) => { e.stopPropagation(); toggleNotes(false); });
   if (playBtn) playBtn.addEventListener('click', (e) => { e.stopPropagation(); toggleTour(); });
 
   function updateHud() {
@@ -167,6 +176,57 @@
     playBtn.classList.toggle('on', tour);
     playBtn.setAttribute('aria-pressed', String(tour));
     playUse.setAttribute('href', tour ? '#i-pause' : '#i-play');
+  }
+
+  /* ───── notas de estudio (tecla N): solo para ensayar ─────
+     Cada escena trae su guion en <template class="notes">. Los párrafos con
+     data-s se iluminan al llegar a ese paso de la animación. */
+  function renderNotes() {
+    if (!notesOpen) return;
+    const sc = scenes[cur];
+    if (ntFor !== cur) {
+      ntFor = cur;
+      const tpl = sc.querySelector('template.notes');
+      ntBody.replaceChildren();
+      ntTitle.textContent = isBackup(cur) ? sc.dataset.title : `${pad(cur + 1)} · ${sc.dataset.title}`;
+      if (!tpl) {
+        ntTime.textContent = '';
+        ntBody.textContent = 'Sin notas para esta diapositiva.';
+      } else {
+        const d = tpl.dataset;
+        ntTime.textContent = d.time ? (/^[0-9]/.test(d.time) ? '⏱ ' + d.time : d.time) : '';
+        [['Úsala si preguntan por', d.when], ['Idea clave', d.key]].forEach(([label, text]) => {
+          if (!text) return;
+          const p = document.createElement('p');
+          p.className = 'nt-lead';
+          const b = document.createElement('b');
+          b.textContent = label;
+          p.append(b, text);
+          ntBody.appendChild(p);
+        });
+        ntBody.appendChild(tpl.content.cloneNode(true));
+      }
+      ntBody.scrollTop = 0;
+    }
+    ntStep.textContent = sc._max ? `paso ${step}/${sc._max}` : '';
+    const ps = $$('p[data-s]', ntBody);
+    const reached = ps.map((p) => +p.dataset.s).filter((n) => n <= step);
+    const act = reached.length ? Math.max(...reached) : -1;
+    ps.forEach((p) => {
+      const n = +p.dataset.s;
+      p.classList.toggle('on', n === act);
+      p.classList.toggle('dn', n < act);
+      p.classList.toggle('up', n > act);
+    });
+    const el = $('p.on', ntBody);
+    if (el) ntBody.scrollTo({ top: Math.max(0, el.offsetTop - 70), behavior: reduce ? 'auto' : 'smooth' });
+  }
+  function toggleNotes(on = !notesOpen) {
+    notesOpen = on;
+    notesEl.classList.toggle('open', on);
+    notesEl.setAttribute('aria-hidden', String(!on));
+    ntFor = -1;
+    renderNotes();
   }
 
   /* ───── pasos automáticos y recorrido ───── */
@@ -238,6 +298,7 @@
       });
     }
     updateHud();
+    renderNotes();
     if (ctx.entering) live.textContent = sc.dataset.title;
     try { history.replaceState(null, '', hashFor()); } catch (_) { /* file:// restringido */ }
     if (ctx.noAuto) clearTimer(); else schedule();
@@ -316,17 +377,19 @@
     } else if (k === 'p' || k === 'P') toggleTour();
     else if (k === 'm' || k === 'M') toggleManual();
     else if (k === 'v' || k === 'V') toggleMotion();
+    else if (k === 'n' || k === 'N') toggleNotes();
     else if (/^[0-9]$/.test(k)) {
       const n = k === '0' ? 9 : +k - 1;
       if (n < mainCount) go(n, 0);
     } else if (/^[a-dA-D]$/.test(k)) openBackup(k.toLowerCase().charCodeAt(0) - 97);
-    else if (k === 'Escape' || k === 'r' || k === 'R') closeBackup();
+    else if (k === 'Escape') { if (notesOpen) toggleNotes(false); else closeBackup(); }
+    else if (k === 'r' || k === 'R') closeBackup();
     else return;
     dismissHint();
   });
 
   addEventListener('click', (e) => {
-    if (e.target.closest('a, button')) return;
+    if (e.target.closest('a, button, .notes-modal')) return;
     next();
     dismissHint();
   });
@@ -380,6 +443,7 @@
   window.addEventListener('load', () => {
     const [i, s] = fromHash();
     go(i, s);
+    if (/[?&]notes=on(?:&|$)/.test(location.search)) toggleNotes(true);
     if (i === 0 && s === 0) {
       setTimeout(() => { hint.textContent = hintDefault; hint.classList.add('show'); }, 2400);
       setTimeout(dismissHint, 9000);
