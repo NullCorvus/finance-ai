@@ -60,7 +60,10 @@
   let fluid = true;
   let tour = false;
   let timer = null;
+  let hold = false; // el usuario retrocedió a propósito: no se reanuda solo hasta que avance
   let flashT;
+  // un error en una animación nunca debe detener el encadenado de pasos
+  const safe = (fn) => { try { return fn(); } catch (err) { console.error(err); } };
 
   /* ───── escalado del escenario ───── */
   function fit() {
@@ -173,6 +176,7 @@
     });
     count.textContent = bk ? `Respaldo ${letter(cur)}` : `${pad(cur + 1)} / ${pad(mainCount)}`;
     modeEl.textContent = tour ? 'recorrido' : (fluid ? 'auto' : 'manual');
+    modeEl.classList.toggle('manual', !fluid && !tour);
     playBtn.classList.toggle('on', tour);
     playBtn.setAttribute('aria-pressed', String(tour));
     playUse.setAttribute('href', tour ? '#i-pause' : '#i-play');
@@ -234,20 +238,32 @@
 
   function schedule() {
     clearTimer();
-    if (!fluid && !tour) return;
+    if (hold || (!fluid && !tour)) return;
     const sc = scenes[cur];
     if (step < sc._max) {
       const ms = (DWELL[sc.id] && DWELL[sc.id][step]) || DWELL_DEFAULT;
-      timer = setTimeout(() => setStep(step + 1), ms);
+      timer = setTimeout(() => { timer = null; setStep(step + 1); }, ms);
     } else if (tour) {
-      if (cur < bounds()[1]) timer = setTimeout(() => go(cur + 1, 0), HOLD[sc.id] !== undefined ? HOLD[sc.id] : HOLD_DEFAULT);
+      if (cur < bounds()[1]) timer = setTimeout(() => { timer = null; go(cur + 1, 0); }, HOLD[sc.id] !== undefined ? HOLD[sc.id] : HOLD_DEFAULT);
       else setTour(false); // el recorrido termina en la demostración
     }
   }
 
+  /* red de seguridad: si el encadenado se detuviera por cualquier motivo
+     (pestaña dormida, error, foco perdido), se retoma solo. No actúa si el
+     usuario retrocedió a propósito ni en modo manual. */
+  function watchdog() {
+    if (cur < 0 || hold || timer !== null || (!fluid && !tour)) return;
+    const sc = scenes[cur];
+    if (step < sc._max || (tour && cur < bounds()[1])) schedule();
+  }
+  setInterval(watchdog, 1000);
+  document.addEventListener('visibilitychange', () => { if (!document.hidden) watchdog(); });
+  addEventListener('focus', watchdog);
+
   function setTour(on) {
     tour = on;
-    if (on) fluid = true;
+    if (on) { fluid = true; hold = false; }
     updateHud();
     schedule();
   }
@@ -260,7 +276,7 @@
   }
   function toggleTour() {
     setTour(!tour);
-    flash(tour ? 'Recorrido automático activado · P para pausar' : 'Recorrido en pausa');
+    flash(tour ? 'Recorrido automático activado · Mayús+P para pausar' : 'Recorrido en pausa');
   }
   function toggleMotion() {
     reduce = !reduce;
@@ -270,10 +286,10 @@
   }
   function toggleManual() {
     fluid = !fluid;
-    if (!fluid) tour = false;
+    if (!fluid) tour = false; else hold = false;
     updateHud();
     schedule();
-    flash(fluid ? 'Pasos automáticos' : 'Modo manual: un paso por pulsación');
+    flash(fluid ? 'Pasos automáticos' : 'Modo manual: un paso por pulsación · Mayús+M para volver');
   }
 
   /* ───── navegación ───── */
@@ -291,17 +307,17 @@
     sc.style.setProperty('--step', step);
     const h = hooks[sc.id];
     if (h && h.step) {
-      h.step(step, {
+      safe(() => h.step(step, {
         prev,
         entering: !!ctx.entering,
         animate: ctx.animate !== undefined ? ctx.animate : step === prev + 1,
-      });
+      }));
     }
-    updateHud();
-    renderNotes();
+    safe(updateHud);
+    safe(renderNotes);
     if (ctx.entering) live.textContent = sc.dataset.title;
     try { history.replaceState(null, '', hashFor()); } catch (_) { /* file:// restringido */ }
-    if (ctx.noAuto) clearTimer(); else schedule();
+    if (ctx.noAuto) { hold = true; clearTimer(); } else { hold = false; schedule(); }
   }
 
   function go(i, s = 0, opts = {}) {
@@ -312,13 +328,13 @@
     const out = scenes[cur];
     if (out) {
       out.classList.remove('active');
-      if (hooks[out.id] && hooks[out.id].leave) hooks[out.id].leave();
+      if (hooks[out.id] && hooks[out.id].leave) safe(() => hooks[out.id].leave());
       clearTimeout(out._t);
       out._t = setTimeout(() => {
         out._rv.forEach((e) => e.classList.remove('on'));
         out.dataset.step = 0;
         out.style.setProperty('--step', 0);
-        if (hooks[out.id] && hooks[out.id].reset) hooks[out.id].reset();
+        if (hooks[out.id] && hooks[out.id].reset) safe(() => hooks[out.id].reset());
       }, 720);
     }
     const sc = scenes[i];
@@ -328,9 +344,11 @@
     sc.classList.add('active');
     document.body.dataset.theme = sc.dataset.theme || 'light';
     document.body.dataset.scene = sc.id;
-    if (hooks[sc.id] && hooks[sc.id].enter) hooks[sc.id].enter();
-    // dos cuadros: la escena entra desde su estado oculto y el revelado se anima
-    requestAnimationFrame(() => requestAnimationFrame(() => setStep(s, { entering: true, animate: s === 0, noAuto: opts.noAuto })));
+    if (hooks[sc.id] && hooks[sc.id].enter) safe(() => hooks[sc.id].enter());
+    // fija el estado inicial (oculto) antes de revelar, para que las transiciones arranquen
+    // sin depender de que el navegador pinte fotogramas (no llegan si la ventana está tapada)
+    void sc.offsetWidth;
+    setStep(s, { entering: true, animate: s === 0, noAuto: opts.noAuto });
   }
 
   function bounds() { return isBackup(cur) ? [mainCount, scenes.length - 1] : [0, mainCount - 1]; }
@@ -367,15 +385,19 @@
   function dismissHint() { hint.classList.remove('show'); }
   addEventListener('keydown', (e) => {
     if (e.metaKey || e.ctrlKey || e.altKey) return;
+    if (e.repeat) return; // mantener una tecla pulsada no debe saltar diapositivas
     const k = e.key;
+    // un botón con foco (p. ej. tras un clic) no debe activarse también con Espacio o Enter
+    const ae = document.activeElement;
+    if (k !== 'Tab' && ae && ae !== document.body && ae.closest && ae.closest('#stage button')) ae.blur();
     if (['ArrowRight', 'ArrowDown', 'PageDown', ' ', 'Enter'].includes(k)) { e.preventDefault(); next(); }
     else if (['ArrowLeft', 'ArrowUp', 'PageUp', 'Backspace'].includes(k)) { e.preventDefault(); prev(); }
     else if (k === 'Home') { e.preventDefault(); go(isBackup(cur) ? mainCount : 0, 0); }
     else if (k === 'End') { e.preventDefault(); go(isBackup(cur) ? scenes.length - 1 : mainCount - 1, 0); }
     else if (k === 'f' || k === 'F') {
       if (document.fullscreenElement) document.exitFullscreen(); else document.documentElement.requestFullscreen && document.documentElement.requestFullscreen();
-    } else if (k === 'p' || k === 'P') toggleTour();
-    else if (k === 'm' || k === 'M') toggleManual();
+    } else if (e.shiftKey && (k === 'p' || k === 'P')) toggleTour();
+    else if (e.shiftKey && (k === 'm' || k === 'M')) toggleManual();
     else if (k === 'v' || k === 'V') toggleMotion();
     else if (k === 'n' || k === 'N') toggleNotes();
     else if (/^[0-9]$/.test(k)) {
@@ -387,6 +409,11 @@
     else return;
     dismissHint();
   });
+
+  document.addEventListener('click', (e) => {
+    const b = e.target.closest && e.target.closest('#stage button');
+    if (b) setTimeout(() => b.blur(), 0);
+  }, true);
 
   addEventListener('click', (e) => {
     if (e.target.closest('a, button, .notes-modal')) return;

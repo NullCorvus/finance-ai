@@ -204,3 +204,7 @@ html[data-motion="off"] .rv, html[data-motion="off"] .split .ch { transform: non
 #progress button:nth-child(n+2):nth-child(-n+3) i, #progress button:nth-last-child(-n+2) i { background: var(--ai); }
 body[data-theme="dark"] #progress button:nth-child(n+2):nth-child(-n+3)::before, body[data-theme="dark"] #progress button:nth-last-child(-n+2)::before { background: rgba(139, 125, 255, .35); }
 body[data-theme="dark"] #progress button:nth-child(n+2):nth-child(-n+3) i, body[data-theme="dark"] #progress button:nth-last-child(-n+2) i { background: #8b7dff; }
+
+/* etiqueta del modo: el modo manual se nota */
+.mode.manual { color: #b45309; opacity: 1; font-weight: 800; }
+body[data-theme="dark"] .mode.manual { color: #fbbf24; }

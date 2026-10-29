@@ -22,8 +22,16 @@ Por defecto la presentación es **fluida**: una pulsación lleva a la escena sig
 | Modo | Tecla | Qué hace |
 |---|---|---|
 | **Fluido** (por defecto) | — | Los pasos de cada escena se encadenan solos; una pulsación por escena |
-| **Manual** | `M` | Un paso por pulsación, como diapositivas clásicas. `M` otra vez vuelve a fluido |
-| **Recorrido** | `P` o botón ▶ | Sin manos: también cambia de escena y se detiene en la demostración (escena 10). Retroceder o abrir un respaldo lo pausa |
+| **Manual** | `Mayús+M` | Un paso por pulsación, como diapositivas clásicas. `Mayús+M` otra vez vuelve a fluido. La etiqueta `MANUAL` se pone en ámbar para que no pase desapercibido |
+| **Recorrido** | `Mayús+P` o botón ▶ | Sin manos: también cambia de escena y se detiene en la demostración (escena 10). Retroceder o abrir un respaldo lo pausa |
+
+**El modo fluido es el estándar y está pensado para no fallar:**
+
+- Cada escena arranca sola al entrar, sin depender de que el navegador pinte fotogramas.
+- Un error dentro de una animación nunca corta el encadenado de pasos.
+- Una red de seguridad revisa cada segundo y, si el encadenado se detuviera (por ejemplo, tras volver a la pestaña), lo retoma. No actúa si retrocediste a propósito con `←`: en ese caso espera a que vuelvas a avanzar.
+- Mantener una tecla pulsada no salta diapositivas, y un botón con foco (p. ej. tras hacer clic en ▶) ya no se activa de nuevo con Espacio o Enter.
+- Los modos manual y recorrido exigen `Mayús`, así que una tecla suelta no cambia el ritmo sin querer.
 
 La etiqueta junto al contador (`AUTO`, `MANUAL`, `RECORRIDO`) muestra el modo activo. Los tiempos están en `DWELL` y `HOLD` al inicio de `deck.js`.
 
@@ -37,7 +45,7 @@ La etiqueta junto al contador (`AUTO`, `MANUAL`, `RECORRIDO`) muestra el modo ac
 | Ir a la escena 1–9 / 10 | `1`…`9` / `0` |
 | **Respaldo técnico A–D** | `A` `B` `C` `D` (desde cualquier punto) |
 | Volver de un respaldo al mismo punto | `Esc` o `R` o botón «Volver a la presentación» |
-| Recorrido automático / modo manual | `P` / `M` |
+| Recorrido automático / modo manual (con Mayús, para no activarlos sin querer) | `Mayús+P` / `Mayús+M` |
 | Movimiento: reducir / activar | `V` |
 | **Notas de estudio** (mostrar / ocultar) | `N` |
 | Pantalla completa | `F` |
