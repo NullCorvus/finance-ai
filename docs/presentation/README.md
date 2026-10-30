@@ -6,6 +6,8 @@ Las 4 diapositivas restantes son respaldo técnico, no parte de la exposición.
 
 El PDF completo se genera en [`Finance-AI.pdf`](Finance-AI.pdf).
 
+Para estudiar en el celular hay una **guía de estudio en PDF**, [`Finance-AI-guia-de-estudio.pdf`](Finance-AI-guia-de-estudio.pdf): páginas del tamaño de un teléfono, cada una con la diapositiva y debajo qué decir al jurado (idea clave, guion por paso, avisos y frase para pasar a la siguiente), más el respaldo A–D y la lista de verificación. Sale de las notas de estudio de la versión interactiva; para regenerarla tras cambiar un texto: `python build-study-guide.py` (necesita Python con Pillow, Node y Chrome).
+
 Hay además una **versión interactiva en HTML**, con animaciones, pasos que se encadenan solos, recorrido automático y el respaldo técnico A–D (teclas `A`–`D`), sin dependencias: [`interactive/`](interactive/README.md). Se abre con doble clic en `interactive/index.html`. Las notas del orador siguen solo en esta versión de Slidev.
 
 ## Guion principal

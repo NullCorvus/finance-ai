@@ -8,7 +8,8 @@
     "dev": "slidev slides.md --port 3030",
     "build": "slidev build slides.md",
     "export": "slidev export slides.md --output Finance-AI.pdf --timeout 120000 --executable-path \"C:/Program Files/Google/Chrome/Application/chrome.exe\"",
-    "export:main": "slidev export slides.md --range 1-10 --output Finance-AI-principal.pdf --timeout 120000 --executable-path \"C:/Program Files/Google/Chrome/Application/chrome.exe\""
+    "export:main": "slidev export slides.md --range 1-10 --output Finance-AI-principal.pdf --timeout 120000 --executable-path \"C:/Program Files/Google/Chrome/Application/chrome.exe\"",
+    "guide": "python build-study-guide.py"
   },
   "dependencies": {
     "@iconify-json/lucide": "^1.2.142",
