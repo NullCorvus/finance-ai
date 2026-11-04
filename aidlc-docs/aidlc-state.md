@@ -391,3 +391,15 @@ still outstanding there.
 - **Verification**: Ten Markdown files parsed; eight unique support story records with all required fields and 24+8 provisional points; all 15 historical HU records unchanged; original role questions archived; audit history append-only; 25 new-document local links/anchors valid. Normal whitespace check passes outside audit; audit passes with trailing-space checks disabled solely to retain verbatim raw user input. No application tests run for this documentation-only change.
 - **Skipped**: Application design implementation details, units generation, code generation, application build/test and Operations — no implementation is authorized.
 - **Extensions**: Security Baseline requirements coverage evaluated per rule in the role specification; no deployed compliance claimed. Partial PBT N/A to documentation-only changes. Disabled full Resiliency Baseline skipped.
+
+## Backlog status reconciliation — 2026-11-04
+
+- [x] Read the active Trello board and all six lists, including archived cards; all list/card/checklist pagination exhausted.
+- [x] Verified 15 matching original HU cards are explicitly complete and archived in Deploy.
+- [x] Updated PB-001–PB-011 to Done and added per-story Done status with direct card links.
+- [x] Removed the exact accidental pasted backlog insertion from USR-SUP-01 after preserving a local pre-edit backup.
+- [x] Kept historical story definitions/acceptance criteria/points and the eight Support Agent/customer-dependency implementation records unchanged.
+- **Evidence distinction**: Card completion is synchronized; no new application acceptance test or production-release verification is claimed. Four completed cards retain unmarked legacy checklist items, recorded in the backlog. Older duplicate Backlog cards and obsolete JWT/subcategory/PB text are not imported.
+- **Trello boundary**: Read-only inspection; no board changes were necessary because the original cards already carry completion. Shared RBAC cards remain open and separate from the completed core.
+- **Publication**: Local documentation follow-up on codex/support-agent-backlog; no push or PR.
+- **Extensions**: Security Baseline N/A to status-only metadata edits; prior Support Agent requirements coverage unchanged. Partial PBT N/A; disabled full Resiliency skipped.

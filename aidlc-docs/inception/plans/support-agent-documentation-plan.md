@@ -40,3 +40,11 @@ Implement the shared foundations first. Deliver ticket queue/claim and limited l
 The documentation review checks exact story IDs, preserved historical records, provisional point totals, denied operations, customer ownership, pending transitions, explicit exclusions, planned-vs-implemented labels and portable links. No application tests are required because no application code changes.
 
 Security Baseline is enabled: applicable requirements are carried in the role specification; infrastructure and deployment verification are N/A for this documentation patch. Partial Property-Based Testing remains configured but its test-generation rules are N/A because no executable functions or serializers are changed. Resiliency Baseline is disabled and skipped. Audit history is appended, never rewritten.
+
+## Follow-up — refresh original backlog statuses (2026-11-04)
+The user requested checking Trello because completed original features still appeared in progress/not started in the document. This authorizes refreshing those documentation statuses; no application changes or board mutation is necessary.
+- [x] Read the active board, all six lists, all open/archived cards and the 15 matching complete story cards; inspect full checklists with no remaining pagination.
+- [x] Remove only the exact accidental pasted backlog insertion, preserving a local backup of the pre-edit file.
+- [x] Refresh PB-001–PB-011 and all 15 original story statuses using direct card evidence; preserve their story definitions, acceptance criteria and points.
+- [x] Keep Support Agent implementation statuses unchanged; record board bookkeeping discrepancies without importing old architecture assumptions.
+- [x] Validate inventory, scope, Markdown, links and whitespace; append audit/state and prepare a local review commit.

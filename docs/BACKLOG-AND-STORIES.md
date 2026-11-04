@@ -1,16 +1,15 @@
 # Product Backlog & User Stories — Finance AI Tracker
 
-> **Source:** supplied backlog and user-story register, 2026-09-13.
-> The historical register below preserves **15 user-story rows** under
-> **11 product backlog items**. The supplied register does not include HU-007.
-> The planned Support Agent extension adds eight records under two new backlog items;
-> its estimates and implementation statuses are explicitly provisional/planned.
-> Product backlog names, priorities, statuses, notes, story wording, implementation scope,
-> acceptance criteria, and points below are the supplied values.
+> **Story source:** supplied backlog and user-story register, 2026-09-13.
+> The original register contains **15 user-story rows** under **11 product backlog items**;
+> HU-007 is absent from that register. Original story wording, scope, acceptance criteria
+> and point estimates are preserved.
+> **Current status source:** Trello card completion, verified **2026-11-04**, including archived cards.
+> PB-001–PB-011 and their 15 original stories are **Done** on the board.
+> The Support Agent extension adds eight planned implementation stories under two new backlog
+> items; its implementation statuses and provisional estimates are separate from the completed core.
 > **Estimation scale:** Story Points — standard **Fibonacci** (1, 2, 3, 5, 8, 13…).
-> **Historical register:** the Status column reflects the supplied 2026-09-13 snapshot, not the
-> current implementation state. Use `docs/ARCHITECTURE.md` and `docs/STACK.md` for verified
-> technical behavior; preserve story scope and acceptance criteria independently of code progress.
+> Card completion is project-tracking evidence; it does not assert a new runtime test or release.
 
 ---
 
@@ -20,15 +19,43 @@
 |---|---|---|---|---|
 | PB-001 | Identity and access | High | Done | HU-001 registration and HU-002 secure renewable sessions are implemented. |
 | PB-002 | Accounts and currencies | High | Done | HU-003 complete. Owned accounts, derived balances, deactivate/reactivate, and safe permanent deletion are merged into develop for backend and frontend. |
-| PB-003 | User-owned catalogs | High | In progress | HU-004 categories and HU-005 income sources. Accounts replace payment methods; subcategories and payment methods are outside the product model. Catalog deletion is confirmed and permanent rather than archived. |
-| PB-004 | Expenses and optional receipt detail | High | Not started | HU-006–HU-008. Fast manual expense, optional evidence/items, correction and permanent deletion. |
-| PB-005 | Income | High | Not started | HU-009. Manual income lifecycle tied to an owned account. |
-| PB-006 | Transfers | High | Not started | HU-010. Atomic movement between owned accounts; never income or expense. |
-| PB-007 | Transaction history and filters | High | Not started | HU-011. Search and inspect expenses, income and transfers together before AI is introduced. |
-| PB-008 | Basic financial dashboard | High | Not started | HU-012. Deterministic balances, recent movements, income/expense and period/category views before AI. |
-| PB-009 | AI capture from natural text and audio | High | Not started | HU-013–HU-014. Written and spoken language share one conversational capture capability, with separate stories for text and microphone behavior. |
-| PB-010 | AI capture from receipt photo | High | Not started | HU-015. Receipt images produce a fast editable expense proposal with printed-total and item extraction. |
-| PB-011 | Spending budgets | Medium | Not started | HU-016. Weekly/monthly category or subcategory targets and dashboard progress after the AI speed layer. |
+| PB-003 | User-owned catalogs | High | Done | HU-004 categories and HU-005 income sources. Accounts replace payment methods; subcategories and payment methods are outside the product model. Catalog deletion is confirmed and permanent rather than archived. |
+| PB-004 | Expenses and optional receipt detail | High | Done | HU-006–HU-008. Fast manual expense, optional evidence/items, correction and permanent deletion. |
+| PB-005 | Income | High | Done | HU-009. Manual income lifecycle tied to an owned account. |
+| PB-006 | Transfers | High | Done | HU-010. Atomic movement between owned accounts; never income or expense. |
+| PB-007 | Transaction history and filters | High | Done | HU-011. Search and inspect expenses, income and transfers together before AI is introduced. |
+| PB-008 | Basic financial dashboard | High | Done | HU-012. Deterministic balances, recent movements, income/expense and period/category views before AI. |
+| PB-009 | AI capture from natural text and audio | High | Done | HU-013–HU-014. Written and spoken language share one conversational capture capability, with separate stories for text and microphone behavior. |
+| PB-010 | AI capture from receipt photo | High | Done | HU-015. Receipt images produce a fast editable expense proposal with printed-total and item extraction. |
+| PB-011 | Spending budgets | Medium | Done | HU-016. Weekly/monthly category or subcategory targets and dashboard progress after the AI speed layer. |
+
+---
+
+## Status verification — 2026-11-04
+
+The current statuses above were refreshed from the [active Finance AI board](https://trello.com/b/jv4JziIh/%F0%9F%A5%9A%F0%9F%92%A5-ballbreakers-board-finance-ai), including archived cards. All 15 matching story cards have `complete=true` and `closed=true`; they are archived in the Deploy list. Their explicit completion flag, not the list name or archive flag alone, establishes the board status used here. Older archived Backlog duplicates are superseded story versions and were not used.
+
+| Story | Current status | Trello evidence |
+|---|---|---|
+| HU-001 | Done | [Completed, archived card](https://trello.com/c/PKBB2xx4) |
+| HU-002 | Done | [Completed, archived card](https://trello.com/c/xmhToqTz) |
+| HU-003 | Done | [Completed, archived card](https://trello.com/c/fUGYcuPr) |
+| HU-004 | Done | [Completed, archived card](https://trello.com/c/9FK5NZx2) |
+| HU-005 | Done | [Completed, archived card](https://trello.com/c/nATpdJCB) |
+| HU-006 | Done | [Completed, archived card](https://trello.com/c/VR6CZCu8) |
+| HU-008 | Done | [Completed, archived card](https://trello.com/c/UBioNGpa) |
+| HU-009 | Done | [Completed, archived card](https://trello.com/c/sUSWe8ng) |
+| HU-010 | Done | [Completed, archived card](https://trello.com/c/TtADvIZz) |
+| HU-011 | Done | [Completed, archived card](https://trello.com/c/1pKHRnzQ) |
+| HU-012 | Done | [Completed, archived card](https://trello.com/c/GbOnkvKd) |
+| HU-013 | Done | [Completed, archived card](https://trello.com/c/Ds4Uqude) |
+| HU-014 | Done | [Completed, archived card](https://trello.com/c/HmAVil0G) |
+| HU-015 | Done | [Completed, archived card](https://trello.com/c/NppYhEvb) |
+| HU-016 | Done | [Completed, archived card](https://trello.com/c/ggU2nUlK) |
+
+This is a board-status reconciliation, not a new execution of application acceptance tests or proof of a particular production release. Four completed cards still contain unmarked legacy checklist items (HU-002, HU-008, HU-011 and HU-013); that bookkeeping inconsistency is retained explicitly rather than silently reopening completed work. Historical card text also contains superseded details such as JWTs, subcategories and older PB mappings: only the completion status is synchronized here, not those old architecture/scope values or point estimates. Current technical behavior remains described in the architecture/stack documentation.
+
+The separately planned Support Agent extension has documentation completed but application implementation Not started. Open RBAC requirements/implementation cards cover broader role work and do not reverse completion of the original HU stories.
 
 ---
 
@@ -47,6 +74,8 @@
 
 **Story points:** 3
 
+**Implementation status:** Done — [Trello card](https://trello.com/c/PKBB2xx4), marked complete and archived; verified 2026-11-04.
+
 **Mockup:** TBD
 
 ---
@@ -63,6 +92,8 @@
 **Acceptance criteria:** Valid credentials open the authenticated home; invalid credentials use one generic error; restart restores a valid session; invalid/expired/revoked renewal returns to Login and clears authority; logout revokes the current renewable credential and removes protected access.
 
 **Story points:** 3
+
+**Implementation status:** Done — [Trello card](https://trello.com/c/xmhToqTz), marked complete and archived; verified 2026-11-04.
 
 **Mockup:** TBD
 
@@ -81,6 +112,8 @@
 
 **Story points:** 2
 
+**Implementation status:** Done — [Trello card](https://trello.com/c/fUGYcuPr), marked complete and archived; verified 2026-11-04.
+
 **Mockup:** TBD
 
 ---
@@ -97,6 +130,8 @@
 **Acceptance criteria:** I can create, rename, recolor, re-icon, reorder and permanently delete only my categories; starter categories are editable; deletion asks for confirmation; deleted names can be reused; no Uncategorized option is offered for new records; future dependency rules preserve expenses and remove category budgets; only my data changes.
 
 **Story points:** 3
+
+**Implementation status:** Done — [Trello card](https://trello.com/c/9FK5NZx2), marked complete and archived; verified 2026-11-04.
 
 **Mockup:** TBD
 
@@ -115,6 +150,8 @@
 
 **Story points:** 2
 
+**Implementation status:** Done — [Trello card](https://trello.com/c/nATpdJCB), marked complete and archived; verified 2026-11-04.
+
 **Mockup:** TBD
 
 ---
@@ -131,6 +168,8 @@
 **Acceptance criteria:** A simple expense needs only account, amount and merchant/description because date defaults to today, account supplies currency and category may be Uncategorized; optional fields stay out of the way; one item can reuse the merchant text; AI, receipt and item rows are not required; invalid references save nothing.
 
 **Story points:** 5
+
+**Implementation status:** Done — [Trello card](https://trello.com/c/VR6CZCu8), marked complete and archived; verified 2026-11-04.
 
 **Mockup:** TBD
 
@@ -149,6 +188,8 @@
 
 **Story points:** 5
 
+**Implementation status:** Done — [Trello card](https://trello.com/c/UBioNGpa), marked complete and archived; verified 2026-11-04.
+
 **Mockup:** TBD
 
 ---
@@ -165,6 +206,8 @@
 **Acceptance criteria:** Valid income increases the selected account balance and appears in history; description/source follow their optionality rules; edits recalculate once; confirmed deletion removes the income and reverses its effect; foreign-owned resources are rejected.
 
 **Story points:** 2
+
+**Implementation status:** Done — [Trello card](https://trello.com/c/sUSWe8ng), marked complete and archived; verified 2026-11-04.
 
 **Mockup:** TBD
 
@@ -183,6 +226,8 @@
 
 **Story points:** 2
 
+**Implementation status:** Done — [Trello card](https://trello.com/c/TtADvIZz), marked complete and archived; verified 2026-11-04.
+
 **Mockup:** TBD
 
 ---
@@ -199,6 +244,8 @@
 **Acceptance criteria:** I see only my expenses, income and transfers, newest first; text and filters combine correctly; every amount shows currency; unlike currencies are not combined; Uncategorized expenses remain visible; a clear no-results state appears when nothing matches.
 
 **Story points:** 2
+
+**Implementation status:** Done — [Trello card](https://trello.com/c/1pKHRnzQ), marked complete and archived; verified 2026-11-04.
 
 **Mockup:** TBD
 
@@ -217,6 +264,8 @@
 
 **Story points:** 3
 
+**Implementation status:** Done — [Trello card](https://trello.com/c/GbOnkvKd), marked complete and archived; verified 2026-11-04.
+
 **Mockup:** TBD
 
 ---
@@ -233,6 +282,8 @@
 **Acceptance criteria:** Natural text proposes the correct operation without saving; transfers are not misclassified as spending; complete high-confidence proposals need one-tap acceptance; only ambiguity triggers a short clarification; corrections preserve the original text; Accept uses the normal validated atomic operation; manual forms remain available.
 
 **Story points:** 8
+
+**Implementation status:** Done — [Trello card](https://trello.com/c/Ds4Uqude), marked complete and archived; verified 2026-11-04.
 
 **Mockup:** TBD
 
@@ -251,6 +302,8 @@
 
 **Story points:** 3
 
+**Implementation status:** Done — [Trello card](https://trello.com/c/HmAVil0G), marked complete and archived; verified 2026-11-04.
+
 **Mockup:** TBD
 
 ---
@@ -268,6 +321,8 @@
 
 **Story points:** Not provided in supplied register
 
+**Implementation status:** Done — [Trello card](https://trello.com/c/NppYhEvb), marked complete and archived; verified 2026-11-04.
+
 **Mockup:** TBD
 
 ---
@@ -284,6 +339,8 @@
 **Acceptance criteria:** I can create a weekly/monthly budget for exactly one owned category or subcategory; progress is derived, not manually stored, and appears on the dashboard; only matching period/currency expenses count; deleting its classification removes the budget after confirmation; ownership is enforced.
 
 **Story points:** 1
+
+**Implementation status:** Done — [Trello card](https://trello.com/c/ggU2nUlK), marked complete and archived; verified 2026-11-04.
 
 **Mockup:** TBD
 
