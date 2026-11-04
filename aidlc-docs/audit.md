@@ -4595,3 +4595,548 @@ Footer navigation
 **Context**: Publicación autorizada por el usuario. `git diff --cached --check` pasó antes del commit; solo artefactos documentales se incluyeron.
 
 ---
+
+## Support Agent — Initial Review Request (recorded after edit authorization)
+**Timestamp**: 2026-11-04T22:02:25Z
+**User Input**:
+
+I need you to check those user stories and adapt the docs to that like I need that docuemnted first tell me wehre are you gon to do it and then if those are good needs adjustment or what 
+and also the structure of where is goin to live that code ok ?? and also based on our previous US you should give each one story points also and also how are we goin to add that to the repo ?? 
+
+like with what minimal task for the agentsa but this time is different 
+because each one of us is going to do one role this one is one role ok ? 
+
+so maybe one card with user soimething and then with subtask each US?? 
+
+before making changes tell me pls
+
+**AI Response**: Read-only review completed before any change; proposed documentation locations, story points and role-owner handoff. Initial request to wait for edits was respected.
+**Context**: Support Agent documentation workflow; original task inputs retained verbatim. Earlier proposal is superseded by the corrected scope where contradictory.
+
+---
+
+## Support Agent — Initial Supplied Scope
+**Timestamp**: 2026-11-04T22:02:25Z
+**User Input**:
+
+Document the finalized **Support Agent role backlog and user stories** in the FinanciAI repository.
+
+## Objective
+
+Create or update the requirements documentation for the `support_agent` role, including its capabilities, permissions, user stories, acceptance criteria, priorities, and dependencies.
+
+This task is **documentation only**. Do not implement functionality, modify application code, create database migrations, or change the existing architecture.
+
+## 1. Review existing repository documentation
+
+Before making changes:
+
+- Inspect the repository's documentation structure, existing requirements, user stories, and naming conventions.
+- Identify the appropriate location for the Support Agent documentation.
+- Reuse existing formats and conventions rather than creating duplicate documentation.se existing formats and conventions rather than creating duplicate documentat
+- Reference the existing FinanciAI architecture where relevant.
+- Preserve all existing user stories and requirements.
+
+## 2. Finalized role definition
+
+**Role:** `support_agent`
+
+**Purpose:** Assist FinanciAI customers by managing support tickets, communicating with users, reviewing limited account information, resolving problems, and escalating cases requiring administrative privileges.
+
+### Authorized capabilities
+
+- View, filter, and claim support tickets.
+- Create tickets on behalf of identified customers.
+- Communicate with customers through ticket messages.
+- Access limited customer account information relevant to authorized cases.
+- Escalate cases to administrators with a documented reason.
+- Review ticket conversation and activity history.
+- Resolve tickets with a documented resolution.
+
+### Restrictions
+
+Support Agents must not:
+
+- Access customers' private transactions, balances, receipts, or financial credentials.
+- Modify customer account information, permissions, or subscriptions.
+- Suspend or reactivate accounts.
+- Execute refunds or administrative billing operations.
+- Modify system configuration.
+- Access tickets outside their authorization scope.
+- Modify or delete security audit records.
+
+Enforce authorization in the backend, not only through the frontend.
+
+## 3. Support Agent user stories
+
+Document these six user stories using the existing repository format.
+
+### SUP-01 — View and claim support tickets
+
+**As a** Support Agent,
+**I want** to view available support tickets and claim unassigned tickets,
+**so that** I can begin assisting customers.
+
+**Acceptance criteria:**
+
+1. Display tickets with ID, subject, status, creation date, and assignment.
+2. Allow filtering by status.
+3. Allow an agent to claim an unassigned ticket.
+4. Prevent conflicting simultaneous claims.
+5. Restrict access to authorized support staff.
+
+**Priority:** High.
+
+### SUP-02 — Create support tickets
+
+**As a** Support Agent,
+**I want** to create a ticket on behalf of an identified customer,
+**so that** issues reported through another support channel can be documented.
+
+**Acceptance criteria:**
+
+1. Identify an existing customer through an authorized account lookup.
+2. Enter a subject, category, and description.
+3. Link the ticket to the identified customer.
+4. Record its creation timestamp and the responsible agent.
+5. Prevent unauthorized customer-data access.
+
+**Priority:** High.
+
+### SUP-03 — Communicate with customers
+
+**As a** Support Agent,
+**I want** to exchange messages with customers through assigned tickets,
+**so that** I can investigate and resolve their problems.
+
+**Acceptance criteria:**
+
+1. Read and send messages within assigned tickets.
+2. Customers can read and reply through the existing Flutter application.
+3. Messages record their author and timestamp.
+4. Unauthorized agents cannot access restricted conversations.
+
+**Priority:** High.
+
+### SUP-04 — View limited customer information
+
+**As a** Support Agent,
+**I want** to inspect relevant customer account information,
+**so that** I can identify customers and provide appropriate assistance.
+
+**Acceptance criteria:**
+
+1. Display the customer's name, email, account identifier, account status, and subscription status within an authorized support context.
+2. Exclude private financial transactions, balances, receipts, passwords, and credentials.
+3. Prevent agents from modifying account details or subscription entitlements.
+4. Enforce permissions through backend authorization.
+
+**Priority:** High.
+
+### SUP-05 — Escalate tickets to administrators
+
+**As a** Support Agent,
+**I want** to escalate cases requiring administrative privileges,
+**so that** an authorized administrator can resolve them.
+
+**Acceptance criteria:**
+
+1. Allow escalation of an assigned ticket.
+2. Require an escalation reason.
+3. Change the ticket status to `escalated`.
+4. Make the case accessible to the appropriate administrator workflow.
+5. Preserve authorized access to previous messages and case history.
+6. Prevent the support agent from executing restricted administrative actions.
+
+**Priority:** High.
+
+### SUP-06 — Review case history and resolve tickets
+
+**As a** Support Agent,
+**I want** to review ticket history and document resolutions,
+**so that** support outcomes remain traceable.
+
+**Acceptance criteria:**
+
+1. Display the ticket's messages, relevant status changes, and assignment history.
+2. Allow an assigned agent to resolve an eligible ticket.
+3. Require a resolution summary.
+4. Make the resolved status and resolution visible to the customer.
+5. Preserve case history after resolution.
+
+**Priority:** High.
+
+## 4. Required customer-side dependencies
+
+Document these as dependencies of the Support Agent functionality, not as Support Agent stories.
+
+### USR-SUP-01 — Create a support request
+
+As an authenticated FinanciAI User, I want to create a support ticket from the Flutter mobile application so that I can request assistance.
+
+**Acceptance criteria:**
+
+- Accessible through Settings → Help & Support.
+- Requires authentication.
+- Accepts subject, category, and description.
+- Associates the ticket with the authenticated user.
+- Prevents creating tickets on behalf of other customers.
+
+### USR-SUP-02 — Track and respond to support requests
+
+As a FinanciAI User, I want to view my tickets and respond to support messages so that I can track the resolution of my problems.
+
+**Acceptance criteria:**
+
+- Display only tickets belonging to the authenticated user.
+- Show ticket status, conversation, and resolution.
+- Allow replies to eligible tickets.
+- Prevent access to other users' tickets.
+
+## 5. Functional workflow and architecture
+
+Document these decisions:
+
+- **Staff frontend:** React + Vite + TypeScript + Tailwind CSS.
+- **Customer frontend:** Existing Flutter mobile application.
+- **Backend:** Existing FastAPI service.
+- **Database:** Existing PostgreSQL database.
+- **Authentication:** Reuse the existing authentication architecture, extending it for staff access as necessary.
+- **Authorization:** Role-based and resource-level backend enforcement.
+- **Staff interface:** A separate web portal, reusable for future Admin and Security Auditor roles.
+- **Customer interface:** Settings → Help & Support within the mobile application.
+
+**Ticket statuses:**
+
+- `open`
+- `in_progress`
+- `escalated`
+- `resolved`
+
+Document ticket transitions, assignment rules, escalation ownership, and reopening behavior. Where these were not explicitly finalized, identify the decisions as pending instead of inventing business rules.
+
+Important ticket actions should generate audit events compatible with the project's future security-auditing functionality.
+
+## 6. Explicit exclusions
+
+Do not add the following to the implementation backlog:
+
+- AI support assistants or AI-generated responses.
+- Knowledge base or response templates.
+- Agent performance analytics.
+- Individual agent work-history dashboards.
+- Complex ticket routing or SLA management.
+- Push notifications or real-time chat infrastructure.
+- File attachments.
+- A public anonymous ticket portal.
+
+These features are outside the approved scope.
+
+## 7. Documentation quality
+
+For each story, include:
+
+- Unique ID.
+- Descriptive title.
+- Actor.
+- User story in the As a / I want / So that format.
+- Functional description.
+- Testable acceptance criteria.
+- Priority.
+- Dependencies.
+- Relevant authorization and validation requirements.
+- Implementation status: **Not started**, unless repository evidence establishes otherwise.
+
+Keep the documentation consistent with the existing requirements specification and backlog.
+
+Do not create redundant stories or silently expand the agreed scope.
+
+## 8. Final verification
+
+After making the documentation changes:
+
+1. Verify that all six Support Agent stories are present.
+2. Verify that both customer-side dependency stories are documented or appropriately referenced.
+3. Confirm that excluded capabilities were not added.
+4. Check that permissions, architecture, and acceptance criteria are consistent.
+5. List the files created or modified.
+6. Summarize the final backlog and flag any contradictions discovered in the existing repository.
+
+**Do not implement the stories yet. Only document the finalized requirements and backlog.**
+
+
+**AI Response**: Preserve the six supplied Support Agent stories and two customer dependency stories as the baseline.
+**Context**: Support Agent documentation workflow; original task inputs retained verbatim. Earlier proposal is superseded by the corrected scope where contradictory.
+
+---
+
+## Support Agent — Corrected Scope and Documentation Authorization
+**Timestamp**: 2026-11-04T22:02:25Z
+**User Input**:
+
+Continue the documentation-only Support Agent task using the corrections below. These decisions come from our latest FinanciAI requirements discussions and supersede contradictory or outdated proposals found in the repository.
+
+## 1. Correct the authorization model
+
+We have finalized **four authorization roles**:
+
+1. `user` — existing customer role for personal financial management.
+2. `support_agent` — manages customer support requests with limited, authorized access.
+3. `admin` — manages accounts, staff permissions, configurations and escalated cases.
+4. `security_auditor` — independently reviews audit records and privileged activity without modification permissions.
+
+**Free and Premium are subscription plans, not authorization roles.**
+
+Do not introduce `free_user` or `premium_user` as authorization roles.
+
+The backend currently has `user` and `admin`. The other roles are planned additions, not implemented functionality.
+
+For the initial design, use one primary authorization role per account. Keep plan and entitlement modeling separate from security roles.
+
+### Subscription decisions
+
+Subscription expiration behavior has NOT been finalized.
+
+- Do not specify automatic downgrade to Free.
+- Do not introduce subscription expiration workflows.
+- Do not implement billing or entitlement changes.
+- Do not make subscription behavior a blocker for Support Agent documentation.
+- Refer to subscription status in support requirements only where the underlying model supports it; otherwise mark it as a dependency.
+
+Do not assume unimplemented subscription functionality already exists.
+
+### Staff account creation
+
+- Staff accounts are provisioned by authorized administrators.
+- Public registration creates ordinary customer accounts only.
+- Users cannot self-select privileged roles.
+- Admin access requires MFA in the planned security design.
+- Privileged-role assignments must be audited.
+
+The Security Auditor is confirmed as the fourth role. Its detailed user stories will be designed separately.
+
+## 2. Preserve the approved Support Agent scope
+
+We have approved exactly six Support Agent stories:
+
+- SUP-01 — View and claim support tickets.
+- SUP-02 — Create support tickets on behalf of identified customers.
+- SUP-03 — Communicate with customers.
+- SUP-04 — View limited customer information.
+- SUP-05 — Escalate tickets to administrators.
+- SUP-06 — Review case history and resolve tickets.
+
+There are also two customer-side dependencies:
+
+- USR-SUP-01 — Create support requests from Flutter.
+- USR-SUP-02 — Track support requests and reply to messages from Flutter.
+
+Keep the previously supplied descriptions and acceptance criteria as the baseline.
+
+**Important: SUP-04 already defines customer-information permissions. Do not create another story for this requirement.**
+
+Support Agents may inspect limited, authorized account metadata and ticket information. They must not access private transactions, balances, receipts, passwords or financial credentials by default.
+
+SUP-02 requires a narrowly scoped customer lookup to create a ticket. Do not permit unrestricted customer browsing.
+
+If a field such as customer name or subscription status doesn't exist in the current backend, document that dependency rather than assuming the field already exists.
+
+### Additional workflow rules
+
+Refine the existing acceptance criteria to cover:
+
+- Limited information visible in unassigned ticket queues.
+- Full authorized ticket access after assignment.
+- Prevention of simultaneous conflicting ticket claims.
+- Backend authorization for every ticket operation.
+- Ticket states: `open`, `in_progress`, `escalated`, `resolved`.
+- Status transitions and escalation ownership.
+- Message history, timestamps and resolution summaries.
+- Protection of customer data and audit events.
+
+Where a workflow decision has not yet been approved, clearly mark it as pending rather than inventing requirements.
+
+### Explicit exclusions
+
+Do not include:
+
+- AI customer support or AI-generated responses.
+- Knowledge bases or response templates.
+- Agent performance dashboards or analytics.
+- Personal agent work-history dashboards.
+- Complex ticket routing or SLAs.
+- Public anonymous ticket portals.
+- File attachments.
+- Real-time chat infrastructure or push notifications.
+
+The approved scope is human-operated ticket management.
+
+## 3. Confirm the repository architecture
+
+We have decided **not to create a fourth repository**.
+
+Use these existing repositories:
+
+### A. Product documentation
+
+Repository: `NullCorvus/finance-ai`
+
+Maintain the authoritative backlog in:
+
+`docs/BACKLOG-AND-STORIES.md`
+
+Create the detailed role specification in the existing AI-DLC requirements structure, following repository conventions.
+
+Update relevant architectural and requirements references without duplicating the story definitions.
+
+### B. Staff web portal and customer frontend
+
+Repository: `Maicol2363/finance-ai-frontend`
+
+The new staff portal will be a separate React application inside the existing frontend repository:
+
+```text
+finance-ai-frontend/
+├── lib/
+│   └── features/
+│       └── support/          # Planned Flutter customer UI
+├── web/                      # Existing Flutter web runner
+└── staff-web/                # Planned React application
+    ├── src/
+    │   ├── app/
+    │   ├── features/
+    │   │   ├── auth/
+    │   │   └── support/
+    │   └── shared/
+    ├── package.json
+    └── vite.config.ts
+```
+
+Staff frontend technology:
+
+- React
+- Vite
+- TypeScript
+- Tailwind CSS
+
+The portal must be reusable for the future Admin and Security Auditor interfaces, with role-specific routes and backend permissions.
+
+Do not put the React application inside Flutter's existing `web/` directory.
+
+### C. Backend
+
+Repository: `Maicol2363/finance-ai-backend`
+
+Continue using:
+
+- Existing FastAPI backend.
+- Existing PostgreSQL database.
+- Existing authentication infrastructure, extended appropriately.
+- Backend-enforced role and resource authorization.
+
+Plan a Support module under:
+
+`src/finance_ai/support/`
+
+Follow actual backend patterns for services, schemas, persistence, API routes, migrations and tests.
+
+Do not create a separate backend or database for the portal.
+
+These paths are planned architectural locations. Do not create implementation directories during this documentation-only task.
+
+## 4. Story points and Trello consistency
+
+The current FinanciAI Trello board contains the RBAC requirements and implementation cards, but does not establish numerical story-point estimates for these new stories.
+
+The historical GitHub backlog uses Fibonacci estimation.
+
+The proposed Support Agent estimates were:
+
+| Story | Provisional points |
+|---|---:|
+| SUP-01 | 5 |
+| SUP-02 | 3 |
+| SUP-03 | 5 |
+| SUP-04 | 3 |
+| SUP-05 | 3 |
+| SUP-06 | 5 |
+| USR-SUP-01 | 3 |
+| USR-SUP-02 | 5 |
+| Total | 32 |
+
+Treat these as provisional, not confirmed.
+
+Review their relative complexity against comparable existing user stories, accounting for authorization, backend, frontend, persistence and testing.
+
+Pay particular attention to SUP-03, which spans Flutter, React and FastAPI, and SUP-06, which may reuse existing ticket-history infrastructure.
+
+Document shared dependencies separately, including staff portal scaffolding, staff authentication, RBAC foundations and audit integration. Avoid counting shared work multiple times.
+
+Do not modify Trello or create Trello cards as part of this task.
+
+## 5. Documentation changes
+
+Proceed with the documentation-only changes in `NullCorvus/finance-ai`.
+
+- Update the existing authoritative backlog with SUP-01 through SUP-06 and the two customer dependency stories.
+- Create a detailed Support Agent requirements document using existing AI-DLC conventions.
+- Update existing requirements questions to reflect our decisions and identify superseded assumptions.
+- Update architecture and technology documentation to describe the planned staff portal.
+- Preserve historical requirements and existing story records.
+- Follow mandatory repository documentation procedures, including AI-DLC state and audit updates where required.
+- Avoid redundant planning documents unless mandatory under repository conventions.
+
+Use the existing `develop`-based contribution workflow, creating a documentation branch and PR where appropriate. Do not directly change unrelated repositories.
+
+## 6. Final verification
+
+After editing, report:
+
+1. Files created or modified.
+2. Final Support Agent story inventory and acceptance criteria.
+3. Updated permission boundaries.
+4. Architecture and repository-structure decisions.
+5. Revised or retained provisional story-point estimates, with reasoning.
+6. Remaining genuine blockers or pending decisions.
+
+Do not reopen already finalized role, technology, or Support Agent scope decisions.
+
+**Authorization: Proceed with documentation-only changes. Do not implement application code, create database migrations, scaffold React, or modify Trello.**
+
+**AI Response**: Proceed with documentation only. Supersede plan-as-role assumptions and the proposed fourth repository. Scope remains Support Agent; other role backlogs are not generated.
+**Context**: Support Agent documentation workflow; original task inputs retained verbatim. Earlier proposal is superseded by the corrected scope where contradictory.
+
+---
+
+## Support Agent — Shared Team Context
+**Timestamp**: 2026-11-04T22:02:25Z
+**User Input**:
+
+\- `premium_user` — Free features plus the AI and other premium features that the product explicitly includes.
+
+this one is not a role add information only about the current role
+
+`/home/d3ad/codigos/finance-ai/aidlc-docs/inception/requirements/support-agent-role.md`New role specification: permissions, restrictions, workflow, dependencies, exclusions, and pending decisions.
+
+some friends not have configure the repo like that like I have but ai dlc is private or should be shared ?? also what actully is uploaded to the repo ??
+
+also my friends should have all the context stack etc&#x20;
+
+**AI Response**: Verified tracked versus ignored files and selected an isolated worktree to preserve unrelated local changes. Shared Markdown requires no AI-DLC installation; team guide and support specification will use portable links. The documentation remote lacks develop, so publication remains pending.
+**Context**: Support Agent documentation workflow; original task inputs retained verbatim. Earlier proposal is superseded by the corrected scope where contradictory.
+
+---
+
+## Support Agent — Documentation Execution
+**Timestamp**: 2026-11-04T22:06:58Z
+**AI Response**: Added the authoritative six Support Agent stories and two customer dependencies with provisional points, role requirements, corrected questions with preserved archive, portable team reading guide and planned architecture/stack placement. Prepared an isolated documentation branch from verified master because the docs remote lacks develop. No application directories or Trello changes were made.
+**Context**: Security Baseline requirements evaluated per rule; partial PBT N/A for documentation; disabled Resiliency Baseline skipped. Documentation verification follows.
+
+---
+
+## Support Agent — Documentation Verification and Publication Boundary
+**Timestamp**: 2026-11-04T22:08:03Z
+**AI Response**: Verified eight unique stories and required fields, 24+8 provisional points, 15 unchanged historical HU records, preserved archived questions, append-only audit, 25 portable links/anchors and successful Markdown parsing for all ten changed documents. Whitespace checks pass outside audit; audit trailing spaces are retained exactly as supplied and checked with only blank-at-eol disabled. No application code or tests were changed. Preparing a local review commit only; no push or PR because the requested documentation develop target does not exist.
+**Context**: Support documentation complete with explicitly pending implementation policies. Security requirements coverage recorded; partial PBT N/A; disabled Resiliency skipped. Source checkout and unrelated local changes preserved.
+
+---

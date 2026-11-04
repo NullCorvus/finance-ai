@@ -2,7 +2,7 @@
 
 ## Project Information
 - **Project Type**: Brownfield (FastAPI backend + Flutter frontend already implemented)
-- **Current Stage**: OPERATIONS (Complete) - Feature Complete
+- **Current Stage**: INCEPTION — Support Agent documentation; application implementation not started
 
 ## Workspace State
 - **Existing Code**: Yes — `finance-ai-backend/` (FastAPI, Alembic, uv) and `finance-ai-frontend/` (Flutter)
@@ -371,3 +371,23 @@ still outstanding there.
 - [x] Sintaxis y enlaces verificados; PNG inspeccionados visualmente. Pestaña file local no recargada por política del navegador.
 - [x] Explicación de FastAPI/router, gateway de visión y servicio financiero añadida al README de HU-015.
 - [x] Publicación documental en `origin/master`; commit de diagramas `9fa14f2`.
+
+## Active Workflow — Support Agent documentation (2026-11-04)
+
+- **Scope**: Documentation only; six Support Agent stories plus two customer dependencies. No code, migrations, scaffolding, Trello, deployment or other-role backlogs.
+- **Source of truth**: [Backlog](../docs/BACKLOG-AND-STORIES.md#support-agent-extension--2026-11-04); [role requirements](inception/requirements/support-agent-role.md); [team reading guide](README.md).
+- **Plan**: [Documentation checklist and role-owner handoff](inception/plans/support-agent-documentation-plan.md).
+- **Authorization**: Latest supplied correction explicitly authorizes documentation edits and supersedes the earlier plan-as-role and fourth-repository proposals. Existing unrelated work is preserved in the original checkout.
+- **Shared model correction**: Plans and entitlements are separate from authorization roles; one primary role per account. Support Agent is planned, not implemented. Subscription expiration remains undecided and is not a documentation blocker.
+- **Repository placement**: React portal planned at frontend staff-web/; customer support at Flutter lib/features/support/; support backend at src/finance_ai/support/ in the existing service/database. These paths are not scaffolded.
+- **Estimates**: 24 provisional Support Agent points plus 8 customer dependency points; shared foundations estimated separately, once.
+- **Pending implementation decisions**: Queue/lookup scope, lifecycle transitions, escalation ownership, reply/resolution/reopening policies, validation bounds, unsupported metadata fields and shared staff session/audit contracts. Confirmed scope and technology choices are not reopened.
+- **Contribution boundary**: Isolated local branch codex/support-agent-backlog from origin/master 16b3361. Remote docs repository has no develop branch; no remote branch, PR target or branch policy is created implicitly. Code repositories are unchanged.
+- [x] Workspace detection and focused source review complete; existing architecture/code guide reused.
+- [x] Supplied requirements/story scope and corrected decisions documented; historical records preserved.
+- [x] Workflow planning and role-owner handoff documented in one scoped plan.
+- [x] Shared architecture, stack and portable team context updated.
+- [x] Documentation verification and local review evidence complete.
+- **Verification**: Ten Markdown files parsed; eight unique support story records with all required fields and 24+8 provisional points; all 15 historical HU records unchanged; original role questions archived; audit history append-only; 25 new-document local links/anchors valid. Normal whitespace check passes outside audit; audit passes with trailing-space checks disabled solely to retain verbatim raw user input. No application tests run for this documentation-only change.
+- **Skipped**: Application design implementation details, units generation, code generation, application build/test and Operations — no implementation is authorized.
+- **Extensions**: Security Baseline requirements coverage evaluated per rule in the role specification; no deployed compliance claimed. Partial PBT N/A to documentation-only changes. Disabled full Resiliency Baseline skipped.

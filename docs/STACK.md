@@ -21,6 +21,25 @@
 | 7 | **Deploy** | **Docker Compose for local development; Cloud Run deployment workflow** | Compose runs the API with PostgreSQL locally. The backend repository also defines a Cloud Run deployment workflow; its presence does not prove a particular deployment is live. The original VM plan remains an academic design decision. |
 | 8 | **Languages ("glue")** | Dart (UI) · Python 3.14 (API) · SQL (DB) · Docker/bash (tooling) | Verified from backend `pyproject.toml` and Dockerfile; frontend `pubspec.yaml` constrains Dart to `>=3.13.2 <3.14.0`. |
 
+## Planned staff portal stack (2026-11-04)
+
+The Support Agent extension adds a planned **React + Vite + TypeScript + Tailwind CSS**
+application at `staff-web/` inside the existing Maicol2363/finance-ai-frontend repository.
+Its package.json and vite.config.ts will be independent of the Flutter toolchain.
+Flutter's existing `web/` remains its web runner; it is not the React application directory.
+Customer support remains in Flutter, under `lib/features/support/` and Settings → Help & Support.
+
+Reuse the existing FastAPI backend, PostgreSQL and opaque session architecture, extending
+staff authentication and server-side role/resource authorization as necessary. Do not introduce
+a separate backend/database or assume JWTs. Staff browser-session storage/CSRF/CORS details,
+dependency versions/lockfile, portal CI and hosting belong to later implementation design.
+The staff shell can serve future staff interfaces; this task only documents Support Agent.
+No React application, packages or implementation directories are created by this change.
+
+See [Support Agent requirements](../aidlc-docs/inception/requirements/support-agent-role.md)
+and the [team reading guide](../aidlc-docs/README.md). Existing stack evidence above remains
+the historical implemented snapshot; this section is an approved plan, not a deployment report.
+
 ## Core rule (unchanged from architecture)
 
 - AI extraction is part of the backend; provider retries and fallback mean the number of external
