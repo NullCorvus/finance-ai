@@ -403,3 +403,13 @@ still outstanding there.
 - **Trello boundary**: Read-only inspection; no board changes were necessary because the original cards already carry completion. Shared RBAC cards remain open and separate from the completed core.
 - **Publication**: Local documentation follow-up on codex/support-agent-backlog; no push or PR.
 - **Extensions**: Security Baseline N/A to status-only metadata edits; prior Support Agent requirements coverage unchanged. Partial PBT N/A; disabled full Resiliency skipped.
+
+## Support Agent Trello tracking — 2026-11-04
+
+- [x] Created [Support Agent — ticket management MVP](https://trello.com/c/rCyuWwMB) on the active Finance AI board in Backlog, under the user's explicit creation authorization.
+- [x] Read back the card and full checklists: six ordered SUP-01–SUP-06 story items (24 provisional SP), two separate customer dependencies (8 provisional SP) and four shared prerequisites. All 12 items remain incomplete; card is open and not complete.
+- [x] Included self-contained story acceptance criteria, code locations, permission boundaries, exclusions, pending implementation decisions and related RBAC links.
+- [x] Added the card link to the authoritative backlog and updated the role-owner handoff.
+- **Ownership**: One accountable role owner must be assigned; none was assigned implicitly. No deadline was invented.
+- **Scope**: One parent card with checklist subtasks; no extra role/customer cards, messages, code, migrations or repository publication. Canonical new documentation remains local until separately published.
+- **Extensions**: Existing security requirements preserved in the shared handoff; no secrets/customer records included. Partial PBT N/A; disabled full Resiliency skipped.

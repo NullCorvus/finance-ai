@@ -23,7 +23,7 @@ Text workflow: inspect sources; document confirmed scope and pending decisions; 
 The verified documentation remote has `master` and no `develop` branch. The isolated local branch starts at `origin/master` commit `16b33610fa3ca5cfef3ca1e758582fc039cacbf9`. The requested develop-based PR cannot be opened as specified until the team resolves the documentation repository's target branch. Do not create develop, push a substitute target, or change branch rules implicitly. The backend and frontend contribution target remains develop; neither repository is modified here.
 
 ## Role-owner handoff
-Use one parent work item, "Support Agent — ticket management MVP", with one accountable role owner and six story subtasks referencing SUP-01 through SUP-06 in the authoritative backlog. The parent rolls up child points; it has no additional story points. If the board lacks independently tracked subtasks, use linked story cards. This is a proposal only; no Trello cards are changed.
+Use one parent work item, [Support Agent — ticket management MVP](https://trello.com/c/rCyuWwMB), with one accountable role owner and six story checklist subtasks referencing SUP-01 through SUP-06 in the authoritative backlog. The parent rolls up child points; it has no additional story points. The user authorized creation on 2026-11-04; the open card is in Backlog with separate customer-dependency and shared-foundation checklists. If independently tracked child cards become necessary, agree that expansion separately. A role owner is not yet assigned.
 
 Link USR-SUP-01 and USR-SUP-02 to the customer-role owner. Keep staff portal scaffolding, staff authentication/RBAC, ticket persistence foundation and audit integration as explicitly owned shared technical prerequisites, estimated once separately. No agent is delegated or implementation started by this document.
 
@@ -48,3 +48,11 @@ The user requested checking Trello because completed original features still app
 - [x] Refresh PB-001–PB-011 and all 15 original story statuses using direct card evidence; preserve their story definitions, acceptance criteria and points.
 - [x] Keep Support Agent implementation statuses unchanged; record board bookkeeping discrepancies without importing old architecture assumptions.
 - [x] Validate inventory, scope, Markdown, links and whitespace; append audit/state and prepare a local review commit.
+
+## Follow-up — create Support Agent Trello card (2026-11-04)
+The user's explicit "create it" authorizes creating the previously proposed parent card and six story checklist subtasks. This supersedes the earlier no-Trello-change boundary for this action only. Implementation and repository publication remain separate.
+- [x] Refresh board/list/card context and confirm there is no existing Support Agent parent card.
+- [x] Prepare a self-contained description from the six canonical stories, provisional points, customer dependencies and code/permission boundaries; flag unpublished repository docs honestly.
+- [x] Create one open parent card in Backlog with six ordered story subtasks and separate dependency/foundation checklists.
+- [x] Read back the card and full checklists; verify IDs, points, order and incomplete implementation state.
+- [x] Record the created card link, update local traceability and prepare the local review commit.
