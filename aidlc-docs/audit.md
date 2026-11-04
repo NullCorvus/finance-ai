@@ -5481,3 +5481,13 @@ Product Backlog & User Stories — Finance AI Tracker
 **Context**: User explicitly requested creation. No other Trello cards, team messages, application files, migrations or remote Git branches changed. Security handoff preserved; partial PBT N/A; disabled Resiliency skipped.
 
 ---
+
+## Support Agent Trello Card — User Correction
+**Timestamp**: 2026-11-04T22:29:14Z
+**User Input**: "que es esto quita eso 
+y agregaste en la taejta el stack ?? y que va a ser web ??"
+**Attachment**: Screenshot identifies the Shared prerequisites — estimate once checklist and its four items.
+**AI Response**: Removed the named checklist and its four items using Trello UI because the connector exposes no deletion action. Removed the corresponding prerequisite section from the description. Added an explicit Interface line at the top: web staff portal using React, Vite, TypeScript and Tailwind CSS; retained the existing frontend staff-web location and FastAPI/PostgreSQL backend context. Full checklist readback verifies exactly two remaining checklists with six role-story items and two customer dependencies. The six stories and their acceptance criteria remain intact; implementation remains not started.
+**Context**: User explicitly requested removal of the pictured checklist. No other cards, stories or application code changed. Local tracking text updated; no Git push.
+
+---

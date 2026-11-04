@@ -413,3 +413,10 @@ still outstanding there.
 - **Ownership**: One accountable role owner must be assigned; none was assigned implicitly. No deadline was invented.
 - **Scope**: One parent card with checklist subtasks; no extra role/customer cards, messages, code, migrations or repository publication. Canonical new documentation remains local until separately published.
 - **Extensions**: Existing security requirements preserved in the shared handoff; no secrets/customer records included. Partial PBT N/A; disabled full Resiliency skipped.
+
+## Support Agent Trello card correction — 2026-11-04
+
+- [x] Removed the user-selected shared-prerequisite checklist and four items; the card now has six role-story items and two customer dependencies in two checklists.
+- [x] Removed the corresponding description section and explicitly stated the web staff portal and React/Vite/TypeScript/Tailwind stack at the top.
+- [x] Verified through connector readback and the visible Trello UI. Existing FastAPI/PostgreSQL integration and planned staff-web repository location remain described.
+- **Boundary**: Card presentation correction only; shared architectural dependencies remain requirements, not additional role stories. No implementation, other-card changes or repository publication.

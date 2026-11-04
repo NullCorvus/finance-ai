@@ -354,7 +354,7 @@ The separately planned Support Agent extension has documentation completed but a
 
 ## Support Agent extension — 2026-11-04
 
-**Tracking:** [Support Agent — ticket management MVP](https://trello.com/c/rCyuWwMB), created in Trello Backlog on 2026-11-04. Six role-story checklist items total 24 provisional points; the two customer dependencies and shared prerequisites are separate checklists. Card creation does not indicate implementation has started.
+**Tracking:** [Support Agent — ticket management MVP](https://trello.com/c/rCyuWwMB), created in Trello Backlog on 2026-11-04. Six role-story checklist items total 24 provisional points; the two customer dependencies are a separate checklist. The shared-prerequisite checklist was removed at the user's request. Card creation does not indicate implementation has started.
 
 This section adds planned work to the preserved historical register above. The six SUP stories and the two customer dependencies below are the authoritative story definitions; the [role specification](../aidlc-docs/inception/requirements/support-agent-role.md) supplies policy, source evidence and pending decisions without duplicating them. There are now 23 story records: 15 historical HU records and eight new support-related records. No historical HU is renumbered or re-estimated.
 

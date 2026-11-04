@@ -23,7 +23,7 @@ Text workflow: inspect sources; document confirmed scope and pending decisions; 
 The verified documentation remote has `master` and no `develop` branch. The isolated local branch starts at `origin/master` commit `16b33610fa3ca5cfef3ca1e758582fc039cacbf9`. The requested develop-based PR cannot be opened as specified until the team resolves the documentation repository's target branch. Do not create develop, push a substitute target, or change branch rules implicitly. The backend and frontend contribution target remains develop; neither repository is modified here.
 
 ## Role-owner handoff
-Use one parent work item, [Support Agent — ticket management MVP](https://trello.com/c/rCyuWwMB), with one accountable role owner and six story checklist subtasks referencing SUP-01 through SUP-06 in the authoritative backlog. The parent rolls up child points; it has no additional story points. The user authorized creation on 2026-11-04; the open card is in Backlog with separate customer-dependency and shared-foundation checklists. If independently tracked child cards become necessary, agree that expansion separately. A role owner is not yet assigned.
+Use one parent work item, [Support Agent — ticket management MVP](https://trello.com/c/rCyuWwMB), with one accountable role owner and six story checklist subtasks referencing SUP-01 through SUP-06 in the authoritative backlog. The parent rolls up child points; it has no additional story points. The user authorized creation on 2026-11-04; the open card is in Backlog with a separate customer-dependency checklist. The shared-foundation checklist was subsequently removed at the user's request. If independently tracked child cards become necessary, agree that expansion separately. A role owner is not yet assigned.
 
 Link USR-SUP-01 and USR-SUP-02 to the customer-role owner. Keep staff portal scaffolding, staff authentication/RBAC, ticket persistence foundation and audit integration as explicitly owned shared technical prerequisites, estimated once separately. No agent is delegated or implementation started by this document.
 
@@ -56,3 +56,8 @@ The user's explicit "create it" authorizes creating the previously proposed pare
 - [x] Create one open parent card in Backlog with six ordered story subtasks and separate dependency/foundation checklists.
 - [x] Read back the card and full checklists; verify IDs, points, order and incomplete implementation state.
 - [x] Record the created card link, update local traceability and prepare the local review commit.
+
+## Follow-up — simplify the card and clarify the web interface (2026-11-04)
+- [x] Remove the user-selected Shared prerequisites checklist and its four items from the card; retain six role-story items and two customer dependencies.
+- [x] Remove the duplicate prerequisite section from the card description and explicitly identify the web staff portal and React/Vite/TypeScript/Tailwind stack at the top.
+- [x] Verify the remaining two checklists, unchanged implementation state and existing FastAPI/PostgreSQL integration; record the correction in local traceability.
