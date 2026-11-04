@@ -1,0 +1,122 @@
+/* ============================================================
+   uc.css · tema institucional de la presentación de Fusagasugá
+   Marco de la plantilla (verde 00482B, dorado DAAA00, crema F5F2EA, gris 6A7179,
+   títulos en Georgia) + acentos de Finance AI (verde oliva y violeta de la IA).
+   Todos los colores están aquí, en tokens: para pasar a un fondo claro basta
+   con cambiar el bloque body[data-theme="uc"].
+   El respaldo (data-theme="light") conserva los tokens claros del PGC.
+   ============================================================ */
+
+body[data-theme="uc"] {
+  --bg: #00482b;
+  --ink: #f5f2ea;
+  --ink2: #d8d4c8;
+  --muted: #a9cdb8;
+  --line: rgba(255, 255, 255, .14);
+  --line2: rgba(255, 255, 255, .26);
+  --card: #ffffff;
+  --soft: rgba(255, 255, 255, .08);
+  --green: #8fb42c;
+  --green-s: rgba(143, 180, 44, .2);
+  --amb: 1;
+  --gold: #daaa00;
+  --gold-l: #f0c93a;
+  --cream: #f5f2ea;
+  --uc-deep: #00331e;
+}
+
+/* las tarjetas blancas devuelven los tokens oscuros a su contenido */
+body[data-theme="uc"] .card,
+body[data-theme="uc"] .pcard {
+  --ink: #1b2430;
+  --ink2: #3a4656;
+  --muted: #6b7482;
+  --line: #e3e6ea;
+  --line2: #cfd5dc;
+  --soft: #eef0f3;
+  --green: #6b8e00;
+  --green-d: #4d6600;
+  --green-s: #e9f2d8;
+  color: var(--ink);
+  background: #fff;
+  border-color: transparent;
+  box-shadow: 0 2px 4px rgba(0, 20, 10, .12), 0 18px 40px rgba(0, 20, 10, .28);
+}
+
+body[data-theme="uc"] .ambient i:nth-child(1) { background: radial-gradient(circle, rgba(218, 170, 0, .22), rgba(218, 170, 0, 0) 66%); }
+body[data-theme="uc"] .ambient i:nth-child(2) { background: radial-gradient(circle, rgba(143, 180, 44, .2), rgba(143, 180, 44, 0) 66%); }
+body[data-theme="uc"] .ambient i:nth-child(3) { background: radial-gradient(circle, rgba(139, 125, 255, .12), rgba(139, 125, 255, 0) 66%); }
+
+/* ───────── encabezado común ───────── */
+body[data-theme="uc"] .eyebrow { color: var(--gold); font-size: 13.5px; }
+body[data-theme="uc"] .h2 {
+  font-family: Georgia, 'Times New Roman', serif;
+  font-weight: 700; font-size: 46px; letter-spacing: -.012em; line-height: 1.06;
+  color: var(--gold);
+}
+body[data-theme="uc"] .lbl { color: var(--muted); }
+body[data-theme="uc"] .card .lbl { color: var(--muted); }
+.hd { top: 42px; }
+
+/* criterios de la rúbrica: aparecen cuando se habla de ellos */
+.crit { position: absolute; right: 168px; top: 40px; z-index: 6; display: flex; gap: 10px; flex-wrap: wrap; justify-content: flex-end; max-width: 620px; }
+.cr {
+  display: inline-flex; align-items: center; gap: 8px;
+  padding: 7px 14px 7px 12px; border-radius: 999px;
+  border: 1.5px solid var(--gold); color: var(--gold);
+  background: rgba(0, 51, 30, .55);
+  font-size: 13px; font-weight: 700; letter-spacing: .01em; white-space: nowrap;
+  transition: var(--rv-tr), background-color .6s var(--ease), color .6s var(--ease);
+}
+.cr b { font-variant-numeric: tabular-nums; }
+.cr.on { animation: crpop 1.6s var(--ease) .15s both; }
+@keyframes crpop {
+  0% { background: rgba(0, 51, 30, .55); color: var(--gold); box-shadow: 0 0 0 0 rgba(218, 170, 0, .7); }
+  25% { background: var(--gold); color: #1d2a12; box-shadow: 0 0 0 10px rgba(218, 170, 0, 0); }
+  100% { background: rgba(218, 170, 0, .16); color: var(--gold-l); box-shadow: 0 0 0 0 rgba(218, 170, 0, 0); }
+}
+
+/* ───────── paisaje del pie: colinas con una oveja que pasea ───────── */
+.land { position: absolute; left: 0; right: 0; bottom: 0; height: 118px; z-index: 0; pointer-events: none; overflow: hidden; transition: opacity .9s var(--ease); }
+.land svg { position: absolute; left: 0; bottom: 0; width: 100%; height: 100%; }
+.land .h1 path { fill: #005d38; }
+.land .h2 path { fill: #0a7a46; }
+.land .h1 { animation: hillsway 26s ease-in-out infinite alternate; }
+.land .h2 { animation: hillsway 19s ease-in-out -7s infinite alternate-reverse; }
+@keyframes hillsway { to { transform: translate3d(-34px, 0, 0); } }
+.land .sheep { position: absolute; left: 0; bottom: 38px; width: 46px; height: 32px; animation: sheepwalk 95s linear infinite; }
+.land .sheep svg { position: static; width: 46px; height: 32px; animation: sheephop .7s ease-in-out infinite; }
+@keyframes sheepwalk { from { transform: translateX(-80px); } to { transform: translateX(1360px); } }
+@keyframes sheephop { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-3px); } }
+body[data-theme="light"] .land { opacity: 0; }
+
+/* ───────── HUD ───────── */
+body[data-theme="uc"] .hud { color: #d6ebdc; }
+body[data-theme="uc"] .hud .brand b { color: var(--gold); }
+body[data-theme="uc"] .mode { color: #d6ebdc; }
+body[data-theme="uc"] .play { background: rgba(0, 51, 30, .6); border-color: rgba(255, 255, 255, .35); color: #e8f3ea; }
+body[data-theme="uc"] .play:hover { border-color: var(--gold); color: var(--gold); }
+body[data-theme="uc"] .play.on { background: var(--gold); border-color: var(--gold); color: #1d2a12; }
+body[data-theme="uc"] .mode.manual { color: var(--gold-l); }
+
+/* barra de rúbrica: siete aspectos */
+#progress { gap: 8px; }
+#progress button { width: 58px; height: 26px; }
+#progress button span { position: absolute; left: 0; top: -13px; font-size: 10.5px; font-weight: 800; letter-spacing: .08em; color: #b5d6c0; transition: color .5s var(--ease); }
+#progress button::before { top: 11px; height: 4px; background: rgba(255, 255, 255, .22); opacity: 1; }
+#progress button i { top: 11px; height: 4px; background: var(--gold); }
+#progress button.now span { color: var(--gold-l); }
+#progress button.now::before { background: rgba(218, 170, 0, .35); }
+#progress button:hover::before { background: rgba(255, 255, 255, .45); }
+.asp { position: absolute; left: 50%; bottom: 58px; transform: translateX(-50%); z-index: 29; font-size: 11px; font-weight: 700; letter-spacing: .13em; text-transform: uppercase; color: #bfe0c8; white-space: nowrap; pointer-events: none; transition: opacity .5s var(--ease); }
+.asp:empty { opacity: 0; }
+body[data-mode="backup"] .asp { display: none; }
+.progress.b button { width: 48px; }
+body[data-theme="light"] #progress button span { color: var(--muted); }
+
+.hint { background: rgba(0, 30, 17, .9); }
+body[data-scene="s-demo"] .qr { opacity: 0; transform: translateY(-8px); pointer-events: none; }
+body[data-theme="uc"] .qr { box-shadow: 0 8px 22px rgba(0, 20, 10, .35); }
+
+/* movimiento reducido: también el paisaje */
+html[data-motion="off"] .land .h1, html[data-motion="off"] .land .h2, html[data-motion="off"] .land .sheep, html[data-motion="off"] .land .sheep svg { animation: none !important; }
