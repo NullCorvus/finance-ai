@@ -33,3 +33,5 @@ Estado final: cinco tarjetas (Swagger, tres fuentes originales del PGC, CDIO/Scr
 
 - [x] 11. Guardar los cambios, integrar la rama remota y subir docs/presentation-fusagasuga.
 - [ ] 12. Publicar los archivos web en Maicol2363/finance-ai-fusagasuga/main conservando las notas y verificar GitHub Pages. PDF: exportaciones anteriores, sin regenerar.
+
+Publicación del sitio pendiente por acceso: GitHub rechaza el push de NullCorvus a Maicol2363/finance-ai-fusagasuga (push=false). El commit web está preparado en /home/d3ad/.local/share/finance-ai-publication/fusagasuga-web-publish-yltfle. La rama fuente sí está subida; no se alteró el enlace público.

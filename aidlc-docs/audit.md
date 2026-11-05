@@ -5181,3 +5181,11 @@ no incluamos trello simplemente quita todo oo inecesario osea"
 **Context**: Commit, push de la rama de presentación y actualización del enlace público autorizados por el usuario.
 
 ---
+
+
+## Fusagasugá — rama subida y publicación pendiente de acceso
+**Timestamp**: 2026-11-05T21:37:45Z
+**AI Response**: "Rama docs/presentation-fusagasuga subida con los cambios y las notas vigentes (código d6f29e3). Preparado el commit del sitio en Maicol2363/finance-ai-fusagasuga, manteniendo los PDF anteriores e identificándolos como tales. GitHub rechazó el push SSH: Permission denied to NullCorvus. La API confirma push=false y la CLI y el conector GitHub están autenticados únicamente como NullCorvus. Se requiere permiso de escritura o conexión de Maicol2363. Preparación conservada en /home/d3ad/.local/share/finance-ai-publication/fusagasuga-web-publish-yltfle; parche en /home/d3ad/.local/share/finance-ai-publication/fusagasuga-web-publish-yltfle.patch. El enlace público sigue en la versión anterior."
+**Context**: La publicación fue autorizada, pero falta acceso al repositorio que controla el enlace. Paso 12 pendiente; no se declara publicado.
+
+---

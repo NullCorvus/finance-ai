@@ -405,3 +405,6 @@ still outstanding there.
 - Cambios locales en docs/presentation-fusagasuga; publicación pendiente de petición.
 
 - [x] Ajuste posterior: fuentes en diálogo desde «Referencias» en la demo; recorrido restaurado a 13/13. Apertura, cierre, Escape y foco comprobados; movimiento activo.
+
+- [x] Versión de fuentes subida a origin/docs/presentation-fusagasuga (código d6f29e3); integrados cambios remotos y notas públicas más recientes.
+- [ ] Actualizar GitHub Pages: requiere escritura en Maicol2363/finance-ai-fusagasuga; cuenta actual NullCorvus con push=false. Commit web preparado.
