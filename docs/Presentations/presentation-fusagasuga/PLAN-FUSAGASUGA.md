@@ -1,6 +1,6 @@
 # Plan: presentación para Fusagasugá (Gestión del Conocimiento)
 
-Estado: **borrador del 2026-11-04**. Decisiones tomadas por el equipo ese día: entregable HTML interactivo + PDF, exposición de **15 minutos**, offline-first solo en un respaldo, estética «marco UC + acentos Finance AI» (sección 8). **Fases 2 a 5 hechas el 2026-11-04:** el contenido está en [contenido.md](contenido.md) y la presentación interactiva (13 escenas, respaldo A-F, notas de estudio y PDF) en [interactive/](interactive/) (ver [README.md](README.md)). Quedan abiertos los datos de portada, quién presenta cada bloque, la confirmación de las referencias de teoría y el ensayo con cronómetro (fase 6).
+Estado: **borrador del 2026-11-04**. Decisiones tomadas por el equipo ese día: entregable HTML interactivo + PDF, exposición de **15 minutos**, Offline-first retirado de la presentación por decisión del usuario (2026-11-05), estética «marco UC + acentos Finance AI» (sección 8). **Fases 2 a 5 hechas el 2026-11-04:** el contenido está en [contenido.md](contenido.md) y la presentación interactiva (13 escenas, respaldo A-E, notas de estudio y PDF) en [interactive/](interactive/) (ver [README.md](README.md)). Quedan abiertos los datos de portada, quién presenta cada bloque, la confirmación de las referencias de teoría y el ensayo con cronómetro (fase 6).
 
 ## 1. Qué es realmente la plantilla
 
@@ -60,12 +60,12 @@ Un solo «motor» interactivo, español, 13 escenas principales para **15 minuto
 
 Con 15 minutos y tres integrantes, el reparto natural es por aspectos (por ejemplo, escenas 1-4, 5-9 y 10-13); queda por decidir quién presenta cada bloque y se mostrará como una etiqueta discreta por escena (criterio 7.2).
 
-Respaldo (teclas A-F): A modelo de datos, B propuesta de IA, C recibos y voz, D seguridad y calidad (los cuatro del PGC) + **E «dónde se cubre cada criterio»** (mapa de la rúbrica, para preguntas del jurado) + **F offline-first** (decidido el 2026-11-04: solo en respaldo, sin presentarlo como terminado; ver reglas).
+Respaldo (teclas A–E): A modelo de datos, B propuesta de IA, C recibos y voz, D seguridad y calidad y E mapa de la rúbrica. En la demo hay un enlace «Referencias» que abre todas las fuentes en una ventana desplazable, fuera del recorrido.
 
 ### Marco teórico y gestión del conocimiento (a validar)
 
-- Lente propuesta: modelo SECI (Nonaka y Takeuchi) aplicado a un gasto: el hábito tácito se vuelve registro explícito (captura asistida), se combina (categorías, análisis, presupuestos) y se interioriza (insight semanal, proyección).
-- Referencias reales ya citadas en la propuesta: Curry (2026), Banca de las Oportunidades (2024), Singh et al. (2024). Referencias que propongo añadir: Nonaka y Takeuchi (1995), *The Knowledge-Creating Company*; Crawley et al. (2014), *Rethinking Engineering Education: The CDIO Approach*. **No pondré ninguna referencia en una diapositiva sin que usted la confirme**, y las fuentes que exija el docente mandan sobre estas.
+- Enfoque aprobado el 2026-11-05: dato de un gasto, información organizada por categoría/período y apoyo a una decisión. Ejemplo propio sin prometer cambios de hábitos comprobados.
+- Fuentes originales del PGC: Curry (2026), Banca de las Oportunidades (2024), Singh et al. (2024). Se añaden al final documentos oficiales de CDIO, Scrum y las tecnologías, más enlaces a la evidencia propia. El detalle está en contenido.md, sección 7.
 - 5.1 y 5.2 piden «quién, cómo y cada cuánto se actualiza». Antes de escribirlo verificaré en el código qué hace de verdad la app (por ejemplo, si la IA aprende de las correcciones o si solo propone). No afirmaré nada que el software no haga.
 
 ## 4. Look & feel
@@ -79,7 +79,7 @@ Respaldo (teclas A-F): A modelo de datos, B propuesta de IA, C recibos y voz, D 
 - Problema: formulario que se llena una y otra vez, días sin registrar con halo ámbar.
 - Objetivos: recorrido CDIO de cinco nodos con órbitas.
 - Producto: teléfono con balanceo, escritura en vivo, anillo por categoría, barras de presupuesto con rayas en movimiento.
-- Marco teórico: espiral SECI recorrida por un gasto; tarjetas de referencia que voltean.
+- Marco teórico: recorrido del registro de un gasto a una decisión; tarjetas de hábito, contexto y metodología.
 - Arquitectura: paquetes viajando Flutter → FastAPI → IA → PostgreSQL; escalabilidad con carriles aislados por usuario.
 - Seguridad: escudo, ficha de acceso de 15 min que se agota y se rota, carriles de datos por usuario (solo lo que está documentado).
 - Gestión del conocimiento: ciclo capturar → validar → guardar → analizar → actualizar, con reloj de «cada cuánto».
@@ -101,7 +101,7 @@ Contraste: el verde oliva sobre el verde institucional casi no se lee, así que 
 2. **Contenido:** `contenido.md` con el guion de cada escena, la correspondencia con los 18 criterios, las referencias y las afirmaciones verificadas en el código. **Punto de revisión suyo antes de diseñar.**
 3. **Andamio** (hecho): motor copiado del PGC, tema institucional en `uc.css`, barra de siete aspectos, paisaje con oveja y portada.
 4. **Escenas** (hecho): las 13, verificadas en la vista previa con un servidor local (el panel muestra file:// sin estilos; con Chrome sí se comprobó `file://`).
-5. **Respaldo, notas de estudio y exportación** (hecho): A-F, panel `N` y PDF de 19 y 13 páginas con `export-pdf.mjs`. La guía de estudio en PDF para el celular no se hizo.
+5. **Respaldo, notas de estudio y exportación** (hecho): A-E, panel `N` y PDF de 19 y 13 páginas con `export-pdf.mjs`. La guía de estudio en PDF para el celular no se hizo.
 6. **Ensayo:** lista de verificación del aspecto 7 con roles por integrante y cronometraje contra la tabla de la sección 3.
 
 ## 7. Reglas que mantengo
@@ -117,7 +117,7 @@ Contraste: el verde oliva sobre el verde institucional casi no se lee, así que 
 
 1. Entregable: **HTML interactivo + PDF**. No se hace `.pptx` (por tanto no hace falta instalar un renderizador).
 2. Tiempo: **15 minutos** de exposición, sin contar preguntas ni demostración.
-3. Offline-first: **solo en el respaldo F**.
+3. Offline-first: **retirado**, incluida su diapositiva y acceso F (decisión 2026-11-05).
 4. Estética: **marco institucional UC + acentos Finance AI**.
 
 **Siguen abiertas** (con lo que haré por defecto si no se contestan; ninguna bloquea la fase de contenido)
@@ -126,4 +126,8 @@ Contraste: el verde oliva sobre el verde institucional casi no se lee, así que 
 6. **Reparto:** quién presenta cada bloque de escenas. *Por defecto: etiqueta de presentador vacía.*
 7. **Rúbrica visible:** *por defecto, nombres de los aspectos como «ASPECTO n DE 7» y chips de criterio; los pesos solo en las notas de estudio.*
 8. **Logística:** portátil propio, proyector, control remoto, internet en la sala (la app real necesita servidor). *Por defecto: archivos estáticos sin internet; demostración con grabación de respaldo.*
-9. **Gestión del conocimiento:** ¿el docente exige un marco o autores concretos? ¿Le parece bien el lente SECI?
+9. **Gestión del conocimiento:** resuelto el 2026-11-05: se retira SECI y se usa el recorrido aplicado dato–información–decisión.
+
+## Actualización aprobada 2026-11-05
+
+Sustituir SECI por ejemplo aplicado, retirar el respaldo Offline-first y añadir un enlace de referencias en la demo con las fuentes en un diálogo de consulta. Conservar las cifras del PGC original. La validación y los pasos están en `aidlc-docs/construction/plans/fusagasuga-sources-code-generation-plan.md`.

@@ -5098,3 +5098,95 @@ If you want, I can point out the exact change needed in `.github/workflows/relea
 **Context**: Decisión del usuario, tras la advertencia. Republicación del sitio y verificación en vivo en este mismo turno; sin commit hasta que lo pida.
 
 ---
+
+## Fusagasugá — ajustes y fuentes aprobados
+**Timestamp**: 2026-11-05T21:01:56Z
+**User Input**: "Ok realizaemos eso  y quisera agregar al final de la presentacion las fuentes de todo lo que presentamos"
+**AI Response**: "Reanudada la edición documental existente. Plan: ejemplo registro–información–decisión, retirada de Offline-first y fuentes finales con enlaces. Investigación y comprobación local; sin publicar."
+**Context**: Requisitos y plan aprobados por petición directa.
+
+---
+
+## Fusagasugá — corrección sobre las cifras
+**Timestamp**: 2026-11-05T21:01:56Z
+**User Input**: "No sustituyas creo que en lod el pgc osea en el orginal estan las fuentes asi que revisa pls"
+**AI Response**: "Se conserva el 4,2 %. Fuentes originales recuperadas de docs/PGC-PROPUESTA.md, sección 6: Curry, Banca de las Oportunidades y Singh. La fuente Curry está documentada en la propuesta como verificada anteriormente; hoy su web responde 403. No se presenta esa consulta como una nueva verificación independiente."
+**Context**: Corrección incorporada al plan. Resiliency omitida por configuración; PBT parcial N/A para contenido; seguridad aplicada al alcance de esta edición.
+
+---
+
+
+## Fusagasugá — edición local y comprobaciones completadas
+**Timestamp**: 2026-11-05T21:08:59Z
+**AI Response**: "Sustituida la espiral SECI por un ejemplo registro–información–decisión y sincronizado el guion. Retirado el respaldo Offline-first, F, su tarjeta y los estilos propios. Añadidas cuatro escenas de fuentes después de la demo con referencias originales del PGC, fuentes oficiales de metodología/tecnologías y evidencia del proyecto. Conservadas las cifras originales. Comprobadas sintaxis, estructura, enlaces, navegación y composición; sin desbordes en tarjetas de fuentes. Recorrido automático detenido en la demo. Vista previa local abierta en el navegador. Cambios sin commit ni push; PDF anteriores sin regenerar."
+**Context**: Plan completado y checkboxes actualizados. Extensiones conformes/N/A según plan; Resiliency deshabilitada y omitida.
+
+---
+
+
+## Fusagasugá — referencias solo para preguntas
+**Timestamp**: 2026-11-05T21:17:29Z
+**User Input**: "Ok esas que agregaste en realdiad es solo si nos preguntan asi que no lo querio comoa geragdo al final simplemente como unlink en la app final algo como referencias le damos clikc y aparece todo ok "?"
+**AI Response**: "Fuentes retiradas del recorrido principal y agrupadas en un diálogo desplazable, accesible desde un botón con apariencia de enlace «Referencias» en la última escena. Se conservan las 13 escenas y las fuentes originales; foco y Escape usan el diálogo nativo."
+**Context**: Ajuste de interacción aprobado por petición directa; misma rama, sin publicación.
+
+---
+
+
+## Fusagasugá — diálogo de referencias verificado
+**Timestamp**: 2026-11-05T21:19:32Z
+**AI Response**: "Comprobados: 13 escenas principales, 5 respaldos y un diálogo con cuatro grupos. El enlace abre las fuentes por clic y Enter; Escape y Cerrar cierran y devuelven el foco. Las flechas dentro del diálogo no cambian la escena subyacente. Movimiento activo. Documentación y plan sincronizados. Cambios locales sin publicación."
+**Context**: Ajuste solicitado completado.
+
+---
+
+
+## Fusagasugá — referencias enfocadas en preguntas
+**Timestamp**: 2026-11-05T21:29:33Z
+**User Input**: "Ok pero hay muchas cosas osea algunas que no son utiles&#x20;
+tal vez incluir esto ?[https://trello.com/b/jv4JziIh/%F0%9F%A5%9A%F0%9F%92%A5-ballbreakers-board-finance-ai](https://trello.com/b/jv4JziIh/%F0%9F%A5%9A%F0%9F%92%A5-ballbreakers-board-finance-ai)
+
+[https://finance-api-7caahuohmq-rj.a.run.app/docs#/Authentication/register_api_v1_auth_register_post](https://finance-api-7caahuohmq-rj.a.run.app/docs#/Authentication/register_api_v1_auth_register_post)
+
+o esto pero hay cosas que no son como utiles o que no nos pregunten"
+**AI Response**: "Reducidas las referencias a siete tarjetas, priorizando Trello, API/Swagger y código. Se conservan las tres fuentes originales del PGC y CDIO/Scrum agrupados. Tablero verificado con Trello MCP en lectura y Swagger comprobado mediante GET (200), sin ejecutar endpoints de negocio."
+**Context**: Simplificación solicitada, mismo diálogo fuera del recorrido. Sin cambiar Trello, API ni publicar.
+
+---
+
+
+## Fusagasugá — retirar Trello
+**Timestamp**: 2026-11-05T21:30:13Z
+**User Input**: "el tablero es privado no ?? pero el ai si es plucico el fast apiu documentation no ? 
+
+no incluamos trello simplemente quita todo oo inecesario osea"
+**AI Response**: "Retirado Trello del diálogo. Referencias reducidas a cinco tarjetas: Swagger y código agrupados, tres fuentes originales y CDIO/Scrum. Se conserva la consulta desde el enlace de la última escena."
+**Context**: Corrección incorporada antes de completar la revisión.
+
+---
+
+
+## Fusagasugá — selección final verificada
+**Timestamp**: 2026-11-05T21:31:45Z
+**AI Response**: "Confirmada visibilidad private del tablero mediante trelloReadBoard list con filtro private. Swagger respondió 200 sin credenciales. Ventana reducida a cinco tarjetas: API/Swagger, tres referencias originales y CDIO/Scrum. Retirados Trello, repositorios y documentación técnica genérica. HTML comprobado en navegador: cinco tarjetas, Trello ausente, trece escenas principales y movimiento activo."
+**Context**: Simplificación completada; sin cambios externos, commit o publicación.
+
+---
+
+
+## Fusagasugá — publicación autorizada
+**Timestamp**: 2026-11-05T21:34:06Z
+**User Input**: "Ok sube esa vercion que quede actulziado el link de git"
+**AI Response**: "Guardar y subir la versión a docs/presentation-fusagasuga e integrar la rama remota, que contiene una decisión de conservar las notas públicas. Actualizar GitHub Pages desde el repositorio Maicol2363/finance-ai-fusagasuga. Alcance de publicación: web; PDF anteriores conservados e identificados como tales."
+**Context**: Commit, push de la rama de presentación y actualización del enlace público autorizados por el usuario.
+
+---
+
+
+## Fusagasugá — corrección de alcance y rama
+**Timestamp**: 2026-11-06T00:32:42Z
+**User Input**: "pero parce como que merge master que es eso  osea master no se hacia nada osea solo los cmabios que te mencione"
+**AI Response**: "Retirado de docs/presentation-fusagasuga el merge 8c338c7 y los ajustes añadidos durante el intento de publicación. Restaurada la base remota anterior al trabajo, 9fbed65, con únicamente el cambio de SECI, retirada de Offline-first, referencias de consulta y sus documentos de seguimiento. El PR #12 hacia master permanece cerrado. Se conservó un respaldo local del estado previo y se corrigió solo Fusa mediante force-with-lease. Master no se modifica."
+**Context**: Corrección autorizada por la instrucción de mantener exclusivamente los cambios solicitados en Fusa.
+
+---

@@ -1,6 +1,6 @@
 # Finance AI · presentación de Fusagasugá (Gestión del Conocimiento)
 
-Versión interactiva en HTML de **13 escenas principales para 15 minutos** y **6 de respaldo** (A–F), organizada por los siete aspectos de la rúbrica de la plantilla. Sin dependencias: son archivos estáticos.
+Versión interactiva en HTML de **13 escenas de exposición para 15 minutos**, **bibliografía de consulta** y **5 de respaldo** (A–E), organizada por los siete aspectos de la rúbrica de la plantilla. Sin dependencias: son archivos estáticos.
 
 - Plan y decisiones: [PLAN-FUSAGASUGA.md](PLAN-FUSAGASUGA.md)
 - Guion oral, matriz de la rúbrica y evidencias verificadas: [contenido.md](contenido.md)
@@ -27,7 +27,7 @@ Por defecto es **fluido**: una pulsación lleva a la escena siguiente y sus paso
 | Avanzar / retroceder | `→` `Espacio` `Enter` clic / `←` `Retroceso` |
 | Escena 1–9 / 10 | `1`…`9` / `0` (las escenas 11–13: `Fin`, o un clic en la barra de aspectos) |
 | Primera / última | `Inicio` / `Fin` |
-| **Respaldo técnico A–F** | `A` `B` `C` `D` `E` `F` desde cualquier punto |
+| **Respaldo técnico A–E** | `A` `B` `C` `D` `E` `F` desde cualquier punto |
 | Volver del respaldo al mismo punto | `Esc` o `R` |
 | Notas de estudio (guion de la escena, resaltado por paso) | `N` |
 | Recorrido / modo manual | `Mayús+P` / `Mayús+M` |
@@ -55,7 +55,6 @@ La barra inferior son los **siete aspectos** de la rúbrica; cada segmento se ll
 | 13 | Probemos con la app real | 7 | 0:30 |
 | A–D | Modelo de datos · IA · Recibos y voz · Seguridad y calidad (del PGC, con la frase de aislamiento corregida) | | |
 | E | Dónde se cubre cada criterio | | |
-| F | Offline-first (en desarrollo, con lo no verificado a la vista) | | |
 
 ## Cambios de ritmo visual
 
@@ -73,17 +72,17 @@ Si se añade una escena nueva y no se pone `data-theme`, usa el verde institucio
 
 - **Portada:** número de grupo (clase `ph`, con borde punteado). La fecha ya está: 6 de noviembre de 2026. Confirmar que los integrantes son los mismos tres de la propuesta.
 - **Quién presenta cada bloque** (criterio 7.2): todavía no hay etiqueta de presentador en las escenas.
-- **Referencias de teoría:** el modelo SECI, CDIO y Scrum aparecen sin autores en pantalla porque falta confirmarlos con el docente (ver `contenido.md`, sección 7). Los tres autores citados (Curry, Singh, Banca de las Oportunidades) ya están verificados.
-- **Antes de presentar:** confirmar la configuración viva de Cloud Run, Neon y el orden de los proveedores de IA (escena 8); recontar las entradas de bitácora (escena 10); revisar el estado de la rama offline-first (respaldo F).
+- **Marco y fuentes:** el ejemplo registro–información–decisión reemplaza el modelo SECI. Las fuentes originales del PGC se conservan; el enlace «Referencias» del cierre abre las tres fuentes originales del PGC, CDIO/Scrum y el enlace de la API.
+- **Antes de presentar:** confirmar la configuración viva de Cloud Run, Neon y el orden de los proveedores de IA (escena 8); recontar las entradas de bitácora (escena 10).
 
 ## Archivos
 
 | Archivo | Contenido |
 |---|---|
-| `interactive/index.html` | Las 19 escenas y sus notas de estudio. El texto está aquí |
+| `interactive/index.html` | Las 18 escenas (13 de exposición y 5 de respaldo), notas y diálogo de referencias. El texto está aquí |
 | `deck.css`, `uc.css` | Motor y tokens; `uc.css` es el tema institucional (verde `#00482b`, dorado `#daaa00`, crema, Georgia) con la barra de siete aspectos, el paisaje y la oveja |
 | `scenes.css`, `idle.css`, `idle-uc.css` | Composición de cada escena y movimiento en reposo |
-| `backup.css`, `backup-uc.css` | Respaldos A–D (del PGC) y E–F |
+| `backup.css`, `backup-uc.css` | Respaldos A–D (del PGC) y E |
 | `deck.js`, `scenes.js` | Motor (pasos, ritmo, teclado, barra de aspectos) y animaciones propias |
 | `assets/` | Capturas de la app, QR, logo y sello de la plantilla, degradado dorado |
 | `export-pdf.mjs` | Genera los PDF |
@@ -106,3 +105,13 @@ Genera `Finance-AI-Fusagasuga.pdf` (19 páginas) y `Finance-AI-Fusagasuga-princi
 - Apertura desde `file://` con Chrome: sin errores.
 
 **No verificado:** un ensayo completo con cronómetro y con los tres integrantes; el recorrido automático completo (`Mayús+P`); el aspecto de la plantilla original (no hay forma de renderizarla aquí); y los límites de tamaño de letra en un proyector real.
+
+## Edición de fuentes (2026-11-05)
+
+El enlace «Referencias» en la escena 13 abre una ventana con cinco tarjetas con las fuentes del PGC, CDIO/Scrum y accesos a API/Swagger. Se cierra con el botón Cerrar o Escape y devuelve el foco al enlace. Las fuentes quedan fuera del recorrido principal, que termina en la demo (13/13). Los respaldos siguen en A–E y F ya no abre una escena. Se retiró el respaldo Offline-first completo.
+
+Las cifras y sus tres referencias se conservan de `docs/PGC-PROPUESTA.md`, sección 6. El 4,2 % se mantuvo por petición del usuario; su referencia figura como verificada en la propuesta original, pero el editor bloqueó la consulta nueva.
+
+Los PDF incluidos corresponden a una exportación anterior: esta edición modifica la página HTML. Regenerarlos antes de compartirlos como versión actual.
+
+Las referencias empiezan por los enlaces útiles para preguntas: documentación Swagger. Se retiró el catálogo extenso de documentación técnica genérica.

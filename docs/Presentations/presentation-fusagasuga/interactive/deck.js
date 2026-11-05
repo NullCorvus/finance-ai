@@ -6,7 +6,7 @@
 
    Dos grupos de escenas:
    · principal (las trece de la exposición): → ← avanzan y retroceden
-   · respaldo (data-group="backup", letras A–F): se abren con A a F
+   · respaldo (data-group="backup", letras A–E): se abren con A a E
      y se cierran con Esc o R, que devuelven al punto de la exposición.
    ============================================================ */
 (() => {
@@ -48,7 +48,7 @@
     's-objetivo': { 0: 6500, 1: 4000, 2: 5500, 3: 7500, 4: 5500 },
     's-captura': { 0: 7000, 1: 10000 },
     's-analisis': { 0: 9000, 1: 5500 },
-    's-marco': { 0: 16000, 1: 9500, 2: 5000 },
+    's-marco': { 0: 14000, 1: 9500, 2: 5000 },
     's-tec': { 0: 12000, 1: 9500 },
     's-seg': { 0: 4000, 1: 11500, 2: 12000 },
     's-gc': { 0: 16000, 1: 16000 },
@@ -61,7 +61,6 @@
     's-resp-c': { 0: 2400, 1: 2600, 2: 3000, 3: 3400, 4: 2800 },
     's-resp-d': { 0: 3800, 1: 4200 },
     's-resp-e': { 0: 3200, 1: 3200 },
-    's-resp-f': { 0: 4200 },
   };
   const HOLD_DEFAULT = 9000; // pausa tras el último paso, solo en modo tour
   const HOLD = { 's-portada': 20000 };
@@ -184,6 +183,24 @@
     return b;
   });
   if (backBtn) backBtn.addEventListener('click', (e) => { e.stopPropagation(); closeBackup(); });
+  const referencesDialog = $('#references-dialog');
+  const referencesButton = $('#open-references');
+  let referencesHold = false;
+  if (referencesDialog && referencesButton) {
+    referencesButton.addEventListener('click', () => {
+      referencesHold = hold;
+      setTour(false);
+      hold = true;
+      clearTimer();
+      referencesDialog.showModal();
+    });
+    $('#close-references').addEventListener('click', () => referencesDialog.close());
+    referencesDialog.addEventListener('close', () => {
+      hold = referencesHold;
+      referencesButton.focus();
+      schedule();
+    });
+  }
   const ntClose = $('#nt-close');
   if (ntClose) ntClose.addEventListener('click', (e) => { e.stopPropagation(); toggleNotes(false); });
   if (playBtn) playBtn.addEventListener('click', (e) => { e.stopPropagation(); toggleTour(); });
@@ -288,6 +305,7 @@
       const ms = (DWELL[sc.id] && DWELL[sc.id][step]) || DWELL_DEFAULT;
       timer = setTimeout(() => { timer = null; setStep(step + 1); }, ms);
     } else if (tour) {
+      if (sc.id === 's-demo') { setTour(false); return; } // las fuentes se consultan después de la demostración
       if (cur < bounds()[1]) timer = setTimeout(() => { timer = null; go(cur + 1, 0); }, HOLD[sc.id] !== undefined ? HOLD[sc.id] : HOLD_DEFAULT);
       else setTour(false); // el recorrido termina en la demostración
     }
@@ -428,11 +446,13 @@
   /* ───── entrada del usuario ───── */
   function dismissHint() { hint.classList.remove('show'); }
   addEventListener('keydown', (e) => {
+    if (referencesDialog && referencesDialog.open) return; // navegación y Escape nativos del diálogo
     if (e.metaKey || e.ctrlKey || e.altKey) return;
     if (e.repeat) return; // mantener una tecla pulsada no debe saltar diapositivas
     const k = e.key;
     // un botón con foco (p. ej. tras un clic) no debe activarse también con Espacio o Enter
     const ae = document.activeElement;
+    if (ae === referencesButton && (k === 'Enter' || k === ' ')) return; // activar el enlace con teclado
     if (k !== 'Tab' && ae && ae !== document.body && ae.closest && ae.closest('#stage button')) ae.blur();
     if (['ArrowRight', 'ArrowDown', 'PageDown', ' ', 'Enter'].includes(k)) { e.preventDefault(); next(); }
     else if (['ArrowLeft', 'ArrowUp', 'PageUp', 'Backspace'].includes(k)) { e.preventDefault(); prev(); }
@@ -447,7 +467,7 @@
     else if (/^[0-9]$/.test(k)) {
       const n = k === '0' ? 9 : +k - 1;
       if (n < mainCount) go(n, 0);
-    } else if (/^[a-fA-F]$/.test(k)) openBackup(k.toLowerCase().charCodeAt(0) - 97);
+    } else if (/^[a-eA-E]$/.test(k)) openBackup(k.toLowerCase().charCodeAt(0) - 97);
     else if (k === 'Escape') { if (notesOpen) toggleNotes(false); else closeBackup(); }
     else if (k === 'r' || k === 'R') closeBackup();
     else return;
@@ -460,7 +480,7 @@
   }, true);
 
   addEventListener('click', (e) => {
-    if (e.target.closest('a, button, .notes-modal')) return;
+    if (e.target.closest('a, button, .notes-modal, .references-dialog')) return;
     next();
     dismissHint();
   });
@@ -468,6 +488,7 @@
   let tx = 0, ty = 0;
   addEventListener('touchstart', (e) => { tx = e.touches[0].clientX; ty = e.touches[0].clientY; }, { passive: true });
   addEventListener('touchend', (e) => {
+    if (referencesDialog && referencesDialog.open) return;
     const dx = e.changedTouches[0].clientX - tx, dy = e.changedTouches[0].clientY - ty;
     if (Math.abs(dx) > 50 && Math.abs(dx) > Math.abs(dy)) { dx < 0 ? next() : prev(); }
   }, { passive: true });
@@ -482,7 +503,7 @@
 
   /* ───── arranque: #3, #3/2, #a o #b/2 ───── */
   function fromHash() {
-    const m = location.hash.match(/^#(?:(\d+)|([a-fA-F]))(?:\/(\d+))?$/);
+    const m = location.hash.match(/^#(?:(\d+)|([a-eA-E]))(?:\/(\d+))?$/);
     if (!m) return [0, 0];
     const s = +m[3] || 0;
     if (m[2]) return [Math.min(mainCount + m[2].toLowerCase().charCodeAt(0) - 97, scenes.length - 1), s];

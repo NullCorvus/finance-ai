@@ -396,3 +396,12 @@ still outstanding there.
 - **Emulator runner correction (2026-11-03)**: Run `41638154067` had transient `adb: device offline` messages, but the emulator later booted. The job failed before test assertions because `android-emulator-runner` splits its multiline `script` input into separate shell invocations. The release workflow now calls `.github/scripts/run-release-android-journeys.sh` on one line; the helper runs authentication and financial suites independently and returns failure if either suite fails. Shell syntax, workflow YAML, and failure-handling smoke validation pass. Hosted Android journeys must be rerun before claiming device-test success.
 - **Follow-up branch**: Commit `44b8e3c` was pushed to `codex/ci-script-runner-fix-20261103` and PR #49 merged into `develop` as `e6e9d4656b9f9dd1c50d1a3292de8b7fc86c3298`. PR #50's commit `96bf7f2` on `codex/ci-emulator-stability-20261104` was merged into `develop` as `b7df33f` on 2026-11-05; hosted device-journey verification remains unconfirmed.
 - **Emulator stability implementation (2026-11-04)**: The release job now selects `-gpu software`, runs the auth and financial integration test files together with `--no-pub`, and has a 60-minute timeout. Bash syntax, YAML and release-gate assertions, Flutter integration-target selection (expected no-device exit locally), and `git diff --check` passed. `actionlint` and a local Android emulator are unavailable. No production credentials, backend deploy triggers, branch protections, or paid services changed.
+
+## Fusagasugá — marco aplicado y bibliografía (2026-11-05)
+- [x] Workspace, requisitos y plan revisados; alcance aprobado en conversación.
+- [x] Contenido, fuentes y navegación actualizados.
+- [x] Verificación de sintaxis y composición.
+- Plan: construction/plans/fusagasuga-sources-code-generation-plan.md.
+- Cambios solicitados subidos únicamente a docs/presentation-fusagasuga, sobre la base 9fbed65. Publicación web autorizada pero pendiente de escritura en el repositorio separado de GitHub Pages. PR #12 a master cerrado; merge accidental retirado.
+
+- [x] Ajuste posterior: fuentes en diálogo desde «Referencias» en la demo; recorrido restaurado a 13/13. Apertura, cierre, Escape y foco comprobados; movimiento activo.
