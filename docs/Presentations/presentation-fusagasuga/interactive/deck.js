@@ -42,18 +42,18 @@
      DWELL = milisegundos que se queda en un paso antes de pasar al siguiente. */
   const DWELL_DEFAULT = 3000;
   const DWELL = {
-    // principal: cada valor es lo que se queda en ese paso antes de pasar al siguiente
-    's-problema': { 0: 23000, 1: 25000 },
-    's-justif': { 0: 9000, 1: 12000, 2: 10000 },
-    's-objetivo': { 0: 17000, 1: 4500, 2: 12500, 3: 15000, 4: 11000 },
-    's-captura': { 0: 16000, 1: 20000 },
-    's-analisis': { 0: 20000, 1: 16000 },
-    's-marco': { 0: 47000, 1: 17000, 2: 10000 },
-    's-tec': { 0: 31000, 1: 24000 },
-    's-seg': { 0: 8000, 1: 22000, 2: 30000 },
-    's-gc': { 0: 51000, 1: 31000 },
-    's-concl': { 0: 18000, 1: 21000, 2: 14000 },
-    's-aportes': { 0: 17000, 1: 12000 },
+    // principal: ms que se queda en cada paso antes del siguiente (~45 % de lo que tarda en decirse el guion de las notas; ver «Pausa» en cada nota)
+    's-problema': { 0: 11500, 1: 10000 },
+    's-justif': { 0: 5500, 1: 5000, 2: 4500 },
+    's-objetivo': { 0: 6500, 1: 4000, 2: 5500, 3: 7500, 4: 5500 },
+    's-captura': { 0: 7000, 1: 10000 },
+    's-analisis': { 0: 9000, 1: 5500 },
+    's-marco': { 0: 16000, 1: 9500, 2: 5000 },
+    's-tec': { 0: 12000, 1: 9500 },
+    's-seg': { 0: 4000, 1: 11500, 2: 12000 },
+    's-gc': { 0: 16000, 1: 16000 },
+    's-concl': { 0: 9000, 1: 7500, 2: 8500 },
+    's-aportes': { 0: 7500, 1: 5500 },
     's-demo': { 0: 4000 },
     // respaldo
     's-resp-a': { 0: 3600, 1: 2600, 2: 2600, 3: 2800 },
