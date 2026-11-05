@@ -31,5 +31,5 @@ Estado final: cinco tarjetas (Swagger, tres fuentes originales del PGC, CDIO/Scr
 
 ## Publicación autorizada
 
-- [ ] 11. Guardar los cambios, integrar la rama remota y subir docs/presentation-fusagasuga.
+- [x] 11. Guardar los cambios, integrar la rama remota y subir docs/presentation-fusagasuga.
 - [ ] 12. Publicar los archivos web en Maicol2363/finance-ai-fusagasuga/main conservando las notas y verificar GitHub Pages. PDF: exportaciones anteriores, sin regenerar.
