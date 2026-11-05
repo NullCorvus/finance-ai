@@ -1,0 +1,930 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Finance AI · Sustentación Fusagasugá</title>
+<meta name="description" content="Presentación interactiva de Finance AI para la sustentación de proyectos de Gestión del Conocimiento.">
+<link rel="stylesheet" href="deck.css?v=20261105e">
+<link rel="stylesheet" href="uc.css?v=20261105e">
+<link rel="stylesheet" href="scenes.css?v=20261105e">
+<link rel="stylesheet" href="idle.css?v=20261105e">
+<link rel="stylesheet" href="idle-uc.css?v=20261105e">
+<link rel="stylesheet" href="backup.css?v=20261105e">
+<link rel="stylesheet" href="backup-uc.css?v=20261105e">
+<link rel="stylesheet" href="notes.css?v=20261105e">
+</head>
+<body data-theme="uc">
+
+<!-- Iconos: trazo de 1.8 px, sin relleno. Se usan con <svg class="i"><use href="#i-..."/></svg> -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
+  <symbol id="i-phone" viewBox="0 0 24 24"><rect x="7" y="2.5" width="10" height="19" rx="2.5"/><path d="M11 18.5h2"/></symbol>
+  <symbol id="i-spark" viewBox="0 0 24 24"><path d="M12 3l1.8 5.2L19 10l-5.2 1.8L12 17l-1.8-5.2L5 10l5.2-1.8z"/><path d="M18.5 16.5l.6 1.6 1.6.6-1.6.6-.6 1.6-.6-1.6-1.6-.6 1.6-.6z"/></symbol>
+  <symbol id="i-target" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="5"/><circle cx="12" cy="12" r="1.2"/></symbol>
+  <symbol id="i-check" viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7.5"/></symbol>
+  <symbol id="i-check-circle" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M8 12.5l3 3 5-6"/></symbol>
+  <symbol id="i-receipt" viewBox="0 0 24 24"><path d="M6 3h12v18l-3-2-3 2-3-2-3 2z"/><path d="M9 8h6M9 12h6"/></symbol>
+  <symbol id="i-mic" viewBox="0 0 24 24"><rect x="9" y="3" width="6" height="11" rx="3"/><path d="M5.5 11.5a6.5 6.5 0 0013 0M12 18v3"/></symbol>
+  <symbol id="i-text" viewBox="0 0 24 24"><path d="M3.5 18l5-12 5 12M5.3 14h6.4M15 18l3-7 3 7M16 16h4"/></symbol>
+  <symbol id="i-search" viewBox="0 0 24 24"><circle cx="11" cy="11" r="6.5"/><path d="M16 16l4.5 4.5"/></symbol>
+  <symbol id="i-alert" viewBox="0 0 24 24"><path d="M12 4l9 16H3z"/><path d="M12 10v4M12 17.2v.1"/></symbol>
+  <symbol id="i-sigma" viewBox="0 0 24 24"><path d="M17 5H7l6 7-6 7h10"/></symbol>
+  <symbol id="i-db" viewBox="0 0 24 24"><ellipse cx="12" cy="6" rx="7" ry="3"/><path d="M5 6v6c0 1.7 3.1 3 7 3s7-1.3 7-3V6M5 12v6c0 1.7 3.1 3 7 3s7-1.3 7-3v-6"/></symbol>
+  <symbol id="i-server" viewBox="0 0 24 24"><rect x="4" y="4" width="16" height="6" rx="2"/><rect x="4" y="14" width="16" height="6" rx="2"/><path d="M8 7h.01M8 17h.01"/></symbol>
+  <symbol id="i-chart" viewBox="0 0 24 24"><path d="M4 20V4M4 20h16M8 16v-5M12 16V8M16 16v-3"/></symbol>
+  <symbol id="i-eye" viewBox="0 0 24 24"><path d="M2.5 12S6 5.5 12 5.5 21.5 12 21.5 12 18 18.5 12 18.5 2.5 12 2.5 12z"/><circle cx="12" cy="12" r="2.8"/></symbol>
+  <symbol id="i-pencil" viewBox="0 0 24 24"><path d="M4 20l1-4L16.5 4.5a2.1 2.1 0 013 3L8 19z"/></symbol>
+  <symbol id="i-list" viewBox="0 0 24 24"><path d="M8 6h12M8 12h12M8 18h12M4 6h.01M4 12h.01M4 18h.01"/></symbol>
+  <symbol id="i-message" viewBox="0 0 24 24"><path d="M4 5h16v11H9l-5 4z"/><path d="M8 9h8M8 12h5"/></symbol>
+  <symbol id="i-file" viewBox="0 0 24 24"><path d="M7 3h7l4 4v14H7z"/><path d="M14 3v4h4M10 12h5M10 16h5"/></symbol>
+  <symbol id="i-scan" viewBox="0 0 24 24"><path d="M4 8V5a1 1 0 011-1h3M16 4h3a1 1 0 011 1v3M20 16v3a1 1 0 01-1 1h-3M8 20H5a1 1 0 01-1-1v-3"/><circle cx="12" cy="12" r="3"/></symbol>
+  <symbol id="i-shield" viewBox="0 0 24 24"><path d="M12 3l7 3v5c0 5-3 8-7 10-4-2-7-5-7-10V6z"/><path d="M9 12l2 2 4-4"/></symbol>
+  <symbol id="i-lock" viewBox="0 0 24 24"><rect x="5" y="11" width="14" height="9" rx="2.5"/><path d="M8 11V8a4 4 0 018 0v3"/></symbol>
+  <symbol id="i-cpu" viewBox="0 0 24 24"><rect x="7" y="7" width="10" height="10" rx="2"/><path d="M9 3v3M15 3v3M9 18v3M15 18v3M3 9h3M3 15h3M18 9h3M18 15h3"/></symbol>
+  <symbol id="i-play" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></symbol>
+  <symbol id="i-pause" viewBox="0 0 24 24"><path d="M8 5v14M16 5v14"/></symbol>
+  <symbol id="i-key" viewBox="0 0 24 24"><circle cx="8" cy="15" r="4"/><path d="M11 12l9-9M16 7l3 3M14 9l2 2"/></symbol>
+  <symbol id="i-users" viewBox="0 0 24 24"><circle cx="9" cy="8" r="3.2"/><path d="M3 20c0-3.6 2.7-6 6-6s6 2.4 6 6"/><circle cx="17" cy="9" r="2.4"/><path d="M17 14c2.6 0 4.5 1.8 4.5 4.5"/></symbol>
+  <symbol id="i-user" viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 3.6-7 8-7s8 3 8 7"/></symbol>
+  <symbol id="i-clock" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3.5 2"/></symbol>
+  <symbol id="i-layers" viewBox="0 0 24 24"><path d="M12 3l9 5-9 5-9-5z"/><path d="M3 13l9 5 9-5"/></symbol>
+  <symbol id="i-book" viewBox="0 0 24 24"><path d="M4 5a2 2 0 012-2h13v16H6a2 2 0 00-2 2z"/><path d="M4 19V5M9 7h6"/></symbol>
+  <symbol id="i-refresh" viewBox="0 0 24 24"><path d="M20 11a8 8 0 00-14-4L4 9M4 4v5h5M4 13a8 8 0 0014 4l2-2M20 20v-5h-5"/></symbol>
+  <symbol id="i-x" viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18"/></symbol>
+  <symbol id="i-cloud" viewBox="0 0 24 24"><path d="M7 18a4.5 4.5 0 010-9 6 6 0 0111.5 1.5A3.8 3.8 0 0117 18z"/></symbol>
+  <symbol id="i-camera" viewBox="0 0 24 24"><path d="M4 8h3l1.5-2h7L17 8h3v11H4z"/><circle cx="12" cy="13.5" r="3.5"/></symbol>
+  <symbol id="i-flag" viewBox="0 0 24 24"><path d="M5 21V4M5 4h11l-2 4 2 4H5"/></symbol>
+  <symbol id="i-trend" viewBox="0 0 24 24"><path d="M3 17l6-6 4 4 8-8M15 7h6v6"/></symbol>
+  <symbol id="i-building" viewBox="0 0 24 24"><path d="M5 21V5l7-2v18M12 8l7 2v11M3 21h18M8 8h1M8 12h1M8 16h1M15 13h1M15 17h1"/></symbol>
+  <symbol id="i-heart" viewBox="0 0 24 24"><path d="M12 20s-7.5-4.6-7.5-10.2A4.3 4.3 0 0112 7.3a4.3 4.3 0 017.5 2.5C19.5 15.4 12 20 12 20z"/></symbol>
+  <symbol id="i-cog" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M12 3v3M12 18v3M3 12h3M18 12h3M5.6 5.6l2.1 2.1M16.3 16.3l2.1 2.1M18.4 5.6l-2.1 2.1M7.7 16.3l-2.1 2.1"/></symbol>
+</svg>
+
+<noscript><p style="position:fixed;inset:0;display:grid;place-items:center;margin:0;font-family:sans-serif">Esta presentación necesita JavaScript activado.</p></noscript>
+<div class="ambient" aria-hidden="true"><i></i><i></i><i></i></div>
+
+<div class="viewport">
+<main class="stage" id="stage" aria-label="Presentación Finance AI · Fusagasugá">
+
+<!-- Paisaje del pie (de la plantilla: colinas con una oveja) -->
+<div class="land" aria-hidden="true">
+  <svg class="h1" viewBox="0 0 1280 120" preserveAspectRatio="none"><path d="M-40 66 C100 24 230 26 360 58 S610 104 770 62 S1040 14 1170 50 S1260 72 1330 56 V120 H-40Z"/></svg>
+  <svg class="h2" viewBox="0 0 1280 120" preserveAspectRatio="none"><path d="M-40 96 C140 58 300 66 440 92 S720 112 860 84 S1120 54 1330 90 V120 H-40Z"/></svg>
+  <span class="sheep"><svg viewBox="0 0 46 32"><g fill="#f5f2ea"><ellipse cx="22" cy="15" rx="14" ry="9.5"/><circle cx="13" cy="10" r="5"/><circle cx="21" cy="7" r="5.5"/><circle cx="30" cy="9" r="5"/><circle cx="33" cy="16" r="4.5"/></g><ellipse cx="38" cy="14" rx="5" ry="4.2" fill="#2b2f33"/><g stroke="#2b2f33" stroke-width="2.2" stroke-linecap="round"><path d="M15 24v5M21 24v5M28 24v5M33 23v6"/></g></svg></span>
+</div>
+
+<!-- ═════════ 1 · PORTADA ═════════ -->
+<section class="scene" id="s-portada" data-aspect="0" data-title="Portada">
+  <div class="cv-glow" aria-hidden="true"></div>
+  <img class="cv-logo rv" data-s="0" src="assets/logo-uc-blanco.png" alt="Universidad de Cundinamarca">
+  <img class="cv-seal rv z" data-s="0" data-i="3" src="assets/sello-acreditacion.png" alt="Acreditación Institucional de Alta Calidad">
+
+  <div class="cv-main">
+    <div class="eyebrow rv" data-s="0" data-i="1">Proyecto de Gestión del Conocimiento</div>
+    <h1 class="cv-title rv f split" data-s="0" data-i="2">Finance <span class="ai">AI</span></h1>
+    <p class="cv-sub rv" data-s="0" data-i="6">Aplicación móvil para el registro y análisis de gastos personales con asistencia de IA para la captura automática de gastos</p>
+    <p class="cv-meta rv" data-s="0" data-i="7">Ingeniería de Sistemas y Computación · Sede Facatativá</p>
+    <div class="cv-row rv" data-s="0" data-i="8">
+      <div class="cv-who">
+        <p class="grp ph">Grupo [N.º por confirmar]</p>
+        <ul class="team">
+          <li>David Fernando Gonzalez Soler</li>
+          <li>Maicol Estiven Fonseca Muñoz</li>
+          <li>Ivan David Giraldo Garavito</li>
+        </ul>
+        <p class="cv-date">6 de noviembre de 2026</p>
+      </div>
+      <a class="qr-big" href="https://drive.google.com/file/d/1z__jJblXcb8MC2PZvE1tJzy3Kkh2GFgs/view?usp=drivesdk" target="_blank" rel="noopener noreferrer">
+        <img src="assets/app-download-qr.jpg" alt="Código QR para descargar Finance AI">
+        <span><b>Descarga la app</b>Escanea el código QR</span>
+      </a>
+    </div>
+  </div>
+
+  <div class="cv-art">
+    <div class="rv z" data-s="0" data-i="4">
+      <div class="float">
+        <div class="device" style="--h:520px;--ar:.462"><div class="screen"><img src="assets/dashboard-actual.png" alt="Inicio de Finance AI con saldo, ingresos y gastos del mes"></div></div>
+      </div>
+    </div>
+    <div class="chip chip-a rv z" data-s="0" data-i="6"><div class="bob b1"><span class="bubble"><span class="tx">«Almuerzo 18 mil con Nequi»</span></span></div></div>
+    <div class="chip chip-b rv z" data-s="0" data-i="7"><div class="bob b2"><span class="proposal"><svg class="i"><use href="#i-spark"/></svg><span><b>$ 18.000 COP</b>Nequi · Comida · Hoy</span></span></div></div>
+    <div class="chip chip-c rv z" data-s="0" data-i="8"><div class="bob b3"><span class="mini"><svg class="i"><use href="#i-chart"/></svg><span><b>Alimentación</b><em>63&thinsp;% del presupuesto</em><i class="mb"><u></u></i></span></span></div></div>
+  </div>
+  <template class="notes" data-time="0:30" data-key="Presentarnos, decir de qué trata el proyecto y anunciar el orden: aspectos de evaluación y, al final, la app funcionando.">
+    <p data-s="0">Buenas. Somos David, Maicol e Ivan, del grupo [N.º] de Ingeniería de Sistemas y Computación.</p>
+    <p data-s="0">Presentamos Finance AI, una aplicación móvil para registrar y analizar gastos personales, en la que una inteligencia artificial propone el registro y la persona lo confirma.</p>
+    <p data-s="0">Seguiremos el orden de los aspectos de evaluación y al final mostraremos la aplicación funcionando. El código QR permite descargarla.</p>
+    <p class="tip">Completar el número de grupo en index.html (clase «ph»). La fecha es el 6 de noviembre de 2026. Si el docente es Oscar Jobany Gómez Ochoa, como en el PGC, agradecerle. La portada no lleva código estudiantil.</p>
+    <p class="tr">Empecemos por el contexto y el problema.</p>
+  </template>
+</section>
+
+<!-- ═════════ 2 · CONTEXTO Y PROBLEMA ═════════ -->
+<section class="scene" id="s-problema" data-aspect="1" data-title="Contexto y problema" data-steps="2">
+  <header class="hd rv f" data-s="0"><div class="eyebrow">Aspecto 1 de 7 · Organización</div><h2 class="h2">Contexto y problema</h2></header>
+  <div class="crit"><span class="cr rv f" data-s="0"><b>1.1</b> Introducción</span><span class="cr rv f" data-s="1"><b>1.2</b> Planteamiento del problema</span></div>
+
+  <article class="card pb-a rv z" data-s="0" data-i="1">
+    <p class="lbl">Contexto</p>
+    <div class="pulse" aria-hidden="true"><i></i><i></i><i></i><span class="pulse-ic"><svg class="i"><use href="#i-phone"/></svg></span></div>
+    <p class="stat"><span id="n666">0,0</span><small>&thinsp;%</small></p>
+    <p class="body">de las operaciones monetarias en Colombia se hace por canales digitales</p>
+    <p class="src">Banca de las Oportunidades, 2024</p>
+  </article>
+
+  <article class="card pb-b rv z" data-s="1">
+    <p class="lbl">En cada compra</p>
+    <div class="buy">
+      <div class="buy-h"><svg class="i"><use href="#i-receipt"/></svg><b>Almuerzo</b><span class="tag">nuevo gasto</span></div>
+      <div class="frow" style="--n:0"><span>Monto</span><em>$ 18.000</em></div>
+      <div class="frow" style="--n:1"><span>Cuenta</span><em>Nequi</em></div>
+      <div class="frow" style="--n:2"><span>Categoría</span><em>Comida</em></div>
+      <div class="frow" style="--n:3"><span>Fecha</span><em>Hoy</em></div>
+    </div>
+    <p class="body">Cada compra exige completar y revisar esos datos, y el esfuerzo se repite.</p>
+  </article>
+
+  <div class="pb-arrow rv f" data-s="1" data-i="2" aria-hidden="true"><span></span></div>
+
+  <article class="card pb-c rv z" data-s="1" data-i="3">
+    <p class="lbl">Al final de la semana</p>
+    <div class="week">
+      <div class="d"><i class="wb" style="--h:62%"></i><b>L</b></div>
+      <div class="d"><i class="wb ghost"><u>?</u></i><b>M</b></div>
+      <div class="d"><i class="wb" style="--h:38%"></i><b>X</b></div>
+      <div class="d"><i class="wb ghost"><u>?</u></i><b>J</b></div>
+      <div class="d"><i class="wb" style="--h:80%"></i><b>V</b></div>
+      <div class="d"><i class="wb ghost"><u>?</u></i><b>S</b></div>
+      <div class="d"><i class="wb ghost"><u>?</u></i><b>D</b></div>
+    </div>
+    <div class="legend-s"><span><i class="k solid"></i>registrado</span><span><i class="k dash"></i>sin registrar</span><span class="ilus">ilustrativo</span></div>
+    <p class="body">Sin registro sistemático no se sabe en qué se gasta, y se decide sin información.</p>
+  </article>
+
+  <div class="q-bar rv" data-s="2">
+    <svg class="i"><use href="#i-spark"/></svg>
+    <p><b>Pregunta guía.</b> ¿Cómo puede una app móvil con asistencia de IA facilitar el registro y el análisis de los gastos personales, reduciendo el esfuerzo de captura?</p>
+    <span class="who"><svg class="i"><use href="#i-users"/></svg>Piloto previsto: estudiantes de la Universidad de Cundinamarca</span>
+  </div>
+  <template class="notes" data-time="1:20" data-key="Contexto (digital) → problema (esfuerzo de registrar) → quién lo sufre y la pregunta guía.">
+    <p data-s="0">La vida financiera de las personas ocurre cada vez más en el celular: en Colombia, el 66,6 % de las operaciones monetarias se hace por canales digitales, según la Banca de las Oportunidades en su reporte de 2024. Aun así, llevar el control de los propios gastos sigue siendo manual.</p>
+    <p data-s="1">Registrar una sola compra exige escribir el monto, elegir la cuenta, asignar una categoría y revisar la fecha. Ese esfuerzo se repite con cada compra y el registro se interrumpe. Sin un registro sistemático, la persona no sabe en qué gasta y decide sin información.</p>
+    <p data-s="2">Esto afecta a quien controla sus gastos desde el celular; nuestro piloto previsto son estudiantes de la Universidad de Cundinamarca. La pregunta que guía el proyecto es cómo puede una aplicación móvil con asistencia de inteligencia artificial facilitar el registro y el análisis de los gastos, reduciendo el esfuerzo de captura y contribuyendo a formar el hábito de control financiero.</p>
+    <p class="tip">La semana con huecos es ilustrativa, no un dato medido. La cifra de retención de apps de finanzas (4,2 %, Curry 2026) se dice en la escena 7, no aquí. Texto aprobado del problema: PGC-PROPUESTA.md, v5.</p>
+    <p class="tr">Con ese problema claro, veamos por qué vale la pena resolverlo.</p>
+  </template>
+</section>
+
+<!-- ═════════ 3 · JUSTIFICACIÓN ═════════ -->
+<section class="scene" id="s-justif" data-aspect="1" data-title="Justificación" data-steps="3">
+  <header class="hd rv f" data-s="0"><div class="eyebrow">Aspecto 1 de 7 · Organización</div><h2 class="h2">Justificación</h2></header>
+  <div class="crit"><span class="cr rv f" data-s="0"><b>1.3</b> Justificación</span></div>
+
+  <div class="jt-row">
+    <article class="card jt rv z" data-s="0">
+      <span class="ico ai"><svg class="i"><use href="#i-spark"/></svg></span>
+      <h3>La IA ya es accesible</h3>
+      <p class="body">Interpretar un gasto con IA está consolidado en el mercado, y eso reduce el esfuerzo de registrar.</p>
+      <div class="jt-vis modes"><span><svg class="i"><use href="#i-text"/></svg>texto</span><span><svg class="i"><use href="#i-receipt"/></svg>foto</span><span><svg class="i"><use href="#i-mic"/></svg>voz</span></div>
+    </article>
+    <article class="card jt rv z" data-s="1">
+      <span class="ico blue"><svg class="i"><use href="#i-users"/></svg></span>
+      <h3>Sirve a quien controla sus gastos desde el celular</h3>
+      <p class="body">Estudiantes de la Universidad de Cundinamarca: población piloto prevista.</p>
+      <div class="jt-vis crowd"><i></i><i></i><i></i><i></i><i></i><i></i><b>piloto previsto</b></div>
+    </article>
+    <article class="card jt rv z" data-s="2">
+      <span class="ico"><svg class="i"><use href="#i-check-circle"/></svg></span>
+      <h3>La persona conserva el control</h3>
+      <p class="body">La IA solo propone; ella confirma, edita o descarta antes de guardar.</p>
+      <div class="jt-vis acts"><span class="a1">Confirmar</span><span class="a2">Editar</span><span class="a3">Descartar</span></div>
+    </article>
+    <article class="card jt rv z" data-s="3">
+      <span class="ico"><svg class="i"><use href="#i-cog"/></svg></span>
+      <h3>Viable como prototipo académico</h3>
+      <p class="body">Herramientas de bajo costo y servicios con nivel gratuito o cuota de prueba.</p>
+      <div class="jt-vis coins"><i></i><i></i><i></i><b>sujeto a las condiciones de los proveedores</b></div>
+    </article>
+  </div>
+  <p class="jt-take rv" data-s="3"><svg class="i"><use href="#i-spark"/></svg>Menos esfuerzo para registrar, sin quitarle el control a la persona.</p>
+  <template class="notes" data-time="0:45" data-key="Cuatro razones: IA accesible, a quién sirve, la persona decide, viable como prototipo.">
+    <p data-s="0">El proyecto se justifica por cuatro razones. La inteligencia artificial para interpretar gastos ya es accesible, lo que permite reducir el esfuerzo de registrar.</p>
+    <p data-s="1">Sirve a cualquier persona que quiera controlar sus gastos desde el celular, con estudiantes de la Universidad de Cundinamarca como población piloto prevista.</p>
+    <p data-s="2">La persona conserva el control: la inteligencia artificial solo propone, y ella confirma, edita o descarta antes de guardar.</p>
+    <p data-s="3">Y es viable como prototipo académico, con herramientas de bajo costo.</p>
+    <p class="tip">La propuesta dice «servicios con niveles gratuitos o cuotas de prueba, sujetos a las condiciones vigentes de los proveedores». Si preguntan por costos: docs/receipt-ai-cost-measurement-2026-10-26.md.</p>
+    <p class="tr">Con esa justificación, estos son los objetivos.</p>
+  </template>
+</section>
+
+<!-- ═════════ 4 · OBJETIVOS ═════════ -->
+<section class="scene" id="s-objetivo" data-aspect="1" data-title="Objetivos" data-steps="5">
+  <header class="hd rv f" data-s="0"><div class="eyebrow">Aspecto 1 de 7 · Organización</div><h2 class="h2">Objetivos</h2></header>
+  <div class="crit"><span class="cr rv f" data-s="0"><b>1.4</b> Objetivos</span></div>
+
+  <article class="card og rv z" data-s="0">
+    <p class="lbl">Objetivo general</p>
+    <p class="og-t" data-lit="0">
+      <mark class="seg" data-k="0" data-tag="Qué">Desarrollar una aplicación móvil para el registro, la categorización y el análisis de gastos personales, con asistencia de IA para la captura automática de gastos,</mark>
+      <mark class="seg" data-k="1" data-tag="Cómo">aplicando la metodología CDIO,</mark>
+      <mark class="seg" data-k="2" data-tag="Para qué">con el fin de reducir el esfuerzo de captura de los gastos y contribuir a la formación del hábito de control financiero en los usuarios.</mark>
+    </p>
+  </article>
+
+  <div class="cdio rv f" data-s="3">
+    <i class="rail"><u></u></i>
+    <div class="cd" data-k="1"><span class="nd">C</span><b>Concebir</b><p>Alcance, requisitos y flujo de confirmar, editar o descartar</p></div>
+    <div class="cd" data-k="2"><span class="nd">D</span><b>Diseñar</b><p>Arquitectura, modelo de datos y pantallas de captura y confirmación</p></div>
+    <div class="cd" data-k="3"><span class="nd">I</span><b>Implementar</b><p>Captura con IA por foto, voz o texto, con confirmación</p></div>
+    <div class="cd" data-k="4"><span class="nd">I</span><b>Implementar</b><p>Gastos agrupados por categoría en el período elegido</p></div>
+    <div class="cd" data-k="5"><span class="nd">O</span><b>Operar</b><p>Publicar la app en una tienda y validarla con usuarios reales</p></div>
+  </div>
+  <template class="notes" data-time="1:15" data-key="El objetivo general en sus tres partes (qué, cómo, para qué) y los cinco específicos, uno por fase CDIO.">
+    <p data-s="0">Nuestro objetivo general es desarrollar una aplicación móvil para el registro, la categorización y el análisis de gastos personales, con asistencia de IA para la captura automática de gastos,</p>
+    <p data-s="1">aplicando la metodología CDIO,</p>
+    <p data-s="2">con el fin de reducir el esfuerzo de captura de los gastos y contribuir a la formación del hábito de control financiero en los usuarios.</p>
+    <p data-s="3">Hay un objetivo específico por fase. Concebir: definir el alcance, los requisitos y el flujo de confirmar, editar o descartar. Diseñar: la arquitectura, el modelo de datos y las pantallas de captura y confirmación.</p>
+    <p data-s="4">Implementar, en dos objetivos: la captura con inteligencia artificial por foto, voz o texto, y el análisis de gastos por categoría en el período elegido.</p>
+    <p data-s="5">Operar: publicar la aplicación en una tienda y validarla con usuarios reales.</p>
+    <p class="tip">El objetivo 5 usa el ajuste del 30-oct-2026. La propuesta escrita (PGC-PROPUESTA.md, main.tex) dice: «validar la aplicación mediante pruebas funcionales y una encuesta de usabilidad aplicada a estudiantes de la Universidad de Cundinamarca, verificando el funcionamiento de los módulos y la aceptación del piloto». Si el jurado tiene el documento, explicar la diferencia. Reducir el esfuerzo y formar el hábito son el propósito, no un resultado medido.</p>
+    <p class="tr">Veamos ahora lo que construimos.</p>
+  </template>
+</section>
+
+<!-- ═════════ 5 · PRODUCTO: CAPTURA ASISTIDA ═════════ -->
+<section class="scene" id="s-captura" data-aspect="2" data-title="Producto: captura asistida" data-steps="2">
+  <header class="hd rv f" data-s="0"><div class="eyebrow">Aspecto 2 de 7 · Alcances</div><h2 class="h2">Producto: captura asistida</h2></header>
+  <div class="crit"><span class="cr rv f" data-s="0"><b>2.1</b> Productos desarrollados</span></div>
+
+  <div class="cp-dev rv z" data-s="0" data-i="1">
+    <div class="float"><div class="device" style="--h:488px;--ar:.56"><div class="screen"><img src="assets/captura-propuesta-actual.png" alt="Propuesta de gasto en la app: monto, descripción, cuenta, categoría y confirmación"></div></div></div>
+    <p class="shot-cap">Propuesta de registro · datos de demostración</p>
+  </div>
+
+  <div class="cp-modes rv" data-s="0" data-i="2">
+    <div class="cm"><span class="ico"><svg class="i"><use href="#i-text"/></svg></span><b>Texto</b><small>una frase, como la dirías</small></div>
+    <div class="cm"><span class="ico"><svg class="i"><use href="#i-receipt"/></svg></span><b>Recibo</b><small>foto de la compra</small></div>
+    <div class="cm"><span class="ico"><svg class="i"><use href="#i-mic"/></svg></span><b>Dictado</b><small>en Android se transcribe en el teléfono</small></div>
+  </div>
+  <div class="cp-input card rv" data-s="0" data-i="3"><svg class="i"><use href="#i-message"/></svg><span class="ty">«Almuerzo 18 mil con Nequi»</span><i class="caret"></i></div>
+
+  <div class="cp-prop card rv z" data-s="1">
+    <p class="cp-ph"><svg class="i"><use href="#i-spark"/></svg><b>Propuesta de la IA</b><span>solo con las cuentas y categorías de esa persona</span></p>
+    <div class="fld-row">
+      <span class="fld rv f" data-s="1" data-i="1"><small>Monto</small><b>$ 18.000 COP</b></span>
+      <span class="fld rv f" data-s="1" data-i="2"><small>Descripción</small><b>Almuerzo</b></span>
+      <span class="fld rv f" data-s="1" data-i="3"><small>Cuenta</small><b>Nequi</b></span>
+      <span class="fld rv f" data-s="1" data-i="4"><small>Categoría</small><b>Comida</b></span>
+      <span class="fld rv f" data-s="1" data-i="5"><small>Fecha</small><b>Hoy</b></span>
+    </div>
+    <p class="cp-ask rv f" data-s="1" data-i="6"><svg class="i"><use href="#i-message"/></svg>Si falta la cuenta o la moneda, pregunta en lugar de adivinar: <em>«¿En qué cuenta?»</em></p>
+  </div>
+
+  <div class="cp-act rv" data-s="2">
+    <span class="bt ok"><svg class="i"><use href="#i-check"/></svg>Confirmar</span>
+    <span class="bt"><svg class="i"><use href="#i-pencil"/></svg>Editar</span>
+    <span class="bt"><svg class="i"><use href="#i-x"/></svg>Descartar</span>
+  </div>
+  <div class="cp-guar">
+    <span class="gp rv f" data-s="2" data-i="1"><svg class="i"><use href="#i-lock"/></svg>Se guarda una sola vez, aunque la solicitud se repita</span>
+    <span class="gp rv f" data-s="2" data-i="2"><svg class="i"><use href="#i-shield"/></svg>El modelo nunca escribe en el registro financiero</span>
+    <span class="gp rv f" data-s="2" data-i="3"><svg class="i"><use href="#i-list"/></svg>Si la IA falla, queda el formulario manual</span>
+  </div>
+  <template class="notes" data-time="1:00" data-key="Tres entradas (texto, recibo, dictado) → propuesta fundada en los datos de la persona → ella decide y se guarda una sola vez.">
+    <p data-s="0">Esto es lo que construimos. La persona escribe «almuerzo 18 mil con Nequi», fotografía un recibo o dicta; en Android, el dictado se transcribe en el teléfono y entra como texto.</p>
+    <p data-s="1">El servidor pide a un modelo de inteligencia artificial una propuesta con monto, descripción, cuenta, categoría y fecha, y solo puede usar las cuentas y categorías de esa persona. Si falta un dato, como la cuenta o la moneda, pregunta en lugar de adivinar.</p>
+    <p data-s="2">La persona revisa, corrige, confirma o descarta. Al confirmar, el movimiento se guarda una sola vez, aunque la solicitud se repita. El modelo nunca escribe en el registro financiero, y si la IA falla queda el formulario manual.</p>
+    <p class="tip">Las vistas son renders del 27-oct-2026 con datos sintéticos. «Una sola vez»: la confirmación es idempotente (restricción única por usuario y propuesta, migración 0017). Si la IA aún no está disponible en la demostración, mostrar el formulario manual.</p>
+    <p class="tr">Lo confirmado alimenta el resto de la aplicación.</p>
+  </template>
+</section>
+
+<!-- ═════════ 6 · PRODUCTO: ANÁLISIS Y SEGUIMIENTO ═════════ -->
+<section class="scene" id="s-analisis" data-aspect="2" data-title="Producto: análisis y seguimiento" data-steps="2">
+  <header class="hd rv f" data-s="0"><div class="eyebrow">Aspecto 2 de 7 · Alcances</div><h2 class="h2">Producto: análisis y seguimiento</h2></header>
+  <div class="crit"><span class="cr rv f" data-s="0"><b>2.1</b> Productos desarrollados</span></div>
+
+  <div class="an-dev rv z" data-s="0" data-i="1">
+    <div class="float"><div class="device" style="--h:366px;--ar:.658"><div class="screen"><img src="assets/analisis-actual.png" alt="Análisis de octubre: gasto por categoría"></div></div></div>
+  </div>
+
+  <article class="card an-ring rv z" data-s="0" data-i="2">
+    <p class="lbl">Gastos por categoría · octubre</p>
+    <div class="donut-wrap">
+      <div class="donut" id="donut"><span class="sweep"></span><div class="hole"><b id="n442">0</b><small>COP en gastos</small></div></div>
+      <ul class="legend">
+        <li><i style="background:#6b8e00"></i><b>Alimentación</b><span>252.000 · 57&thinsp;%</span></li>
+        <li><i style="background:#5b4bdb"></i><b>Transporte</b><span>190.000 · 43&thinsp;%</span></li>
+      </ul>
+    </div>
+    <div class="per"><span>Semana</span><span>Mes</span><span>Rango</span></div>
+    <p class="ilus2">datos de demostración · período elegible</p>
+  </article>
+
+  <div class="an-col">
+    <article class="card an-hist rv z" data-s="1">
+      <p class="lbl"><svg class="i"><use href="#i-search"/></svg>Movimientos · búsqueda y filtros</p>
+      <div class="srch"><svg class="i"><use href="#i-search"/></svg><span class="ty2">nequi</span><i class="caret"></i></div>
+      <div class="hrow"><span>Almuerzo</span><em>Nequi · Comida</em><b class="neg">− 18.000</b></div>
+      <div class="chips"><span>Período</span><span>Cuenta</span><span>Categoría</span></div>
+    </article>
+    <article class="card an-bud rv z" data-s="1" data-i="2">
+      <p class="lbl"><svg class="i"><use href="#i-target"/></svg>Presupuestos · avance de lo confirmado</p>
+      <div class="bud"><div class="bud-h"><b>Alimentación</b><span>252.000 de 400.000</span></div><div class="bar"><u style="--w:63%"></u></div></div>
+      <div class="bud warn"><div class="bud-h"><b>Transporte</b><span>190.000 de 200.000</span><em class="al"><svg class="i"><use href="#i-alert"/></svg>cerca del límite</em></div><div class="bar"><u style="--w:95%"></u></div></div>
+    </article>
+  </div>
+
+  <div class="alc">
+    <p class="alc-t rv f" data-s="2"><svg class="i"><use href="#i-flag"/></svg>Hasta dónde llega</p>
+    <div class="al-i ok rv z" data-s="2" data-i="1"><span><svg class="i"><use href="#i-check"/></svg></span><p><b>Android y Windows</b> con el mismo código</p></div>
+    <div class="al-i ok rv z" data-s="2" data-i="2"><span><svg class="i"><use href="#i-check"/></svg></span><p>Cuentas, categorías, gastos, ingresos, transferencias, presupuestos, historial y panel de inicio</p></div>
+    <div class="al-i no rv z" data-s="2" data-i="3"><span><svg class="i"><use href="#i-x"/></svg></span><p><b>Sin bancos ni billeteras:</b> Nequi o Bancolombia son cuentas que la persona crea</p></div>
+    <div class="al-i wn rv z" data-s="2" data-i="4"><span><svg class="i"><use href="#i-alert"/></svg></span><p>La IA y el análisis <b>necesitan conexión</b></p></div>
+  </div>
+  <template class="notes" data-time="1:05" data-key="Lo confirmado alimenta análisis, historial y presupuestos; y hasta dónde llega el producto.">
+    <p data-s="0">Lo confirmado alimenta el resto de la aplicación. En Análisis, los gastos se agrupan por categoría en el período elegido: con los datos de demostración, octubre suma 442 mil pesos, 252 mil en alimentación y 190 mil en transporte.</p>
+    <p data-s="1">En Movimientos se busca y se filtra el historial. En Presupuestos, el avance sale de los gastos confirmados, y transporte ya muestra alerta de cercanía.</p>
+    <p data-s="2">Hasta dónde llega: Android y Windows con el mismo código; cuentas, categorías, gastos, ingresos, transferencias, presupuestos, historial y panel de inicio. No se conecta con bancos ni billeteras: Nequi o Bancolombia son nombres de cuentas que la persona crea. La IA y el análisis necesitan conexión.</p>
+    <p class="tip">Las cifras de la pantalla son datos de demostración (render del 27-oct-2026). El panel de inicio también muestra el resumen semanal y la proyección del mes (escena 10). La lista de alcance sale del README del backend y de la auditoría del 16-oct (32 rutas).</p>
+    <p class="tr">Ahora, el sustento teórico del proyecto.</p>
+  </template>
+</section>
+
+<!-- ═════════ 7 · MARCO TEÓRICO ═════════ -->
+<section class="scene" id="s-marco" data-theme="light" data-aspect="3" data-title="Marco teórico" data-steps="3">
+  <header class="hd rv f" data-s="0"><div class="eyebrow">Aspecto 3 de 7 · Marco teórico</div><h2 class="h2">Marco teórico</h2></header>
+  <div class="crit"><span class="cr rv f" data-s="0"><b>3.1</b> Fundamentos teóricos</span></div>
+
+  <article class="card seci rv z" data-s="0" data-i="1">
+    <p class="lbl">Lente: modelo SECI · conocimiento tácito y explícito</p>
+    <div class="sx">
+      <div class="sn s-so"><span class="nm">Socialización</span><small>tácito → tácito</small><p>Fuera del alcance: la app es personal</p></div>
+      <div class="sn s-ex"><span class="nm">Externalización</span><small>tácito → explícito</small><p>El registro asistido saca el gasto de la cabeza y lo guarda</p></div>
+      <div class="sn s-co"><span class="nm">Combinación</span><small>explícito → explícito</small><p>Categorías, períodos y presupuestos reorganizan los registros</p></div>
+      <div class="sn s-in"><span class="nm">Interiorización</span><small>explícito → tácito</small><p>Insight semanal y proyección vuelven a la persona y cambian lo que decide</p></div>
+      <i class="ar ar1"></i><i class="ar ar2"></i><i class="ar ar3"></i><i class="ar ar4"></i>
+      <div class="sx-c"><b>Un gasto</b><span>recorre el modelo</span></div>
+      <i class="dot"><u>$ 18.000</u></i>
+    </div>
+  </article>
+
+  <div class="mk-col">
+    <article class="card mk rv z" data-s="1">
+      <span class="ico"><svg class="i"><use href="#i-clock"/></svg></span>
+      <div><p class="mk-n"><b>59 a 66</b> días</p><p class="body">mediana para consolidar un hábito, en conductas de salud: el registro debe sostenerse en el tiempo</p><p class="src">Singh et al., 2024</p></div>
+    </article>
+    <article class="card mk rv z" data-s="2">
+      <span class="ico ai"><svg class="i"><use href="#i-trend"/></svg></span>
+      <div><p class="mk-n"><b>4,2&thinsp;%</b> a los 30 días</p><p class="body">es la retención de las apps de finanzas</p><p class="src">Curry, 2026</p></div>
+    </article>
+    <article class="card mk rv z" data-s="3">
+      <span class="ico blue"><svg class="i"><use href="#i-layers"/></svg></span>
+      <div><p class="mk-n"><b>CDIO</b> y <b>Scrum</b></p><p class="body">CDIO: un objetivo por fase, de concebir a operar. Scrum en la implementación</p></div>
+    </article>
+  </div>
+  <template class="notes" data-time="1:45" data-key="Cuatro apoyos: gestión del conocimiento (SECI), hábito, contexto y metodología.">
+    <p data-s="0">El marco teórico tiene cuatro apoyos. Primero, la gestión del conocimiento. Distingue el conocimiento tácito, el que una persona tiene sin haberlo registrado, del explícito, el que queda escrito y se puede consultar. Usamos como lente el modelo SECI de Nonaka y Takeuchi. Saber en qué se gasta es conocimiento tácito hasta que se registra; registrarlo es externalizar; organizarlo por categorías, períodos y presupuestos es combinar; y que el análisis vuelva a la persona y cambie lo que decide es interiorizar. La cuarta forma, socializar, queda fuera, porque la aplicación es personal.</p>
+    <p data-s="1">Segundo, el hábito. Una revisión sistemática de Singh y colaboradores, de 2024, reporta una mediana de 59 a 66 días para consolidar hábitos de salud. No lo medimos en finanzas, pero indica que el registro tiene que sostenerse en el tiempo.</p>
+    <p data-s="2">Tercero, el contexto: las aplicaciones de finanzas retienen apenas el 4,2 % de sus usuarios al día 30, según Curry en 2026.</p>
+    <p data-s="3">Cuarto, la metodología: CDIO, con un objetivo por fase, y Scrum en la implementación.</p>
+    <p class="tip">PENDIENTE DE CONFIRMAR con el docente o coordinador: el modelo SECI (Nonaka y Takeuchi, 1995), CDIO (Crawley et al., 2014) y la fuente de Scrum son propuestas, no están en la propuesta del PGC; por eso no hay autores en pantalla. Singh habla de conductas de SALUD: decirlo así. Curry: «Finance apps have a retention rate of 4.2% by day 30». Si piden antecedentes o trabajos relacionados, la única fuente verificada hoy es Curry 2026.</p>
+    <p class="tr">Pasemos al impacto tecnológico.</p>
+  </template>
+</section>
+
+<!-- ═════════ 8 · PLATAFORMAS, INTEGRACIÓN Y ESCALABILIDAD ═════════ -->
+<section class="scene" id="s-tec" data-aspect="4" data-title="Plataformas, integración y escalabilidad" data-steps="2">
+  <header class="hd rv f" data-s="0"><div class="eyebrow">Aspecto 4 de 7 · Impacto tecnológico</div><h2 class="h2">Plataformas, integración y escalabilidad</h2></header>
+  <div class="crit"><span class="cr rv f" data-s="0"><b>4.1</b> Plataformas</span><span class="cr rv f" data-s="1"><b>4.2</b> Integración</span><span class="cr rv f" data-s="2"><b>4.3</b> Escalabilidad</span></div>
+
+  <article class="card tc tc1 rv z" data-s="0" data-i="1">
+    <h3><span class="ico"><svg class="i"><use href="#i-layers"/></svg></span>Uso de plataformas</h3>
+    <div class="stack">
+      <div class="tier"><svg class="i"><use href="#i-phone"/></svg><div><b>Flutter</b><small>Android y Windows · una sola base de código</small></div></div>
+      <i class="lnk"></i>
+      <div class="tier"><svg class="i"><use href="#i-server"/></svg><div><b>FastAPI</b><small>contrato OpenAPI de 32 rutas, autoridad del cliente</small></div></div>
+      <i class="lnk"></i>
+      <div class="tier"><svg class="i"><use href="#i-db"/></svg><div><b>PostgreSQL</b><small>importes exactos, restricciones y migraciones</small></div></div>
+    </div>
+    <p class="tag2"><svg class="i"><use href="#i-cloud"/></svg>Google Cloud Run · Neon</p>
+  </article>
+
+  <article class="card tc tc2 rv z" data-s="1">
+    <h3><span class="ico ai"><svg class="i"><use href="#i-spark"/></svg></span>Integración con sistemas existentes</h3>
+    <div class="hubx">
+      <div class="hub-c"><svg class="i"><use href="#i-server"/></svg><b>Servidor</b></div>
+      <div class="sp"><i class="lnk2"></i><div class="spn"><svg class="i"><use href="#i-cpu"/></svg><div><b>Modelos de lenguaje</b><small>DeepSeek y Gemini, configurables; uno respalda al otro. El teléfono nunca los llama</small></div></div></div>
+      <div class="sp"><i class="lnk2"></i><div class="spn"><svg class="i"><use href="#i-mic"/></svg><div><b>Voz de Android</b><small>transcripción local, entra como texto</small></div></div></div>
+      <div class="sp"><i class="lnk2"></i><div class="spn"><svg class="i"><use href="#i-camera"/></svg><div><b>Cámara del dispositivo</b><small>fotos de recibos</small></div></div></div>
+    </div>
+    <p class="tag2 no"><svg class="i"><use href="#i-x"/></svg>No integramos servicios bancarios</p>
+  </article>
+
+  <article class="card tc tc3 rv z" data-s="2">
+    <h3><span class="ico blue"><svg class="i"><use href="#i-trend"/></svg></span>Escalabilidad</h3>
+    <div class="inst">
+      <div class="in"><b>instancia 1</b><span class="dots"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></span></div>
+      <div class="in"><b>instancia 2</b><span class="dots"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></span></div>
+      <div class="in"><b>instancia 3</b><span class="dots"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></span></div>
+    </div>
+    <p class="cap2">Cloud Run: hasta 3 instancias de 80 solicitudes</p>
+    <ul class="pts">
+      <li><svg class="i"><use href="#i-check"/></svg>Sesiones en la base de datos: cualquier instancia atiende a cualquiera</li>
+      <li><svg class="i"><use href="#i-check"/></svg>El saldo se calcula, no es un contador</li>
+    </ul>
+    <p class="next"><svg class="i"><use href="#i-alert"/></svg>Siguiente paso: llevar los límites de frecuencia a un almacén compartido</p>
+  </article>
+  <p class="foot-n rv f" data-s="2">Configuración documentada y verificada el 26-oct-2026; puede cambiar. Sin prueba de carga: no se afirma capacidad en usuarios.</p>
+  <template class="notes" data-time="1:30" data-key="Plataformas y por qué, con qué se integra (y con qué no), y cómo crece (y qué falta para crecer más).">
+    <p data-s="0">Plataformas. Flutter da una sola base de código para Android y Windows. FastAPI, en Python, expone un contrato OpenAPI de 32 rutas que la aplicación respeta como autoridad. PostgreSQL guarda importes exactos con restricciones de integridad, y los cambios de esquema se versionan con migraciones. En la nube, el servicio corre en Google Cloud Run y la base de datos en Neon.</p>
+    <p data-s="1">Integración. El servidor se conecta con proveedores de modelos de lenguaje, DeepSeek y Gemini, configurables y uno de respaldo del otro; el teléfono nunca los llama. Usamos el reconocimiento de voz de Android y la cámara del dispositivo. No integramos servicios bancarios.</p>
+    <p data-s="2">Escalabilidad. Las sesiones se guardan en la base de datos, no en la memoria del servidor, así que cualquier instancia atiende a cualquier persona. Hoy Cloud Run permite hasta tres instancias de 80 solicitudes simultáneas. El saldo no es un contador: se calcula desde los movimientos. Para crecer más, falta mover los límites de frecuencia, que hoy viven en la memoria de cada instancia, a un almacén compartido.</p>
+    <p class="tip">Antes de presentar, confirmar la configuración viva de Cloud Run, Neon y el orden de los proveedores de IA (la documentación dice que pueden cambiar; instantánea del 26-oct-2026). Monolito modular a propósito (AGENTS.md del backend). Los límites de frecuencia están en memoria de cada proceso (core/rate_limit.py). No afirmar capacidad en número de usuarios.</p>
+    <p class="tr">Dentro del impacto tecnológico, el punto de más peso: la seguridad.</p>
+  </template>
+</section>
+
+<!-- ═════════ 9 · SEGURIDAD Y ACCESO ═════════ -->
+<section class="scene" id="s-seg" data-theme="night" data-aspect="4" data-title="Seguridad y acceso" data-steps="3">
+  <header class="hd rv f" data-s="0"><div class="eyebrow">Aspecto 4 de 7 · Impacto tecnológico</div><h2 class="h2">Seguridad y acceso</h2></header>
+  <div class="crit"><span class="cr rv f" data-s="0"><b>4.4</b> Seguridad y acceso</span></div>
+
+  <div class="shield rv z" data-s="0" data-i="1" data-lit="1" aria-hidden="true">
+    <svg viewBox="0 0 220 260">
+      <path class="sh l4" d="M110 6l98 38v70c0 62-42 108-98 138C54 222 12 176 12 114V44z"/>
+      <path class="sh l3" d="M110 30l76 30v54c0 48-32 84-76 106-44-22-76-58-76-106V60z"/>
+      <path class="sh l2" d="M110 54l54 22v38c0 34-23 60-54 76-31-16-54-42-54-76V76z"/>
+      <path class="sh l1" d="M110 78l32 14v22c0 20-13 36-32 46-19-10-32-26-32-46V92z"/>
+    </svg>
+    <span class="sh-ic"><svg class="i"><use href="#i-lock"/></svg></span>
+    <i class="sh-glow"></i><i class="scan"></i>
+    <ol class="sh-l"><li class="a1">Contraseñas</li><li class="a2">Sesiones</li><li class="a3">Acceso a los datos</li><li class="a4">Información</li></ol>
+  </div>
+
+  <article class="card sg sg-a rv z" data-s="0" data-i="2">
+    <h3><span class="ico"><svg class="i"><use href="#i-key"/></svg></span>Contraseñas</h3>
+    <div class="hash"><p class="h-in">mi-clave-segura</p><p class="h-arrow">↓ Argon2id</p><p class="h-out">$argon2id$v=19$m=19456,t=2,p=1$…</p></div>
+    <p class="body">19 456 KiB de memoria y 2 pasadas. Nunca se guardan en texto claro.</p>
+  </article>
+
+  <article class="card sg sg-b rv z" data-s="1">
+    <h3><span class="ico ai"><svg class="i"><use href="#i-clock"/></svg></span>Sesiones</h3>
+    <div class="ses">
+      <div class="tring"><svg viewBox="0 0 44 44"><circle class="t" cx="22" cy="22" r="17"/><circle class="v" cx="22" cy="22" r="17"/></svg><b>15<small> min</small></b></div>
+      <ul class="pts">
+        <li><svg class="i"><use href="#i-check"/></svg>Acceso: 15 min, solo en la memoria de la app</li>
+        <li><svg class="i"><use href="#i-refresh"/></svg>Renovable: rota con cada uso; 30 días sin actividad, 90 como máximo</li>
+        <li><svg class="i"><use href="#i-lock"/></svg>Teléfono: almacenamiento seguro. Servidor: solo la huella</li>
+      </ul>
+    </div>
+  </article>
+
+  <article class="card sg sg-c rv z" data-s="2">
+    <h3><span class="ico blue"><svg class="i"><use href="#i-users"/></svg></span>Acceso a los datos</h3>
+    <div class="lanes">
+      <div class="ln"><span class="av a"><svg class="i"><use href="#i-user"/></svg></span><b>Ana</b><i class="acc">sus cuentas</i></div>
+      <div class="barrier"><i></i><span class="nf">no existe</span></div>
+      <div class="ln"><span class="av l"><svg class="i"><use href="#i-user"/></svg></span><b>Luis</b><i class="req">pide la cuenta de Ana</i></div>
+    </div>
+    <ul class="pts">
+      <li><svg class="i"><use href="#i-check"/></svg>Toda ruta de datos exige sesión</li>
+      <li><svg class="i"><use href="#i-check"/></svg>Una cuenta ajena responde igual que una inexistente</li>
+      <li><svg class="i"><use href="#i-check"/></svg>Claves foráneas por dueño en la base de datos</li>
+    </ul>
+  </article>
+
+  <article class="card sg sg-d rv z" data-s="3">
+    <h3><span class="ico ai"><svg class="i"><use href="#i-shield"/></svg></span>Información</h3>
+    <ul class="pts">
+      <li><svg class="i"><use href="#i-key"/></svg>Claves de la IA solo en el servidor</li>
+      <li><svg class="i"><use href="#i-eye"/></svg>Sin contraseñas ni correos en los registros</li>
+      <li><svg class="i"><use href="#i-file"/></svg>Errores con código estable e identificador de correlación</li>
+    </ul>
+    <p class="roles"><svg class="i"><use href="#i-users"/></svg>Roles: usuario y administrador definidos; hoy sin funciones de administración</p>
+  </article>
+  <template class="notes" data-time="1:20" data-key="Cuatro capas: contraseñas, sesiones, acceso a los datos e información. Decir con franqueza qué roles existen y cuáles no.">
+    <p data-s="0">Seguridad y acceso, en cuatro capas. Las contraseñas se guardan con Argon2id.</p>
+    <p data-s="1">La credencial de acceso dura 15 minutos y vive solo en la memoria de la aplicación; la renovable rota con cada uso, caduca a los 30 días sin actividad y a los 90 como máximo, se guarda en el almacenamiento seguro del teléfono y en el servidor solo como huella.</p>
+    <p data-s="2">Toda ruta que toca datos financieros exige sesión, y cada consulta se limita a la persona autenticada: una cuenta ajena responde igual que una cuenta que no existe. La base de datos refuerza esa pertenencia con claves foráneas que ligan los movimientos con sus cuentas y los presupuestos con sus categorías, siempre del mismo dueño.</p>
+    <p data-s="3">Las claves de la IA están solo en el servidor y los registros no incluyen contraseñas ni correos. El modelo define dos roles, usuario y administrador, pero hoy no hay funciones de administración.</p>
+    <p class="tip">NO decir «aislamiento por filas» ni «row-level security»: no existe. NO afirmar roles con permisos distintos ni planes premium (la auditoría del 16-oct lo marca como no implementado). Si preguntan por límites: el servidor limita registro, inicio de sesión, renovación y mensajes de IA por usuario; no dar cifras (el README y el código no coinciden). Argon2id con 19 456 KiB, 2 pasadas, paralelismo 1 (auth/passwords.py, core/config.py).</p>
+    <p class="tr">Pasemos a cómo se gestiona el conocimiento.</p>
+  </template>
+</section>
+
+<!-- ═════════ 10 · GESTIÓN DEL CONOCIMIENTO ═════════ -->
+<section class="scene" id="s-gc" data-aspect="5" data-title="Gestión del conocimiento" data-steps="2">
+  <header class="hd rv f" data-s="0"><div class="eyebrow">Aspecto 5 de 7 · Gestión del conocimiento</div><h2 class="h2">Información precisa y al día</h2></header>
+  <div class="crit"><span class="cr rv f" data-s="0"><b>5.1</b> Información actualizada y precisa</span><span class="cr rv f" data-s="1"><b>5.2</b> Procesos de actualización</span></div>
+
+  <article class="card gc gc-l rv z" data-s="0" data-i="1">
+    <h3><span class="ico"><svg class="i"><use href="#i-check-circle"/></svg></span>Información precisa</h3>
+    <ul class="pts">
+      <li><svg class="i"><use href="#i-db"/></svg><span><b>Una sola fuente de verdad:</b> los movimientos confirmados</span></li>
+      <li><svg class="i"><use href="#i-sigma"/></svg><span><b>Se calcula al consultar:</b> saldo, presupuestos, resumen semanal y proyección del mes no son números guardados</span></li>
+      <li><svg class="i"><use href="#i-target"/></svg><span><b>Importes exactos:</b> decimales, no aproximaciones</span></li>
+      <li><svg class="i"><use href="#i-shield"/></svg><span><b>Mismas validaciones</b> venga de un formulario o de la IA</span></li>
+    </ul>
+  </article>
+
+  <div class="cyc rv z" data-s="0" data-i="2" aria-label="Ciclo de la información: capturar, validar, guardar, calcular, volver a la persona y actualizar" role="img">
+    <svg class="cyc-ring" viewBox="0 0 388 388" aria-hidden="true"><circle cx="194" cy="194" r="150"/></svg>
+    <div class="orb"><i></i></div>
+    <div class="cyc-c"><b>Una fuente de verdad</b><span>los movimientos confirmados</span></div>
+    <span class="cn" style="--k:0;left:194px;top:44px">1 · Capturar</span>
+    <span class="cn" style="--k:1;left:324px;top:119px">2 · Validar</span>
+    <span class="cn" style="--k:2;left:324px;top:269px">3 · Guardar</span>
+    <span class="cn" style="--k:3;left:194px;top:344px">4 · Calcular</span>
+    <span class="cn" style="--k:4;left:64px;top:269px">5 · A la persona</span>
+    <span class="cn" style="--k:5;left:64px;top:119px">6 · Actualizar</span>
+  </div>
+  <p class="cyc-n rv f" data-s="0" data-i="3"><svg class="i"><use href="#i-clock"/></svg>El ciclo se repite en cada confirmación y en cada consulta</p>
+
+  <article class="card gc gc-r rv z" data-s="1">
+    <h3><span class="ico ai"><svg class="i"><use href="#i-refresh"/></svg></span>Cómo se actualiza</h3>
+    <dl class="who">
+      <div><dt><svg class="i"><use href="#i-user"/></svg>Quién</dt><dd>La persona: ella corrige, confirma o borra</dd></div>
+      <div><dt><svg class="i"><use href="#i-cog"/></svg>Cómo</dt><dd>Al corregir un movimiento, el total y el movimiento de la cuenta se recalculan en una sola transacción</dd></div>
+      <div><dt><svg class="i"><use href="#i-clock"/></svg>Cada cuánto</dt><dd>En cada confirmación y al consultar. Las propuestas de texto caducan a las 24 h</dd></div>
+      <div><dt><svg class="i"><use href="#i-list"/></svg>Vigente</dt><dd>Cada propuesta usa las cuentas y categorías de ese momento</dd></div>
+    </dl>
+    <p class="lim"><svg class="i"><use href="#i-alert"/></svg>Límite: la IA no aprende de las correcciones</p>
+  </article>
+
+  <div class="proj">
+    <p class="proj-t rv f" data-s="2"><svg class="i"><use href="#i-book"/></svg>Conocimiento del proyecto</p>
+    <div class="pj rv z" data-s="2" data-i="1"><b class="pn"><span id="n300">0</span></b><span>entradas de bitácora con fecha<br><small>24 sep – 30 oct de 2026</small></span></div>
+    <div class="pj rv z" data-s="2" data-i="2"><b class="pn"><svg class="i"><use href="#i-file"/></svg></b><span>Documentación por historia de usuario y por decisión</span></div>
+    <div class="pj rv z" data-s="2" data-i="3"><b class="pn"><svg class="i"><use href="#i-check-circle"/></svg></b><span>Auditorías con fecha: cada cifra dice cuándo se verificó</span></div>
+  </div>
+  <template class="notes" data-time="1:50" data-key="Precisión (una fuente, todo calculado, validado) y actualización (quién, cómo, cada cuánto); y lo mismo para el conocimiento del proyecto.">
+    <p data-s="0">La gestión del conocimiento tiene dos partes: qué tan precisa y al día está la información, y cómo se actualiza. Información precisa. Hay una sola fuente de verdad: los movimientos confirmados. El saldo, el avance de los presupuestos, el resumen semanal y la proyección del mes no se guardan como números sueltos; se calculan al consultar, a partir de esos movimientos, así que no se desactualizan. Los importes son decimales exactos. Y todo lo que entra al registro pasa por las mismas validaciones, venga de un formulario o de la IA, que además necesita la confirmación de la persona.</p>
+    <p data-s="1">Actualización. La actualiza la persona. Si corrige un movimiento, el total y el movimiento de la cuenta se recalculan en una sola transacción, y saldo y presupuestos lo reflejan al consultar. Las propuestas de texto caducan a las 24 horas. Cada propuesta se arma con las cuentas y categorías vigentes de la persona, de modo que un cambio se refleja en la siguiente. Un límite: la IA no aprende de las correcciones.</p>
+    <p data-s="2">Aplicamos lo mismo al conocimiento del proyecto: unas 300 entradas de bitácora entre el 24 de septiembre y el 30 de octubre, documentación por historia de usuario, auditorías con fecha, y cifras que siempre citan cuándo se verificaron.</p>
+    <p class="tip">Las ~300 entradas salen de aidlc-docs/audit.md (301 marcas de tiempo del 24-sep al 30-oct-2026); recontarlas el día de la presentación. La proyección del mes combina el gasto diario del mes con el histórico, ponderados por los días transcurridos (dashboard/service.py). El «volver a la persona» del ciclo es el insight y la proyección: no es aprendizaje de la IA. Confirmar con el equipo la frase final sobre el conocimiento del proyecto.</p>
+    <p class="tr">Con eso, las conclusiones.</p>
+  </template>
+</section>
+
+<!-- ═════════ 11 · CONCLUSIONES ═════════ -->
+<section class="scene" id="s-concl" data-aspect="6" data-title="Conclusiones" data-steps="3">
+  <header class="hd rv f" data-s="0"><div class="eyebrow">Aspecto 6 de 7 · Conclusiones</div><h2 class="h2">Una conclusión por objetivo</h2></header>
+  <div class="crit"><span class="cr rv f" data-s="0"><b>6.1</b> Coherencia con los objetivos</span></div>
+
+  <div class="cl">
+    <div class="rw card rv z" data-s="0"><span class="ob"><i>C</i><b>Concebir</b></span><i class="to"></i><p>El alcance, los requisitos y el flujo de confirmar, editar o descartar están <b>documentados y funcionan</b> en la app.</p><span class="ck"><svg class="i"><use href="#i-check"/></svg></span></div>
+    <div class="rw card rv z" data-s="0" data-i="1"><span class="ob"><i>D</i><b>Diseñar</b></span><i class="to"></i><p>La arquitectura, el modelo de datos y las pantallas quedaron <b>documentados antes de construir</b>.</p><span class="ck"><svg class="i"><use href="#i-check"/></svg></span></div>
+    <div class="rw card rv z" data-s="1"><span class="ob"><i>I</i><b>Implementar<small>captura</small></b></span><i class="to"></i><p>Una frase, un recibo o un dictado producen <b>una propuesta que la persona confirma</b>.</p><span class="ck"><svg class="i"><use href="#i-check"/></svg></span></div>
+    <div class="rw card rv z" data-s="1" data-i="1"><span class="ob"><i>I</i><b>Implementar<small>análisis</small></b></span><i class="to"></i><p>Los gastos confirmados se <b>agrupan por categoría y período</b> y alimentan los presupuestos.</p><span class="ck"><svg class="i"><use href="#i-check"/></svg></span></div>
+    <div class="rw card part rv z" data-s="2"><span class="ob"><i>O</i><b>Operar</b></span><i class="to"></i><p><b>Desplegado en la nube y probado en un teléfono real</b>, con 415 pruebas del servidor y 573 de la app (octubre). <em>Falta: publicar en una tienda y validar con usuarios reales.</em></p><span class="ck half"><svg class="i"><use href="#i-clock"/></svg></span></div>
+  </div>
+
+  <div class="unm rv" data-s="3"><svg class="i"><use href="#i-alert"/></svg><p><b>Aún sin medir:</b> que reduzca el esfuerzo de captura y que forme hábito. Eso es lo que sigue.</p></div>
+  <template class="notes" data-time="1:15" data-key="Cada objetivo con su conclusión y su evidencia; el quinto, parcial; y lo que todavía no podemos afirmar.">
+    <p data-s="0">Una conclusión por objetivo. Concebir: el alcance, los requisitos y el flujo de confirmar, editar o descartar están documentados y funcionan en la aplicación. Diseñar: la arquitectura, el modelo de datos y las pantallas quedaron documentados antes de construir.</p>
+    <p data-s="1">Implementar la captura: una frase, un recibo o un dictado producen una propuesta que la persona confirma. Implementar el análisis: los gastos confirmados se agrupan por categoría y período y alimentan los presupuestos.</p>
+    <p data-s="2">Operar: el servicio está desplegado en la nube y lo probamos en un teléfono real, con 415 pruebas del servidor y 573 de la aplicación, verificadas en octubre. Falta publicarla en una tienda y validarla con usuarios reales.</p>
+    <p data-s="3">Todavía no podemos afirmar que reduzca el esfuerzo de captura ni que forme hábito: eso es lo que sigue por medir.</p>
+    <p class="tip">Cifras con fecha: 415 pruebas y 89 % de cobertura de ramas del servidor (16-oct-2026); 573 de la app (18-oct-2026, tomadas de la documentación del PGC, no re-ejecutadas). Prueba en teléfono real: bitácora del 27-sep-2026 (depuración por ADB). Si el objetivo 5 vuelve al texto de la propuesta, decir que falta la encuesta de usabilidad.</p>
+    <p class="tr">Y ¿qué deja el proyecto?</p>
+  </template>
+</section>
+
+<!-- ═════════ 12 · APORTES ═════════ -->
+<section class="scene" id="s-aportes" data-aspect="6" data-title="Aportes" data-steps="2">
+  <header class="hd rv f" data-s="0"><div class="eyebrow">Aspecto 6 de 7 · Conclusiones</div><h2 class="h2">Aportes</h2></header>
+  <div class="crit"><span class="cr rv f" data-s="0"><b>6.2</b> Aportes</span></div>
+
+  <div class="ap-row">
+    <article class="ap rv z" data-s="0">
+      <div class="orbit"><i></i><i></i><span class="cir"><svg class="i"><use href="#i-users"/></svg></span></div>
+      <h3>A las personas</h3>
+      <p>Una herramienta que <b>propone el registro y no escribe por sí sola</b>. Que reduzca el esfuerzo es nuestra hipótesis, todavía sin medir.</p>
+    </article>
+    <article class="ap rv z" data-s="1">
+      <div class="orbit"><i></i><i></i><span class="cir"><svg class="i"><use href="#i-cpu"/></svg></span></div>
+      <h3>A la ingeniería de software con IA</h3>
+      <p>Un patrón aplicado, probado y documentado: <b>la IA propone, un servicio determinista valida y la persona confirma</b>.</p>
+    </article>
+    <article class="ap rv z" data-s="2">
+      <div class="orbit"><i></i><i></i><span class="cir"><svg class="i"><use href="#i-heart"/></svg></span></div>
+      <h3>A la sociedad</h3>
+      <p>Apunta a que más personas <b>lleven el control de su dinero y decidan con información</b>, en un país donde el 66,6&thinsp;% de las operaciones monetarias ya es digital. El piloto previsto con estudiantes de la Universidad de Cundinamarca dirá si de verdad ayuda.</p>
+    </article>
+  </div>
+  <template class="notes" data-time="0:50" data-key="Tres aportes: a las personas, a la ingeniería de software con IA y a la sociedad (con el piloto como prueba pendiente).">
+    <p data-s="0">Dejamos tres aportes. A las personas que registran sus gastos, una herramienta que propone el registro y no escribe por sí sola; que reduzca el esfuerzo es nuestra hipótesis, todavía sin medir.</p>
+    <p data-s="1">A la ingeniería de software con IA, un patrón aplicado, probado y documentado: la IA propone, un servicio determinista valida y la persona confirma.</p>
+    <p data-s="2">A la sociedad, la apuesta de que más personas lleven el control de su dinero y decidan con información, en un país donde el 66,6 % de las operaciones monetarias ya es digital. El piloto previsto con estudiantes de la Universidad de Cundinamarca dirá si de verdad ayuda.</p>
+    <p class="tip">El tercer aporte es una apuesta, no un resultado: decir «apunta» y «dirá si de verdad ayuda». No afirmar que la app ya formó hábitos ni que ya llegó a estudiantes. La cifra de 66,6 % es de la Banca de las Oportunidades (2024). El equipo decide si suscribe los tres aportes o agrega otro (por ejemplo, abrir el código o la documentación, si ese es el plan).</p>
+    <p class="tr">Eso es lo que construimos. Ahora lo probamos.</p>
+  </template>
+</section>
+
+<!-- ═════════ 13 · CIERRE Y DEMOSTRACIÓN ═════════ -->
+<section class="scene" id="s-demo" data-theme="dark" data-aspect="7" data-title="Probemos con la app real" data-steps="1">
+  <header class="hd rv f" data-s="0"><div class="eyebrow">Aspecto 7 de 7 · Metodología y socialización</div></header>
+  <div class="crit"><span class="cr rv f" data-s="0">Demostración y preguntas</span></div>
+
+  <h2 class="dm-t rv f" data-s="0" data-i="1">Probemos con la <span>app real</span></h2>
+  <p class="dm-s rv" data-s="0" data-i="2">El mismo recorrido de las diapositivas, ahora funcionando de principio a fin.</p>
+
+  <div class="dm-steps">
+    <div class="st rv z" data-s="1"><span class="n">1 · ESCRIBIR</span><b>Una frase, como la dirías</b><small>«Almuerzo 18 mil con Nequi»</small><i class="pg"><u></u></i></div>
+    <div class="st rv z" data-s="1" data-i="1"><span class="n">2 · REVISAR</span><b>La propuesta de la IA</b><small>Monto, cuenta y categoría; corregimos un campo</small><i class="pg"><u></u></i></div>
+    <div class="st rv z" data-s="1" data-i="2"><span class="n">3 · CONFIRMAR</span><b>Se guarda el movimiento</b><small>Una sola vez, sin duplicados</small><i class="pg"><u></u></i></div>
+    <div class="st rv z" data-s="1" data-i="3"><span class="n">4 · VER</span><b>Historial, saldo y panel</b><small>Todo queda actualizado</small><i class="pg"><u></u></i></div>
+  </div>
+
+  <div class="dm-bk rv" data-s="0" data-i="3">
+    <span class="bk-l">Si preguntan, respaldo técnico:</span>
+    <span class="bk"><kbd>A</kbd>Modelo de datos</span><span class="bk"><kbd>B</kbd>IA</span><span class="bk"><kbd>C</kbd>Recibos y voz</span><span class="bk"><kbd>D</kbd>Seguridad y calidad</span><span class="bk"><kbd>E</kbd>Mapa de la rúbrica</span><span class="bk"><kbd>F</kbd>Offline-first</span>
+  </div>
+  <a class="qr-big dm-qr rv z" data-s="0" data-i="2" href="https://drive.google.com/file/d/1z__jJblXcb8MC2PZvE1tJzy3Kkh2GFgs/view?usp=drivesdk" target="_blank" rel="noopener noreferrer">
+    <img src="assets/app-download-qr.jpg" alt="Código QR para descargar Finance AI">
+    <span><b>Descarga la app</b>Escanea el código QR</span>
+  </a>
+  <template class="notes" data-time="0:40" data-key="Pasar a la app real con un gasto cotidiano y abrir las preguntas.">
+    <p data-s="0">Eso es lo que construimos. Ahora lo probamos con la aplicación real, con un gasto cotidiano: «almuerzo 18 mil con Nequi».</p>
+    <p data-s="1">Lo escribimos, revisamos la propuesta y corregimos un campo, confirmamos una sola vez y vemos el saldo y el historial actualizados. Después responderemos sus preguntas. Gracias.</p>
+    <p class="tip">FIN DE LA EXPOSICIÓN. Cambiar a la app. Guion de la demostración: 1) mostrar la cuenta y el saldo inicial (datos sintéticos); 2) escribir «almuerzo 18 mil con Nequi»; 3) revisar la propuesta y corregir un campo; 4) confirmar una sola vez y mostrar el saldo; 5) abrir el panel de inicio; 6) si queda tiempo, un recibo o la transferencia «pasé 200 mil de Nequi a Bancolombia». Si falla la IA, formulario manual; si falla el servidor, la grabación de respaldo. Preparar: servidor y base de datos, conexión al proveedor de IA, cuenta sintética, dos cuentas, recibo de prueba y grabación.</p>
+    <p class="tr">Las teclas A a F abren el respaldo técnico; Esc o R vuelve al punto donde estabas.</p>
+  </template>
+</section>
+
+<!-- ═════════ RESPALDO A · MODELO DE DATOS ═════════ -->
+<section class="scene" id="s-resp-a" data-group="backup" data-title="Respaldo A · Modelo de datos" data-steps="4">
+  <header class="hd rv f" data-s="0"><div class="eyebrow">Respaldo · A</div><h2 class="h2 sm">Modelo de datos: el libro de movimientos</h2></header>
+
+  <div class="er">
+    <div class="en card rv z" data-s="0" data-i="0" style="grid-area:1/1;--c:var(--blue)"><b>Usuario</b><span>dueño de todo lo demás</span></div>
+    <i class="ea r rv f" data-s="0" data-i="2" style="grid-area:1/2"></i>
+    <div class="en card rv z" data-s="0" data-i="3" style="grid-area:1/3;--c:var(--green)"><b>Cuenta</b><span>moneda + saldo inicial</span></div>
+    <i class="ea l rv f" data-s="0" data-i="5" style="grid-area:1/4"></i>
+    <div class="en card rv z" data-s="0" data-i="6" style="grid-area:1/5;--c:var(--green)"><b>Movimiento</b><span>monto firmado (+ / −)</span></div>
+    <i class="ea u rv f" data-s="0" data-i="8" style="grid-area:2/5"></i>
+    <div class="en card rv z" data-s="0" data-i="9" style="grid-area:3/5;--c:var(--green)"><b>Transacción</b><span>gasto · ingreso · transferencia</span></div>
+    <i class="ea l rv f" data-s="0" data-i="11" style="grid-area:3/4"></i>
+    <div class="en card rv z" data-s="0" data-i="12" style="grid-area:3/3;--c:var(--warn-l)"><b>Recibo e ítems</b><span>grupo de compra</span></div>
+    <i class="ea l rv f" data-s="0" data-i="14" style="grid-area:3/2"></i>
+    <div class="en card rv z" data-s="0" data-i="15" style="grid-area:3/1;--c:var(--warn-l)"><b>Categoría</b><span>definida por el usuario</span></div>
+  </div>
+  <p class="er-note rv" data-s="0" data-i="17">Aislamiento por usuario con llaves foráneas compuestas en la base de datos. La fuente de captura distingue manual, texto IA y recibo IA.</p>
+
+  <div class="ledger card rv z" data-s="1">
+    <p class="lbl">Ejemplo ilustrativo · cuenta Nequi</p>
+    <div class="lrow rv" data-s="1" data-i="1"><span>Saldo inicial</span><b>500.000</b></div>
+    <div class="lrow rv" data-s="2"><span>Almuerzo (gasto)</span><b class="neg">− 18.000</b></div>
+    <div class="lrow rv" data-s="3"><span>Salario (ingreso)</span><b class="pos">+ 2.000.000</b></div>
+    <div class="lrow rv" data-s="4"><span>Transferencia a Bancolombia</span><b class="neg">− 200.000</b></div>
+    <div class="lsum"><span>Saldo</span><b id="ledger-total">0</b></div>
+    <p class="lnote rv" data-s="4" data-i="1">La transferencia mueve el saldo pero no cuenta como gasto ni ingreso.</p>
+  </div>
+  <template class="notes" data-key="El saldo siempre sale de los movimientos; una transferencia no es gasto ni ingreso." data-when="cómo se calcula el saldo o cómo se guardan las transferencias.">
+    <p data-s="0">Cada hecho financiero es una transacción con uno o más movimientos firmados. Una transferencia genera un movimiento negativo en el origen y uno positivo en el destino. Las llaves foráneas compuestas refuerzan el aislamiento de datos por usuario, y la fuente de captura distingue manual, texto IA y recibo IA.</p>
+    <p data-s="1">Ejemplo ilustrativo con una cuenta Nequi: arranca con un saldo inicial de 500.000.</p>
+    <p data-s="2">Un almuerzo de 18.000 es un gasto y resta.</p>
+    <p data-s="3">Un salario de 2.000.000 es un ingreso y suma.</p>
+    <p data-s="4">Una transferencia de 200.000 a Bancolombia mueve el saldo, pero no cuenta como gasto ni ingreso. El saldo es el inicial más la suma de los movimientos: 2.282.000.</p>
+  </template>
+</section>
+
+<!-- ═════════ RESPALDO B · PROPUESTA DE IA ═════════ -->
+<section class="scene" id="s-resp-b" data-group="backup" data-title="Respaldo B · De palabras a una propuesta" data-steps="5">
+  <header class="hd rv f" data-s="0"><div class="eyebrow">Respaldo · B</div><h2 class="h2 sm">De palabras a una propuesta confiable</h2></header>
+
+  <div class="pipe">
+    <i class="runner" aria-hidden="true"></i>
+    <div class="ps card rv z" data-s="0" data-i="0"><span class="pi"><svg class="i"><use href="#i-message"/></svg></span><b>Mensaje</b><small>frase en español o transcripción de voz</small></div>
+    <i class="pa rv f" data-s="0" data-i="1"></i>
+    <div class="ps card rv z" data-s="0" data-i="2"><span class="pi"><svg class="i"><use href="#i-file"/></svg></span><b>Prompt con contexto</b><small>tus cuentas, categorías, fuentes de ingreso y la fecha de hoy</small></div>
+    <i class="pa rv f" data-s="0" data-i="3"></i>
+    <div class="ps ai card rv z" data-s="0" data-i="4"><span class="pi"><svg class="i"><use href="#i-spark"/></svg></span><b>LLM</b><small>responde en JSON, temperatura 0</small></div>
+    <i class="pa rv f" data-s="0" data-i="5"></i>
+    <div class="ps card rv z" data-s="0" data-i="6"><span class="pi"><svg class="i"><use href="#i-scan"/></svg></span><b>Anclaje</b><small>se compara con tus datos reales</small></div>
+    <i class="pa rv f" data-s="0" data-i="7"></i>
+    <div class="ps user card rv z" data-s="0" data-i="8"><span class="pi"><svg class="i"><use href="#i-check-circle"/></svg></span><b>Propuesta</b><small>un toque para aceptar</small></div>
+  </div>
+
+  <div class="ex card rv" data-s="2">
+    <p class="lbl">Ejemplo ilustrativo</p>
+    <div class="msg">pasé 200 mil de Nequi a Bancolombia</div>
+    <p class="ret"><svg class="i"><use href="#i-spark"/></svg>El modelo devuelve:</p>
+    <div class="tks">
+      <span class="tk rv f" data-s="2" data-i="3">intención: transferencia</span>
+      <span class="tk rv f" data-s="2" data-i="4">monto: 200.000</span>
+      <span class="tk tm rv f" data-s="2" data-i="5">origen: Nequi</span>
+      <span class="tk tm rv f" data-s="2" data-i="6">destino: Bancolombia</span>
+      <span class="tk rv f" data-s="2" data-i="7">confianza: 0–1</span>
+    </div>
+    <p class="anc rv" data-s="3"><svg class="i"><use href="#i-scan"/></svg><span><b>Anclaje:</b> «Nequi» y «Bancolombia» coinciden con tus cuentas ⇒ se propone una <b>transferencia</b>, no un gasto.</span></p>
+  </div>
+
+  <div class="sf card rv" data-s="4">
+    <p class="lbl">Salvaguardas</p>
+    <ul>
+      <li class="rv" data-s="4" data-i="1"><svg class="i"><use href="#i-check"/></svg><span><b>Validación:</b> los nombres propuestos se comparan con tus cuentas y categorías</span></li>
+      <li class="rv" data-s="4" data-i="2"><svg class="i"><use href="#i-check"/></svg><span><b>Umbral configurado ≥ 0,8:</b> revisión de un toque; menos, revisar con cuidado</span></li>
+      <li class="rv" data-s="4" data-i="3"><svg class="i"><use href="#i-check"/></svg><span><b>Una sola pregunta</b> corta, con opciones, solo ante duda real</span></li>
+      <li class="rv" data-s="4" data-i="4"><svg class="i"><use href="#i-check"/></svg><span><b>Entre tus cuentas ≠ gasto;</b> moneda dudosa: se pregunta</span></li>
+      <li class="rv" data-s="4" data-i="5"><svg class="i"><use href="#i-check"/></svg><span><b>Texto no confiable:</b> defensa contra prompt injection</span></li>
+      <li class="rv" data-s="4" data-i="6"><svg class="i"><use href="#i-check"/></svg><span><b>Respaldo:</b> segundo proveedor, límites de tiempo y uso; si cae la IA, siguen los formularios</span></li>
+    </ul>
+  </div>
+
+  <p class="mdl rv" data-s="5"><svg class="i"><use href="#i-cpu"/></svg><span><b>Modelo:</b> LLM vía API (Gemini o DeepSeek, intercambiables). <b>Integración:</b> ingeniería de prompts y validación determinista.</span></p>
+  <template class="notes" data-key="La IA propone, el sistema valida y la persona decide." data-when="cómo se evitan los errores de la IA.">
+    <p data-s="0">El servidor construye el contexto con las cuentas, categorías, fuentes de ingreso y fecha del usuario. El mensaje puede ser una frase en español o la transcripción de una voz.</p>
+    <p data-s="1">Ese contexto va al modelo, que responde en JSON con temperatura 0. Luego el anclaje compara lo propuesto con los datos reales del usuario, y el resultado es una propuesta que se acepta con un toque.</p>
+    <p data-s="2">Ejemplo ilustrativo: «pasé 200 mil de Nequi a Bancolombia». El modelo devuelve la intención, el monto, el origen, el destino y un nivel de confianza.</p>
+    <p data-s="3">Con el anclaje, «Nequi» y «Bancolombia» coinciden con las cuentas del usuario: se propone una transferencia, no un gasto.</p>
+    <p data-s="4">Las salvaguardas: los nombres propuestos se validan contra las cuentas y categorías; con el umbral configurado de 0,8 la revisión es de un toque y por debajo se revisa con cuidado, siempre con confirmación de la persona; una sola pregunta corta y solo ante duda real; defensa contra prompt injection; y un segundo proveedor con límites de tiempo y uso. Si cae la IA, siguen los formularios.</p>
+    <p data-s="5">El modelo es un LLM vía API (Gemini o DeepSeek, intercambiables). La integración es ingeniería de prompts y validación determinista.</p>
+  </template>
+</section>
+
+<!-- ═════════ RESPALDO C · RECIBOS Y VOZ ═════════ -->
+<section class="scene" id="s-resp-c" data-group="backup" data-title="Respaldo C · Recibos y voz" data-steps="5">
+  <header class="hd rv f" data-s="0"><div class="eyebrow">Respaldo · C</div><h2 class="h2 sm">Más allá del texto: recibos y voz</h2></header>
+
+  <div class="zones">
+    <div class="zone card rv z" data-s="0">
+      <h3><span class="ico ai"><svg class="i"><use href="#i-receipt"/></svg></span>Foto de recibo</h3>
+      <ol class="stl">
+        <li class="rv" data-s="1" style="--b:var(--ai)"><i>1</i><p>Foto <span class="mt">(JPEG, PNG o HEIC, hasta 10 MB)</span></p></li>
+        <li class="rv" data-s="2" style="--b:var(--ai)"><i>2</i><p>Se normaliza y comprime en el servidor</p></li>
+        <li class="rv" data-s="3" style="--b:var(--ai)"><i>3</i><p>LLM con visión → JSON estricto: <span class="mt">comercio, fecha, total impreso, moneda, medio de pago, categoría sugerida, ítems</span></p></li>
+        <li class="rv" data-s="4" style="--b:var(--green)"><i>4</i><p><b>Validación:</b> defensa anti-inyección y verificación aritmética</p></li>
+        <li class="rv" data-s="5" style="--b:var(--blue)"><i>5</i><p><b>Revisión:</b> editar, reintentar o aceptar. El total impreso se conserva</p></li>
+      </ol>
+    </div>
+    <div class="zone card rv z" data-s="0" data-i="1">
+      <h3><span class="ico blue"><svg class="i"><use href="#i-mic"/></svg></span>Voz</h3>
+      <ol class="stl">
+        <li class="rv" data-s="1" style="--b:var(--blue)"><i>1</i><p>Pulsas el micrófono y hablas</p></li>
+        <li class="rv" data-s="2" style="--b:var(--blue)"><i>2</i><p><b>El reconocimiento ocurre en el dispositivo</b> <span class="mt">(Android: reconocedor local · Windows: SAPI)</span></p></li>
+        <li class="rv" data-s="3" style="--b:var(--ai)"><i>3</i><p>La transcripción entra al <b>mismo flujo de texto</b> de la IA</p></li>
+        <li class="rv" data-s="4" style="--b:var(--blue)"><i>4</i><p><b>Revisión:</b> aceptar, editar o descartar</p></li>
+      </ol>
+      <div class="lockbox rv" data-s="3" data-i="2"><svg class="i"><use href="#i-lock"/></svg><span>Dictado local: el flujo de IA recibe texto</span></div>
+    </div>
+  </div>
+
+  <div class="zend rv" data-s="5" data-i="2"><svg class="i"><use href="#i-check-circle"/></svg><p>La captura termina en una propuesta que el usuario revisa y confirma.</p></div>
+  <template class="notes" data-key="Recibos y voz terminan en la misma revisión del usuario." data-when="recibos, fotos o voz.">
+    <p data-s="1">Hay dos entradas además del texto. Con el recibo se toma una foto (JPEG, PNG o HEIC, hasta 10 MB); con la voz, la persona pulsa el micrófono y habla.</p>
+    <p data-s="2">El servidor normaliza y comprime la imagen. En voz, el reconocimiento ocurre en el dispositivo: reconocedor local en Android y SAPI en Windows.</p>
+    <p data-s="3">Con el recibo, un modelo con visión devuelve un JSON estricto: comercio, fecha, total impreso, moneda, medio de pago, categoría sugerida e ítems. En voz, la transcripción entra al mismo flujo de texto; el dictado es local y el flujo de IA recibe solo texto.</p>
+    <p data-s="4">Se valida con defensa anti-inyección y verificación aritmética. En voz, la persona acepta, edita o descarta.</p>
+    <p data-s="5">En el recibo, la revisión permite editar, reintentar o aceptar, conservando el total impreso. Ambas entradas terminan en una propuesta que el usuario revisa y confirma.</p>
+    <p class="tip">Ensayar la voz en el dispositivo de la demostración antes de mostrarla en vivo.</p>
+  </template>
+</section>
+
+<!-- ═════════ RESPALDO D · SEGURIDAD Y CALIDAD ═════════ -->
+<section class="scene" id="s-resp-d" data-group="backup" data-title="Respaldo D · Seguridad y calidad" data-steps="2">
+  <header class="hd rv f" data-s="0"><div class="eyebrow">Respaldo · D</div><h2 class="h2 sm">Seguridad y calidad del software</h2></header>
+
+  <div class="sq-l card rv z" data-s="0">
+    <h3 class="cardh"><span class="ico ai"><svg class="i"><use href="#i-shield"/></svg></span>Seguridad y privacidad</h3>
+    <ul class="sl">
+      <li class="rv" data-s="0" data-i="2"><svg class="i"><use href="#i-check"/></svg>Contraseñas con Argon2id</li>
+      <li class="rv" data-s="0" data-i="3"><svg class="i"><use href="#i-check"/></svg>Acceso de 15 min con credenciales renovables rotativas</li>
+      <li class="rv" data-s="0" data-i="4"><svg class="i"><use href="#i-check"/></svg>Cada consulta se limita al dueño, con claves foráneas por dueño en la base de datos</li>
+      <li class="rv" data-s="0" data-i="5"><svg class="i"><use href="#i-check"/></svg>Reportes de error con datos sensibles filtrados</li>
+      <li class="rv" data-s="0" data-i="6"><svg class="i"><use href="#i-check"/></svg>Claves de IA en el servidor</li>
+      <li class="rv" data-s="0" data-i="7"><svg class="i"><use href="#i-check"/></svg>Reconocimiento de voz en el dispositivo</li>
+    </ul>
+  </div>
+
+  <div class="sq-r card rv z" data-s="1">
+    <h3 class="cardh"><span class="ico"><svg class="i"><use href="#i-check-circle"/></svg></span>Calidad</h3>
+    <div class="tiles">
+      <div class="tile rv" data-s="1" data-i="2">
+        <b class="n" id="n415">0</b><span>pruebas del servidor</span>
+        <div class="cov"><svg viewBox="0 0 44 44" aria-hidden="true"><circle class="t" cx="22" cy="22" r="17"/><circle class="v" cx="22" cy="22" r="17"/></svg><em>89&thinsp;% cobertura de ramas</em></div>
+        <small>16 oct 2026</small>
+      </div>
+      <div class="tile rv" data-s="1" data-i="3">
+        <b class="n" id="n573">0</b><span>pruebas de la app</span>
+        <em>Análisis estático aprobado</em>
+        <small>18 oct 2026</small>
+      </div>
+    </div>
+    <ul class="ql">
+      <li class="rv" data-s="2">CI con lint, tipado estricto, pruebas y auditoría de dependencias</li>
+      <li class="rv" data-s="2" data-i="1">Umbral de cobertura del 80&nbsp;% en integración continua</li>
+    </ul>
+    <p class="fn rv" data-s="2" data-i="2">Verificaciones documentadas: 16 y 18 oct 2026</p>
+  </div>
+  <template class="notes" data-key="Seguridad y calidad, con cifras documentadas y su fecha." data-when="seguridad, pruebas o calidad.">
+    <p data-s="0">En seguridad y privacidad: contraseñas con Argon2id; acceso de 15 minutos con credenciales renovables rotativas; cada consulta limitada al dueño, con claves foráneas por dueño en la base de datos (no es seguridad por filas); reportes de error con datos sensibles filtrados; claves de IA en el servidor; y reconocimiento de voz en el dispositivo.</p>
+    <p data-s="1">En calidad: el servidor registra 415 pruebas aprobadas, ninguna omitida y 89 % de cobertura de ramas en el punto de control del 16 de octubre de 2026. La app registra 573 pruebas aprobadas y análisis estático aprobado el 18 de octubre de 2026.</p>
+    <p data-s="2">La integración continua incluye lint, tipado estricto, pruebas y auditoría de dependencias, con un umbral de cobertura del 80 %. Las fechas identifican los puntos de control documentados.</p>
+    <p class="tip">Son verificaciones documentadas de esas fechas: no se vuelven a ejecutar al editar la presentación. Si se actualizan las cifras, cambiarlas también aquí y en Slidev.</p>
+  </template>
+</section>
+
+<!-- ═════════ RESPALDO E · MAPA DE LA RÚBRICA ═════════ -->
+<section class="scene" id="s-resp-e" data-group="backup" data-title="Respaldo E · Dónde se cubre cada criterio" data-steps="1">
+  <header class="hd rv f" data-s="0"><div class="eyebrow">Respaldo · E</div><h2 class="h2 sm">Dónde se cubre cada criterio de evaluación</h2></header>
+  <div class="e-grid">
+    <article class="card ea rv z" data-s="0" data-i="0"><h3><i>1</i>Organización</h3><ul>
+      <li><b>1.1</b>Introducción<em>2</em></li><li><b>1.2</b>Planteamiento del problema<em>2</em></li><li><b>1.3</b>Justificación<em>3</em></li><li><b>1.4</b>Objetivos<em>4 · 11</em></li></ul></article>
+    <article class="card ea rv z" data-s="0" data-i="1"><h3><i>2</i>Alcances</h3><ul>
+      <li><b>2.1</b>Productos desarrollados<em>5 · 6 · 13</em></li></ul></article>
+    <article class="card ea rv z" data-s="0" data-i="2"><h3><i>3</i>Marco teórico</h3><ul>
+      <li><b>3.1</b>Fundamentos teóricos<em>7</em></li></ul></article>
+    <article class="card ea rv z" data-s="0" data-i="3"><h3><i>4</i>Impacto tecnológico</h3><ul>
+      <li><b>4.1</b>Uso de plataformas<em>8</em></li><li><b>4.2</b>Integración con sistemas existentes<em>8</em></li><li><b>4.3</b>Escalabilidad<em>8</em></li><li><b>4.4</b>Seguridad y acceso<em>9 · D</em></li></ul></article>
+    <article class="card ea rv z" data-s="0" data-i="4"><h3><i>5</i>Gestión del conocimiento</h3><ul>
+      <li><b>5.1</b>Información actualizada y precisa<em>10</em></li><li><b>5.2</b>Procesos de actualización<em>10</em></li></ul></article>
+    <article class="card ea rv z" data-s="0" data-i="5"><h3><i>6</i>Conclusiones</h3><ul>
+      <li><b>6.1</b>Coherencia con los objetivos<em>11</em></li><li><b>6.2</b>Aportes<em>12</em></li></ul></article>
+    <article class="card ea wide rv z" data-s="1"><h3><i>7</i>Metodología y socialización</h3>
+      <p>Se evalúa en la forma de presentar, no en el contenido: presentación personal, dominio de grupo, diapositivas claras y con poco texto, manejo verbal y corporal. Se prepara con el ensayo y los turnos por bloque.</p></article>
+  </div>
+  <template class="notes" data-key="Dónde está cada criterio de la rúbrica de evaluación." data-when="dónde se cubre un criterio concreto o cuánto pesa.">
+    <p data-s="0">Los números de la derecha son las escenas de la presentación. Los aspectos 1 a 6 se evalúan por contenido y están en ese orden; la letra D es el respaldo de seguridad y calidad.</p>
+    <p data-s="1">El aspecto 7, metodología y socialización, se evalúa en la forma de presentar: no tiene una escena propia.</p>
+    <p class="tip">Valores de la rúbrica (no se muestran en pantalla): 1.1 (1,0), 1.2 (1,5), 1.3 (1,0), 1.4 (1,5); 2.1 (5,0); 3.1 (5,0); 4.1 (1,0), 4.2 (1,0), 4.3 (1,0), 4.4 (2,0); 5.1 (2,5), 5.2 (2,5); 6.1 (3,0), 6.2 (2,0); 7.1 (1,0), 7.2 (1,0), 7.3 (1,0), 7.4 (2,0). Cada aspecto vale 5,0 en una escala de 0,5 a 5,0.</p>
+  </template>
+</section>
+
+<!-- ═════════ RESPALDO F · OFFLINE-FIRST (EN DESARROLLO) ═════════ -->
+<section class="scene" id="s-resp-f" data-group="backup" data-title="Respaldo F · Offline-first (en desarrollo)" data-steps="1">
+  <header class="hd rv f" data-s="0"><div class="eyebrow">Respaldo · F</div><h2 class="h2 sm">Offline-first: trabajo en curso</h2></header>
+  <p class="f-ban rv f" data-s="0" data-i="1"><svg class="i"><use href="#i-alert"/></svg>Está en una rama aparte, sin integrar ni publicar. No forma parte de la versión que se presenta.</p>
+  <div class="f-cols">
+    <article class="card fc rv z" data-s="0" data-i="2">
+      <h3><span class="ico"><svg class="i"><use href="#i-check-circle"/></svg></span>Hecho en esa rama</h3>
+      <ul>
+        <li><svg class="i"><use href="#i-check"/></svg>Abrir la app sin cuenta, con datos locales</li>
+        <li><svg class="i"><use href="#i-check"/></svg>Bloqueo opcional con PIN de 6 dígitos y biometría</li>
+        <li><svg class="i"><use href="#i-check"/></svg>Copia de seguridad cifrada (Argon2id y AES-256-GCM): exportar e importar</li>
+        <li><svg class="i"><use href="#i-check"/></svg>Mensajes de «IA no disponible» y punto de enganche para derechos de uso</li>
+      </ul>
+      <p class="fn">Según el registro del 20-oct-2026: 1.062 pruebas aprobadas (más 1 fallo antiguo de pruebas de imagen), 88,2&thinsp;% de cobertura y compilación de la APK de depuración. Volver a verificar antes de presentarlo.</p>
+    </article>
+    <article class="card fc warn rv z" data-s="1">
+      <h3><span class="ico warn"><svg class="i"><use href="#i-alert"/></svg></span>No verificado</h3>
+      <ul>
+        <li><svg class="i"><use href="#i-x"/></svg>Nunca se ejecutó en un teléfono en modo local</li>
+        <li><svg class="i"><use href="#i-x"/></svg>El aviso biométrico y Windows Hello no se probaron en ejecución</li>
+        <li><svg class="i"><use href="#i-x"/></svg>La compilación de Windows no se repitió tras añadir la copia de seguridad</li>
+        <li><svg class="i"><use href="#i-x"/></svg>Una copia real entre dispositivos no se ha probado a mano</li>
+        <li><svg class="i"><use href="#i-x"/></svg>La privacidad en «apps recientes» de Android no está hecha</li>
+      </ul>
+    </article>
+  </div>
+  <template class="notes" data-key="Offline-first es trabajo en curso en una rama aparte; decir qué está hecho y qué no se ha verificado." data-when="funcionamiento sin conexión, privacidad de los datos locales o escalabilidad.">
+    <p data-s="0">Este trabajo está en una rama aparte, sin integrar ni publicar. Hecho: abrir la app sin cuenta con datos locales, bloqueo opcional con PIN y biometría, copia de seguridad cifrada para exportar e importar, y los mensajes de IA no disponible con un punto de enganche para derechos de uso.</p>
+    <p data-s="1">Lo que no está verificado: nunca se ejecutó en un teléfono en modo local, no se probaron el aviso biométrico ni Windows Hello en ejecución, no se repitió la compilación de Windows tras la copia de seguridad, no se probó una copia real entre dispositivos y falta la privacidad de apps recientes en Android.</p>
+    <p class="tip">Datos tomados del registro de decisiones y de las notas del 20-oct-2026 (rama feat/offline-first). Verificar de nuevo el estado de la rama antes de presentarlo. No presentarlo como terminado.</p>
+  </template>
+</section>
+
+
+<!--@@MORE@@-->
+
+<!-- ═════════ NOTAS DE ESTUDIO (tecla N) ═════════ -->
+<aside class="notes-modal" id="notes" role="dialog" aria-label="Notas de estudio" aria-hidden="true">
+  <header>
+    <span class="nt-k">Notas de estudio</span>
+    <b id="nt-title"></b>
+    <span class="nt-time" id="nt-time"></span>
+    <span class="nt-step" id="nt-step"></span>
+    <button type="button" id="nt-close" aria-label="Cerrar notas (N)">×</button>
+  </header>
+  <div class="nt-body" id="nt-body"></div>
+</aside>
+
+<!-- ═════════ HUD ═════════ -->
+<a class="qr" id="qr" href="https://drive.google.com/file/d/1z__jJblXcb8MC2PZvE1tJzy3Kkh2GFgs/view?usp=drivesdk" target="_blank" rel="noopener noreferrer" aria-label="Descargar Finance AI">
+  <img src="assets/app-download-qr.jpg" alt="Código QR para descargar Finance AI"><span>Descarga la app</span>
+</a>
+
+<div class="hud">
+  <span class="brand"><b>Finance AI</b> · Universidad de Cundinamarca</span>
+  <button class="back" id="back" type="button">← Volver a la presentación <kbd>Esc</kbd></button>
+  <span class="asp" id="asp"></span>
+  <nav class="progress" id="progress" aria-label="Aspectos de evaluación"></nav>
+  <nav class="progress b" id="progress-b" aria-label="Respaldo técnico"></nav>
+  <span class="ctl">
+    <span class="mode" id="mode">auto</span>
+    <button class="play" id="play" type="button" aria-label="Recorrido automático (Mayús+P)" title="Recorrido automático (Mayús+P)"><svg class="i"><use id="play-use" href="#i-play"/></svg></button>
+    <span class="count" id="count">01 / 13</span>
+  </span>
+</div>
+<div class="hint" id="hint">→ avanzar · A–F respaldo · N notas · V movimiento · Mayús+F pantalla completa</div>
+
+</main>
+</div>
+
+<div class="sr" id="live" aria-live="polite"></div>
+<script src="deck.js?v=20261105e"></script>
+<script src="scenes.js?v=20261105e"></script>
+</body></html>
+

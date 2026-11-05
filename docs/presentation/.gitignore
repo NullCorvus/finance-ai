@@ -1,0 +1,5 @@
+# Slidev: dependencias y salidas de compilación
+node_modules/
+dist/
+.slidev/
+*.log
