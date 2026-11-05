@@ -45,7 +45,8 @@
     // principal: ms que se queda en cada paso antes del siguiente (~45 % de lo que tarda en decirse el guion de las notas; ver «Pausa» en cada nota)
     's-problema': { 0: 11500, 1: 10000 },
     's-justif': { 0: 5500, 1: 5000, 2: 4500 },
-    's-objetivo': { 0: 6500, 1: 4000, 2: 5500, 3: 7500, 4: 5500 },
+    // objetivo general (pasos 0-2: qué, cómo, para qué) = -1: manual, avanza con → ; los específicos (3-4) siguen solos
+    's-objetivo': { 0: -1, 1: -1, 2: -1, 3: 7500, 4: 5500 },
     's-captura': { 0: 7000, 1: 10000 },
     's-analisis': { 0: 9000, 1: 5500 },
     's-marco': { 0: 16000, 1: 9500, 2: 5000 },
@@ -285,7 +286,11 @@
     const sc = scenes[cur];
     if (sc.hasAttribute('data-manual') && !tour) return; // escena manual: un paso por pulsación
     if (step < sc._max) {
-      const ms = (DWELL[sc.id] && DWELL[sc.id][step]) || DWELL_DEFAULT;
+      let ms = (DWELL[sc.id] && DWELL[sc.id][step]) || DWELL_DEFAULT;
+      if (ms < 0) { // paso manual (valor -1): espera la tecla; en el recorrido sin manos usa una pausa fija
+        if (!tour) return;
+        ms = 7000;
+      }
       timer = setTimeout(() => { timer = null; setStep(step + 1); }, ms);
     } else if (tour) {
       if (cur < bounds()[1]) timer = setTimeout(() => { timer = null; go(cur + 1, 0); }, HOLD[sc.id] !== undefined ? HOLD[sc.id] : HOLD_DEFAULT);
