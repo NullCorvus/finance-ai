@@ -63,11 +63,11 @@ Los tiempos salen de contar las palabras de cada guion a unas 119 por minuto (el
 
 **Criterios:** 1.3 Justificación (1,0). **Presenta:** [[ ]]
 
-**En pantalla:** cuatro tarjetas: «IA accesible» · «Para quién» · «La persona decide» · «Viable como prototipo».
+**En pantalla:** cuatro tarjetas: «IA accesible» · «Para quién» · «La persona decide» · «Viable con bajo costo».
 
 **Guion oral**
 
-> El proyecto se justifica por cuatro razones. La inteligencia artificial para interpretar gastos ya es accesible, lo que permite reducir el esfuerzo de registrar. Sirve a cualquier persona que quiera controlar sus gastos desde el celular: es una aplicación Android, con publicación prevista en Google Play. La persona conserva el control: la inteligencia artificial solo propone, y ella confirma, edita o descarta antes de guardar. Y es viable como prototipo académico, con herramientas de bajo costo.
+> El proyecto se justifica por cuatro razones. La inteligencia artificial para interpretar gastos ya es accesible, lo que permite reducir el esfuerzo de registrar. Sirve a cualquier persona que quiera controlar sus gastos desde el celular: es una aplicación Android, con publicación prevista en Google Play. La persona conserva el control: la inteligencia artificial solo propone, y ella confirma, edita o descarta antes de guardar. Y es viable con bajo costo: herramientas gratuitas o de bajo costo y servicios con nivel gratuito o cuota de prueba, sujetos a las condiciones de los proveedores.
 
 **Apoyo:** justificación aprobada (v4, 2026-08-15). La viabilidad de la propuesta dice «servicios con niveles gratuitos o cuotas de prueba, sujetos a las condiciones vigentes de los proveedores»; si preguntan por costos, existe `docs/receipt-ai-cost-measurement-2026-10-26.md`.
 

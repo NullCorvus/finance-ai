@@ -5098,3 +5098,25 @@ If you want, I can point out the exact change needed in `.github/workflows/relea
 **Context**: Decisión del usuario, tras la advertencia. Republicación del sitio y verificación en vivo en este mismo turno; sin commit hasta que lo pida.
 
 ---
+
+## Presentación Fusagasugá — objetivo general manual, objetivos específicos automáticos
+**Timestamp**: 2026-11-05T21:10:00Z
+**User Input**: "this one's strange.... [first screenshot) \nabout slides and the animations for the objectives , id like that the general objective do not run automatically, it's better manually in that way my teammate can pass the animation when im repeating the specific part, however it should be automatic in the part of the specific objectives, could you do that for me?"
+**AI Response**: "En la escena 4 los tres pasos de lectura del objetivo general (qué, cómo, para qué) pasan a manuales: en deck.js el valor -1 de la tabla DWELL significa «espera la tecla» (en el recorrido sin manos usa 7 s); los pasos de los objetivos específicos siguen automáticos (7,5 s y 5,5 s). La nota de la escena lo indica. Versión de archivos 20261105j. La tarjeta «Viable como prototipo académico» de la escena 3 se renderiza igual que en la captura; se preguntó qué se ve raro."
+**Context**: Probado en Chrome en local: sin tocar nada, 15 s después sigue en «qué»; cada → avanza una parte; tras el tercero, los específicos aparecen solos (2 a 4 y luego 5 objetivos iluminados). Sin errores de consola. Se publica; sin commit hasta que lo pida.
+
+---
+## Presentación Fusagasugá — tarjeta «Viable con bajo costo» (escena 3)
+**Timestamp**: 2026-11-05T21:30:00Z
+**User Input**: "The wording" (respuesta a qué se ve raro en la tarjeta «Viable como prototipo académico»)
+**AI Response**: "«Prototipo académico» ya no encaja con el plan de publicar en Google Play, así que la tarjeta pasa a «Viable con bajo costo» (título de dos líneas) y el guion de las notas dice «herramientas gratuitas o de bajo costo y servicios con nivel gratuito o cuota de prueba, sujetos a las condiciones de los proveedores», fiel a la propuesta aprobada. Se actualizan también la clave de la nota y contenido.md. Versión de archivos 20261105k."
+**Context**: Verificado en Chrome en local (la tarjeta se ve en dos líneas, sin desbordes). No se afirma que publicar en Google Play sea gratuito. Se regeneran los PDF y se publica; sin commit hasta que lo pida.
+
+---
+## Presentación Fusagasugá — «Evalúan» solo con palabras de la plantilla y recorte de texto en pantalla
+**Timestamp**: 2026-11-05T22:10:00Z
+**User Input**: "great, in the points when you thiknn there are too many text you can delete it just a bit, can you expaminate and change that a bit pls for now, and then publish and merge"
+**AI Response**: "Los bloques «Evalúan» de las notas (portada, escenas 2, 3, 4, 11, 12 y 13) se reescriben solo con el texto de la plantilla: criterios, valores y las pistas oficiales entre corchetes (p. ej. 1.2 «problema, a quién afecta y pregunta guía», 6.2 «qué deja el proyecto a la comunidad, la disciplina o la organización»); se quitan mis paráfrasis y la frase «el criterio más pesado de tu parte». Se recorta un poco el texto en pantalla de las escenas más cargadas (8, 9, 10 y 11) sin cambiar ninguna afirmación: por ejemplo «Al corregir un movimiento, todo se recalcula en una sola transacción» y «Cada cifra, con su fecha de verificación». Versión de archivos 20261105l."
+**Context**: Conteo de palabras por escena (10 tenía 171, 8 tenía 129, 9 tenía 123). Verificado en Chrome en local: sin hallazgos nuevos de desborde y sin errores de consola. Se regeneran los PDF, se publica el sitio y se hace commit y merge a master por petición del usuario.
+
+---
