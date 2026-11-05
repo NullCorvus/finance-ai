@@ -4874,3 +4874,10 @@ about the colors, they are great because they keep the colors of the original pr
 **Context**: Verificado en local a 1280 x 720: 19 escenas sin hallazgos nuevos, errores de consola ninguno, notas con los nuevos bloques. Se supuso: Google Play como plan (no iniciado). Pendiente: formato de estudio (PDF de bolsillo) sin confirmar; la portada dice «Sede Facatativá».
 
 ---
+## Presentación Fusagasugá — las notas de estudio se publican en el enlace
+**Timestamp**: 2026-11-05T20:45:00Z
+**User Input**: "it doesnt make sense, just put them on it"
+**AI Response**: "Se deja de quitar las notas de estudio al publicar: publish-public.ps1 ya no elimina los <template class=\"notes\"> ni aplica la guarda de texto interno, salvo con el parámetro -StripNotes. El enlace público muestra ahora las notas con la tecla N, incluidos los avisos «Ojo» y el bloque «Evalúan». Se advirtió antes que esos avisos son internos y que el jurado tiene el enlace."
+**Context**: Decisión del usuario, tras la advertencia. Republicación del sitio y verificación en vivo en este mismo turno; sin commit hasta que lo pida.
+
+---

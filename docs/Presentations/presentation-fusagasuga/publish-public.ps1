@@ -1,12 +1,13 @@
 # Republica la presentación en https://maicol2363.github.io/finance-ai-fusagasuga/
 # Uso (desde esta carpeta):  powershell -File publish-public.ps1 [-Message "texto del commit"]
 #
-# Copia interactive/ y los dos PDF a una carpeta temporal, QUITA las notas de estudio
-# (<template class="notes">, que contienen avisos internos), clona el repositorio público
+# Copia interactive/ y los dos PDF a una carpeta temporal, clona el repositorio público
 # Maicol2363/finance-ai-fusagasuga, reemplaza su contenido y sube el cambio.
+# Desde el 2026-11-05 las notas de estudio (tecla N) SE PUBLICAN, por decisión del equipo.
+# Con -StripNotes se quitan las notas (<template class="notes">, que contienen avisos internos).
 # Si cambió algo visible, regenere antes los PDF con:  node export-pdf.mjs
 # Requiere `gh` con sesión iniciada. GitHub Pages tarda 1-2 minutos en reflejar el cambio.
-param([string]$Message = "Update the interactive Finance AI presentation")
+param([string]$Message = "Update the interactive Finance AI presentation", [switch]$StripNotes)
 
 $ErrorActionPreference = 'Stop'
 $here = Split-Path -Parent $MyInvocation.MyCommand.Path
@@ -23,8 +24,10 @@ try {
 
   $index = Join-Path $repo 'index.html'
   $html = [IO.File]::ReadAllText($index)
-  $html = [regex]::Replace($html, '(?s)\s*<template class="notes".*?</template>', '')
-  if ($html -cmatch 'PENDIENTE|NO decir|NO afirmar|TODO') { throw 'Quedó texto interno en index.html; no se publica.' }
+  if ($StripNotes) {
+    $html = [regex]::Replace($html, '(?s)\s*<template class="notes".*?</template>', '')
+    if ($html -cmatch 'PENDIENTE|NO decir|NO afirmar|TODO') { throw 'Quedó texto interno en index.html; no se publica.' }
+  }
   [IO.File]::WriteAllText($index, $html, (New-Object Text.UTF8Encoding($false)))
 
   New-Item -ItemType File -Path (Join-Path $repo '.nojekyll') -Force | Out-Null
