@@ -5091,3 +5091,10 @@ If you want, I can point out the exact change needed in `.github/workflows/relea
 **Context**: Correcting the prior push to the wrong branch. Current `master` includes newer PGC presentation work; the transfer excludes deletions of current presentation assets.
 
 ---
+## Presentación Fusagasugá — las notas de estudio se publican en el enlace
+**Timestamp**: 2026-11-05T20:45:00Z
+**User Input**: "it doesnt make sense, just put them on it"
+**AI Response**: "Se deja de quitar las notas de estudio al publicar: publish-public.ps1 ya no elimina los <template class=\"notes\"> ni aplica la guarda de texto interno, salvo con el parámetro -StripNotes. El enlace público muestra ahora las notas con la tecla N, incluidos los avisos «Ojo» y el bloque «Evalúan». Se advirtió antes que esos avisos son internos y que el jurado tiene el enlace."
+**Context**: Decisión del usuario, tras la advertencia. Republicación del sitio y verificación en vivo en este mismo turno; sin commit hasta que lo pida.
+
+---
