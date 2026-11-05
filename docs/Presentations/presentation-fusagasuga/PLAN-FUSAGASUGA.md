@@ -40,7 +40,7 @@ Ya tenemos casi todo para los aspectos 1, 2, 4 y la parte técnica de la segurid
 
 ## 3. Mapa de escenas propuesto
 
-Un solo «motor» interactivo, español, 13 escenas principales para **15 minutos** (900 s), con el tiempo repartido aproximadamente por peso en la rúbrica: cada aspecto vale lo mismo, así que los aspectos nuevos (3 y 5) reciben casi dos minutos cada uno. El guion de [contenido.md](contenido.md) tiene 1 608 palabras: unos 13:30 hablados a 119 palabras por minuto (el ritmo del PGC), y los 1:30 restantes quedan para animaciones. La demostración de la app y las preguntas quedan fuera de los 15 minutos. Si el tiempo se acorta hay versión compacta: fusionar Justificación con Problema, Aportes con Conclusiones y las dos escenas de producto en una.
+Un solo «motor» interactivo, español, 13 escenas principales para **15 minutos** (900 s), con el tiempo repartido aproximadamente por peso en la rúbrica: cada aspecto vale lo mismo, así que los aspectos nuevos (3 y 5) reciben casi dos minutos cada uno. El guion de [contenido.md](contenido.md) tiene 1 627 palabras: unos 13:40 hablados a 119 palabras por minuto (el ritmo del PGC), y los 1:20 restantes quedan para animaciones. La demostración de la app y las preguntas quedan fuera de los 15 minutos. Si el tiempo se acorta hay versión compacta: fusionar Justificación con Problema, Aportes con Conclusiones y las dos escenas de producto en una.
 
 | # | Escena | Criterios | Origen | Tiempo | Acum. |
 |---|---|---|---|---:|---:|
@@ -55,8 +55,8 @@ Un solo «motor» interactivo, español, 13 escenas principales para **15 minuto
 | 9 | Seguridad y acceso | 4.4 | PGC respaldo D, ampliada | 1:20 | 10:30 |
 | 10 | Gestión del conocimiento: información precisa y cómo se actualiza | 5.1, 5.2 | **Nueva** | 1:50 | 12:20 |
 | 11 | Conclusiones: una por objetivo | 6.1 | Reescribir PGC (esc. 9) | 1:15 | 13:35 |
-| 12 | Aportes | 6.2 | **Nueva** | 0:45 | 14:20 |
-| 13 | Cierre y paso a la app real | — | Reusar PGC (esc. 10) | 0:40 | 15:00 |
+| 12 | Aportes | 6.2 | **Nueva** | 0:55 | 14:30 |
+| 13 | Cierre y paso a la app real | — | Reusar PGC (esc. 10) | 0:30 | 15:00 |
 
 Con 15 minutos y tres integrantes, el reparto natural es por aspectos (por ejemplo, escenas 1-4, 5-9 y 10-13); queda por decidir quién presenta cada bloque y se mostrará como una etiqueta discreta por escena (criterio 7.2).
 

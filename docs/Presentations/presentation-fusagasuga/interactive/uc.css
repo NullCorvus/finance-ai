@@ -26,8 +26,8 @@ body[data-theme="uc"] {
 }
 
 /* las tarjetas blancas devuelven los tokens oscuros a su contenido */
-body[data-theme="uc"] .card,
-body[data-theme="uc"] .pcard {
+body:not([data-theme="light"]) .card,
+body:not([data-theme="light"]) .pcard {
   --ink: #1b2430;
   --ink2: #3a4656;
   --muted: #6b7482;
@@ -43,19 +43,19 @@ body[data-theme="uc"] .pcard {
   box-shadow: 0 2px 4px rgba(0, 20, 10, .12), 0 18px 40px rgba(0, 20, 10, .28);
 }
 
-body[data-theme="uc"] .ambient i:nth-child(1) { background: radial-gradient(circle, rgba(218, 170, 0, .22), rgba(218, 170, 0, 0) 66%); }
-body[data-theme="uc"] .ambient i:nth-child(2) { background: radial-gradient(circle, rgba(143, 180, 44, .2), rgba(143, 180, 44, 0) 66%); }
-body[data-theme="uc"] .ambient i:nth-child(3) { background: radial-gradient(circle, rgba(139, 125, 255, .12), rgba(139, 125, 255, 0) 66%); }
+body:not([data-theme="light"]) .ambient i:nth-child(1) { background: radial-gradient(circle, rgba(218, 170, 0, .22), rgba(218, 170, 0, 0) 66%); }
+body:not([data-theme="light"]) .ambient i:nth-child(2) { background: radial-gradient(circle, rgba(143, 180, 44, .2), rgba(143, 180, 44, 0) 66%); }
+body:not([data-theme="light"]) .ambient i:nth-child(3) { background: radial-gradient(circle, rgba(139, 125, 255, .12), rgba(139, 125, 255, 0) 66%); }
 
 /* ───────── encabezado común ───────── */
-body[data-theme="uc"] .eyebrow { color: var(--gold); font-size: 13.5px; }
-body[data-theme="uc"] .h2 {
+body:not([data-theme="light"]) .eyebrow { color: var(--gold); font-size: 13.5px; }
+body:not([data-theme="light"]) .h2 {
   font-family: Georgia, 'Times New Roman', serif;
   font-weight: 700; font-size: 46px; letter-spacing: -.012em; line-height: 1.06;
   color: var(--gold);
 }
-body[data-theme="uc"] .lbl { color: var(--muted); }
-body[data-theme="uc"] .card .lbl { color: var(--muted); }
+body:not([data-theme="light"]) .lbl { color: var(--muted); }
+body:not([data-theme="light"]) .card .lbl { color: var(--muted); }
 .hd { top: 42px; }
 
 /* criterios de la rúbrica: aparecen cuando se habla de ellos */
@@ -91,13 +91,13 @@ body[data-theme="uc"] .card .lbl { color: var(--muted); }
 body[data-theme="light"] .land { opacity: 0; }
 
 /* ───────── HUD ───────── */
-body[data-theme="uc"] .hud { color: #d6ebdc; }
-body[data-theme="uc"] .hud .brand b { color: var(--gold); }
-body[data-theme="uc"] .mode { color: #d6ebdc; }
-body[data-theme="uc"] .play { background: rgba(0, 51, 30, .6); border-color: rgba(255, 255, 255, .35); color: #e8f3ea; }
-body[data-theme="uc"] .play:hover { border-color: var(--gold); color: var(--gold); }
-body[data-theme="uc"] .play.on { background: var(--gold); border-color: var(--gold); color: #1d2a12; }
-body[data-theme="uc"] .mode.manual { color: var(--gold-l); }
+body:not([data-theme="light"]) .hud { color: #d6ebdc; }
+body:not([data-theme="light"]) .hud .brand b { color: var(--gold); }
+body:not([data-theme="light"]) .mode { color: #d6ebdc; }
+body:not([data-theme="light"]) .play { background: rgba(0, 51, 30, .6); border-color: rgba(255, 255, 255, .35); color: #e8f3ea; }
+body:not([data-theme="light"]) .play:hover { border-color: var(--gold); color: var(--gold); }
+body:not([data-theme="light"]) .play.on { background: var(--gold); border-color: var(--gold); color: #1d2a12; }
+body:not([data-theme="light"]) .mode.manual { color: var(--gold-l); }
 
 /* barra de rúbrica: siete aspectos */
 #progress { gap: 8px; }
@@ -116,7 +116,63 @@ body[data-theme="light"] #progress button span { color: var(--muted); }
 
 .hint { background: rgba(0, 30, 17, .9); }
 body[data-scene="s-demo"] .qr { opacity: 0; transform: translateY(-8px); pointer-events: none; }
-body[data-theme="uc"] .qr { box-shadow: 0 8px 22px rgba(0, 20, 10, .35); }
+body:not([data-theme="light"]) .qr { box-shadow: 0 8px 22px rgba(0, 20, 10, .35); }
 
 /* movimiento reducido: también el paisaje */
 html[data-motion="off"] .land .h1, html[data-motion="off"] .land .h2, html[data-motion="off"] .land .sheep, html[data-motion="off"] .land .sheep svg { animation: none !important; }
+
+/* ============================================================
+   Cambios de ritmo intencionales (data-theme en la escena)
+   · light (escena 7, marco teórico): el blanco del PGC, frío y suave, con
+     los acentos verde oliva y violeta de Finance AI
+   · night (escena 9, seguridad): negro con dorado y tarjetas blancas
+   · dark  (escena 13, cierre): el negro azulado del PGC con verde oliva
+   El resto de la presentación sigue en el verde institucional.
+   ============================================================ */
+body[data-theme="light"] { --gold: #d9a400; --gold-l: #b88a00; --cream: #1b2430; }
+body[data-theme="night"] {
+  --bg: #050807;
+  --ink: #f5f2ea; --ink2: #d8d4c8; --muted: #a9cdb8;
+  --line: rgba(255, 255, 255, .14); --line2: rgba(255, 255, 255, .26);
+  --card: #ffffff; --soft: rgba(255, 255, 255, .08);
+  --green: #8fb42c; --green-s: rgba(143, 180, 44, .2); --amb: 1;
+  --gold: #daaa00; --gold-l: #f0c93a; --cream: #f5f2ea; --uc-deep: #00331e;
+}
+/* dark: los tokens del PGC (deck.css) y el dorado de la plantilla pasa a verde oliva */
+body[data-theme="dark"] { --gold: #8fb42c; --gold-l: #b7d45c; --cream: #eef1f5; --uc-deep: #0e1217; }
+
+/* ----- light (escena 7): chips y barra legibles sobre blanco ----- */
+body[data-theme="light"] .cr { background: var(--green-s); color: var(--green-d); border-color: var(--green); }
+body[data-theme="light"] .cr.on { animation: none; }
+body[data-theme="light"] #progress button::before { background: rgba(27, 36, 48, .14); }
+body[data-theme="light"] .asp { color: var(--muted); }
+body[data-theme="light"] .sn .nm, body[data-theme="light"] .sx-c b, body[data-theme="light"] .mk-n b { font-family: inherit; font-weight: 800; letter-spacing: -.02em; color: var(--ink); }
+body[data-theme="light"] .sn small { color: var(--green-d); }
+body[data-theme="light"] .ar { background: rgba(27, 36, 48, .22); }
+body[data-theme="light"] .ar1::after { border-left-color: rgba(27, 36, 48, .4); }
+body[data-theme="light"] .ar2::after { border-top-color: rgba(27, 36, 48, .4); }
+body[data-theme="light"] .ar3::after { border-right-color: rgba(27, 36, 48, .4); }
+body[data-theme="light"] .ar4::after { border-bottom-color: rgba(27, 36, 48, .4); }
+
+/* ----- night (escena 9) ----- */
+body::after { content: ""; position: fixed; inset: 0; z-index: 0; opacity: 0; pointer-events: none; transition: opacity 1s var(--ease);
+  background: radial-gradient(circle at 30% 45%, rgba(218, 170, 0, .16), transparent 46%), radial-gradient(rgba(255, 255, 255, .06) 1px, transparent 1.4px) 0 0 / 28px 28px; }
+body[data-theme="night"]::after { opacity: 1; }
+body[data-theme="night"] .h2 { color: var(--gold-l); }
+body[data-theme="night"] .card { box-shadow: 0 0 0 1px rgba(218, 170, 0, .35), 0 18px 44px rgba(0, 0, 0, .6); }
+body[data-theme="night"] .sh.on { filter: drop-shadow(0 0 10px rgba(240, 201, 58, .55)); }
+body[data-theme="night"] .land { opacity: .55; }
+body[data-theme="night"] .ambient i:nth-child(1) { background: radial-gradient(circle, rgba(218, 170, 0, .26), transparent 66%); }
+.sh-glow { z-index: -1; position: absolute; left: 15px; top: 20px; width: 260px; height: 260px; border-radius: 50%; background: radial-gradient(circle, rgba(240, 201, 58, .34), transparent 64%); }
+
+/* ----- dark (escena 13): como el cierre del PGC ----- */
+body[data-theme="dark"] .ambient i:nth-child(1) { background: radial-gradient(circle, rgba(143, 180, 44, .26), rgba(143, 180, 44, 0) 66%); }
+body[data-theme="dark"] .ambient i:nth-child(2) { background: radial-gradient(circle, rgba(37, 99, 235, .14), rgba(37, 99, 235, 0) 66%); }
+body[data-theme="dark"] .ambient i:nth-child(3) { background: radial-gradient(circle, rgba(91, 75, 219, .12), rgba(91, 75, 219, 0) 66%); }
+body[data-theme="dark"] .land { opacity: .4; }
+body[data-theme="dark"] .dm-t { font-family: 'Segoe UI Variable Display', 'Segoe UI', system-ui, sans-serif; font-size: 66px; font-weight: 800; letter-spacing: -.035em; }
+body[data-theme="dark"] .dm-t span { color: #8fb42c; }
+body[data-theme="dark"] .st { background: rgba(255, 255, 255, .04); border-color: rgba(255, 255, 255, .13); animation-name: sthldark; }
+body[data-theme="dark"] .st b { font-family: inherit; font-weight: 800; letter-spacing: -.015em; }
+body[data-theme="dark"] .play.on { color: #0e1217; }
+

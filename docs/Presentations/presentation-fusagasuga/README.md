@@ -51,15 +51,27 @@ La barra inferior son los **siete aspectos** de la rúbrica; cada segmento se ll
 | 9 | Seguridad y acceso | 4 | 1:20 |
 | 10 | Gestión del conocimiento | 5 | 1:50 |
 | 11 | Conclusiones | 6 | 1:15 |
-| 12 | Aportes | 6 | 0:45 |
-| 13 | Probemos con la app real | 7 | 0:40 |
+| 12 | Aportes | 6 | 0:55 |
+| 13 | Probemos con la app real | 7 | 0:30 |
 | A–D | Modelo de datos · IA · Recibos y voz · Seguridad y calidad (del PGC, con la frase de aislamiento corregida) | | |
 | E | Dónde se cubre cada criterio | | |
 | F | Offline-first (en desarrollo, con lo no verificado a la vista) | | |
 
+## Cambios de ritmo visual
+
+Tres escenas rompen el verde a propósito (atributo `data-theme` en la escena; los colores están en `uc.css`):
+
+| Escena | Tema | Por qué |
+|---|---|---|
+| 7 · Marco teórico | `light`: el blanco suave del PGC con verde oliva y violeta | La teoría se lee como una página limpia |
+| 9 · Seguridad y acceso | `night`: negro con dorado y tarjetas blancas | Una bóveda; el criterio de más peso |
+| 13 · Cierre | `dark`: el negro azulado del PGC con verde oliva | El mismo cierre oscuro de la presentación anterior, antes de la demostración |
+
+Si se añade una escena nueva y no se pone `data-theme`, usa el verde institucional. Si se cambia el CSS, hay que subir el `?v=` de los `<link>` en `index.html` para que los navegadores no sirvan la copia vieja.
+
 ## Lo que falta completar a mano (en `interactive/index.html`)
 
-- **Portada:** número de grupo y fecha (clases `ph`, con borde punteado). Confirmar que los integrantes son los mismos tres de la propuesta.
+- **Portada:** número de grupo (clase `ph`, con borde punteado). La fecha ya está: 6 de noviembre de 2026. Confirmar que los integrantes son los mismos tres de la propuesta.
 - **Quién presenta cada bloque** (criterio 7.2): todavía no hay etiqueta de presentador en las escenas.
 - **Referencias de teoría:** el modelo SECI, CDIO y Scrum aparecen sin autores en pantalla porque falta confirmarlos con el docente (ver `contenido.md`, sección 7). Los tres autores citados (Curry, Singh, Banca de las Oportunidades) ya están verificados.
 - **Antes de presentar:** confirmar la configuración viva de Cloud Run, Neon y el orden de los proveedores de IA (escena 8); recontar las entradas de bitácora (escena 10); revisar el estado de la rama offline-first (respaldo F).

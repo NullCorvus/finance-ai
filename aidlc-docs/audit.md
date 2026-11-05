@@ -4801,3 +4801,39 @@ the last presentaiton was a sucess and all the animations and dinamic stuff, idl
 **Context**: Verificado en el navegador del escritorio a 1280 x 720: las 19 escenas se ven bien, sin errores de consola, sin textos fuera de zona según una auditoría automática; pasos automáticos de la escena 3 en 9 s y 21 s; teclas N, C, E, Esc; apertura desde file:// con Chrome sin errores. No verificado: ensayo completo con cronómetro y los tres integrantes, recorrido automático completo, aspecto de la plantilla original (no se pudo renderizar; el fondo verde sale de su XML). Pendiente del usuario: número de grupo y fecha en la portada, quién presenta cada bloque, confirmación de las referencias SECI, CDIO y Scrum (sin autores en pantalla). Sin commit ni push.
 
 ---
+
+## Presentación Fusagasugá — publicación en GitHub Pages
+**Timestamp**: 2026-11-05T01:00:00Z
+**User Input**: "Yes, publish"
+**AI Response**: "Creado el repositorio público Maicol2363/finance-ai-fusagasuga con una copia de la presentación sin las notas de estudio (se verificó que no quedan «PENDIENTE», «TODO» ni «NO decir») y los dos PDF; activado GitHub Pages desde main. Enlace: https://maicol2363.github.io/finance-ai-fusagasuga/. Añadido publish-public.ps1 para republicar tras cambiar la portada."
+**Context**: Acción externa autorizada por el usuario (repositorio público, accesible con el enlace). Publicada con los marcadores de portada (grupo y fecha) porque el usuario no los dio. Verificado en el sitio en vivo con Chrome: portada, escena 9, respaldo E con la tecla E, siete aspectos, la tecla N muestra «Sin notas», los dos PDF responden 200, sin errores. Sin commit del repositorio finance-ai (publish-public.ps1 y este registro quedan sin confirmar).
+
+---
+
+## Presentación Fusagasugá — aportes: de «la universidad» a «la sociedad»
+**Timestamp**: 2026-11-05T12:00:00Z
+**User Input**: "can yo uchange this pls: 
+Aportes
+    - A la universidad <-- this is not true directly (we didn't that kind of project), but it's great that we keep in mind the thoughts of the university.. why?  because they are like SUPER uni-centered, or uCUndinamarca-centered so they love that kind of stuff and what do this apport to society, really they DO love it: what's this doing for anyone?"
+**AI Response**: "El tercer aporte de la escena 12 pasa de «A la universidad» (que afirmaba un proyecto que no se hizo) a «A la sociedad»: apunta a que más personas lleven el control de su dinero y decidan con información, en un país donde el 66,6 % de las operaciones monetarias ya es digital (Banca de las Oportunidades, 2024), y el piloto previsto con estudiantes de la Universidad de Cundinamarca dirá si de verdad ayuda. Se mantiene la mirada de la universidad sin atribuirle un trabajo que no existe. El segundo aporte ahora dice «aplicado, probado y documentado». Actualizados index.html (tarjeta, notas, icono de corazón), el ritmo en deck.js, contenido.md, plan y README; tiempos reequilibrados (escena 12: 0:55, escena 13: 0:30; guion de 1 627 palabras). PDF regenerados y página pública republicada."
+**Context**: Es una apuesta, no un resultado: las notas piden decir «apunta» y «dirá si de verdad ayuda» y no afirmar que ya formó hábitos ni que ya llegó a estudiantes. Verificado en el navegador (la tarjeta cabe) y en el sitio en vivo (sin «A la universidad», sin notas, PDF 200). Sin commit.
+
+---
+
+## Presentación Fusagasugá — fecha de la sustentación y cambios de ritmo visual
+**Timestamp**: 2026-11-05T14:00:00Z
+**User Input**: "date of the presentation : Tomorrow 6 of november
+
+about the colors, they are great because they keep the colors of the original presentatin but OMG if they are boring and at some point im fucking tired, you can make big changes in the middle , remember the last prestnation when the final slide was black? well something like that can be funny here.. hahahah fucking tired with that dark green haha you can put a high contrast slide white or dark somewhere, but something that is exceptional something that feels intentional and the other ones keepikn gwith the colors, coul dyou? maybe one darker or two white and dark, you decide"
+**AI Response**: "Portada con la fecha 6 de noviembre de 2026 (quedó el número de grupo como marcador). Tres escenas rompen el verde a propósito mediante data-theme: escena 7 (marco teórico) en papel casi blanco, escena 9 (seguridad y acceso) en negro con dorado y tarjetas blancas con un halo que respira detrás del escudo, y escena 13 (cierre) en un cielo dorado con las colinas y la oveja. El resto conserva el verde institucional. Colores en uc.css; versión de los archivos subida a 20261105b para evitar la caché; README, contenido.md, PDF y página pública actualizados."
+**Context**: Verificado en el navegador a 1280 x 720 (las tres escenas y la portada) y en el sitio en vivo (fecha, los tres temas, sin notas, uc.css nuevo). Se detectó y corrigió una tarjeta de la escena 13 que perdía contraste con la animación heredada. Sin commit.
+
+---
+
+## Presentación Fusagasugá — el blanco y el negro vuelven a ser los del PGC; corrección del script de publicación
+**Timestamp**: 2026-11-05T16:30:00Z
+**User Input**: "The last gold doesnt feel good... and the white of the \"marco teórico\" doesnt feel like the good white that we keep in the last presentation  (the PGC one), in this one we keep all the othe rcolors but just a white background, so go and check the last one so that white doesn't feel bad, pls"
+**AI Response**: "Se revisó cómo se veía la presentación del PGC (blanco frío #f5f6f8 con brillos suaves verde oliva y violeta, títulos sans en negrita, tarjetas blancas con borde fino; cierre en negro azulado #0e1217 con «app real» en verde oliva y tarjetas de vidrio oscuro). La escena 7 usa ahora exactamente ese blanco (data-theme=light, con los chips y la barra adaptados) y la escena 13 ese negro (data-theme=dark; el dorado de la plantilla se remapea a verde oliva). Se eliminaron el «papel» crema y el cielo dorado. La escena 9 conserva el negro con dorado. Se encontró y corrigió un fallo de publish-public.ps1: GitHub rechazó dos pushes («fatal error in commit_refs») y el script decía «Publicado» sin comprobarlo, por lo que dos actualizaciones no habían salido; ahora comprueba el resultado, reintenta hasta 4 veces y verifica el último commit remoto."
+**Context**: Verificado en el navegador local a 1280 x 720 (escenas 7 y 13) y en el sitio en vivo con Chrome: temas y colores de fondo correctos, sin errores; la fecha del 6 de noviembre y las notas ausentes también comprobadas. Archivos con versión ?v=20261105c. Sin commit en finance-ai.
+
+---

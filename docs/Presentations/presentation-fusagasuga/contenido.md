@@ -24,8 +24,8 @@ Cómo leerlo:
 | 9 | Seguridad y acceso | 4.4 | [[ ]] | 1:20 |
 | 10 | Gestión del conocimiento | 5.1, 5.2 | [[ ]] | 1:50 |
 | 11 | Conclusiones | 6.1 | [[ ]] | 1:15 |
-| 12 | Aportes | 6.2 | [[ ]] | 0:45 |
-| 13 | Cierre y paso a la app | — | [[ ]] | 0:40 |
+| 12 | Aportes | 6.2 | [[ ]] | 0:55 |
+| 13 | Cierre y paso a la app | — | [[ ]] | 0:30 |
 
 Los tiempos salen de contar las palabras de cada guion a unas 119 por minuto (el ritmo del PGC) y se ajustaron para sumar **15:00**. Ver la sección 6 para el conteo.
 
@@ -35,7 +35,7 @@ Los tiempos salen de contar las palabras de cada guion a unas 119 por minuto (el
 
 **Criterios:** identifica al grupo (7.1). **Presenta:** [[ ]]
 
-**En pantalla:** Finance AI · título formal del proyecto · «Proyecto de Gestión del Conocimiento» · Ingeniería de Sistemas y Computación · Grupo [[N.º]] · David Fernando Gonzalez Soler, Maicol Estiven Fonseca Muñoz, Ivan David Giraldo Garavito <!-- TODO: confirmar que son los mismos tres y el número de grupo --> · sello de Acreditación Institucional · QR de descarga.
+**En pantalla:** Finance AI · título formal del proyecto · «Proyecto de Gestión del Conocimiento» · Ingeniería de Sistemas y Computación · Grupo [[N.º]] · 6 de noviembre de 2026 · David Fernando Gonzalez Soler, Maicol Estiven Fonseca Muñoz, Ivan David Giraldo Garavito <!-- TODO: confirmar que son los mismos tres y el número de grupo --> · sello de Acreditación Institucional · QR de descarga.
 
 **Guion oral**
 
@@ -192,19 +192,19 @@ Los tiempos salen de contar las palabras de cada guion a unas 119 por minuto (el
 
 **Apoyo:** evidencias E1–E4 y E19. Documentos: `ALCANCE.md`, `FEATURES.md`, `BACKLOG-AND-STORIES.md` (objetivo 1), `ARCHITECTURE.md`, `SCHEMA.md`, `UML.md`, `MOCKUPS.md` (objetivo 2). Si el objetivo 5 vuelve al texto de la propuesta, esta conclusión debe decir que falta la encuesta de usabilidad.
 
-### Escena 12 · Aportes (0:45)
+### Escena 12 · Aportes (0:55)
 
 **Criterios:** 6.2 Aportes (2,0). **Presenta:** [[ ]]
 
-**En pantalla:** tres anillos: Personas · Ingeniería de software · Universidad.
+**En pantalla:** tres anillos: Personas · Ingeniería de software · Sociedad.
 
 **Guion oral**
 
-> Dejamos tres aportes. A las personas que registran sus gastos, una herramienta que propone el registro y no escribe por sí sola; que reduzca el esfuerzo es nuestra hipótesis, todavía sin medir. A la ingeniería de software con IA, un patrón aplicado y probado: la IA propone, un servicio determinista valida y la persona confirma, con confirmaciones que no se duplican. A la universidad, un proyecto de grado con trazabilidad completa: CDIO, bitácora de decisiones y auditorías por versión, y un piloto previsto con estudiantes.
+> Dejamos tres aportes. A las personas que registran sus gastos, una herramienta que propone el registro y no escribe por sí sola; que reduzca el esfuerzo es nuestra hipótesis, todavía sin medir. A la ingeniería de software con IA, un patrón aplicado, probado y documentado: la IA propone, un servicio determinista valida y la persona confirma. A la sociedad, la apuesta de que más personas lleven el control de su dinero y decidan con información, en un país donde el 66,6 % de las operaciones monetarias ya es digital. El piloto previsto con estudiantes de la Universidad de Cundinamarca dirá si de verdad ayuda.
 
-<!-- TODO: los tres aportes son una redacción mía a partir de lo verificado; el equipo debe decidir si los suscribe y si agrega alguno más (por ejemplo, abrir el código o la documentación, si ese es el plan). -->
+<!-- TODO: los tres aportes son una redacción a partir de lo verificado; el equipo decide si los suscribe y si agrega alguno más (por ejemplo, abrir el código o la documentación, si ese es el plan). Cambio del 2026-11-05 a petición del equipo: el tercer aporte ya no es «a la universidad» (no se hizo un proyecto de ese tipo) sino «a la sociedad», con el piloto con estudiantes de la Universidad de Cundinamarca como prueba pendiente. Es una apuesta, no un resultado: no afirmar que ya formó hábitos ni que ya llegó a estudiantes. -->
 
-### Escena 13 · Cierre y paso a la aplicación (0:40)
+### Escena 13 · Cierre y paso a la aplicación (0:30)
 
 **Criterios:** ninguno propio; sostiene 7.3. **Presenta:** [[ ]]
 
@@ -302,11 +302,11 @@ Palabras del guion oral por escena (script `count_words.py`, solo las líneas `>
 | 9 | Seguridad y acceso | 150 | 1:16 | 1:20 | 0:04 |
 | 10 | Gestión del conocimiento | 209 | 1:45 | 1:50 | 0:05 |
 | 11 | Conclusiones | 131 | 1:06 | 1:15 | 0:09 |
-| 12 | Aportes | 85 | 0:43 | 0:45 | 0:02 |
-| 13 | Cierre y paso a la aplicación | 47 | 0:24 | 0:40 | 0:16 |
-| | **Total** | **1 608** | **13:31** | **15:00** | **1:29** |
+| 12 | Aportes | 104 | 0:52 | 0:55 | 0:03 |
+| 13 | Cierre y paso a la aplicación | 47 | 0:24 | 0:30 | 0:06 |
+| | **Total** | **1 627** | **13:40** | **15:00** | **1:20** |
 
-Quedan unos 89 s de aire en total, que se gastan en las animaciones que se encadenan solas. Las escenas 1, 2, 5, 8, 9 y 12 van justas (menos de 5 s de margen): si en el ensayo se pasan, se recortan palabras, no se acelera la voz. La escena 7 tiene margen para la espiral SECI. El ritmo real depende de cada persona y debe medirse en el ensayo con las tres voces.
+Quedan unos 80 s de aire en total, que se gastan en las animaciones que se encadenan solas. Las escenas 1, 2, 5, 8, 9 y 12 van justas (menos de 5 s de margen): si en el ensayo se pasan, se recortan palabras, no se acelera la voz. La escena 7 tiene margen para la espiral SECI. El ritmo real depende de cada persona y debe medirse en el ensayo con las tres voces.
 
 ## 7. Referencias
 
