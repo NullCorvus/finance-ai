@@ -55,7 +55,7 @@ Los tiempos salen de contar las palabras de cada guion a unas 119 por minuto (el
 
 > La vida financiera de las personas ocurre cada vez más en el celular: en Colombia, el 66,6 % de las operaciones monetarias se hace por canales digitales, según la Banca de las Oportunidades en su reporte de 2024. Aun así, llevar el control de los propios gastos sigue siendo manual.
 > Registrar una sola compra exige escribir el monto, elegir la cuenta, asignar una categoría y revisar la fecha. Ese esfuerzo se repite con cada compra y el registro se interrumpe. Sin un registro sistemático, la persona no sabe en qué gasta y decide sin información.
-> Esto afecta a quien controla sus gastos desde el celular; nuestro piloto previsto son estudiantes de la Universidad de Cundinamarca. La pregunta que guía el proyecto es cómo puede una aplicación móvil con asistencia de inteligencia artificial facilitar el registro y el análisis de los gastos, reduciendo el esfuerzo de captura y contribuyendo a formar el hábito de control financiero.
+> Esto afecta a cualquiera que controle sus gastos desde el celular; por eso es una aplicación Android, que pensamos publicar en Google Play. La pregunta que guía el proyecto es cómo puede una aplicación móvil con asistencia de inteligencia artificial facilitar el registro y el análisis de los gastos, reduciendo el esfuerzo de captura y contribuyendo a formar el hábito de control financiero.
 
 **Apoyo:** texto aprobado del problema en `PGC-PROPUESTA.md` (v5, 2026-08-15). La cifra de retención de apps de finanzas (4,2 %, Curry 2026) va en la escena 7, no aquí. En el PGC el equipo decidió no poner en pantalla una cifra de abandono no verificada; esta sí está verificada en la propuesta.
 
@@ -67,7 +67,7 @@ Los tiempos salen de contar las palabras de cada guion a unas 119 por minuto (el
 
 **Guion oral**
 
-> El proyecto se justifica por cuatro razones. La inteligencia artificial para interpretar gastos ya es accesible, lo que permite reducir el esfuerzo de registrar. Sirve a cualquier persona que quiera controlar sus gastos desde el celular, con estudiantes de la Universidad de Cundinamarca como población piloto prevista. La persona conserva el control: la inteligencia artificial solo propone, y ella confirma, edita o descarta antes de guardar. Y es viable como prototipo académico, con herramientas de bajo costo.
+> El proyecto se justifica por cuatro razones. La inteligencia artificial para interpretar gastos ya es accesible, lo que permite reducir el esfuerzo de registrar. Sirve a cualquier persona que quiera controlar sus gastos desde el celular: es una aplicación Android, con publicación prevista en Google Play. La persona conserva el control: la inteligencia artificial solo propone, y ella confirma, edita o descarta antes de guardar. Y es viable como prototipo académico, con herramientas de bajo costo.
 
 **Apoyo:** justificación aprobada (v4, 2026-08-15). La viabilidad de la propuesta dice «servicios con niveles gratuitos o cuotas de prueba, sujetos a las condiciones vigentes de los proveedores»; si preguntan por costos, existe `docs/receipt-ai-cost-measurement-2026-10-26.md`.
 
@@ -80,9 +80,9 @@ Los tiempos salen de contar las palabras de cada guion a unas 119 por minuto (el
 **Guion oral**
 
 > Nuestro objetivo general es desarrollar una aplicación móvil para el registro, la categorización y el análisis de gastos personales, con asistencia de IA para la captura automática de gastos, aplicando la metodología CDIO, con el fin de reducir el esfuerzo de captura de los gastos y contribuir a la formación del hábito de control financiero en los usuarios.
-> Hay un objetivo específico por fase. Concebir: definir el alcance, los requisitos y el flujo de confirmar, editar o descartar. Diseñar: la arquitectura, el modelo de datos y las pantallas de captura y confirmación. Implementar, en dos objetivos: la captura con inteligencia artificial por foto, voz o texto, y el análisis de gastos por categoría en el período elegido. Operar: publicar la aplicación en una tienda y validarla con usuarios reales.
+> Hay un objetivo específico por fase. Concebir: definir el alcance, los requisitos y el flujo de confirmar, editar o descartar. Diseñar: la arquitectura, el modelo de datos y las pantallas de captura y confirmación. Implementar, en dos objetivos: la captura con inteligencia artificial por foto, voz o texto, y el análisis de gastos por categoría en el período elegido. Operar: publicar la aplicación en Google Play y validarla con usuarios reales.
 
-**Apoyo:** el general es el texto aprobado, sin cambios. Los cinco específicos conservan número y orden. **El objetivo 5 usa el ajuste del 30-oct-2026** (publicar y validar con usuarios reales). La propuesta escrita (`PGC-PROPUESTA.md`, `main.tex`) dice «pruebas funcionales y una encuesta de usabilidad con estudiantes de la Universidad de Cundinamarca, verificando el funcionamiento de los módulos y la aceptación del piloto». Si el jurado tiene el documento, esa es la diferencia que hay que poder explicar (decisión 1, sección 8, ya resuelta a favor del ajuste). La escena 11 depende de esto: las conclusiones se miden contra el mismo texto.
+**Apoyo:** el general es el texto aprobado, sin cambios. Los cinco específicos conservan número y orden. **El objetivo 5 usa el ajuste del 30-oct-2026** (publicar en Google Play y validar con usuarios reales). La propuesta escrita (`PGC-PROPUESTA.md`, `main.tex`) habla de pruebas funcionales y una encuesta de usabilidad. Si el jurado tiene el documento, esa es la diferencia que hay que poder explicar (decisión 1, sección 8, ya resuelta a favor del ajuste). La escena 11 depende de esto: las conclusiones se miden contra el mismo texto.
 
 ### Escena 5 · Producto: captura asistida (1:00)
 
@@ -187,7 +187,7 @@ Los tiempos salen de contar las palabras de cada guion a unas 119 por minuto (el
 **Guion oral**
 
 > Una conclusión por objetivo. Concebir: el alcance, los requisitos y el flujo de confirmar, editar o descartar están documentados y funcionan en la aplicación. Diseñar: la arquitectura, el modelo de datos y las pantallas quedaron documentados antes de construir. Implementar la captura: una frase, un recibo o un dictado producen una propuesta que la persona confirma. Implementar el análisis: los gastos confirmados se agrupan por categoría y período y alimentan los presupuestos.
-> Operar: el servicio está desplegado en la nube y lo probamos en un teléfono real, con 415 pruebas del servidor y 573 de la aplicación, verificadas en octubre. Falta publicarla en una tienda y validarla con usuarios reales.
+> Operar: el servicio está desplegado en la nube y lo probamos en un teléfono real, con 415 pruebas del servidor y 573 de la aplicación, verificadas en octubre. Falta publicarla en Google Play y validarla con usuarios reales.
 > Todavía no podemos afirmar que reduzca el esfuerzo de captura ni que forme hábito: eso es lo que sigue por medir.
 
 **Apoyo:** evidencias E1–E4 y E19. Documentos: `ALCANCE.md`, `FEATURES.md`, `BACKLOG-AND-STORIES.md` (objetivo 1), `ARCHITECTURE.md`, `SCHEMA.md`, `UML.md`, `MOCKUPS.md` (objetivo 2). Si el objetivo 5 vuelve al texto de la propuesta, esta conclusión debe decir que falta la encuesta de usabilidad.
@@ -200,9 +200,9 @@ Los tiempos salen de contar las palabras de cada guion a unas 119 por minuto (el
 
 **Guion oral**
 
-> Dejamos tres aportes. A las personas que registran sus gastos, una herramienta que propone el registro y no escribe por sí sola; que reduzca el esfuerzo es nuestra hipótesis, todavía sin medir. A la ingeniería de software con IA, un patrón aplicado, probado y documentado: la IA propone, un servicio determinista valida y la persona confirma. A la sociedad, la apuesta de que más personas lleven el control de su dinero y decidan con información, en un país donde el 66,6 % de las operaciones monetarias ya es digital. El piloto previsto con estudiantes de la Universidad de Cundinamarca dirá si de verdad ayuda.
+> Dejamos tres aportes. A las personas que registran sus gastos, una herramienta que propone el registro y no escribe por sí sola; que reduzca el esfuerzo es nuestra hipótesis, todavía sin medir. A la ingeniería de software con IA, un patrón aplicado, probado y documentado: la IA propone, un servicio determinista valida y la persona confirma. A la sociedad, la apuesta de que más personas lleven el control de su dinero y decidan con información, en un país donde el 66,6 % de las operaciones monetarias ya es digital. Publicarla en Google Play la pone al alcance de cualquiera, y validarla con usuarios reales dirá si de verdad ayuda.
 
-<!-- TODO: los tres aportes son una redacción a partir de lo verificado; el equipo decide si los suscribe y si agrega alguno más (por ejemplo, abrir el código o la documentación, si ese es el plan). Cambio del 2026-11-05 a petición del equipo: el tercer aporte ya no es «a la universidad» (no se hizo un proyecto de ese tipo) sino «a la sociedad», con el piloto con estudiantes de la Universidad de Cundinamarca como prueba pendiente. Es una apuesta, no un resultado: no afirmar que ya formó hábitos ni que ya llegó a estudiantes. -->
+<!-- TODO: los tres aportes son una redacción a partir de lo verificado; el equipo decide si los suscribe y si agrega alguno más (por ejemplo, abrir el código o la documentación, si ese es el plan). Cambio del 2026-11-05 a petición del equipo: el tercer aporte ya no es «a la universidad» (no se hizo un proyecto de ese tipo) sino «a la sociedad», con Google Play y la validación con usuarios reales como prueba pendiente. Es una apuesta, no un resultado: no afirmar que ya formó hábitos ni que ya llegó a estudiantes. -->
 
 ### Escena 13 · Cierre y paso a la aplicación (0:30)
 
@@ -326,7 +326,7 @@ Quedan unos 80 s de aire en total, que se gastan en las animaciones que se encad
 
 | # | Decisión | Mi propuesta por defecto |
 |---|---|---|
-| 1 | Redacción del objetivo 5 | **Decidido el 2026-11-04: ajuste del 30-oct (publicar en una tienda y validar con usuarios reales)**, como en el PGC. Si preguntan, el texto de la propuesta escrita (pruebas funcionales y encuesta de usabilidad) se explica en las notas de la escena 4 |
+| 1 | Redacción del objetivo 5 | **Decidido el 2026-11-04: ajuste del 30-oct (publicar en Google Play y validar con usuarios reales)**, como en el PGC. Si preguntan, el texto de la propuesta escrita (pruebas funcionales y encuesta de usabilidad) se explica en las notas de la escena 4 |
 | 2 | Cifras 66,6 % y 4,2 % en pantalla | Sí, ambas verificadas, con su fuente |
 | 3 | Marco de gestión del conocimiento que exige el docente | SECI, a confirmar |
 | 4 | Antecedentes y trabajos relacionados | Sin fuente hoy; ¿existe el documento de mercado que menciona la bitácora? |

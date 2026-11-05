@@ -43,3 +43,7 @@
 .nt-body .tip::before { content: "Ojo · "; font-weight: 800; color: #d9a400; }
 .nt-body .tr { margin-bottom: 2px; font-size: 14.5px; font-style: italic; color: #b7d45c; }
 .nt-body .tr::before { content: "Para pasar a la siguiente · "; font-style: normal; font-weight: 800; color: #8fb42c; }
+.nt-body .eval { margin-top: 8px; padding: 9px 12px; border-left: 3px solid #a78bfa; border-radius: 0 8px 8px 0; background: rgba(167, 139, 250, .12); font-size: 14.5px; color: #e4dcff; }
+.nt-body .eval::before { content: "Evalúan · "; font-weight: 800; color: #c4b5fd; }
+.nt-body .pz { margin-top: 4px; font-size: 13px; color: #8f9bab; }
+.nt-body .pz::before { content: "Pausas · "; font-weight: 800; color: #7c8aa0; }
