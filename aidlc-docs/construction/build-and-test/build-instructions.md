@@ -1,23 +1,17 @@
-# Build Instructions — HU-005
+# Build Instructions
 
-## Backend (`finance-ai-backend`)
-```bash
-cd finance-ai-backend
-uv sync --all-groups --frozen
-uv run alembic upgrade head
-uv run python -m finance_ai.db.seeds
-uv run uvicorn finance_ai.main:app --reload
-```
-Docker: `docker compose up --build -d` (runs migrate + seed at start).
+## Prerequisites
 
-## Frontend (`finance-ai-frontend`)
-```bash
-cd finance-ai-frontend
-flutter pub get
-flutter run                 # Android or Windows
-```
-Verify helpers (Windows): `tool/verify_shared.ps1`, `tool/build_android.ps1`.
+- Flutter/Dart matching Flutter 3.47.2 and the repository's `.flutter-version`.
+- Android SDK/Gradle for local APK compilation.
+- Docker Engine and Docker Compose for the local backend/API plus PostgreSQL integration environment.
+- The frontend repository at `finance-ai-frontend`; integration service source is the pinned backend commit recorded in `frontend-android-ci-code-generation-plan.md`.
 
-## Notes
-- The HU-005 migration `0004_uow03_income_source` changes only one index; `is_active` is retained.
-- Never point `FINANCE_AI_DATABASE_URL` automated tests at a non-test database.
+## Build Steps
+
+1. Resolve locked Flutter packages: `flutter pub get --enforce-lockfile`.
+2. Format and analyze: `dart format --output=none --set-exit-if-changed lib test integration_test` and `flutter analyze`.
+3. Build the Android debug APK: `flutter build apk --debug`.
+4. Expected artifact: `build/app/outputs/flutter-apk/app-debug.apk`.
+
+The Actions workflow uploads this unsigned debug APK for seven days. It is for QA installation and is not a signed store release.

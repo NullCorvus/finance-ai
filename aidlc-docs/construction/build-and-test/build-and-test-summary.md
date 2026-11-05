@@ -1,50 +1,17 @@
-# Build and Test Summary — HU-005 Income Sources
+# Build and Test Summary
 
-**Unit**: `hu-005-income-sources` · **Date**: 2026-09-12 · **Status**: Passed
+The frontend workflow validates formatting and static analysis, runs Flutter unit/widget tests with an 80% line-coverage gate, builds an Android debug APK, and runs one Android-emulator real-API auth/session integration flow against a disposable backend and database.
 
-## Backend
-| Check | Command | Result |
-|---|---|---|
-| Format | `uv run ruff format --check .` | Passed |
-| Lint | `uv run ruff check .` | Passed |
-| Types | `uv run mypy src` | Passed (50 files) |
-| Migration SQL | `alembic upgrade head --sql` / downgrade | Correct (drop partial index, create full unique) |
-| Unit/API/Property | `uv run pytest tests/unit tests/api tests/property -q` | 75 passed |
-| Full suite + integration | `docker compose --profile test run --build --rm test pytest --cov ...` | 100 passed, 89.60% coverage |
-| Dependency audit | `uv run pip-audit` | No known vulnerabilities |
+The backend workflow separately checks PostgreSQL-backed migrations and tests, generated OpenAPI consistency, Python lint/type checks, package builds, and dependency audit. These checks reduce regressions but do not prove every financial workflow correct. Manual QA on a QA build and additional transaction-level integration tests remain valuable before merging release work to `main`.
 
-## Frontend
-| Check | Command | Result |
-|---|---|---|
-| Format | `dart format lib test` | Applied |
-| Analyze | `flutter analyze` | No issues found |
-| Tests | `flutter test` | 53 passed (+1 desktop regression) |
+The downloaded debug APK is unsigned and retained temporarily for QA. A signed APK/AAB and GitHub Release require a separate protected release workflow with signing credentials and an explicit release trigger.
 
-## UI fix (manual testing)
-- Blank Income Sources screen traced to `BoxConstraints forces an infinite width` on the Add
-  `FilledButton`: `AppTheme.light()` forces `minimumSize: Size.fromHeight(52)` (infinite width), which
-  is invalid inside a `Row`. Fixed with bounded `minimumSize: Size(64, 52)` on the Add button and the
-  Rename/Delete dialog buttons. Regression test added under the real theme at desktop size.
-- `flutter test` now reports **54 passed**; `flutter analyze` clean.
+## Local Verification Record
 
-## Contract
-- `openapi.json` regenerated; +489 lines for `/api/v1/income-sources` paths and the
-  `IncomeSource*` / `CreateIncomeSourceRequest` / `RenameIncomeSourceRequest` schemas.
-
-## Acceptance Criteria
-- [x] Editable income-source defaults (`Salary`, `Other` seeded at registration)
-- [x] Add, rename and permanently delete own values
-- [x] Deleted values leave new forms; permanent delete frees the name (history rendering is future work)
-- [x] Another user's catalog is unaffected (ownership scoping + cross-user isolation test)
-
-## Incidental cleanup (not HU-005 scope)
-- Removed the default Flutter counter test `test/widget_test.dart`, which referenced a non-existent
-  `MyApp` class and broke `flutter analyze`.
-- Noted a pre-existing flaky property test
-  `tests/property/test_registration_properties.py::test_public_response_can_never_echo_the_supplied_password`
-  (asserts a raw-substring match; e.g. password `currency` collides with `preferred_currency`).
-  It passes on most seeds; recommended a future fix to compare parsed values instead of raw JSON.
-
-## Deferred (other team members)
-- Full new-schema migration (enums, accounts, `payment_method` removal, transactions, receipts,
-  expenses, budgets). See `../hu-005-income-sources/deferred-schema-work.md`.
+- Flutter 3.47.7 (repository workflow pins a checksum-verified Flutter 3.47.2 archive): formatting passed with 0 changed files; `flutter analyze` reported 0 issues.
+- `flutter test --coverage`: 635 passed, 1 intentionally skipped; line coverage 86.06%, above the 80% gate.
+- `flutter build apk --debug`: succeeded; output `build/app/outputs/flutter-apk/app-debug.apk` (205 MB, unsigned).
+- Pinned backend Docker image built; disposable PostgreSQL/API container became ready and was removed after the check.
+- Workflow YAML parsed and structural assertions passed. No local Android emulator is installed; the new Android device integration job still needs its first GitHub Actions run.
+- Initial test run exposed a stale precondition in the text-capture refresh widget test. The test now loads the expenses list before checking that confirmation refreshes it; the focused test and full suite pass.
+- Hosted emulator run `41638154067` reported transient `adb: device offline` checks but eventually logged `Emulator booted`. It failed before integration assertions because the pinned emulator action executes each input-script line in a separate shell. The workflow now invokes a Bash helper as one line; shell/YAML checks and a simulated one-suite failure check pass. The actual Android journeys need a hosted rerun and are not yet verified.
