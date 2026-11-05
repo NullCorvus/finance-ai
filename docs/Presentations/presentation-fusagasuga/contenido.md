@@ -115,21 +115,16 @@ Los tiempos salen de contar las palabras de cada guion a unas 119 por minuto (el
 
 **Criterios:** 3.1 Fundamentos teóricos (5,0). **Presenta:** [[ ]]
 
-**En pantalla:** cuatro apoyos animados: ① espiral SECI recorrida por un gasto (externalizar, combinar, interiorizar; «socializar» atenuado y rotulado «fuera del alcance de la app») ② hábito: «59 a 66 días, mediana, conductas de salud» ③ contexto: «4,2 % de retención a 30 días en apps de finanzas» y «66,6 % digital» ④ CDIO y Scrum. Franja de referencias.
+**En pantalla:** recorrido aplicado de un gasto: registrar el dato, organizar la información y apoyar una decisión. Se mantienen las tarjetas de hábito (59–66 días, conductas de salud), retención (4,2 % a los 30 días, Curry) y CDIO/Scrum.
 
-**Guion oral**
+**Guion:**
 
-> El marco teórico tiene cuatro apoyos.
-> Primero, la gestión del conocimiento. Distingue el conocimiento tácito, el que una persona tiene sin haberlo registrado, del explícito, el que queda escrito y se puede consultar. Usamos como lente el modelo SECI de Nonaka y Takeuchi. Saber en qué se gasta es conocimiento tácito hasta que se registra; registrarlo es externalizar; organizarlo por categorías, períodos y presupuestos es combinar; y que el análisis vuelva a la persona y cambie lo que decide es interiorizar. La cuarta forma, socializar, queda fuera, porque la aplicación es personal.
+> Primero, la gestión de la información financiera. Pensemos en un almuerzo de 18 mil pesos pagado con Nequi: al registrarlo, queda un dato que se puede consultar. Al agrupar los gastos por categoría y período, la persona puede compararlos con su presupuesto. Esa información le permite decidir si ajusta su gasto. Este es un ejemplo del uso de la aplicación; todavía debemos evaluar con usuarios si les ayuda a cambiar sus hábitos.
 > Segundo, el hábito. Una revisión sistemática de Singh y colaboradores, de 2024, reporta una mediana de 59 a 66 días para consolidar hábitos de salud. No lo medimos en finanzas, pero indica que el registro tiene que sostenerse en el tiempo.
 > Tercero, el contexto: las aplicaciones de finanzas retienen apenas el 4,2 % de sus usuarios al día 30, según Curry en 2026.
-> Cuarto, la metodología: CDIO, con un objetivo por fase, y Scrum en la implementación.
+> Cuarto, la metodología: CDIO, con un objetivo por fase, y Scrum en la implementación. Las fuentes se consultan desde «Referencias» en el cierre.
 
-<!-- TODO: confirmar con el docente o coordinador el marco de gestión del conocimiento exigido; el modelo SECI y los autores Nonaka y Takeuchi (1995) son una propuesta mía, no están en la propuesta del PGC. Esa propuesta dice del marco referencial: «verificar con el coordinador, NO inventar». -->
-<!-- TODO: «Scrum en la implementación» sale de las decisiones de PGC-PROPUESTA.md; falta la fuente que se citará. -->
-<!-- TODO: antecedentes y trabajos relacionados: la bitácora (2026-09-22) menciona `docs/VIABILIDAD-Y-MERCADO.md` con 36 fuentes y un competidor colombiano, pero ese archivo no está en el repositorio ni en su historial. Sin él, la única fuente verificada es Curry 2026. -->
-
-**Apoyo:** referencias en la sección 4. Singh et al. habla de conductas de **salud**: conservar esa acotación en voz y en pantalla. Curry (2026): «Finance apps have a retention rate of 4.2% by day 30», verificado por el equipo en la propuesta.
+**Apoyo:** las tres referencias de cifras se mantienen de `docs/PGC-PROPUESTA.md`, sección 6. El recorrido es una explicación del equipo, sin atribuirle un modelo teórico ni resultados de aprendizaje comprobados. El artículo de hábitos se cotejó en su versión de PMC; la referencia de retención se recuperó de la propuesta original, pues el sitio del editor no permitió una consulta nueva (403).
 
 ### Escena 8 · Plataformas, integración y escalabilidad (1:30)
 
@@ -216,7 +211,7 @@ Los tiempos salen de contar las palabras de cada guion a unas 119 por minuto (el
 
 **Apoyo:** guion y preparación de la demostración: los del PGC (`presentation-pgc/slides.md`, escena 10), con cuenta sintética, dos cuentas, recibo de prueba y grabación de respaldo por si falla el servidor.
 
-## 3. Respaldo (teclas A–F)
+## 3. Respaldo (teclas A–E)
 
 | Letra | Tema | Origen | Nota |
 |---|---|---|---|
@@ -225,9 +220,7 @@ Los tiempos salen de contar las palabras de cada guion a unas 119 por minuto (el
 | C | Recibos y voz | PGC respaldo C | Reutilizar |
 | D | Seguridad y calidad | PGC respaldo D | **Reformular** «aislamiento también en la base de datos» (ver escena 9) |
 | E | Dónde se cubre cada criterio | Nuevo | Es la matriz de la sección 4, animada |
-| F | Offline-first (en desarrollo) | Memoria del proyecto, 2026-10-20 | Ver abajo |
 
-**Respaldo F.** Rama aparte (`finance-ai-frontend-offline`, `feat/offline-first`), **sin integrar ni publicar**. Hecho según el registro de decisiones: abrir la app sin cuenta con datos locales (OF-02), bloqueo opcional con PIN de 6 dígitos y biometría (OF-06), copia de seguridad cifrada con Argon2id y AES-256-GCM (OF-07), mensajes de IA no disponible y punto de enganche de derechos (OF-08, OF-09). Verificado: 1062 pruebas aprobadas más 1 fallo antiguo de pruebas de imagen, 88,2 % de cobertura y compilación de APK de depuración. **No verificado y debe decirse:** nunca se ejecutó en un teléfono en modo local, el aviso biométrico no se probó, Windows Hello no se comprobó en ejecución, la compilación de Windows no se repitió tras añadir `file_picker`, y la privacidad de «apps recientes» en Android (`FLAG_SECURE`) no está hecha. Antes de presentarla hay que volver a verificar el estado de la rama.
 
 ## 4. Matriz de cobertura de la rúbrica
 
@@ -306,7 +299,7 @@ Palabras del guion oral por escena (script `count_words.py`, solo las líneas `>
 | 13 | Cierre y paso a la aplicación | 47 | 0:24 | 0:30 | 0:06 |
 | | **Total** | **1 627** | **13:40** | **15:00** | **1:20** |
 
-Quedan unos 80 s de aire en total, que se gastan en las animaciones que se encadenan solas. Las escenas 1, 2, 5, 8, 9 y 12 van justas (menos de 5 s de margen): si en el ensayo se pasan, se recortan palabras, no se acelera la voz. La escena 7 tiene margen para la espiral SECI. El ritmo real depende de cada persona y debe medirse en el ensayo con las tres voces.
+Quedan unos 80 s de aire en total, que se gastan en las animaciones que se encadenan solas. Las escenas 1, 2, 5, 8, 9 y 12 van justas (menos de 5 s de margen): si en el ensayo se pasan, se recortan palabras, no se acelera la voz. La escena 7 utiliza ese margen para explicar el recorrido de un gasto hasta una decisión. El ritmo real depende de cada persona y debe medirse en el ensayo con las tres voces.
 
 ## 7. Referencias
 
@@ -316,11 +309,16 @@ Quedan unos 80 s de aire en total, que se gastan en las animaciones que se encad
 2. Banca de las Oportunidades. (2024). *Reporte de Inclusión Financiera 2024*. https://www.bancadelasoportunidades.gov.co/sites/default/files/2025-05/BDO_RIF%202024_COMPLETO%201.pdf
 3. Singh, B., Murphy, A., Maher, C., & Smith, A. E. (2024). Time to form a habit: A systematic review and meta-analysis of health behaviour habit formation and its determinants. *Healthcare, 12*(23), 2488. https://doi.org/10.3390/healthcare12232488
 
-**Propuestas mías, pendientes de confirmar (no van a pantalla hasta entonces):**
+**Fuentes complementarias en «Referencias»:**
 
-4. Nonaka, I., y Takeuchi, H. (1995). *The Knowledge-Creating Company*. Oxford University Press. <!-- TODO: confirmar edición y que el docente acepta SECI -->
-5. Crawley, E. F., Malmqvist, J., Östlund, S., Brodeur, D. R., y Edström, K. (2014). *Rethinking Engineering Education: The CDIO Approach* (2.ª ed.). Springer. <!-- TODO: confirmar -->
-6. Fuente para Scrum. <!-- TODO: elegir y confirmar -->
+4. Worldwide CDIO Initiative. (2020). *CDIO Standards 3.0*. https://cdio.org/content/cdio-standards-30
+5. Schwaber, K., y Sutherland, J. (2020). *The Scrum Guide*. https://scrumguides.org/scrum-guide.html
+
+**Enlaces para responder preguntas sobre el proyecto:**
+
+- API / Swagger: https://finance-api-7caahuohmq-rj.a.run.app/docs#/Authentication/register_api_v1_auth_register_post — endpoints y esquemas.
+
+El diálogo de referencias conserva cinco tarjetas: una con Swagger, tres con las fuentes originales del PGC y una de CDIO/Scrum. Se abre desde la última escena y queda fuera del recorrido principal de 13 diapositivas. Se retira de la ventana la lista general de documentación de proveedores, RFC, herramientas y documentos internos para facilitar la consulta durante preguntas. La tabla de tiempos anterior es histórica; volver a medir la escena 7 al ensayar.
 
 ## 8. Decisiones pendientes
 
@@ -328,7 +326,7 @@ Quedan unos 80 s de aire en total, que se gastan en las animaciones que se encad
 |---|---|---|
 | 1 | Redacción del objetivo 5 | **Decidido el 2026-11-04: ajuste del 30-oct (publicar en Google Play y validar con usuarios reales)**, como en el PGC. Si preguntan, el texto de la propuesta escrita (pruebas funcionales y encuesta de usabilidad) se explica en las notas de la escena 4 |
 | 2 | Cifras 66,6 % y 4,2 % en pantalla | Sí, ambas verificadas, con su fuente |
-| 3 | Marco de gestión del conocimiento que exige el docente | SECI, a confirmar |
+| 3 | Marco de gestión del conocimiento que exige el docente | Recorrido aplicado dato–información–decisión; sin modelo SECI |
 | 4 | Antecedentes y trabajos relacionados | Sin fuente hoy; ¿existe el documento de mercado que menciona la bitácora? |
 | 5 | Nombrar DeepSeek, Gemini, Cloud Run y Neon en pantalla | Sí, con fecha de verificación |
 | 6 | Los tres aportes y la lista de «hasta dónde llega» | Los de este borrador |
