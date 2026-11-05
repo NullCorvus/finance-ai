@@ -4853,3 +4853,10 @@ about the colors, they are great because they keep the colors of the original pr
 **Context**: Verificado con Chrome en local a 1280 x 720: fuente computada Georgia, 19 escenas sin hallazgos nuevos de desborde (solo la luz de fondo de la portada y el respaldo B, ya existentes), revisión visual de las escenas 4 y 13. Se regeneran los PDF y se republica el sitio.
 
 ---
+## Presentación Fusagasugá — reparto provisional: aspectos 1 y 6 en morado en la barra
+**Timestamp**: 2026-11-05T19:10:00Z
+**User Input**: "ok, this time for me this goes like for sure: \n1 and 6 and of course 7 but seven is \"nothing\" so turn purble that ones for now (not 7)"
+**AI Response**: "Interpretado como los aspectos de la rúbrica (1 Organización, 6 Conclusiones, 7 Metodología y socialización, esta última solo el cierre): son los de Maicol. Los segmentos 1 y 6 de la barra de progreso pasan a morado (etiqueta, pista y relleno; versión más oscura en las escenas claras) y el 7 queda sin marcar. Versión de archivos 20261105g."
+**Context**: Marca visual provisional en uc.css (reglas nth-child sobre #progress); no cambia contenido ni notas. Verificado en local en las escenas 1, 7 (clara) y 11. Sin publicar ni commit. Pendiente: nombres de B y C y marcar sus aspectos.
+
+---

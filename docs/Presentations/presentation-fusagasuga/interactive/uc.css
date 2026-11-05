@@ -114,6 +114,15 @@ body[data-mode="backup"] .asp { display: none; }
 .progress.b button { width: 48px; }
 body[data-theme="light"] #progress button span { color: var(--muted); }
 
+/* reparto provisional: los aspectos 1 y 6 van en morado (el 7 queda sin marcar) */
+#progress button:nth-child(1) span, #progress button:nth-child(6) span { color: #c4b5fd; }
+#progress button:nth-child(1)::before, #progress button:nth-child(6)::before { background: rgba(167, 139, 250, .32); }
+#progress button:nth-child(1) i, #progress button:nth-child(6) i { background: #a78bfa; }
+#progress button:nth-child(1).now::before, #progress button:nth-child(6).now::before { background: rgba(167, 139, 250, .5); }
+body[data-theme="light"] #progress button:nth-child(1) span, body[data-theme="light"] #progress button:nth-child(6) span { color: #5b4bdb; }
+body[data-theme="light"] #progress button:nth-child(1)::before, body[data-theme="light"] #progress button:nth-child(6)::before { background: rgba(91, 75, 219, .2); }
+body[data-theme="light"] #progress button:nth-child(1) i, body[data-theme="light"] #progress button:nth-child(6) i { background: #5b4bdb; }
+
 .hint { background: rgba(0, 30, 17, .9); }
 body[data-scene="s-demo"] .qr { opacity: 0; transform: translateY(-8px); pointer-events: none; }
 body:not([data-theme="light"]) .qr { box-shadow: 0 8px 22px rgba(0, 20, 10, .35); }
