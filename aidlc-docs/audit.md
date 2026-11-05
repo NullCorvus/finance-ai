@@ -4837,3 +4837,11 @@ about the colors, they are great because they keep the colors of the original pr
 **Context**: Verificado en el navegador local a 1280 x 720 (escenas 7 y 13) y en el sitio en vivo con Chrome: temas y colores de fondo correctos, sin errores; la fecha del 6 de noviembre y las notas ausentes también comprobadas. Archivos con versión ?v=20261105c. Sin commit en finance-ai.
 
 ---
+
+## Presentación Fusagasugá — fuente del PGC en toda la presentación y verdes del cierre
+**Timestamp**: 2026-11-05T17:20:00Z
+**User Input**: "can you keep the font for all the app pls, can you make a test , use the font of the last presentation in this one, btw the colors of the last slide the greens are not congruent with the whole presentation, they are great but not congruents..."
+**AI Response**: "Prueba hecha en local: los títulos y cifras que usaban Georgia (26 reglas en scenes.css y uc.css) pasan a la fuente del PGC (Segoe UI Variable / Segoe UI, variable --ft) en negrita 800 y con el espaciado de los títulos del PGC. El cierre (escena 13) deja el negro azulado y el verde oliva y usa la familia verde del resto: fondo verde-negro profundo (#04140d), brillos del verde institucional y de las colinas, tarjetas verdes translúcidas y acento menta (#4fc88e) en «app real», barra y teclas; las colinas del pie vuelven a verse. Se ajustó la franja «Hasta dónde llega» de la escena 6 (2 px de más). Versión de archivos 20261105e."
+**Context**: Verificado con Chrome en local (file://) a 1280 x 720: fuente aplicada, auditoría de desbordes sin hallazgos nuevos (solo la luz de fondo de la portada y el respaldo B, ya existentes) y revisión visual de las escenas 1, 4, 9, 11 y 13. NO publicada ni con PDF regenerado: pendiente de que el usuario apruebe la prueba. Sin commit. En equipos sin Segoe UI (Mac) se usa la fuente del sistema, igual que en el PGC.
+
+---

@@ -1,11 +1,13 @@
 /* ============================================================
    uc.css · tema institucional de la presentación de Fusagasugá
    Marco de la plantilla (verde 00482B, dorado DAAA00, crema F5F2EA, gris 6A7179,
-   títulos en Georgia) + acentos de Finance AI (verde oliva y violeta de la IA).
+   títulos en la fuente del PGC, Segoe UI) + acentos de Finance AI (verde oliva y violeta de la IA).
    Todos los colores están aquí, en tokens: para pasar a un fondo claro basta
    con cambiar el bloque body[data-theme="uc"].
    El respaldo (data-theme="light") conserva los tokens claros del PGC.
    ============================================================ */
+
+:root { --ft: 'Segoe UI Variable Display', 'Segoe UI Variable Text', 'Segoe UI', system-ui, -apple-system, 'Helvetica Neue', Arial, sans-serif; }
 
 body[data-theme="uc"] {
   --bg: #00482b;
@@ -50,8 +52,8 @@ body:not([data-theme="light"]) .ambient i:nth-child(3) { background: radial-grad
 /* ───────── encabezado común ───────── */
 body:not([data-theme="light"]) .eyebrow { color: var(--gold); font-size: 13.5px; }
 body:not([data-theme="light"]) .h2 {
-  font-family: Georgia, 'Times New Roman', serif;
-  font-weight: 700; font-size: 46px; letter-spacing: -.012em; line-height: 1.06;
+  font-family: var(--ft);
+  font-weight: 800; font-size: 46px; letter-spacing: -.032em; line-height: 1.06;
   color: var(--gold);
 }
 body:not([data-theme="light"]) .lbl { color: var(--muted); }
@@ -139,7 +141,7 @@ body[data-theme="night"] {
   --gold: #daaa00; --gold-l: #f0c93a; --cream: #f5f2ea; --uc-deep: #00331e;
 }
 /* dark: los tokens del PGC (deck.css) y el dorado de la plantilla pasa a verde oliva */
-body[data-theme="dark"] { --gold: #8fb42c; --gold-l: #b7d45c; --cream: #eef1f5; --uc-deep: #0e1217; }
+body[data-theme="dark"] { --bg: #04140d; --gold: #4fc88e; --gold-l: #8be6b8; --cream: #eef1f5; --uc-deep: #04140d; --line: rgba(255, 255, 255, .12); --line2: rgba(255, 255, 255, .22); }
 
 /* ----- light (escena 7): chips y barra legibles sobre blanco ----- */
 body[data-theme="light"] .cr { background: var(--green-s); color: var(--green-d); border-color: var(--green); }
@@ -166,13 +168,13 @@ body[data-theme="night"] .ambient i:nth-child(1) { background: radial-gradient(c
 .sh-glow { z-index: -1; position: absolute; left: 15px; top: 20px; width: 260px; height: 260px; border-radius: 50%; background: radial-gradient(circle, rgba(240, 201, 58, .34), transparent 64%); }
 
 /* ----- dark (escena 13): como el cierre del PGC ----- */
-body[data-theme="dark"] .ambient i:nth-child(1) { background: radial-gradient(circle, rgba(143, 180, 44, .26), rgba(143, 180, 44, 0) 66%); }
-body[data-theme="dark"] .ambient i:nth-child(2) { background: radial-gradient(circle, rgba(37, 99, 235, .14), rgba(37, 99, 235, 0) 66%); }
-body[data-theme="dark"] .ambient i:nth-child(3) { background: radial-gradient(circle, rgba(91, 75, 219, .12), rgba(91, 75, 219, 0) 66%); }
-body[data-theme="dark"] .land { opacity: .4; }
-body[data-theme="dark"] .dm-t { font-family: 'Segoe UI Variable Display', 'Segoe UI', system-ui, sans-serif; font-size: 66px; font-weight: 800; letter-spacing: -.035em; }
-body[data-theme="dark"] .dm-t span { color: #8fb42c; }
-body[data-theme="dark"] .st { background: rgba(255, 255, 255, .04); border-color: rgba(255, 255, 255, .13); animation-name: sthldark; }
+body[data-theme="dark"] .ambient i:nth-child(1) { background: radial-gradient(circle, rgba(10, 122, 70, .42), rgba(10, 122, 70, 0) 66%); }
+body[data-theme="dark"] .ambient i:nth-child(2) { background: radial-gradient(circle, rgba(0, 93, 56, .5), rgba(0, 93, 56, 0) 66%); }
+body[data-theme="dark"] .ambient i:nth-child(3) { background: radial-gradient(circle, rgba(218, 170, 0, .12), rgba(218, 170, 0, 0) 66%); }
+body[data-theme="dark"] .land { opacity: .85; }
+body[data-theme="dark"] .dm-t { font-size: 66px; letter-spacing: -.035em; }
+body[data-theme="dark"] .dm-t span { color: #4fc88e; }
+body[data-theme="dark"] .st { background: rgba(0, 72, 43, .38); border-color: rgba(79, 200, 142, .28); animation-name: sthldark; }
 body[data-theme="dark"] .st b { font-family: inherit; font-weight: 800; letter-spacing: -.015em; }
 body[data-theme="dark"] .play.on { color: #0e1217; }
 

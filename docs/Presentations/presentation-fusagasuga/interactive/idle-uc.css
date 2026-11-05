@@ -177,4 +177,4 @@
 @keyframes shglow { 0%, 100% { opacity: .55; transform: scale(.92); } 50% { opacity: 1; transform: scale(1.08); } }
 
 /* escena 13 (negro del PGC): la tarjeta activa se aclara en verde oliva */
-@keyframes sthldark { 0%, 24% { background: rgba(143, 180, 44, .13); border-color: #8fb42c; transform: translateY(-4px); } 30%, 100% { background: rgba(255, 255, 255, .04); border-color: rgba(255, 255, 255, .13); transform: none; } }
+@keyframes sthldark { 0%, 24% { background: rgba(10, 122, 70, .55); border-color: #4fc88e; transform: translateY(-4px); } 30%, 100% { background: rgba(0, 72, 43, .38); border-color: rgba(79, 200, 142, .28); transform: none; } }
