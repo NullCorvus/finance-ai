@@ -122,6 +122,21 @@ body[data-theme="light"] #progress button span { color: var(--muted); }
 body[data-theme="light"] #progress button:nth-child(1) span, body[data-theme="light"] #progress button:nth-child(6) span { color: #5b4bdb; }
 body[data-theme="light"] #progress button:nth-child(1)::before, body[data-theme="light"] #progress button:nth-child(6)::before { background: rgba(91, 75, 219, .2); }
 body[data-theme="light"] #progress button:nth-child(1) i, body[data-theme="light"] #progress button:nth-child(6) i { background: #5b4bdb; }
+/* aspecto 2 en rojo, aspecto 4 en azul */
+#progress button:nth-child(2) span { color: #fca5a5; }
+#progress button:nth-child(2)::before { background: rgba(248, 113, 113, .32); }
+#progress button:nth-child(2) i { background: #f87171; }
+#progress button:nth-child(2).now::before { background: rgba(248, 113, 113, .5); }
+#progress button:nth-child(4) span { color: #93c5fd; }
+#progress button:nth-child(4)::before { background: rgba(96, 165, 250, .32); }
+#progress button:nth-child(4) i { background: #60a5fa; }
+#progress button:nth-child(4).now::before { background: rgba(96, 165, 250, .5); }
+body[data-theme="light"] #progress button:nth-child(2) span { color: #dc2626; }
+body[data-theme="light"] #progress button:nth-child(2)::before { background: rgba(220, 38, 38, .2); }
+body[data-theme="light"] #progress button:nth-child(2) i { background: #dc2626; }
+body[data-theme="light"] #progress button:nth-child(4) span { color: #2563eb; }
+body[data-theme="light"] #progress button:nth-child(4)::before { background: rgba(37, 99, 235, .2); }
+body[data-theme="light"] #progress button:nth-child(4) i { background: #2563eb; }
 
 .hint { background: rgba(0, 30, 17, .9); }
 body[data-scene="s-demo"] .qr { opacity: 0; transform: translateY(-8px); pointer-events: none; }
