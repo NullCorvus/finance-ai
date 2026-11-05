@@ -49,11 +49,11 @@ Los tiempos salen de contar las palabras de cada guion a unas 119 por minuto (el
 
 **Criterios:** 1.1 Introducción (1,0), 1.2 Planteamiento del problema (1,5). **Presenta:** [[ ]]
 
-**En pantalla:** dato «66,6 % de las operaciones monetarias en Colombia, por canales digitales (Banca de las Oportunidades, 2024)» · formulario que se llena una y otra vez: monto, cuenta, categoría, fecha · días sin registrar con «?» · pregunta guía.
+**En pantalla:** anillo que se llena hasta «66,6 %» (2024; +3,7 puntos sobre el 62,9 % de 2023) de las operaciones monetarias en Colombia por canales digitales (Banca de las Oportunidades), con la frase «Pagar ya es digital. Registrar, no.» · formulario que se llena una y otra vez: monto, cuenta, categoría, fecha · días sin registrar con «?» · pregunta guía.
 
 **Guion oral**
 
-> La vida financiera de las personas ocurre cada vez más en el celular: en Colombia, el 66,6 % de las operaciones monetarias se hace por canales digitales, según la Banca de las Oportunidades en su reporte de 2024. Aun así, llevar el control de los propios gastos sigue siendo manual.
+> La vida financiera de las personas ocurre cada vez más en el celular: en 2024, el 66,6 % de las operaciones monetarias en Colombia se hizo por canales digitales, según la Banca de las Oportunidades; en 2023 era el 62,9 %. Pagar ya es digital, pero llevar el control de los propios gastos sigue siendo manual.
 > Registrar una sola compra exige escribir el monto, elegir la cuenta, asignar una categoría y revisar la fecha. Ese esfuerzo se repite con cada compra y el registro se interrumpe. Sin un registro sistemático, la persona no sabe en qué gasta y decide sin información.
 > Esto afecta a cualquiera que controle sus gastos desde el celular; por eso es una aplicación Android, que pensamos publicar en Google Play. La pregunta que guía el proyecto es cómo puede una aplicación móvil con asistencia de inteligencia artificial facilitar el registro y el análisis de los gastos, reduciendo el esfuerzo de captura y contribuyendo a formar el hábito de control financiero.
 

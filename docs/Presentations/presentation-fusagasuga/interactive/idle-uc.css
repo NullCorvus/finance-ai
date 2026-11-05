@@ -18,7 +18,9 @@
 .pulse i:nth-child(2) { animation-delay: 1.1s; }
 .pulse i:nth-child(3) { animation-delay: 2.2s; }
 @keyframes pring { 0% { transform: scale(.55); opacity: .75; } 100% { transform: scale(1.9); opacity: 0; } }
-.pulse-ic { animation: bobsm 3.2s ease-in-out infinite; }
+@keyframes dtip { 0%, 100% { opacity: .55; } 50% { opacity: 1; } }
+.gauge.on .d { animation: dtip 2.4s ease-in-out 2.6s infinite; }
+.g-in .i { animation: bobsm 3.2s ease-in-out infinite; }
 @keyframes bobsm { 0%, 100% { transform: translateY(0) rotate(-4deg); } 50% { transform: translateY(-5px) rotate(4deg); } }
 .frow em { display: inline-block; animation: ftype 9s linear infinite both; animation-delay: calc(var(--n) * .9s); }
 @keyframes ftype {

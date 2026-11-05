@@ -5120,3 +5120,18 @@ If you want, I can point out the exact change needed in `.github/workflows/relea
 **Context**: Conteo de palabras por escena (10 tenía 171, 8 tenía 129, 9 tenía 123). Verificado en Chrome en local: sin hallazgos nuevos de desborde y sin errores de consola. Se regeneran los PDF, se publica el sitio y se hace commit y merge a master por petición del usuario.
 
 ---
+
+## Presentación Fusagasugá — se quita el número de grupo de la portada
+**Timestamp**: 2026-11-05T23:00:00Z
+**User Input**: "great, let's get back to the slides: deelte the number of the group from the first slide, no one told me it, so we will ignore it\nLet's work on the slide Contexto y problema\nis this true? is it the best for this one abou tthe context and the problme?   what improvement can be best for this? well in general the slide but that first card is the one that most give me \"troubles\"let's think about this first slide"
+**AI Response**: "Se elimina la línea «Grupo [N.º por confirmar]» de la portada y su mención en la nota (la portada queda con título, programa, integrantes, fecha y QR). Verificación de la cifra de la escena 2: la búsqueda web encuentra el 66,6 % de 2024 (62,9 % en 2023) como participación de los canales digitales en las operaciones monetarias en el Reporte de Inclusión Financiera 2024 de Banca de las Oportunidades y en una presentación de la Superintendencia Financiera; no se pudo abrir el PDF completo (límite de tamaño de la herramienta), así que queda sin confirmar si mide número o valor de operaciones. Se analiza la escena 2 y se propone mejorarla antes de editar."
+**Context**: Solo se cambió la portada (verificada en Chrome local, sin errores). Se regeneran los PDF y se publica; la escena 2 no se toca todavía, a petición del usuario («let's think about this first»). Sin commit.
+
+---
+## Presentación Fusagasugá — rediseño de la escena 2 (Contexto y problema)
+**Timestamp**: 2026-11-05T23:40:00Z
+**User Input**: "Apply it"
+**AI Response**: "La primera tarjeta cambia los anillos pulsantes (que se salían sobre la etiqueta «Contexto») por un anillo que se llena hasta 66,6 % mientras la cifra cuenta, con el teléfono dentro, un tramo dorado de +3,7 puntos sobre el 62,9 % de 2023 y la frase puente «Pagar ya es digital. Registrar, no.»; el texto dice «en 2024 … se hizo». Se añade una flecha entre las tarjetas 1 y 2 (ajuste de anchos) y la etiqueta de la barra pasa a «Afecta a cualquiera que controle sus gastos desde el celular». Guion de la nota y contenido.md actualizados; la nota advierte confirmar en el PDF si el dato mide número o valor de operaciones. Versión de archivos 20261105n."
+**Context**: Verificado en Chrome en local: arco y cifra sincronizados, punta dorada al final, sin desbordes de la tarjeta, sin errores de consola. El 62,9 % de 2023 y el +3,7 provienen de resultados de búsqueda (informe BDO 2024 y presentación de la SFC), no de la lectura del PDF. Se regeneran los PDF y se publica; sin commit.
+
+---
