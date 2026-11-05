@@ -4860,3 +4860,10 @@ about the colors, they are great because they keep the colors of the original pr
 **Context**: Marca visual provisional en uc.css (reglas nth-child sobre #progress); no cambia contenido ni notas. Verificado en local en las escenas 1, 7 (clara) y 11. Sin publicar ni commit. Pendiente: nombres de B y C y marcar sus aspectos.
 
 ---
+## Presentación Fusagasugá — barra de progreso: aspecto 2 en rojo y aspecto 4 en azul
+**Timestamp**: 2026-11-05T19:40:00Z
+**User Input**: "look, red color the two bar, blue the 4"
+**AI Response**: "Interpretado como la barra del aspecto 2 en rojo y la del aspecto 4 en azul (junto a los aspectos 1 y 6 en morado). Se añaden las reglas en uc.css, con una versión más oscura en las escenas claras; los aspectos 3, 5 y 7 conservan su color. Versión de archivos 20261105h."
+**Context**: Marca visual provisional del reparto; no cambia contenido. Verificado en local en las escenas 7 (clara) y 8 (verde). Se regeneran los PDF y se publica el sitio; sin commit hasta que el usuario lo pida. Pendiente: confirmar quién es cada color.
+
+---
