@@ -1,13 +1,11 @@
 /* ============================================================
    uc.css · tema institucional de la presentación de Fusagasugá
    Marco de la plantilla (verde 00482B, dorado DAAA00, crema F5F2EA, gris 6A7179,
-   títulos en la fuente del PGC, Segoe UI) + acentos de Finance AI (verde oliva y violeta de la IA).
+   títulos en Georgia) + acentos de Finance AI (verde oliva y violeta de la IA).
    Todos los colores están aquí, en tokens: para pasar a un fondo claro basta
    con cambiar el bloque body[data-theme="uc"].
    El respaldo (data-theme="light") conserva los tokens claros del PGC.
    ============================================================ */
-
-:root { --ft: 'Segoe UI Variable Display', 'Segoe UI Variable Text', 'Segoe UI', system-ui, -apple-system, 'Helvetica Neue', Arial, sans-serif; }
 
 body[data-theme="uc"] {
   --bg: #00482b;
@@ -52,8 +50,8 @@ body:not([data-theme="light"]) .ambient i:nth-child(3) { background: radial-grad
 /* ───────── encabezado común ───────── */
 body:not([data-theme="light"]) .eyebrow { color: var(--gold); font-size: 13.5px; }
 body:not([data-theme="light"]) .h2 {
-  font-family: var(--ft);
-  font-weight: 800; font-size: 46px; letter-spacing: -.032em; line-height: 1.06;
+  font-family: Georgia, 'Times New Roman', serif;
+  font-weight: 700; font-size: 46px; letter-spacing: -.012em; line-height: 1.06;
   color: var(--gold);
 }
 body:not([data-theme="light"]) .lbl { color: var(--muted); }
@@ -172,7 +170,7 @@ body[data-theme="dark"] .ambient i:nth-child(1) { background: radial-gradient(ci
 body[data-theme="dark"] .ambient i:nth-child(2) { background: radial-gradient(circle, rgba(0, 93, 56, .5), rgba(0, 93, 56, 0) 66%); }
 body[data-theme="dark"] .ambient i:nth-child(3) { background: radial-gradient(circle, rgba(218, 170, 0, .12), rgba(218, 170, 0, 0) 66%); }
 body[data-theme="dark"] .land { opacity: .85; }
-body[data-theme="dark"] .dm-t { font-size: 66px; letter-spacing: -.035em; }
+body[data-theme="dark"] .dm-t { font-size: 66px; letter-spacing: -.02em; }
 body[data-theme="dark"] .dm-t span { color: #4fc88e; }
 body[data-theme="dark"] .st { background: rgba(0, 72, 43, .38); border-color: rgba(79, 200, 142, .28); animation-name: sthldark; }
 body[data-theme="dark"] .st b { font-family: inherit; font-weight: 800; letter-spacing: -.015em; }

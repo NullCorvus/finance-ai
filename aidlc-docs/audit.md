@@ -4845,3 +4845,11 @@ about the colors, they are great because they keep the colors of the original pr
 **Context**: Verificado con Chrome en local (file://) a 1280 x 720: fuente aplicada, auditoría de desbordes sin hallazgos nuevos (solo la luz de fondo de la portada y el respaldo B, ya existentes) y revisión visual de las escenas 1, 4, 9, 11 y 13. NO publicada ni con PDF regenerado: pendiente de que el usuario apruebe la prueba. Sin commit. En equipos sin Segoe UI (Mac) se usa la fuente del sistema, igual que en el PGC.
 
 ---
+
+## Presentación Fusagasugá — se revierte la fuente de prueba: vuelve Georgia en todos los títulos
+**Timestamp**: 2026-11-05T18:40:00Z
+**User Input**: "i prefer the last font family, could you rever andall theyuse the same pls hahahah im sorry it was a little experiment"
+**AI Response**: "Se revierte el experimento de la fuente del PGC: los títulos y cifras de las 13 escenas y los respaldos vuelven a Georgia (700, espaciado original), incluido el título del cierre, que antes usaba otra fuente, de modo que todos usan la misma. Se conserva el cierre en la familia de verdes y el ajuste de la franja de la escena 6. Se retira la variable --ft. Versión de archivos 20261105f."
+**Context**: Verificado con Chrome en local a 1280 x 720: fuente computada Georgia, 19 escenas sin hallazgos nuevos de desborde (solo la luz de fondo de la portada y el respaldo B, ya existentes), revisión visual de las escenas 4 y 13. Se regeneran los PDF y se republica el sitio.
+
+---
