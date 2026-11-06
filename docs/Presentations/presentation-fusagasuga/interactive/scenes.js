@@ -15,9 +15,15 @@
   /* ───────── 2 · contexto: la cifra cuenta hasta 66,6 ───────── */
   Deck.hook('s-problema', {
     step(n, ctx) {
+      const g = $('#s-problema .gauge');
+      if (g) { g.classList.toggle('nt', !(ctx.animate && n === 0)); g.classList.add('on'); }
       count($('#n666'), 66.6, ctx.animate && n === 0 ? 1700 : 0, dec1);
     },
-    reset() { count($('#n666'), 0, 0, dec1); },
+    reset() {
+      const g = $('#s-problema .gauge');
+      if (g) { g.classList.add('nt'); g.classList.remove('on'); }
+      count($('#n666'), 0, 0, dec1);
+    },
   });
 
   /* ───────── 4 · objetivos: lectura guiada y recorrido CDIO ───────── */

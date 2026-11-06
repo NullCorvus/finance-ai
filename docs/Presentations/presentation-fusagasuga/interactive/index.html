@@ -5,14 +5,14 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Finance AI · Sustentación Fusagasugá</title>
 <meta name="description" content="Presentación interactiva de Finance AI para la sustentación de proyectos de Gestión del Conocimiento.">
-<link rel="stylesheet" href="deck.css?v=20261105-published-sources1">
-<link rel="stylesheet" href="uc.css?v=20261105-published-sources1">
-<link rel="stylesheet" href="scenes.css?v=20261105-published-sources1">
-<link rel="stylesheet" href="idle.css?v=20261105-published-sources1">
-<link rel="stylesheet" href="idle-uc.css?v=20261105-published-sources1">
-<link rel="stylesheet" href="backup.css?v=20261105-published-sources1">
-<link rel="stylesheet" href="backup-uc.css?v=20261105-published-sources1">
-<link rel="stylesheet" href="notes.css?v=20261105-published-sources1">
+<link rel="stylesheet" href="deck.css?v=20261105-pr12-sources">
+<link rel="stylesheet" href="uc.css?v=20261105-pr12-sources">
+<link rel="stylesheet" href="scenes.css?v=20261105-pr12-sources">
+<link rel="stylesheet" href="idle.css?v=20261105-pr12-sources">
+<link rel="stylesheet" href="idle-uc.css?v=20261105-pr12-sources">
+<link rel="stylesheet" href="backup.css?v=20261105-pr12-sources">
+<link rel="stylesheet" href="backup-uc.css?v=20261105-pr12-sources">
+<link rel="stylesheet" href="notes.css?v=20261105-pr12-sources">
 </head>
 <body data-theme="uc">
 
@@ -86,7 +86,6 @@
     <p class="cv-meta rv" data-s="0" data-i="7">Ingeniería de Sistemas y Computación · Sede Facatativá</p>
     <div class="cv-row rv" data-s="0" data-i="8">
       <div class="cv-who">
-        <p class="grp ph">Grupo [N.º por confirmar]</p>
         <ul class="team">
           <li>David Fernando Gonzalez Soler</li>
           <li>Maicol Estiven Fonseca Muñoz</li>
@@ -112,11 +111,11 @@
     <div class="chip chip-c rv z" data-s="0" data-i="8"><div class="bob b3"><span class="mini"><svg class="i"><use href="#i-chart"/></svg><span><b>Alimentación</b><em>63&thinsp;% del presupuesto</em><i class="mb"><u></u></i></span></span></div></div>
   </div>
   <template class="notes" data-time="0:30" data-key="Presentarnos, decir de qué trata el proyecto y anunciar el orden: aspectos de evaluación y, al final, la app funcionando.">
-    <p data-s="0">Buenas. Somos David, Maicol e Ivan, del grupo [N.º] de Ingeniería de Sistemas y Computación.</p>
+    <p data-s="0">Buenas. Somos David, Maicol e Ivan, de Ingeniería de Sistemas y Computación.</p>
     <p data-s="0">Presentamos Finance AI, una aplicación Android para registrar y analizar gastos personales, en la que una inteligencia artificial propone el registro y la persona lo confirma.</p>
     <p data-s="0">Seguiremos el orden de los aspectos de evaluación y al final mostraremos la aplicación funcionando. El código QR permite descargarla.</p>
     <p class="eval">Aspecto 7 · Metodología y socialización (escala 0,5 a 5,0). Según la plantilla, es una lista de verificación para el ensayo: el jurado califica la forma de presentar, no este contenido. 7.1 Presentación personal (1,0): reparte roles y define la vestimenta · 7.2 Dominio de grupo (1,0): quién presenta cada parte · 7.3 Presentación de diapositivas (1,0): revisa orden, claridad y poco texto · 7.4 Manejo verbal y corporal (2,0): ensayen voz, ritmo, contacto visual y postura.</p>
-    <p class="tip">Completar el número de grupo en index.html (clase «ph»). La fecha es el 6 de noviembre de 2026. Si el docente es Oscar Jobany Gómez Ochoa, como en el PGC, agradecerle. La portada no lleva código estudiantil.</p>
+    <p class="tip">La fecha es el 6 de noviembre de 2026. Si el docente es Oscar Jobany Gómez Ochoa, como en el PGC, agradecerle. La portada no lleva código estudiantil.</p>
     <p class="tr">Empecemos por el contexto y el problema.</p>
   </template>
 </section>
@@ -127,12 +126,17 @@
   <div class="crit"><span class="cr rv f" data-s="0"><b>1.1</b> Introducción</span><span class="cr rv f" data-s="1"><b>1.2</b> Planteamiento del problema</span></div>
 
   <article class="card pb-a rv z" data-s="0" data-i="1">
-    <p class="lbl">Contexto</p>
-    <div class="pulse" aria-hidden="true"><i></i><i></i><i></i><span class="pulse-ic"><svg class="i"><use href="#i-phone"/></svg></span></div>
-    <p class="stat"><span id="n666">0,0</span><small>&thinsp;%</small></p>
-    <p class="body">de las operaciones monetarias en Colombia se hace por canales digitales</p>
-    <p class="src">Banca de las Oportunidades, 2024</p>
+    <p class="lbl">Contexto · 2024</p>
+    <div class="gauge" aria-hidden="true">
+      <svg viewBox="0 0 120 120"><circle class="t" cx="60" cy="60" r="50"/><circle class="v" cx="60" cy="60" r="50"/><circle class="d" cx="60" cy="60" r="50"/></svg>
+      <div class="g-in"><svg class="i"><use href="#i-phone"/></svg><p class="stat"><span id="n666">0,0</span><small>&thinsp;%</small></p></div>
+    </div>
+    <p class="body">de las operaciones monetarias en Colombia se hizo por canales digitales</p>
+    <p class="src">Banca de las Oportunidades, 2024<br><b>+3,7 pts</b> sobre 2023 (62,9&thinsp;%)</p>
+    <p class="bridge">Pagar ya es digital. <b>Registrar, no.</b></p>
   </article>
+
+  <div class="pb-arrow a1 rv f" data-s="1" data-i="0" aria-hidden="true"><span></span></div>
 
   <article class="card pb-b rv z" data-s="1">
     <p class="lbl">En cada compra</p>
@@ -166,15 +170,15 @@
   <div class="q-bar rv" data-s="2">
     <svg class="i"><use href="#i-spark"/></svg>
     <p><b>Pregunta guía.</b> ¿Cómo puede una app móvil con asistencia de IA facilitar el registro y el análisis de los gastos personales, reduciendo el esfuerzo de captura?</p>
-    <span class="who"><svg class="i"><use href="#i-phone"/></svg>App Android · publicación prevista en Google Play</span>
+    <span class="who"><svg class="i"><use href="#i-users"/></svg><span><b>Afecta a</b> cualquiera que controle sus gastos desde el celular</span></span>
   </div>
   <template class="notes" data-time="1:20" data-key="Contexto (digital) → problema (esfuerzo de registrar) → quién lo sufre y la pregunta guía.">
-    <p data-s="0">La vida financiera de las personas ocurre cada vez más en el celular: en Colombia, el 66,6 % de las operaciones monetarias se hace por canales digitales, según la Banca de las Oportunidades en su reporte de 2024. Aun así, llevar el control de los propios gastos sigue siendo manual.</p>
+    <p data-s="0">La vida financiera de las personas ocurre cada vez más en el celular: en 2024, el 66,6 % de las operaciones monetarias en Colombia se hizo por canales digitales, según la Banca de las Oportunidades; en 2023 era el 62,9 %. Pagar ya es digital, pero llevar el control de los propios gastos sigue siendo manual.</p>
     <p data-s="1">Registrar una sola compra exige escribir el monto, elegir la cuenta, asignar una categoría y revisar la fecha. Ese esfuerzo se repite con cada compra y el registro se interrumpe. Sin un registro sistemático, la persona no sabe en qué gasta y decide sin información.</p>
     <p data-s="2">Esto afecta a cualquiera que controle sus gastos desde el celular; por eso es una aplicación Android, que pensamos publicar en Google Play. La pregunta que guía el proyecto es cómo puede una aplicación móvil con asistencia de inteligencia artificial facilitar el registro y el análisis de los gastos, reduciendo el esfuerzo de captura y contribuyendo a formar el hábito de control financiero.</p>
     <p class="eval">Aspecto 1 · Organización (escala 0,5 a 5,0). El jurado evalúa: contexto claro; problema bien definido; importancia del proyecto; objetivos medibles y alineados con el problema. 1.1 Introducción (1,0): contexto del proyecto y qué se presentará · 1.2 Planteamiento del problema (1,5): problema, a quién afecta y pregunta guía.</p>
     <p class="pz">Lo que conviene esperar antes de que aparezca lo siguiente (recomendación, ~45 % de lo que tardas en decirlo): paso 1: 12 s · paso 2: 10 s.</p>
-    <p class="tip">La semana con huecos es ilustrativa, no un dato medido. La cifra de retención de apps de finanzas (4,2 %, Curry 2026) se dice en la escena 7, no aquí. Texto aprobado del problema: PGC-PROPUESTA.md, v5.</p>
+    <p class="tip">La semana con huecos es ilustrativa, no un dato medido. Las cifras de la tarjeta 1 (66,6 % en 2024, 62,9 % en 2023, +3,7 puntos) salen del Reporte de Inclusión Financiera 2024 de la Banca de las Oportunidades y de una presentación de la Superintendencia Financiera, que lo rotula «Internet/App»; confirmar en el PDF si mide número o valor de operaciones y no decir cuál. La cifra de retención de apps de finanzas (4,2 %, Curry 2026) se dice en la escena 7, no aquí. Texto aprobado del problema: PGC-PROPUESTA.md, v5.</p>
     <p class="tr">Con ese problema claro, veamos por qué vale la pena resolverlo.</p>
   </template>
 </section>
@@ -924,7 +928,7 @@
 </div>
 
 <div class="sr" id="live" aria-live="polite"></div>
-<script src="deck.js?v=20261105-published-sources1"></script>
-<script src="scenes.js?v=20261105-published-sources1"></script>
+<script src="deck.js?v=20261105-pr12-sources"></script>
+<script src="scenes.js?v=20261105-pr12-sources"></script>
 </body></html>
 

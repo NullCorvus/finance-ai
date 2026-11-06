@@ -5189,3 +5189,48 @@ no incluamos trello simplemente quita todo oo inecesario osea"
 **Context**: La publicación fue autorizada, pero falta acceso al repositorio que controla el enlace. Paso 12 pendiente; no se declara publicado.
 
 ---
+## Presentación Fusagasugá — objetivo general manual, objetivos específicos automáticos
+**Timestamp**: 2026-11-05T21:10:00Z
+**User Input**: "this one's strange.... [first screenshot) \nabout slides and the animations for the objectives , id like that the general objective do not run automatically, it's better manually in that way my teammate can pass the animation when im repeating the specific part, however it should be automatic in the part of the specific objectives, could you do that for me?"
+**AI Response**: "En la escena 4 los tres pasos de lectura del objetivo general (qué, cómo, para qué) pasan a manuales: en deck.js el valor -1 de la tabla DWELL significa «espera la tecla» (en el recorrido sin manos usa 7 s); los pasos de los objetivos específicos siguen automáticos (7,5 s y 5,5 s). La nota de la escena lo indica. Versión de archivos 20261105j. La tarjeta «Viable como prototipo académico» de la escena 3 se renderiza igual que en la captura; se preguntó qué se ve raro."
+**Context**: Probado en Chrome en local: sin tocar nada, 15 s después sigue en «qué»; cada → avanza una parte; tras el tercero, los específicos aparecen solos (2 a 4 y luego 5 objetivos iluminados). Sin errores de consola. Se publica; sin commit hasta que lo pida.
+
+---
+## Presentación Fusagasugá — tarjeta «Viable con bajo costo» (escena 3)
+**Timestamp**: 2026-11-05T21:30:00Z
+**User Input**: "The wording" (respuesta a qué se ve raro en la tarjeta «Viable como prototipo académico»)
+**AI Response**: "«Prototipo académico» ya no encaja con el plan de publicar en Google Play, así que la tarjeta pasa a «Viable con bajo costo» (título de dos líneas) y el guion de las notas dice «herramientas gratuitas o de bajo costo y servicios con nivel gratuito o cuota de prueba, sujetos a las condiciones de los proveedores», fiel a la propuesta aprobada. Se actualizan también la clave de la nota y contenido.md. Versión de archivos 20261105k."
+**Context**: Verificado en Chrome en local (la tarjeta se ve en dos líneas, sin desbordes). No se afirma que publicar en Google Play sea gratuito. Se regeneran los PDF y se publica; sin commit hasta que lo pida.
+
+---
+## Presentación Fusagasugá — «Evalúan» solo con palabras de la plantilla y recorte de texto en pantalla
+**Timestamp**: 2026-11-05T22:10:00Z
+**User Input**: "great, in the points when you thiknn there are too many text you can delete it just a bit, can you expaminate and change that a bit pls for now, and then publish and merge"
+**AI Response**: "Los bloques «Evalúan» de las notas (portada, escenas 2, 3, 4, 11, 12 y 13) se reescriben solo con el texto de la plantilla: criterios, valores y las pistas oficiales entre corchetes (p. ej. 1.2 «problema, a quién afecta y pregunta guía», 6.2 «qué deja el proyecto a la comunidad, la disciplina o la organización»); se quitan mis paráfrasis y la frase «el criterio más pesado de tu parte». Se recorta un poco el texto en pantalla de las escenas más cargadas (8, 9, 10 y 11) sin cambiar ninguna afirmación: por ejemplo «Al corregir un movimiento, todo se recalcula en una sola transacción» y «Cada cifra, con su fecha de verificación». Versión de archivos 20261105l."
+**Context**: Conteo de palabras por escena (10 tenía 171, 8 tenía 129, 9 tenía 123). Verificado en Chrome en local: sin hallazgos nuevos de desborde y sin errores de consola. Se regeneran los PDF, se publica el sitio y se hace commit y merge a master por petición del usuario.
+
+---
+
+## Presentación Fusagasugá — se quita el número de grupo de la portada
+**Timestamp**: 2026-11-05T23:00:00Z
+**User Input**: "great, let's get back to the slides: deelte the number of the group from the first slide, no one told me it, so we will ignore it\nLet's work on the slide Contexto y problema\nis this true? is it the best for this one abou tthe context and the problme?   what improvement can be best for this? well in general the slide but that first card is the one that most give me \"troubles\"let's think about this first slide"
+**AI Response**: "Se elimina la línea «Grupo [N.º por confirmar]» de la portada y su mención en la nota (la portada queda con título, programa, integrantes, fecha y QR). Verificación de la cifra de la escena 2: la búsqueda web encuentra el 66,6 % de 2024 (62,9 % en 2023) como participación de los canales digitales en las operaciones monetarias en el Reporte de Inclusión Financiera 2024 de Banca de las Oportunidades y en una presentación de la Superintendencia Financiera; no se pudo abrir el PDF completo (límite de tamaño de la herramienta), así que queda sin confirmar si mide número o valor de operaciones. Se analiza la escena 2 y se propone mejorarla antes de editar."
+**Context**: Solo se cambió la portada (verificada en Chrome local, sin errores). Se regeneran los PDF y se publica; la escena 2 no se toca todavía, a petición del usuario («let's think about this first»). Sin commit.
+
+---
+## Presentación Fusagasugá — rediseño de la escena 2 (Contexto y problema)
+**Timestamp**: 2026-11-05T23:40:00Z
+**User Input**: "Apply it"
+**AI Response**: "La primera tarjeta cambia los anillos pulsantes (que se salían sobre la etiqueta «Contexto») por un anillo que se llena hasta 66,6 % mientras la cifra cuenta, con el teléfono dentro, un tramo dorado de +3,7 puntos sobre el 62,9 % de 2023 y la frase puente «Pagar ya es digital. Registrar, no.»; el texto dice «en 2024 … se hizo». Se añade una flecha entre las tarjetas 1 y 2 (ajuste de anchos) y la etiqueta de la barra pasa a «Afecta a cualquiera que controle sus gastos desde el celular». Guion de la nota y contenido.md actualizados; la nota advierte confirmar en el PDF si el dato mide número o valor de operaciones. Versión de archivos 20261105n."
+**Context**: Verificado en Chrome en local: arco y cifra sincronizados, punta dorada al final, sin desbordes de la tarjeta, sin errores de consola. El 62,9 % de 2023 y el +3,7 provienen de resultados de búsqueda (informe BDO 2024 y presentación de la SFC), no de la lectura del PDF. Se regeneran los PDF y se publica; sin commit.
+
+---
+
+
+## Fusagasugá — pull request de integración
+**Timestamp**: 2026-11-06T00:16:44Z
+**User Input**: "es una branch como no voy a poder hacer push osea o abre pull reuqest o algo"
+**AI Response**: "Abierto PR #12 de docs/presentation-fusagasuga a master en NullCorvus/finance-ai. Integrados los nuevos cambios de master para resolver conflictos, conservando el nuevo anillo de contexto, la portada sin número de grupo, el objetivo general manual y los cambios de referencias. El PR no se fusiona."
+**Context**: https://github.com/NullCorvus/finance-ai/pull/12. Integración del código; GitHub Pages sigue dependiendo del repositorio separado de publicación.
+
+---
