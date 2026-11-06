@@ -65,7 +65,7 @@ Tres escenas rompen el verde a propósito (atributo `data-theme` en la escena; l
 |---|---|---|
 | 7 · Marco teórico | `light`: el blanco suave del PGC con verde oliva y violeta | La teoría se lee como una página limpia |
 | 9 · Seguridad y acceso | `night`: negro con dorado y tarjetas blancas | Una bóveda; el criterio de más peso |
-| 13 · Cierre | `dark`: el negro azulado del PGC con verde oliva | El mismo cierre oscuro de la presentación anterior, antes de la demostración |
+| 13 · Cierre | el verde y el dorado generales de la presentación (sin tema propio) | Cierra con los mismos colores que el resto; sin fila de respaldos |
 
 Si se añade una escena nueva y no se pone `data-theme`, usa el verde institucional. Si se cambia el CSS, hay que subir el `?v=` de los `<link>` en `index.html` para que los navegadores no sirvan la copia vieja.
 

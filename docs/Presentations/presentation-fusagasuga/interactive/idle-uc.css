@@ -168,8 +168,6 @@
 .pg u { animation: pgfill 12s linear infinite; }
 .st:nth-child(2) .pg u { animation-delay: 3s; } .st:nth-child(3) .pg u { animation-delay: 6s; } .st:nth-child(4) .pg u { animation-delay: 9s; }
 @keyframes pgfill { 0% { width: 0; } 22% { width: 100%; } 86% { width: 100%; } 100% { width: 0; } }
-.bk kbd { animation: kbdp 4.2s ease-in-out infinite; }
-.bk:nth-of-type(2) kbd { animation-delay: -.6s; } .bk:nth-of-type(3) kbd { animation-delay: -1.2s; } .bk:nth-of-type(4) kbd { animation-delay: -1.8s; } .bk:nth-of-type(5) kbd { animation-delay: -2.4s; } .bk:nth-of-type(6) kbd { animation-delay: -3s; }
 @keyframes kbdp { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-3px); } }
 
 /*@@MORE@@*/
@@ -179,4 +177,3 @@
 @keyframes shglow { 0%, 100% { opacity: .55; transform: scale(.92); } 50% { opacity: 1; transform: scale(1.08); } }
 
 /* escena 13 (negro del PGC): la tarjeta activa se aclara en verde oliva */
-@keyframes sthldark { 0%, 24% { background: rgba(10, 122, 70, .55); border-color: #4fc88e; transform: translateY(-4px); } 30%, 100% { background: rgba(0, 72, 43, .38); border-color: rgba(79, 200, 142, .28); transform: none; } }

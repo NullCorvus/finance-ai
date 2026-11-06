@@ -63,11 +63,11 @@ Los tiempos salen de contar las palabras de cada guion a unas 119 por minuto (el
 
 **Criterios:** 1.3 Justificación (1,0). **Presenta:** [[ ]]
 
-**En pantalla:** cuatro tarjetas: «IA accesible» · «Para quién» · «La persona decide» · «Viable con bajo costo».
+**En pantalla:** cuatro tarjetas: «IA accesible» · «Para quién» · «La persona decide» · «Un presupuesto al alcance».
 
 **Guion oral**
 
-> El proyecto se justifica por cuatro razones. La inteligencia artificial para interpretar gastos ya es accesible, lo que permite reducir el esfuerzo de registrar. Sirve a cualquier persona que quiera controlar sus gastos desde el celular: es una aplicación Android, con publicación prevista en Google Play. La persona conserva el control: la inteligencia artificial solo propone, y ella confirma, edita o descarta antes de guardar. Y es viable con bajo costo: herramientas gratuitas o de bajo costo y servicios con nivel gratuito o cuota de prueba, sujetos a las condiciones de los proveedores.
+> El proyecto se justifica por cuatro razones. La inteligencia artificial para interpretar gastos ya es accesible, lo que permite reducir el esfuerzo de registrar. Sirve a cualquier persona que quiera controlar sus gastos desde el celular: es una aplicación Android, con publicación prevista en Google Play. La persona conserva el control: la inteligencia artificial solo propone, y ella confirma, edita o descarta antes de guardar. Y el presupuesto está al alcance: herramientas de bajo costo y servicios con nivel gratuito o cuota de prueba, sujetos a las condiciones de los proveedores.
 
 **Apoyo:** justificación aprobada (v4, 2026-08-15). La viabilidad de la propuesta dice «servicios con niveles gratuitos o cuotas de prueba, sujetos a las condiciones vigentes de los proveedores»; si preguntan por costos, existe `docs/receipt-ai-cost-measurement-2026-10-26.md`.
 
@@ -182,13 +182,12 @@ Los tiempos salen de contar las palabras de cada guion a unas 119 por minuto (el
 
 **Criterios:** 6.1 Coherencia con el desarrollo de los objetivos (3,0). **Presenta:** [[ ]]
 
-**En pantalla:** cinco pares objetivo → conclusión que encajan con un visado; el quinto, parcial, queda ámbar. Debajo, recuadro «Aún sin medir».
+**En pantalla:** cinco pares objetivo → conclusión que encajan con un visado; el quinto, parcial, queda ámbar y dice cuál es el siguiente paso.
 
 **Guion oral**
 
 > Una conclusión por objetivo. Concebir: el alcance, los requisitos y el flujo de confirmar, editar o descartar están documentados y funcionan en la aplicación. Diseñar: la arquitectura, el modelo de datos y las pantallas quedaron documentados antes de construir. Implementar la captura: una frase, un recibo o un dictado producen una propuesta que la persona confirma. Implementar el análisis: los gastos confirmados se agrupan por categoría y período y alimentan los presupuestos.
-> Operar: el servicio está desplegado en la nube y lo probamos en un teléfono real, con 415 pruebas del servidor y 573 de la aplicación, verificadas en octubre. Falta publicarla en Google Play y validarla con usuarios reales.
-> Todavía no podemos afirmar que reduzca el esfuerzo de captura ni que forme hábito: eso es lo que sigue por medir.
+> Operar: el servicio está desplegado en la nube y lo probamos en un teléfono real, con 415 pruebas del servidor y 573 de la aplicación, verificadas en octubre. El siguiente paso es publicarla en Google Play y validarla con usuarios reales; ahí mediremos si de verdad reduce el esfuerzo de captura.
 
 **Apoyo:** evidencias E1–E4 y E19. Documentos: `ALCANCE.md`, `FEATURES.md`, `BACKLOG-AND-STORIES.md` (objetivo 1), `ARCHITECTURE.md`, `SCHEMA.md`, `UML.md`, `MOCKUPS.md` (objetivo 2). Si el objetivo 5 vuelve al texto de la propuesta, esta conclusión debe decir que falta la encuesta de usabilidad.
 
@@ -196,13 +195,13 @@ Los tiempos salen de contar las palabras de cada guion a unas 119 por minuto (el
 
 **Criterios:** 6.2 Aportes (2,0). **Presenta:** [[ ]]
 
-**En pantalla:** tres anillos: Personas · Ingeniería de software · Sociedad.
+**En pantalla:** tres anillos, una frase corta cada uno: Personas (registrar con una frase y seguir al mando) · Ingeniería de software con IA (el patrón documentado) · Sociedad (un paso hacia una IA vista como asistente, no como reemplazo).
 
 **Guion oral**
 
-> Dejamos tres aportes. A las personas que registran sus gastos, una herramienta que propone el registro y no escribe por sí sola; que reduzca el esfuerzo es nuestra hipótesis, todavía sin medir. A la ingeniería de software con IA, un patrón aplicado, probado y documentado: la IA propone, un servicio determinista valida y la persona confirma. A la sociedad, la apuesta de que más personas lleven el control de su dinero y decidan con información, en un país donde el 66,6 % de las operaciones monetarias ya es digital. Publicarla en Google Play la pone al alcance de cualquiera, y validarla con usuarios reales dirá si de verdad ayuda.
+> Dejamos tres aportes. A las personas: registrar un gasto con una frase, sin perder el control de lo que se guarda. A la ingeniería de software con IA, un patrón documentado: la IA propone, un servicio valida y la persona confirma. Y a la sociedad: un paso hacia un mundo que ve la inteligencia artificial como asistente y no como reemplazo. Una IA que propone, y una persona que decide.
 
-<!-- TODO: los tres aportes son una redacción a partir de lo verificado; el equipo decide si los suscribe y si agrega alguno más (por ejemplo, abrir el código o la documentación, si ese es el plan). Cambio del 2026-11-05 a petición del equipo: el tercer aporte ya no es «a la universidad» (no se hizo un proyecto de ese tipo) sino «a la sociedad», con Google Play y la validación con usuarios reales como prueba pendiente. Es una apuesta, no un resultado: no afirmar que ya formó hábitos ni que ya llegó a estudiantes. -->
+<!-- TODO: los tres aportes son una redacción a partir de lo verificado; el equipo decide si los suscribe y si agrega alguno más (por ejemplo, «Al conocimiento»: decisiones y bitácora con fecha). Cambio del 2026-11-06 a petición del equipo: tres frases cortas, sin repetir la cifra de 66,6 % ni Google Play (están en las escenas 2, 4 y 11); el tercero es la visión de una IA asistente. Es una apuesta, no un resultado: decir «un paso hacia». -->
 
 ### Escena 13 · Cierre y paso a la aplicación (0:30)
 
