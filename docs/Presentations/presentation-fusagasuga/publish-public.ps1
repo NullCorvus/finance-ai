@@ -20,6 +20,8 @@ try {
 
   Copy-Item (Join-Path $here 'interactive\*') $repo -Recurse -Force
   Copy-Item (Join-Path $here 'Finance-AI-Fusagasuga.pdf'), (Join-Path $here 'Finance-AI-Fusagasuga-principal.pdf') $repo -Force
+  $study = Join-Path $here 'Finance-AI-guia-de-estudio-aspectos-1-6-7.pdf'
+  if (Test-Path $study) { Copy-Item $study $repo -Force }
   Remove-Item (Join-Path $repo 'assets\degradado-dorado.png') -Force -ErrorAction SilentlyContinue
 
   $index = Join-Path $repo 'index.html'
@@ -39,6 +41,7 @@ Presentación interactiva del proyecto **Finance AI** (Universidad de Cundinamar
 - **Ver la presentación:** https://maicol2363.github.io/finance-ai-fusagasuga/
 - PDF completo (13 escenas y 6 de respaldo): [Finance-AI-Fusagasuga.pdf](Finance-AI-Fusagasuga.pdf)
 - PDF de las 13 escenas principales: [Finance-AI-Fusagasuga-principal.pdf](Finance-AI-Fusagasuga-principal.pdf)
+- Guía de estudio (aspectos 1, 6 y 7, para leer en el celular): [Finance-AI-guia-de-estudio-aspectos-1-6-7.pdf](Finance-AI-guia-de-estudio-aspectos-1-6-7.pdf)
 
 Teclas: `→` avanza, `←` retrocede, `A`–`F` abren el respaldo técnico (`Esc` vuelve), `Mayús+F` pantalla completa, `V` reduce o activa el movimiento.
 '@

@@ -162,9 +162,6 @@ body[data-theme="night"] {
   --green: #8fb42c; --green-s: rgba(143, 180, 44, .2); --amb: 1;
   --gold: #daaa00; --gold-l: #f0c93a; --cream: #f5f2ea; --uc-deep: #00331e;
 }
-/* dark: los tokens del PGC (deck.css) y el dorado de la plantilla pasa a verde oliva */
-body[data-theme="dark"] { --bg: #04140d; --gold: #4fc88e; --gold-l: #8be6b8; --cream: #eef1f5; --uc-deep: #04140d; --line: rgba(255, 255, 255, .12); --line2: rgba(255, 255, 255, .22); }
-
 /* ----- light (escena 7): chips y barra legibles sobre blanco ----- */
 body[data-theme="light"] .cr { background: var(--green-s); color: var(--green-d); border-color: var(--green); }
 body[data-theme="light"] .cr.on { animation: none; }
@@ -189,14 +186,11 @@ body[data-theme="night"] .land { opacity: .55; }
 body[data-theme="night"] .ambient i:nth-child(1) { background: radial-gradient(circle, rgba(218, 170, 0, .26), transparent 66%); }
 .sh-glow { z-index: -1; position: absolute; left: 15px; top: 20px; width: 260px; height: 260px; border-radius: 50%; background: radial-gradient(circle, rgba(240, 201, 58, .34), transparent 64%); }
 
-/* ----- dark (escena 13): como el cierre del PGC ----- */
-body[data-theme="dark"] .ambient i:nth-child(1) { background: radial-gradient(circle, rgba(10, 122, 70, .42), rgba(10, 122, 70, 0) 66%); }
-body[data-theme="dark"] .ambient i:nth-child(2) { background: radial-gradient(circle, rgba(0, 93, 56, .5), rgba(0, 93, 56, 0) 66%); }
-body[data-theme="dark"] .ambient i:nth-child(3) { background: radial-gradient(circle, rgba(218, 170, 0, .12), rgba(218, 170, 0, 0) 66%); }
-body[data-theme="dark"] .land { opacity: .85; }
-body[data-theme="dark"] .dm-t { font-size: 66px; letter-spacing: -.02em; }
-body[data-theme="dark"] .dm-t span { color: #4fc88e; }
-body[data-theme="dark"] .st { background: rgba(0, 72, 43, .38); border-color: rgba(79, 200, 142, .28); animation-name: sthldark; }
-body[data-theme="dark"] .st b { font-family: inherit; font-weight: 800; letter-spacing: -.015em; }
+/* ----- dark (escena 13): fondo negro con el verde de las colinas y el dorado de siempre ----- */
+body[data-theme="dark"] { --bg: #050806; --uc-deep: #050806; --line: rgba(255, 255, 255, .12); --line2: rgba(255, 255, 255, .22); --gold: #daaa00; --gold-l: #f0c93a; --cream: #f5f2ea; }
+body[data-theme="dark"] .ambient i:nth-child(1) { background: radial-gradient(circle, rgba(0, 72, 43, .6), rgba(0, 72, 43, 0) 66%); }
+body[data-theme="dark"] .ambient i:nth-child(2) { background: radial-gradient(circle, rgba(10, 122, 70, .3), rgba(10, 122, 70, 0) 66%); }
+body[data-theme="dark"] .ambient i:nth-child(3) { background: radial-gradient(circle, rgba(218, 170, 0, .1), rgba(218, 170, 0, 0) 66%); }
+body[data-theme="dark"] .land { opacity: .9; }
+body[data-theme="dark"] .st { background: rgba(255, 255, 255, .04); border-color: rgba(218, 170, 0, .3); }
 body[data-theme="dark"] .play.on { color: #0e1217; }
-

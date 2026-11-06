@@ -397,7 +397,7 @@ body[data-theme="uc"] .rw.part { background: #fffaf0; }
 .unm b { color: var(--gold-l); }
 
 /* ───────── 12 · aportes ───────── */
-.ap-row { position: absolute; left: 72px; right: 72px; top: 160px; display: grid; grid-template-columns: repeat(3, 1fr); gap: 30px; }
+.ap-row { position: absolute; left: 72px; right: 72px; top: 178px; display: grid; grid-template-columns: repeat(3, 1fr); gap: 30px; }
 .ap { display: flex; flex-direction: column; align-items: center; gap: 12px; padding: 6px 14px; text-align: center; }
 .orbit { position: relative; width: 204px; height: 204px; margin-bottom: 8px; }
 .orbit i { position: absolute; inset: 0; border-radius: 50%; border: 2px dashed rgba(218, 170, 0, .55); }
@@ -405,26 +405,22 @@ body[data-theme="uc"] .rw.part { background: #fffaf0; }
 .orbit i::before { content: ""; position: absolute; top: -7px; left: 50%; width: 12px; height: 12px; margin-left: -6px; border-radius: 50%; background: var(--gold-l); box-shadow: 0 0 12px var(--gold); }
 .orbit .cir { position: absolute; inset: 36px; display: grid; place-items: center; border-radius: 50%; background: var(--cream); color: #00482b; box-shadow: 0 12px 30px rgba(0, 20, 10, .4); }
 .cir .i { width: 54px; height: 54px; stroke-width: 1.5; }
-.ap h3 { font-family: Georgia, 'Times New Roman', serif; font-size: 25px; line-height: 1.15; color: var(--gold-l); }
-.ap p { font-size: 17.5px; line-height: 1.45; color: var(--cream); }
+.ap h3 { font-family: Georgia, 'Times New Roman', serif; font-size: 28px; line-height: 1.15; color: var(--gold-l); }
+.ap p { font-size: 21px; line-height: 1.4; color: var(--cream); }
 .ap p b { color: var(--gold-l); }
 
 /* ───────── 13 · cierre y demostración ───────── */
-.dm-t { position: absolute; left: 72px; top: 128px; width: 960px; font-family: Georgia, 'Times New Roman', serif; font-weight: 700; font-size: 70px; line-height: 1.02; letter-spacing: -.02em; color: var(--cream); }
+.dm-t { position: absolute; left: 72px; top: 128px; width: 960px; font-family: Georgia, 'Times New Roman', serif; font-weight: 700; font-size: 66px; line-height: 1.02; letter-spacing: -.02em; color: var(--cream); }
 .dm-t span { color: var(--gold); }
 .dm-s { position: absolute; left: 72px; top: 232px; width: 800px; font-size: 23px; color: var(--ink2); }
 .dm-qr { position: absolute; right: 72px; top: 130px; width: 152px; }
 .dm-qr img { width: 128px; height: 128px; }
-.dm-steps { position: absolute; left: 72px; right: 72px; top: 330px; display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; }
-.st { padding: 16px 18px 18px; border-radius: 18px; background: rgba(0, 30, 17, .55); border: 1.5px solid rgba(255, 255, 255, .22); }
+.dm-steps { position: absolute; left: 72px; right: 72px; top: 360px; display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; }
+.st { padding: 22px 18px 24px; border-radius: 18px; background: rgba(0, 30, 17, .55); border: 1.5px solid rgba(255, 255, 255, .22); }
 .st .n { font-size: 12px; font-weight: 800; letter-spacing: .14em; color: var(--gold); }
 .st b { display: block; margin: 8px 0 6px; font-family: Georgia, 'Times New Roman', serif; font-size: 21px; line-height: 1.2; color: var(--cream); }
-.st small { display: block; font-size: 14px; line-height: 1.35; color: var(--ink2); }
+.st small { display: block; font-size: 15px; line-height: 1.35; color: var(--ink2); }
 .pg { display: block; height: 5px; margin-top: 14px; border-radius: 5px; background: rgba(255, 255, 255, .18); overflow: hidden; }
 .pg u { display: block; width: 0; height: 100%; border-radius: 5px; background: var(--gold); text-decoration: none; }
-.dm-bk { position: absolute; left: 72px; right: 72px; top: 520px; display: flex; flex-wrap: wrap; align-items: center; gap: 10px; }
-.bk-l { margin-right: 6px; font-size: 14px; color: var(--ink2); }
-.bk { display: inline-flex; align-items: center; gap: 8px; padding: 6px 14px 6px 8px; border-radius: 999px; border: 1.5px solid rgba(255, 255, 255, .28); font-size: 13.5px; color: var(--cream); }
-.bk kbd { display: grid; place-items: center; width: 24px; height: 24px; border-radius: 7px; background: var(--gold); color: #1d2a12; font: 800 12px 'Segoe UI', sans-serif; }
 
 /*@@MORE@@*/
