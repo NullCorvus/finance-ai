@@ -44,3 +44,14 @@ Each future implementation task names one existing story ID, approved contracts/
 Validate all seven new story records and required fields; retain all 23 previous records/estimates; preserve the 15 original HU definitions. Check atomic ticket return, server-enforced visibility, administrator invariants/concurrency, mandatory activation logging, role/plan separation, exclusions and existing source-vs-plan distinctions.
 
 Security Baseline is enabled and its documentation coverage is evaluated in shared-security-requirements.md. Partial PBT is retained but executable test rules are N/A because no functions, serializers or tests change. Full Resiliency Baseline is disabled and skipped. No diagram is added; portable tables and text describe the workflow. Audit edits are append-only.
+
+## Authorized follow-up — Administrator Trello card
+The user's subsequent explicit request authorizes one Administrator parent card on the active Finance AI board, following the Support Agent structure. This supersedes only the earlier no-Trello boundary for this follow-up. PR #15 was independently merged before this follow-up. Use its published master documents; publish tracking on a fresh documentation branch from master. No merge, code or other-card changes are authorized.
+
+- [x] Confirm the active board, inspect all lists/cards and check for an existing Administrator card.
+- [x] Create one Backlog card with web stack, repository boundaries, approved criteria and published master/merged PR references.
+- [x] Add five ordered ADM subtasks (21 provisional SP) and two separate shared SEC subtasks (21 provisional SP, counted once).
+- [x] Read back the full card/checklists and verify status, content, ordering and estimates.
+- [ ] Add tracking references, validate documentation and publish the follow-up on the existing PR branch.
+
+**Follow-up card:** [Administrator — account and escalation management MVP](https://trello.com/c/BrAHthwr), verified open/incomplete in Backlog, with exactly two ordered checklists (five ADM and two shared SEC items). All criteria match the canonical backlog. PR #15 merged as 6f1d133 before this follow-up; card links were corrected to master after live verification. Tracking branch: codex/admin-trello-tracking-20261107, based on that master commit. No prerequisite checklist, owner/deadline, other-card edits or code changes.

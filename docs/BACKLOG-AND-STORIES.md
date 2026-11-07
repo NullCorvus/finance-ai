@@ -665,6 +665,8 @@ The approved scope adds exactly five Administrator stories and two shared securi
 
 The complete register now contains 30 stories: 15 original HU records, six SUP records, two USR-SUP dependencies, five ADM records and two SEC records, under 15 product backlog items. There is no new Auditor-interface story, super_admin role, internal-notes system or portal-based administrator provisioning.
 
+**Implementation tracker:** [Administrator — account and escalation management MVP](https://trello.com/c/BrAHthwr), one parent card on the active Finance AI board in Backlog. Its five ADM items total 21 provisional SP; the separate two SEC items total 21 shared SP counted once. All seven remain incomplete. The card includes the web stack, code boundaries, full criteria and the documentation published on master through merged PR #15; it does not establish implementation completion.
+
 ### Planned product backlog additions
 
 | Code | Feature | Priority | Status | Ownership |
@@ -974,4 +976,4 @@ The existing Fibonacci register has metadata/catalog work around 2–3 points, m
 
 Reuse existing password/session infrastructure. Estimate staff portal scaffolding and controlled backend administrator provisioning once as shared technical prerequisites. Staff activation belongs to ADM-03; Admin MFA/browser-session integration belongs to SEC-01; shared security audit infrastructure belongs to SEC-02. Do not charge those again to every ADM/SUP/Auditor story. SUP-05's 3 points still cover support-side escalation, not ADM-05's administrator return/resolution flow. SUP-06 and USR-SUP-02 retain their existing history/customer UI responsibilities; this patch does not re-estimate them.
 
-All seven new stories remain Not started. Requirements approval and publication do not establish endpoints, tables, MFA, audit persistence or staff interfaces. No Trello changes are part of this task.
+All seven new stories remain Not started. Requirements approval and publication do not establish endpoints, tables, MFA, audit persistence or staff interfaces. The subsequent explicitly authorized Trello follow-up tracks these seven stories in the parent card linked above; no additional stories or estimates are introduced.

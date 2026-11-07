@@ -476,3 +476,12 @@ still outstanding there.
 - **Skipped**: Application design implementation details, units generation, code generation, migrations, application build/test, deployment and Operations: documentation-only authorization.
 - **Blockers**: No additional functional decision blocking the approved scope identified. Technical design parameters and delivery of shared foundations are implementation responsibilities, not new requirements-discovery questions.
 - **Extensions**: Security Baseline documentation coverage recorded per rule in shared-security-requirements.md; partial PBT N/A to text-only changes; disabled full Resiliency skipped. No Trello action, application code or infrastructure change.
+
+## Administrator Trello follow-up — 2026-11-07
+
+- [x] Later explicit user authorization permits one parent card following the Support Agent pattern; earlier no-Trello records describe the preceding documentation task.
+- [x] Created and read back [Administrator — account and escalation management MVP](https://trello.com/c/BrAHthwr) in Backlog on the active Finance AI board.
+- [x] Verified five ordered ADM subtasks (21 provisional SP) and two separate shared SEC subtasks (21 provisional SP counted once), all incomplete; card is open/not complete.
+- [x] Included full canonical criteria, web stack, planned code boundaries, Support dependencies, minimal agent handoff and published master/merged PR #15 references. No prerequisite checklist, invented owner/deadline or other-card change.
+- **Publication**: PR #15 was independently merged as 6f1d133 before this follow-up. Tracking references use a new codex/admin-trello-tracking-20261107 branch from master and a separate master-targeted PR; no merge or application implementation by this follow-up.
+- **Extensions**: Security scope preserved; no credentials/private records included. Partial PBT N/A to text/tracking changes; disabled Resiliency skipped.
