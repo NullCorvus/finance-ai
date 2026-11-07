@@ -23,7 +23,10 @@ Only NullCorvus/finance-ai documentation is changed. No application code, migrat
 - [x] Reconcile only the Support escalation, return, visibility and suspended-customer rules affected by the approved decisions.
 - [x] Update requirements decisions, architecture, stack, team reading guide and workflow state.
 - [x] Verify inventory, point totals, story preservation, consistency, links, Markdown and documentation-only scope.
-- [ ] Publish the branch and open a PR against master; verify the PR target and changed files.
+- [x] Publish the branch and open a PR against master; verify the PR target and changed files.
+
+## Delivery record
+[PR #15](https://github.com/NullCorvus/finance-ai/pull/15) is open from codex/admin-security-docs-20261107 to master. Its eleven changed files are documentation only. The PR is not merged; no code repository, infrastructure or Trello state was modified. All final functional decisions are documented; implementation parameters remain assigned to technical design without a new general review gate.
 
 ## Functional decisions carried forward
 Return an escalated ticket atomically to the originating active support_agent with in_progress status; otherwise clear assignment and use open in the unassigned queue. A return reason and preserved activity evidence are mandatory. Escalation/return reasons are authorized-staff-only metadata; resolution summaries are customer-visible. There is no general-purpose notes or private-messaging feature.

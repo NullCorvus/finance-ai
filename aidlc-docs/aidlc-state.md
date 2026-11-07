@@ -2,7 +2,7 @@
 
 ## Project Information
 - **Project Type**: Brownfield (FastAPI backend + Flutter frontend already implemented)
-- **Current Stage**: Administrator and shared security documentation; approved scope, implementation not started
+- **Current Stage**: Administrator and shared security documentation complete; PR #15 open against master, implementation not started
 
 ## Workspace State
 - **Existing Code**: Yes — `finance-ai-backend/` (FastAPI, Alembic, uv) and `finance-ai-frontend/` (Flutter)
@@ -472,7 +472,7 @@ still outstanding there.
 - [x] Five ADM and two SEC stories documented with complete criteria, dependencies and Not started status.
 - [x] Administrator/shared security specifications, Support consistency, questions, architecture, stack and team context updated.
 - [x] Documentation validation complete: eleven Markdown files parse; exactly five ADM plus two SEC; 30 total stories; all 23 previous narratives/scopes/points retained and all 15 HU bodies unchanged; 88 local links/anchors valid; original question archive preserved and audit append-only. Whitespace checks pass with only verbatim audit-input trailing spaces exempted. No application tests run for documentation-only changes.
-- [ ] Branch published and PR against master opened/verified.
+- [x] Branch published and [PR #15](https://github.com/NullCorvus/finance-ai/pull/15) opened/verified against master, with exactly eleven documentation files. The PR is open and not merged; no Trello changes or application implementation.
 - **Skipped**: Application design implementation details, units generation, code generation, migrations, application build/test, deployment and Operations: documentation-only authorization.
 - **Blockers**: No additional functional decision blocking the approved scope identified. Technical design parameters and delivery of shared foundations are implementation responsibilities, not new requirements-discovery questions.
 - **Extensions**: Security Baseline documentation coverage recorded per rule in shared-security-requirements.md; partial PBT N/A to text-only changes; disabled full Resiliency skipped. No Trello action, application code or infrastructure change.
