@@ -1,3 +1,89 @@
+# Access Model Decisions and Remaining Questions
+
+## Current Support Agent decisions — 2026-11-04
+The latest supplied correction supersedes contradictory statements in the archived question sheet below. The shared authorization identifiers are `user`, `support_agent`, `admin` and `security_auditor`; initial accounts have one primary role. The inspected backend currently seeds only `user` and `admin`. This task documents Support Agent only; detailed Admin and Security Auditor backlogs are separate.
+
+Free and Premium are subscription plans, not authorization roles. No plan-role synchronization or subscription-expiration behavior has been approved. Do not infer automatic downgrade, suspend accounts on expiry or implement billing/entitlements in this task.
+
+Confirmed Support Agent decisions:
+- Human-operated ticket management only; no AI support.
+- Exactly SUP-01–SUP-06, plus customer dependencies USR-SUP-01/02; SUP-04 owns limited customer-information permissions.
+- Backend-enforced role and resource authorization, limited queue metadata, assigned-ticket context and narrow pre-ticket customer lookup.
+- Staff accounts are administrator-provisioned; public registration cannot select a privileged role. Privileged assignments are audited; administrator MFA is a planned shared security requirement.
+- Existing Flutter customer UI, React/Vite/TypeScript/Tailwind staff application in the existing frontend repository's `staff-web/`, and the existing FastAPI/PostgreSQL backend.
+- Missing customer-name/subscription-status fields are dependencies, not implemented facts. Subscription behavior is not a blocker for documenting Support Agent.
+
+See the [role requirements](support-agent-role.md) and [authoritative stories](../../../docs/BACKLOG-AND-STORIES.md#support-agent-extension--2026-11-04).
+
+## Disposition of the previous questions
+| Original question | Current disposition |
+|---|---|
+| 1 — Role combination | One primary authorization role per account confirmed; old plan-role names superseded |
+| 2 — Support model | Human support only confirmed; AI options superseded |
+| 3 — Support data | Limited metadata and authorized ticket information confirmed; private financial-record access excluded |
+| 4 — Admin access | Outside this role's detailed design; Support Agent remains prohibited from administrative actions |
+| 5 — Premium scope | Outside Support Agent; plans are separate, with no entitlement implementation here |
+| 6 — Subscription expiration | Not finalized; no downgrade or suspension policy selected |
+| 7 — Staff provisioning | Authorized administrator provisioning, no public staff selection, planned admin MFA and assignment audit confirmed |
+| 8 — Security Auditor | Confirmed shared role; detailed stories separate, not part of this backlog |
+
+Historical empty [Answer] tags below are not unanswered blockers for this documentation task.
+
+## Pending Support Agent implementation decisions
+The following questions record genuine pending behavior. Documentation proceeds with them explicitly open; no option is silently selected.
+
+### Question SUP-Q1
+Who may see and claim a ticket before assignment?
+
+A) Any active support agent in the shared authorized support queue
+
+B) Only agents with an explicitly assigned queue scope
+
+C) Other (please describe after [Answer]:)
+
+[Answer]: Pending
+
+### Question SUP-Q2
+What should a successful claim do to an open ticket's status?
+
+A) Change it to in_progress atomically with assignment
+
+B) Keep it open until a separate authorized start action
+
+C) Other (please describe after [Answer]:)
+
+[Answer]: Pending
+
+### Question SUP-Q3
+Who owns an escalated case?
+
+A) An administrator queue owns it; the originating agent retains read-only case access
+
+B) The originating agent remains assigned while administrators receive explicit escalation access
+
+C) Other (please describe after [Answer]:)
+
+[Answer]: Pending
+
+### Question SUP-Q4
+What is the policy after resolution?
+
+A) The customer must create a new linked request; resolved cases accept no replies
+
+B) The owning customer can reopen the same case under explicitly defined status and assignment rules
+
+C) Other (please describe after [Answer]:)
+
+[Answer]: Pending
+
+Creation status/assignment, other allowed transitions, lookup keys/disclosure, input bounds/categories, reply/resolution eligibility, internal-history visibility and shared session/audit contracts are also pending as listed in the [role requirements](support-agent-role.md#pending-decisions). None changes the confirmed role or technology scope.
+
+## Archived question sheet — superseded where contradictory
+The original sheet is preserved for traceability. It is historical evidence only, not the current requirements or a request to revisit finalized choices.
+
+<details>
+<summary>Original access-model questions</summary>
+
 # Access Model Clarification Questions
 
 The backend currently defines `user` and `admin` roles; public registration assigns `user`. No support role or subscription-entitlement model was found in the inspected source. The questions below clarify the intended design before it is added to the project requirements.
@@ -118,3 +204,5 @@ C) Do not define a separate role; include those review permissions in Admin
 D) Other (please describe after the [Answer]: tag below)
 
 [Answer]: 
+
+</details>

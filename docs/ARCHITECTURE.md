@@ -25,6 +25,30 @@ receipt image bytes in memory and does not persist the uploaded photo as a serve
 For implementation evidence, see the verified backend and frontend source links in the
 [code architecture and layers guide](guides/code-architecture-guide.md).
 
+## Planned Support Agent extension (2026-11-04)
+
+The [Support Agent requirements](../aidlc-docs/inception/requirements/support-agent-role.md)
+and [authoritative backlog](BACKLOG-AND-STORIES.md#support-agent-extension--2026-11-04)
+describe planned human-operated ticket management, not implemented functionality.
+Keep the existing three repositories: product documentation in NullCorvus/finance-ai,
+Flutter plus a separate React/Vite/TypeScript/Tailwind application in
+Maicol2363/finance-ai-frontend at `staff-web/`, and the existing FastAPI/PostgreSQL service
+in Maicol2363/finance-ai-backend. React must not be placed in Flutter's `web/` runner.
+
+Customer UI is planned at `lib/features/support/`, reached through Settings → Help & Support.
+The staff portal uses `staff-web/src/app/`, `features/auth/`, `features/support/` and `shared/`;
+the shell can later serve other staff roles without adding their screens in this task.
+Backend support is planned at `src/finance_ai/support/`, following existing domain,
+repository/UoW, database adapter, migration and test conventions. Both clients use the same
+API and database; authorization is enforced per role and resource in the backend.
+Reuse opaque database-backed sessions; staff browser session handling is a shared design dependency.
+
+No fourth repository, support backend/database or implementation directory is created here.
+Older statements below excluding Admin apply to the original proposal; the planned reusable
+staff shell supersedes that exclusion for this extension. Financial AI and the historical
+optional AI-chat sketches do not authorize AI customer support.
+See the [team reading guide](../aidlc-docs/README.md) for portable context and Git boundaries.
+
 ## Academic decisions from the original plan
 
 - **Interface** — **Flutter app** is implemented. The original plan recorded professor confirmation

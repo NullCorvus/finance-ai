@@ -1,5 +1,9 @@
 # Project Context — Finance AI Tracker
 
+For shared onboarding, start with the [team reading guide](../aidlc-docs/README.md).
+It links the stack, architecture, authoritative backlog and planned Support Agent requirements;
+no AI-DLC installation is needed to read these documents.
+
 > **Historical context:** the Academic, Vision and Constraints sections below record the
 > pre-semester planning position. "No code yet" and undecided stack were true of that period,
 > not of the current workspace. The implemented Flutter and FastAPI repositories are separate;
