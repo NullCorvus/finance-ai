@@ -2,7 +2,7 @@
 
 ## Project Information
 - **Project Type**: Brownfield (FastAPI backend + Flutter frontend already implemented)
-- **Current Stage**: Support Agent documentation approved for publication to master; application implementation not started
+- **Current Stage**: Support Agent documentation published to master; implementation is a separate workflow
 
 ## Workspace State
 - **Existing Code**: Yes — `finance-ai-backend/` (FastAPI, Alembic, uv) and `finance-ai-frontend/` (Flutter)
@@ -445,3 +445,14 @@ still outstanding there.
 - [x] Removed the corresponding description section and explicitly stated the web staff portal and React/Vite/TypeScript/Tailwind stack at the top.
 - [x] Verified through connector readback and the visible Trello UI. Existing FastAPI/PostgreSQL integration and planned staff-web repository location remain described.
 - **Boundary**: Card presentation correction only; shared architectural dependencies remain requirements, not additional role stories. No implementation, other-card changes or repository publication.
+
+## Support Agent documentation published — 2026-11-07
+
+- [x] Integrated the original Support Agent documentation with current master in an isolated worktree; all three AI-DLC conflicts resolved while preserving both histories.
+- [x] Validated ten Markdown files, the 15 original stories and eight support/customer records, 24+8 provisional points, 25 portable links/anchors and the documentation-only diff.
+- [x] Published and merged [PR #14](https://github.com/NullCorvus/finance-ai/pull/14) into master as bdb9c8993e25c138dcd18a2f1fc836dc5139374a. PR was MERGEABLE/CLEAN and had no configured status/check runs; local documentation validation passed. No checks or branch rules were bypassed.
+- [x] Verified the new role specification and team reading guide through GitHub master file reads; their blob SHAs match the fetched master tree.
+- [x] Updated the [Trello card](https://trello.com/c/rCyuWwMB) with live master links to the backlog, role specification, team guide and merged PR; card status and checklists unchanged.
+- **User checkout**: docs/presentation-fusagasuga remained clean and unchanged; the original codex/support-agent-backlog worktree is preserved.
+- **Scope**: Documentation only. No application code, migrations, React scaffolding, deployment, messages to team members or other repository changes. Original backlog completion reflects its dated Trello snapshot, not a new application acceptance run.
+- **Extensions**: Security requirements coverage retained; no runtime/infrastructure controls changed. Partial PBT N/A; disabled Resiliency skipped.

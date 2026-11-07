@@ -67,5 +67,5 @@ The user explicitly requested moving the documentation into master; no further m
 - [x] Refresh remote master and preserve the user's active checkout and original Support Agent branch.
 - [x] Merge both documentation histories and resolve audit/state/question-sheet conflicts without losing existing master entries or the archived role questions.
 - [x] Validate the merged documentation, role/story inventory, current master preservation and publication diff.
-- [ ] Publish the documentation PR, integrate into master and verify remote file contents.
-- [ ] Update the Trello card to link the published team context and record the publication outcome.
+- [x] Publish the documentation PR, integrate into master and verify remote file contents.
+- [x] Update the Trello card to link the published team context and record the publication outcome.
