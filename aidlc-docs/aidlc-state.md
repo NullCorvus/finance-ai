@@ -476,3 +476,20 @@ still outstanding there.
 - **Skipped**: Application design implementation details, units generation, code generation, migrations, application build/test, deployment and Operations: documentation-only authorization.
 - **Blockers**: No additional functional decision blocking the approved scope identified. Technical design parameters and delivery of shared foundations are implementation responsibilities, not new requirements-discovery questions.
 - **Extensions**: Security Baseline documentation coverage recorded per rule in shared-security-requirements.md; partial PBT N/A to text-only changes; disabled full Resiliency skipped. No Trello action, application code or infrastructure change.
+
+## Active workflow — Security Auditor documentation (2026-11-07)
+
+- **Authorization**: Final supplied corrections authorize four AUD stories and shared SEC changes, without another general discovery gate. Exactly AUD-01–AUD-04; no Trello actions or code/PDF implementation.
+- **Branch/base**: codex/security-auditor-docs-20261107 from master 6f1d133418bef20c4623dbe779db82d0c45f6f66 in an isolated worktree. PR targets master; frontend/backend retain develop. Original presentation checkout and its unrelated audit edit remain intact. No merge.
+- **Canonical backlog**: [AUD-01–AUD-04](../docs/BACKLOG-AND-STORIES.md#security-auditor-extension--2026-11-07); register now 34 stories under 16 PB items. All four new stories remain Not started; 5+5+5+8 = 23 provisional SP.
+- **Specifications**: [Auditor](inception/requirements/security-auditor-role.md) and [shared security](inception/requirements/shared-security-requirements.md), with limited Admin/Support/reference consistency changes. [Execution plan](inception/plans/security-auditor-documentation-plan.md) includes story assessment/persona traceability and checkboxes.
+- **Shared contracts**: SEC-01 is Privileged Staff TOTP MFA for admin/security_auditor; retained 13 provisional SP after reassessment of reused lifecycle. SEC-02 remains 8 shared SP and adds historical identifiers and mandatory audit.report_exported; no duplicate subsystem or portal estimate.
+- **Final policies**: All-system sanitized security-event reads; current active-role/MFA checks including existing sessions/delivery; historical actor OR target matching/dedup without current-identity requirement; UTC/Bogota start-inclusive/end-exclusive stable queries; backend full-dataset aggregates; one PDF snapshot and deterministic observations; mandatory export-audit failure blocks delivery.
+- **Proposed MVP backend-policy defaults**: Maximum 90 days per query and 2,000 events per PDF, configurable and distinct from retention; reject over-limit requests without truncation.
+- [x] Workspace/rules/source review, approved input logging and scoped planning complete; existing architecture reused.
+- [x] Four canonical AUD stories and role persona/policy/traceability specification complete.
+- [x] Shared SEC contracts and relevant Admin/Support/decisions/architecture/stack/team references reconciled.
+- [ ] Documentation validation and master-targeted PR delivery complete.
+- **Skipped**: New reverse engineering, implementation design detail, units generation, Construction/code/migrations, application builds/tests, PDF generation, infrastructure and Operations: outside this approved documentation task.
+- **Dependencies**: Delivery of shared SEC-01/SEC-02, staff identity/session authorization and portal foundations; query/snapshot/index/PDF/retry mechanisms are technical design responsibilities. No additional functional blocker identified.
+- **Extensions**: Security Baseline documentation coverage per SECURITY-01–15 in the shared specification; partial PBT N/A to Markdown artifacts; disabled full Resiliency skipped. No deployed compliance or implementation completion claimed.

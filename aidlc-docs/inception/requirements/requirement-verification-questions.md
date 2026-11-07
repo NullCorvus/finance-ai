@@ -99,6 +99,18 @@ See [Administrator policy](administrator-role.md) and [shared security contracts
 ## Archived question sheet — superseded where contradictory
 The original sheet is preserved for traceability. It is historical evidence only, not the current requirements or a request to revisit finalized choices.
 
+## Final Security Auditor and shared security decisions — 2026-11-07
+
+These final corrections are approved, not unanswered questions. Maintain exactly [AUD-01–AUD-04](../../../docs/BACKLOG-AND-STORIES.md#security-auditor-extension--2026-11-07), 5/5/5/8 provisional points and Not started implementation status. No general discovery gate is reopened.
+
+- Active MFA-verified security_auditor may read all system security events through sanitized FastAPI projections across list/detail, investigation, aggregates and PDFs. Suspension/role removal immediately denies existing sessions. No financial access, ADM-01 or administrative mutation.
+- Historical account-ID queries match recorded actor OR affected account target, deduplicate event IDs and do not require a current/active identity row. Preserve identifiers independently and never fabricate missing evidence.
+- Store UTC timestamps; default display America/Bogota with zone label, inclusive start/exclusive end and timestamp/event-ID stable ordering. Backend aggregates cover the entire authorized filtered dataset. Proposed configurable query-period maximum: 90 days, separate from retention.
+- PDF summary/charts/table use one database snapshot, deterministic factual observations and explicit actual scope/count. Proposed configurable maximum: 2,000 event records; reject above the configured bound with narrower-filter guidance, never silent truncation. No AI security conclusions.
+- SEC-02 adds backend-generated audit.report_exported after authorized generation/preparation, with actor/time/outcome/report ID/period/sanitized filters/count and no contents, credentials or secret URLs. Mandatory recording failure blocks successful delivery; the export event lies outside its own report snapshot.
+- SEC-01 is Privileged Staff TOTP MFA for admin and security_auditor, including existing-session promotion/assignment protections. Reuse the same lifecycle; retain 13 provisional shared points absent demonstrated material added complexity. SEC-02 remains 8 shared points; no duplicate MFA/logging/portal estimate.
+- [Auditor requirements](security-auditor-role.md) own the role policy. Preserve all Admin/Support boundaries, four roles, existing repositories/staff-web architecture and frontend/backend develop workflows. Documentation branch/PR targets master; no Trello, code, migrations, components, infrastructure or PDF generation.
+
 <details>
 <summary>Original access-model questions</summary>
 

@@ -6874,3 +6874,445 @@ After completing the documentation changes:
 **Context**: All documentation plan items complete. Publishing the final PR delivery record on the same documentation branch; the original user presentation checkout is unchanged. Security Baseline requirements coverage recorded; partial PBT N/A; disabled Resiliency skipped.
 
 ---
+
+## Security Auditor — Approved Inputs and Workspace Detection
+**Timestamp**: 2026-11-07T22:42:33Z
+**User Input — Original supplied task (verbatim)**:
+
+# FinanciAI — Finalize Security Auditor User Stories
+
+## Objective
+
+Document the finalized `security_auditor` role, including its permissions, restrictions, functional requirements, user stories, acceptance criteria, dependencies and provisional story-point estimates.
+
+**This task is documentation only. Do not implement code, database migrations, frontend interfaces or infrastructure.**
+
+## 1. Project context
+
+FinanciAI has four authorization roles:
+
+1. `user`
+2. `support_agent`
+3. `admin`
+4. `security_auditor`
+
+Free and Premium are subscription plans, not authorization roles.
+
+The approved architecture consists of:
+
+- Flutter for the customer application.
+- React + Vite + TypeScript + Tailwind CSS for the staff web portal.
+- Existing FastAPI backend.
+- Existing PostgreSQL database.
+
+The staff portal will be located at:
+
+`Maicol2363/finance-ai-frontend/staff-web/`
+
+Do not introduce a fourth repository.
+
+The Security Auditor is an independent, read-only role for investigating security events and privileged actions.
+
+It cannot suspend accounts, change roles, manage tickets, modify financial information or alter audit evidence.
+
+## 2. Repository instructions
+
+Work in:
+
+`NullCorvus/finance-ai`
+
+Before editing, inspect:
+
+- `docs/BACKLOG-AND-STORIES.md`
+- `aidlc-docs/inception/requirements/administrator-role.md`
+- `aidlc-docs/inception/requirements/support-agent-role.md`
+- `aidlc-docs/inception/requirements/shared-security-requirements.md`
+- `docs/ARCHITECTURE.md`
+- `docs/STACK.md`
+- Existing AI-DLC conventions.
+
+The authoritative user stories belong in `docs/BACKLOG-AND-STORIES.md`.
+
+Create the Security Auditor requirements document under:
+
+`aidlc-docs/inception/requirements/`
+
+Follow existing naming conventions and avoid duplicate story definitions.
+
+Use a documentation branch and PR targeting `master`.
+
+## 3. AUD-01 — View and Filter Security Events
+
+**User story**
+
+As a Security Auditor, I want to consult, search and filter recorded security events so that I can monitor authentication activity and privileged system operations.
+
+**Acceptance criteria**
+
+1. Display a paginated list of authorized security events.
+2. Display each event's identifier, timestamp, type, actor, affected resource and result.
+3. Sort events by date, newest first, using stable ordering.
+4. Filter by date range, event type, result and actor/user identifier.
+5. Filter by affected resource when applicable.
+6. Allow multiple filters simultaneously.
+7. Enforce authorization in the FastAPI backend.
+8. Prevent unauthorized access, modification and deletion.
+9. Exclude passwords, tokens, financial data and other sensitive information.
+
+**Priority:** High.
+
+**Dependency:** SEC-02 — Security Audit Logging.
+
+## 4. AUD-02 — Investigate Account and Administrator Activity
+
+**User story**
+
+As a Security Auditor, I want to reconstruct the chronological sequence of security-related actions involving a specific account or administrator so that I can investigate suspicious activity.
+
+**Acceptance criteria**
+
+1. Select an existing account or administrator using an identifier.
+2. Retrieve relevant events where that account appears as actor or affected target.
+3. Display events chronologically.
+4. Show event type, timestamp, result and authorized metadata.
+5. Correlate related events using actor, target and request identifiers where available.
+6. Allow detailed inspection of each event.
+7. Distinguish recorded facts from interpretations.
+8. Do not invent events that were never recorded.
+9. Do not expose private financial records.
+10. Prevent the auditor from changing accounts or audit evidence.
+
+**Priority:** High.
+
+**Dependency:** AUD-01 and SEC-02.
+
+Do not implement automatic attack detection, AI threat classification or an investigation case-management system.
+
+## 5. AUD-03 — View Security Activity Summary
+
+**User story**
+
+As a Security Auditor, I want to view a summary of security activity so that I can identify patterns and prioritize manual investigations.
+
+**Acceptance criteria**
+
+1. Select a reporting period.
+2. Display aggregate statistics for:
+   - Successful logins.
+   - Failed logins.
+   - Failed MFA attempts.
+   - Denied access attempts.
+   - Account suspensions.
+   - Staff role changes.
+3. Display event counts grouped by type and date.
+4. Include useful charts such as event distribution and activity over time.
+5. Calculate statistics from persisted audit events.
+6. Allow navigation from summary categories to filtered event lists.
+7. Ensure all views are read-only.
+8. Do not automatically label accounts as compromised or classify users as attackers.
+
+**Priority:** High.
+
+**Dependencies:** AUD-01 and SEC-02.
+
+## 6. AUD-04 — Generate and Export Security Audit Reports
+
+**User story**
+
+As a Security Auditor, I want to generate and download structured PDF security reports so that I can document and communicate the results of an audit.
+
+**Acceptance criteria**
+
+1. Select a reporting period and applicable filters.
+2. Generate a downloadable PDF using recorded security events.
+3. Use a consistent, professional report layout.
+4. Include a cover with the report title, reporting period and generation date.
+5. Include an executive summary with relevant security statistics.
+6. Include charts representing the selected data.
+7. Include a chronological table of relevant recorded events.
+8. Include factual observations supported by the records.
+9. Identify the filters and total records included.
+10. Handle periods without events correctly.
+11. Exclude or redact sensitive information.
+12. Restrict report generation to authorized Security Auditors.
+13. Record the report-export operation as a security audit event without logging the PDF contents.
+14. Do not invent conclusions or unsupported security findings.
+
+### Required PDF structure
+
+1. Cover page.
+2. Executive summary.
+3. Security activity statistics.
+4. Charts and visualizations.
+5. Relevant audit event details.
+6. Factual observations.
+7. Report metadata and generation information.
+
+**Priority:** High.
+
+**Dependencies:** AUD-01, AUD-03 and SEC-02.
+
+Do not implement PDF generation in this documentation task.
+
+## 7. Role restrictions
+
+The Security Auditor must not:
+
+- Create, suspend or reactivate accounts.
+- Assign or revoke staff roles.
+- Execute administrative actions.
+- Manage support tickets.
+- Access private financial transactions or receipts.
+- View passwords, MFA secrets or authentication tokens.
+- Modify or delete security audit records.
+- Modify system configuration.
+
+The backend must enforce these restrictions.
+
+## 8. Shared security integration
+
+SEC-02 is responsible for generating and persisting security events.
+
+AUD-01 through AUD-04 consume those events.
+
+Do not create another event-logging implementation or duplicate SEC-02 as a new Auditor story.
+
+Ensure the events defined in SEC-02 provide sufficient information for filtering, chronological investigations, dashboard statistics and PDF reports.
+
+If AUD-04 requires recording `audit.report_exported`, update the shared security documentation accordingly.
+
+Ticket activity history remains separate from security audit logs.
+
+## 9. Story points and dependencies
+
+Review the existing Fibonacci story-point scale.
+
+Assign provisional estimates to AUD-01 through AUD-04, considering:
+
+- Frontend complexity.
+- Backend API complexity.
+- Database query complexity.
+- Authorization.
+- Integration.
+- Testing.
+- PDF generation requirements.
+
+Do not count shared SEC-02 infrastructure again.
+
+Document dependencies and implementation status.
+
+All new Auditor stories remain Not Started until verified.
+
+## 10. Final deliverables
+
+1. Update the authoritative product backlog.
+2. Create the Security Auditor requirements specification.
+3. Update shared security requirements if needed.
+4. Update relevant architectural references.
+5. Preserve existing Support and Admin stories.
+6. Follow repository AI-DLC documentation conventions.
+7. Report provisional story points.
+8. List modified files.
+9. Identify genuine unresolved implementation dependencies.
+
+**Proceed with documentation-only changes in `NullCorvus/finance-ai`. Do not implement code, database migrations, frontend interfaces or PDF generation. Do not modify Trello.**
+
+**User Input — Final approved corrections (verbatim; current request)**:
+
+# FinanciAI — Final Corrections to Security Auditor Requirements
+
+Apply the following approved refinements to the Security Auditor documentation task.
+
+Maintain exactly four Auditor stories:
+
+- AUD-01 — View and Filter Security Events.
+- AUD-02 — Investigate Account and Administrator Activity.
+- AUD-03 — View Security Activity Summary.
+- AUD-04 — Generate and Export Security Audit Reports.
+
+Do not introduce additional Auditor user stories.
+
+## 1. Security Auditor Access Scope
+
+The `security_auditor` role may read all system security audit events through explicitly authorized, sanitized API responses.
+
+This permission applies consistently to:
+
+- Event lists.
+- Event details.
+- Activity investigations.
+- Aggregated statistics.
+- Generated PDF reports.
+
+All authorization checks must occur in FastAPI.
+
+Suspended accounts and accounts that no longer hold the `security_auditor` role must immediately lose access, including through previously issued sessions.
+
+The Auditor cannot access private financial records or perform administrative mutations.
+
+## 2. Historical Investigations
+
+AUD-02 must support investigation by historical account identifier.
+
+The referenced account does not need to remain active or exist in the current identity table.
+
+Search audit events where the identifier appears as:
+
+- The event actor.
+- The affected target.
+
+Deduplicate events that match both conditions.
+
+Preserve historical identifiers in the audit schema independently of mutable or deletable account records.
+
+Reconstruct activity using recorded timestamps, identifiers and correlation metadata.
+
+Never fabricate missing events or infer actions not supported by recorded evidence.
+
+No ADM-01 account-management permission is granted to the Auditor.
+
+## 3. Dates, Ordering and Statistics
+
+Persist event timestamps in UTC.
+
+Present dates using `America/Bogota` by default and clearly label the time zone.
+
+Use inclusive start and exclusive end boundaries for date filtering.
+
+For the initial MVP, propose a maximum query period of 90 days, configurable through backend policy.
+
+Order chronologically using timestamp and unique event ID as a stable tie-breaker.
+
+Calculate statistics in the backend across the complete authorized filtered dataset, not only the current pagination page.
+
+Administrator `auth.login_success` occurs only after password and MFA verification are both completed.
+
+Do not double-count `auth.mfa_success` as an additional successful login.
+
+## 4. PDF Reporting
+
+AUD-04 must generate a structured PDF containing:
+
+1. Cover page and reporting period.
+2. Executive summary.
+3. Security activity statistics.
+4. Event distribution and timeline charts.
+5. Chronological table of relevant events.
+6. Factual observations generated by deterministic rules.
+7. Report metadata, applied filters and generation timestamp.
+
+Do not use AI-generated security conclusions.
+
+The statistics, charts and event table must correspond to one consistent database snapshot.
+
+For the initial MVP, propose a configurable maximum of 2,000 event records per PDF.
+
+If a selection exceeds that limit, reject the export with an actionable message requesting narrower filters.
+
+Do not silently truncate records or misrepresent partial results as a complete report.
+
+The report must display its actual scope and event count.
+
+## 5. Audit Report Export Logging
+
+Add `audit.report_exported` to the shared SEC-02 contract.
+
+A successful export event is recorded when the backend has generated the authorized PDF and prepared it for delivery.
+
+Record:
+
+- Acting Auditor identifier.
+- UTC timestamp.
+- Export outcome.
+- Report identifier.
+- Reporting period and sanitized filters.
+- Number of included events.
+
+Do not log the PDF contents, authentication credentials or secret download URLs.
+
+The export event is generated by the backend.
+
+The Auditor remains read-only with respect to existing audit records.
+
+Define failure-handling behavior that prevents unrecorded successful exports from passing silently.
+
+## 6. MFA for the Security Auditor
+
+Extend the approved shared TOTP MFA requirement to both privileged roles:
+
+- `admin`
+- `security_auditor`
+
+Reuse the same MFA infrastructure and security guarantees.
+
+Do not create a separate MFA subsystem or duplicate the existing SEC-01 estimate.
+
+Ensure existing sessions cannot gain privileged access after role assignment without completing MFA.
+
+Update SEC-01's title, scope and cross-references as appropriate.
+
+## 7. Story Points
+
+Use these provisional Fibonacci estimates:
+
+| Story | Story points |
+|---|---:|
+| AUD-01 | 5 |
+| AUD-02 | 5 |
+| AUD-03 | 5 |
+| AUD-04 | 8 |
+| Total | 23 |
+
+Do not count SEC-02 or shared staff portal infrastructure again.
+
+Reevaluate the shared SEC-01 estimate only if extending MFA to the Auditor materially changes its implementation complexity.
+
+## 8. Documentation Delivery
+
+Work in `NullCorvus/finance-ai`.
+
+- Update `docs/BACKLOG-AND-STORIES.md`.
+- Create or update `aidlc-docs/inception/requirements/security-auditor-role.md`.
+- Update `aidlc-docs/inception/requirements/shared-security-requirements.md`.
+- Reconcile references in existing Administrator, Support and architecture documentation.
+- Preserve the previously approved functional boundaries.
+- Follow existing AI-DLC conventions.
+- Use a documentation branch with a PR targeting `master`.
+
+This remains a documentation-only task.
+
+Do not implement application code, database migrations, frontend components or PDF generation.
+
+Do not modify Trello.
+
+## 9. Final Output
+
+Provide:
+
+1. Updated Auditor stories and acceptance criteria.
+2. Updated shared SEC-01 and SEC-02 contracts.
+3. Story-point estimates.
+4. Modified files.
+5. Remaining technical implementation decisions.
+6. Branch and PR reference if created.
+
+Proceed with these corrections without expanding the approved four-story scope.
+
+**AI Response**: Execute the approved documentation task on isolated codex/security-auditor-docs-20261107 from master 6f1d133. Preserve the original checkout's unrelated audit edit. Exactly four AUD stories (23 SP); extend shared MFA to Admin/Auditor and SEC-02 export/history contracts once. Published Admin/Support/architecture context is reused. Load workflow/extension rules; existing opt-ins remain Security enabled, partial PBT, full Resiliency disabled/skipped. No general discovery gate, code, migrations, components, PDF implementation, infrastructure, Trello changes or merge. Open a documentation PR against master; code repos keep develop.
+**Context**: Workspace detection, requirements/story assessment and workflow planning complete; approved refinements govern. Canonical backlog replaces duplicate story files and role specification carries persona/traceability. Complete inputs preserved; audit append only.
+
+---
+
+## Security Auditor — Documentation Generation Complete
+**Timestamp**: 2026-11-07T22:47:42Z
+**AI Response**: Added four canonical AUD records (5/5/5/8 provisional SP) and Auditor policy/persona/traceability specification. Extended SEC-01 to shared Admin/Auditor TOTP without another MFA subsystem; retained 13 SP because lifecycle is reused. SEC-02 retains 8 shared SP, with independent historical IDs, sanitized all-system Auditor read authorization and mandatory audit.report_exported whose persistence failure blocks delivery. Documented UTC/Bogota half-open periods, stable tie ordering, complete-dataset backend counts, consistent PDF snapshot, deterministic factual observations, proposed configurable 90-day/2,000-event limits and explicit over-limit rejection. Reconciled Admin/Support, requirement decisions, architecture, stack and team guide without changing role boundaries.
+**Context**: All new Auditor implementations remain Not started. No code, migrations, frontend, actual PDF, infrastructure, Trello action or merge. Security coverage updated; partial PBT N/A; disabled Resiliency skipped. Documentation validation follows.
+
+---
+
+## Security Auditor — Validation Complete
+**Timestamp**: 2026-11-07T22:50:05Z
+**AI Response**: Validated twelve Markdown files and portable local links/anchors. Canonical inventory has exactly four AUD additions (34 stories/16 PB items), 5/5/5/8 provisional points and Not started status. All 30 previous IDs/estimates and all 28 non-SEC story definitions remain unchanged, including all five ADM and six SUP stories; only approved SEC-01/SEC-02 contracts change. Shared estimates remain 13/8. Verified historical identity/dedup, active current-role/MFA/session enforcement, UTC/Bogota half-open date bounds, stable ties/full-dataset aggregates, proposed configurable query/PDF defaults, snapshot/limit/privacy/deterministic-report rules and mandatory export-event failure safety. Archived questions and existing diagrams are unchanged; audit prefix is preserved and whitespace/credential-pattern/documentation-only checks pass. No application tests run for this documentation task.
+**Context**: Security Baseline requirements coverage assessed per SECURITY-01–15; no applicable documentation non-compliance identified. Partial PBT N/A; disabled Resiliency skipped. Preparing documentation branch/master PR, not merging or changing Trello. Validation-only parser checks were adjusted for the historical HU-015 unspecified estimate and synonymous fail-closed wording; no product scope change.
+
+---
