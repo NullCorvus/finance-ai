@@ -29,7 +29,7 @@ These are local source snapshots, not a hosted-release or live-database assertio
 | ADM-03 | [Staff creation/activation](../../../docs/BACKLOG-AND-STORIES.md#adm-03--create-staff-accounts) | Administrator owner; single-use activation lifecycle |
 | ADM-04 | [Staff role assignments](../../../docs/BACKLOG-AND-STORIES.md#adm-04--manage-staff-roles-and-permissions) | Administrator owner; fixed RBAC assignments |
 | ADM-05 | [Escalated tickets](../../../docs/BACKLOG-AND-STORIES.md#adm-05--manage-escalated-support-tickets) | Administrator owner; shared Support/customer contracts |
-| SEC-01 | [Administrator TOTP MFA](../../../docs/BACKLOG-AND-STORIES.md#sec-01--administrator-totp-mfa) | Shared security owner, estimated once |
+| SEC-01 | [Privileged Staff TOTP MFA](../../../docs/BACKLOG-AND-STORIES.md#sec-01--privileged-staff-totp-mfa) | Shared security owner, estimated once |
 | SEC-02 | [Shared Security Audit Logging](../../../docs/BACKLOG-AND-STORIES.md#sec-02--shared-security-audit-logging) | Shared security owner, estimated once |
 
 The backlog owns user-story narratives, acceptance criteria, priority, estimates and status. This specification owns the policy/architecture boundary; it does not duplicate story definitions.
@@ -62,7 +62,7 @@ The administrator initiates support_agent/security_auditor accounts; recipients 
 
 SEC-02 records `staff.created` and `staff.activated`. Actor/target identities are derived server-side when available. Activation tokens and passwords are excluded from events, diagnostics and normal account projections.
 
-Role changes are limited to the two approved staff roles, require confirmation and immediately alter backend authority. Revoke sessions or securely revalidate against current role. Deactivation belongs to ADM-02; removing access never means leaving an undefined primary role.
+Role changes are limited to the two approved staff roles, require confirmation and immediately alter backend authority. Revoke sessions or securely revalidate against current role. Deactivation belongs to ADM-02; removing access never means leaving an undefined primary role. A newly activated or assigned security_auditor requires the same shared SEC-01 TOTP assurance as admin before any privileged read, including previously issued sessions. The [Auditor specification](security-auditor-role.md) owns AUD-01–AUD-04; it grants no ADM-01 or administrative mutation rights.
 
 ## Escalation, return and customer visibility
 The current status vocabulary remains `open`, `in_progress`, `escalated`, `resolved`; no additional status is introduced.
@@ -93,7 +93,7 @@ Keep the existing three repositories and existing backend/database.
 | Same frontend | staff-web/src/features/auth/ | Shared staff authentication/MFA integration |
 | Same frontend | staff-web/src/features/admin/ | Administrator screens for ADM-01–ADM-05 |
 | Same frontend | staff-web/src/features/support/ | Existing planned Support interface |
-| Same frontend | staff-web/src/features/audit/ | Reserved future read-only Auditor feature; no Auditor UI story/scaffold here |
+| Same frontend | staff-web/src/features/audit/ | Planned AUD-01–AUD-04 read-only interface; no scaffold in this documentation task |
 | Same frontend | lib/features/support/ | Existing customer dependency location in Flutter |
 | Maicol2363/finance-ai-backend | src/finance_ai/admin/ | Proposed administrative routers/schemas/policies/services following existing module conventions |
 | Same backend | Existing auth/ plus proposed audit/ under src/finance_ai/ | Shared session/MFA and security-event service contracts |
@@ -104,7 +104,7 @@ The staff web technology remains React + Vite + TypeScript + Tailwind CSS. React
 ## Dependency and estimation boundaries
 The functional Administrator subtotal is 21 provisional points; shared security subtotal is 21, counted once. See the [backlog estimate rationale](../../../docs/BACKLOG-AND-STORIES.md#provisional-estimates-and-counting-boundaries). Existing normal authentication and ticket infrastructure are reused, not re-estimated as complete new systems.
 
-Staff portal foundation and controlled backend administrator provisioning are explicit shared technical prerequisites, assigned/estimated once separately. SEC-01 owns the Admin MFA lifecycle and browser-session integration; SEC-02 owns shared audit infrastructure; ADM-03 owns invitation/activation. No duplicate security work is charged to every role story.
+Staff portal foundation and controlled backend administrator provisioning are explicit shared technical prerequisites, assigned/estimated once separately. SEC-01 owns the shared Admin/Auditor MFA lifecycle and browser-session integration; SEC-02 owns shared audit infrastructure; ADM-03 owns invitation/activation. No duplicate security work is charged to every role story.
 
 Implementation should establish shared identity/audit contracts, implement the shared security capabilities and then the dependent ADM slices, coordinated with the Support and customer owners. Audit generation does not depend on the future Auditor frontend. See the [documentation execution plan](../plans/admin-security-documentation-plan.md).
 

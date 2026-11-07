@@ -44,12 +44,12 @@ the historical implemented snapshot; this section is an approved plan, not a dep
 
 Extend the same planned React + Vite + TypeScript + Tailwind CSS staff application with
 `staff-web/src/features/admin/`, reusing `features/auth/`, `app/` and `shared/`. Reserve
-`features/audit/` for future authorized read-only Auditor work; no Auditor UI is implemented here.
+`features/audit/` for the separately documented AUD-01–AUD-04 read-only work; no Auditor UI is implemented here.
 The customer remains in Flutter and the portal remains outside Flutter's `web/` runner.
 
 SEC-01 adds approved password-plus-TOTP requirements to existing opaque sessions: verified
 enrollment, replay/rate-limit controls, recovery/replacement, invalidation and MFA gating for
-every ADM request. Web login compatibility, browser credential protection and concrete lifetimes
+every ADM/AUD request for admin/security_auditor, including report delivery. Web login compatibility, browser credential protection and concrete lifetimes
 are technical design responsibilities. SEC-02 uses existing PostgreSQL for shared security events,
 including staff.created/staff.activated and safe audit access/failure handling. No new provider,
 dependency version, key-management service, deployment topology or infrastructure is selected here.
@@ -60,6 +60,26 @@ The [Administrator](../aidlc-docs/inception/requirements/administrator-role.md) 
 [shared security](../aidlc-docs/inception/requirements/shared-security-requirements.md)
 specifications describe approved planned requirements; existing runtime evidence remains a separate
 snapshot. New ADM/SEC implementation status is Not started until verified.
+
+## Planned Security Auditor query/report scope (2026-11-07)
+
+Use the same React/Vite/TypeScript/Tailwind staff-web frontend and FastAPI/PostgreSQL backend,
+with staff-web/src/features/audit/ and shared src/finance_ai/audit/ contracts. SEC-01 is now
+Privileged Staff TOTP MFA for admin and security_auditor, with one shared estimate/lifecycle.
+SEC-02 preserves historical actor/target identifiers and records audit.report_exported; AUD queries,
+aggregates and PDF rendering consume that store without duplicating logging infrastructure.
+
+UTC storage and labeled America/Bogota reporting use inclusive-start/exclusive-end periods.
+Proposed configurable backend policy: maximum 90 days per query and 2,000 events per PDF;
+retention remains separate. Backend statistics cover the full authorized filtered dataset. Report
+statistics/charts/table share one database snapshot; over-limit requests are rejected, not truncated.
+Mandatory export-audit failure blocks PDF delivery. Concrete PDF/chart libraries, versions,
+query/index/snapshot mechanisms and protected temporary-output handling belong to technical design.
+No new dependency, artifact store, service, infrastructure or PDF implementation is selected here.
+
+See the [Auditor requirements](../aidlc-docs/inception/requirements/security-auditor-role.md)
+and [shared security contracts](../aidlc-docs/inception/requirements/shared-security-requirements.md).
+All four Auditor stories remain Not started with 23 provisional points, excluding shared security.
 
 ## Core rule (unchanged from architecture)
 

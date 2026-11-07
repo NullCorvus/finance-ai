@@ -9,7 +9,8 @@
 > The Support Agent extension adds eight planned implementation stories under two new backlog
 > items; its implementation statuses and provisional estimates are separate from the completed core.
 > The approved Administrator/shared-security extension adds seven records under two further items;
-> the complete register has 30 stories under 15 product backlog items.
+> the approved Security Auditor extension adds four more records under PB-016;
+> the complete register has 34 stories under 16 product backlog items.
 > **Estimation scale:** Story Points — standard **Fibonacci** (1, 2, 3, 5, 8, 13…).
 > Card completion is project-tracking evidence; it does not assert a new runtime test or release.
 
@@ -663,7 +664,7 @@ Staff portal scaffolding, staff session/RBAC foundations, shared ticket persiste
 
 The approved scope adds exactly five Administrator stories and two shared security stories. The five final execution corrections govern ticket return, internal metadata visibility, suspension of other administrators, staff activation logging and the master documentation PR target. The role and security specifications link to these canonical definitions; they do not create parallel story registers.
 
-The complete register now contains 30 stories: 15 original HU records, six SUP records, two USR-SUP dependencies, five ADM records and two SEC records, under 15 product backlog items. There is no new Auditor-interface story, super_admin role, internal-notes system or portal-based administrator provisioning.
+The Administrator/shared-security checkpoint contained 30 stories: 15 original HU records, six SUP records, two USR-SUP dependencies, five ADM records and two SEC records, under 15 product backlog items. That extension introduced no Auditor-interface story, super_admin role, internal-notes system or portal-based administrator provisioning. AUD-01–AUD-04 are documented separately below; the other exclusions remain.
 
 ### Planned product backlog additions
 
@@ -867,42 +868,42 @@ The complete register now contains 30 stories: 15 original HU records, six SUP r
 
 ---
 
-### SEC-01 — Administrator TOTP MFA
+### SEC-01 — Privileged Staff TOTP MFA
 
 **Feature:** PB-015 — Shared staff security
 
-**Actor:** Administrator
+**Actor:** Administrator and Security Auditor
 
 **Story:**
-> As an Administrator, I want to authenticate with my password and an authenticator application, so that my privileged account remains protected even if my password is compromised.
+> As an Administrator or Security Auditor, I want to authenticate with my password and an authenticator application, so that my privileged account remains protected even if my password is compromised.
 
-**Implementation scope:** Implement shared password-plus-TOTP enrollment, authentication, recovery/replacement, replay protection and administrative session gating using the existing opaque, database-backed session architecture. This is one shared security story, not duplicated across ADM features.
+**Implementation scope:** Implement shared password-plus-TOTP enrollment, authentication, recovery/replacement, replay protection and privileged staff session gating using the existing opaque, database-backed session architecture. This is one shared security story, not duplicated across ADM/AUD features.
 
 **Acceptance criteria:**
 
-1. Require every administrator to complete password plus TOTP MFA before accessing administrative functionality.
+1. Require every admin and security_auditor to complete password plus TOTP MFA before accessing their privileged functionality.
 2. Support initial authenticator enrollment using a QR code within the authorized enrollment context.
 3. Verify a valid TOTP code before activating enrollment.
 4. Verify the password before requesting the second factor.
-5. Do not issue a fully authorized administrative session until MFA succeeds; an incomplete/expired challenge conveys no administrative authority.
+5. Do not issue a fully authorized privileged staff session until MFA succeeds; an incomplete/expired challenge conveys no privileged authority.
 6. Reject invalid, expired and previously accepted OTPs for the same authenticator and time step.
 7. Keep replay protection effective under concurrent requests.
 8. Rate-limit failed MFA attempts using documented bounded behavior.
 9. Protect TOTP secrets in backend storage; never expose them, verification codes, passwords or session credentials in logs or regular API responses.
 10. Provide a secure recovery and authenticator-replacement procedure with identity verification for lost devices.
 11. Revoke or invalidate relevant existing sessions after recovery and authenticator changes.
-12. Prevent accounts promoted to admin through controlled backend provisioning from using administrative privileges until MFA is completed, including previously issued sessions.
-13. Require backend verification of the current admin role and MFA-verified session for every ADM operation; frontend routing alone never grants authority.
+12. Prevent accounts assigned admin or security_auditor from using privileged access until MFA is completed, including previously issued sessions. Controlled admin provisioning and ADM-04 staff-role assignment cannot turn an existing session into an MFA-verified privileged session.
+13. Require backend verification of the active account, current authorized role and MFA-verified session for every ADM/AUD operation, including report delivery. Suspension or role removal immediately denies access through existing sessions; frontend routing alone never grants authority.
 14. Record enrollment, successful/failed verification, recovery and replacement under SEC-02.
-15. Preserve the existing opaque session architecture and review the current login contract for web compatibility. Technical design must specify secret protection at rest, acceptable clock skew, short-lived challenges, administrative session lifetimes, recovery identity verification, safe invalidation and browser authentication integration.
+15. Preserve the existing opaque session architecture and review the current login contract for web compatibility. Technical design must specify secret protection at rest, acceptable clock skew, short-lived challenges, privileged staff session lifetimes, recovery identity verification, safe invalidation and browser authentication integration.
 
 **Priority:** High
 
 **Dependencies:** Existing FastAPI password/session implementation, shared staff browser-authentication/RBAC foundation, SEC-02 event contract/persistence, and controlled backend admin provisioning. No additional administrator UI/provisioning story is created.
 
-**Authorization and validation:** Apply the shared security specification's authentication, event-schema, secret-exclusion and backend access boundaries; do not trust frontend checks. See [Administrator requirements](../aidlc-docs/inception/requirements/administrator-role.md) and [shared security requirements](../aidlc-docs/inception/requirements/shared-security-requirements.md).
+**Authorization and validation:** Apply the shared security specification's authentication, event-schema, secret-exclusion and backend access boundaries; do not trust frontend checks. See [Administrator requirements](../aidlc-docs/inception/requirements/administrator-role.md), [Auditor requirements](../aidlc-docs/inception/requirements/security-auditor-role.md) and [shared security requirements](../aidlc-docs/inception/requirements/shared-security-requirements.md).
 
-**Story points:** 13 — provisional Fibonacci estimate; not implementation hours.
+**Story points:** 13 — provisional Fibonacci estimate; retained after Auditor extension because the same enrollment, challenge, replay, recovery and browser-session infrastructure is reused. Only role coverage and guard/test consumers expand; no second MFA lifecycle or subsystem. Reevaluate during design only if material extra complexity is demonstrated; not implementation hours.
 
 **Implementation status:** Not started — the complete new story has not been verified as implemented. Reuse of existing identity/session primitives does not establish completion.
 
@@ -919,11 +920,11 @@ The complete register now contains 30 stories: 15 original HU records, six SUP r
 **Story:**
 > As a Security Auditor, I want FinanciAI to record authentication events, authorization failures and privileged actions, so that I can investigate suspicious activity and verify administrative operations.
 
-**Implementation scope:** Provide shared security-event persistence and access/integrity controls in existing PostgreSQL, plus application event integration and safe failure handling. Ticket activity history is separate. Auditor viewing/filtering/investigation UI remains separate future role work.
+**Implementation scope:** Provide shared security-event persistence and access/integrity controls in existing PostgreSQL, plus application event integration and safe failure handling. Ticket activity history is separate. Auditor viewing/filtering/investigation/reporting belongs to AUD-01–AUD-04, separate from this shared logging story.
 
 **Acceptance criteria:**
 
-1. Record successful and failed login attempts. For admin, auth.login_success means both password and MFA succeeded; a correct password alone is not a completed administrative login.
+1. Record successful and failed login attempts. For admin and security_auditor, auth.login_success means both password and MFA succeeded; a correct password alone is not a completed privileged login. Do not count auth.mfa_success as a second login.
 2. Record logout and security-related session revocations.
 3. Record successful and failed MFA verification.
 4. Record MFA enrollment, recovery and authenticator replacement.
@@ -936,16 +937,19 @@ The complete register now contains 30 stories: 15 original HU records, six SUP r
 11. Exclude passwords, authentication/activation tokens, MFA secrets/codes, financial balances/transaction amounts, receipt contents, sensitive request bodies and unnecessary personal data.
 12. Persist events in PostgreSQL with explicit read/write restrictions and an append-only application audit interface.
 13. Prevent Administrators, Support Agents and ordinary application roles from modifying or deleting existing audit records.
-14. Permit reading only to explicitly authorized principals; a product role does not receive unrestricted audit-record access implicitly.
+14. Permit an active, MFA-verified security_auditor to read all system security events through sanitized backend responses consistently across AUD lists, details, investigations, aggregates and reports. Admin/Support roles gain no audit-reader access implicitly; suspend/revoke-role changes take effect on existing sessions immediately.
 15. Do not allow critical account/role changes to succeed silently without audit evidence. Their persistence and audit records must follow a consistent failure-handling strategy that is tested.
 16. Handle authentication-event logging failures safely and observably, without bypassing authentication/authorization or causing an unnecessary system-wide outage.
 17. Verify event generation, access controls, sensitive-data exclusion and logging-failure behavior with automated tests during implementation.
+18. Preserve historical actor/target identifiers independently of mutable/deletable identity rows. Missing current accounts or correlation fields do not erase events or justify fabricated evidence.
+19. Record audit.report_exported when the backend has generated the authorized PDF and prepared it for delivery. Persist acting Auditor ID, UTC timestamp, outcome, report ID, reporting period, sanitized filters and included-event count; exclude PDF contents, credentials and secret download URLs.
+20. Do not expose/deliver a successful export without durable export-audit evidence. Fail closed with a safe actionable error if mandatory recording fails; specify retry/cleanup behavior and verify failure paths. The backend writes this event; Auditors cannot modify existing evidence.
 
 **Priority:** High
 
 **Dependencies:** FastAPI authentication/session/RBAC and PostgreSQL persistence, with shared identity/ticket event contracts and planned authorized Auditor access. Event capture does not wait for an Auditor frontend or AUD-01 implementation.
 
-**Authorization and validation:** Apply the shared security specification's authentication, event-schema, secret-exclusion and backend access boundaries; do not trust frontend checks. See [Administrator requirements](../aidlc-docs/inception/requirements/administrator-role.md) and [shared security requirements](../aidlc-docs/inception/requirements/shared-security-requirements.md).
+**Authorization and validation:** Apply the shared security specification's authentication, event-schema, secret-exclusion and backend access boundaries; do not trust frontend checks. See [Administrator requirements](../aidlc-docs/inception/requirements/administrator-role.md), [Auditor requirements](../aidlc-docs/inception/requirements/security-auditor-role.md) and [shared security requirements](../aidlc-docs/inception/requirements/shared-security-requirements.md).
 
 **Story points:** 8 — provisional Fibonacci estimate; not implementation hours.
 
@@ -972,6 +976,193 @@ The complete register now contains 30 stories: 15 original HU records, six SUP r
 
 The existing Fibonacci register has metadata/catalog work around 2–3 points, manual expense and correction at 5 and natural-text capture at 8. Preserve those historical estimates. ADM-01/04 are scoped extensions reusing shared security; suspension/activation/escalation add lifecycle and concurrency cases. SEC-01 is larger than the 8-point capture reference because it includes enrollment, recovery/replacement, browser-session integration and MFA enforcement across promotion/session paths. SEC-02 spans authentication, staff, account and ticket modules; it does not include Auditor UI or advanced analytics. These are provisional relative-complexity estimates, not time commitments or measured team velocity.
 
-Reuse existing password/session infrastructure. Estimate staff portal scaffolding and controlled backend administrator provisioning once as shared technical prerequisites. Staff activation belongs to ADM-03; Admin MFA/browser-session integration belongs to SEC-01; shared security audit infrastructure belongs to SEC-02. Do not charge those again to every ADM/SUP/Auditor story. SUP-05's 3 points still cover support-side escalation, not ADM-05's administrator return/resolution flow. SUP-06 and USR-SUP-02 retain their existing history/customer UI responsibilities; this patch does not re-estimate them.
+Reuse existing password/session infrastructure. Estimate staff portal scaffolding and controlled backend administrator provisioning once as shared technical prerequisites. Staff activation belongs to ADM-03; Admin/Auditor MFA/browser-session integration belongs to SEC-01; shared security audit infrastructure belongs to SEC-02. Do not charge those again to every ADM/SUP/Auditor story. SUP-05's 3 points still cover support-side escalation, not ADM-05's administrator return/resolution flow. SUP-06 and USR-SUP-02 retain their existing history/customer UI responsibilities; this patch does not re-estimate them.
 
-All seven new stories remain Not started. Requirements approval and publication do not establish endpoints, tables, MFA, audit persistence or staff interfaces. No Trello changes are part of this task.
+All seven Administrator/shared-security stories remain Not started. Requirements approval and publication do not establish endpoints, tables, MFA, audit persistence or staff interfaces. No Trello changes are part of this task.
+
+## Security Auditor extension — 2026-11-07
+
+The final approved corrections define exactly four read-only Auditor stories. The active MFA-verified security_auditor may read all system security audit events through sanitized FastAPI projections, including lists, details, investigations, statistics and reports. Other roles gain no audit-reader access implicitly; no administrative mutation, ADM-01 permission or private financial access is granted.
+
+The complete register contains 34 stories under 16 product backlog items. SEC-01/SEC-02 remain shared and counted once, with no separate MFA/logging subsystem. Limits below are proposed configurable MVP backend-policy defaults, distinct from audit retention. These requirements do not establish implemented APIs, tables, screens or PDF generation; Trello is not modified.
+
+| Code | Feature | Priority | Status | Ownership |
+|---|---|---|---|---|
+| PB-016 | Security audit investigation and reporting | High | Not started | AUD-01–AUD-04; one Auditor role owner coordinated with shared security |
+
+### AUD-01 — View and Filter Security Events
+
+**Feature:** PB-016 — Security audit investigation and reporting
+
+**Actor:** Security Auditor
+
+**Story:**
+> As a Security Auditor, I want to consult, search and filter recorded security events so that I can monitor authentication activity and privileged system operations.
+
+**Implementation scope:** Provide sanitized read-only security event list/detail and combinable filters in the staff web portal using shared SEC-02 persistence.
+
+**Acceptance criteria:**
+
+1. Display a paginated list of all system security audit events authorized to the active MFA-verified security_auditor; the same sanitized scope applies to event details.
+2. Display event ID, timestamp, type, actor identifier when known, affected resource/target when applicable and outcome. Explicitly represent unavailable fields without inventing identities.
+3. Order the list newest first by timestamp and unique event ID as a stable tie-breaker; page traversal must not duplicate or skip tied events within its defined read boundary.
+4. Combine date range, event type, outcome, actor/user identifier and affected-resource filters. Validate actor and target namespaces and bound pagination server-side.
+5. Persist timestamps in UTC; display America/Bogota by default and label the time zone. Normalize date filters to inclusive start and exclusive end.
+6. Use a proposed configurable MVP maximum query period of 90 days under backend policy. Reject invalid/reversed/over-limit periods with safe actionable messages; this query limit is separate from retention.
+7. Authorize list/detail and direct resource-ID requests in FastAPI. Immediately deny suspended accounts or principals that lost security_auditor, including previously issued sessions; require SEC-01 MFA.
+8. Exclude passwords/hashes, tokens, MFA/activation secrets/codes, financial data, receipts, sensitive bodies and disallowed context from all projections.
+9. Provide empty-result and safe invalid/unavailable states. Do not substitute backend/query errors for a successful empty dataset.
+10. Deny administrative mutations, ticket management and audit update/delete; apply shared access.denied recording without logging sensitive request contents.
+11. Verify combined filters, date boundaries/time-zone labels, equal-timestamp pagination, empty/unknown fields, cross-role/direct-ID denials and sensitive-data exclusion during implementation.
+
+**Priority:** High
+
+**Dependencies:** SEC-01, SEC-02, existing staff-web/auth/RBAC/session foundations. Shared event persistence is not counted again.
+
+**Authorization and validation:** Every operation requires an active security_auditor account and MFA-verified session; FastAPI rechecks current role and resource permission, including existing sessions and report delivery. Deny all other roles, suspended accounts, malformed/forged inputs and stale authority. Validate bounded IDs, dates, filter enums and pagination; safely encode output and parameterize queries. Return only allowlisted security metadata, never raw context or private financial/credential data. See [Auditor requirements](../aidlc-docs/inception/requirements/security-auditor-role.md) and [shared security contracts](../aidlc-docs/inception/requirements/shared-security-requirements.md).
+
+**Story points:** 5 — provisional Fibonacci estimate; not implementation hours.
+
+**Implementation status:** Not started — documentation approval is not implementation or acceptance evidence.
+
+**Mockup:** TBD
+
+---
+
+### AUD-02 — Investigate Account and Administrator Activity
+
+**Feature:** PB-016 — Security audit investigation and reporting
+
+**Actor:** Security Auditor
+
+**Story:**
+> As a Security Auditor, I want to reconstruct the chronological sequence of security-related actions involving a specific account or administrator so that I can investigate suspicious activity.
+
+**Implementation scope:** Reuse AUD-01 projections/filters for historical identifier investigation and event inspection, without account-management privileges or an investigation case system.
+
+**Acceptance criteria:**
+
+1. Accept a historical account identifier; the referenced account need not be active or exist in the current identity table.
+2. Find events in which that identifier is the actor or the affected account target, with typed target/resource matching to avoid unrelated ID collisions.
+3. Deduplicate each event by its unique event ID when both actor and target match.
+4. Preserve actor/target identifiers independently of mutable/deletable account records under SEC-02; do not require a successful current-identity join to display recorded evidence.
+5. Display events chronologically oldest first using timestamp then event ID; apply the same UTC/Bogota, start-inclusive/end-exclusive and configurable query-period policy as AUD-01.
+6. Display event type, timestamp, outcome and allowlisted metadata, and allow authorized detailed event inspection.
+7. Correlate recorded actor/target and request/correlation identifiers where available. Clearly label unavailable metadata and distinguish facts from any displayed explanation.
+8. Never invent missing events, imply complete history beyond retained/available records or infer an action solely from a shared correlation identifier.
+9. Require active Auditor/MFA checks for investigation and every detail request, including existing sessions; deny private financial records, administrative actions and audit mutation.
+10. Do not grant ADM-01 account-directory/detail permission. No account-edit controls, AI threat classification, automatic attack detection or investigation case-management system.
+11. Verify missing/inactive current accounts, actor-only/target-only/both matches, deduplication, missing correlation, stable ordering and denied access during implementation.
+
+**Priority:** High
+
+**Dependencies:** AUD-01, SEC-01 and SEC-02 historical actor/target/correlation contract.
+
+**Authorization and validation:** Every operation requires an active security_auditor account and MFA-verified session; FastAPI rechecks current role and resource permission, including existing sessions and report delivery. Deny all other roles, suspended accounts, malformed/forged inputs and stale authority. Validate bounded IDs, dates, filter enums and pagination; safely encode output and parameterize queries. Return only allowlisted security metadata, never raw context or private financial/credential data. See [Auditor requirements](../aidlc-docs/inception/requirements/security-auditor-role.md) and [shared security contracts](../aidlc-docs/inception/requirements/shared-security-requirements.md).
+
+**Story points:** 5 — provisional Fibonacci estimate; not implementation hours.
+
+**Implementation status:** Not started — documentation approval is not implementation or acceptance evidence.
+
+**Mockup:** TBD
+
+---
+
+### AUD-03 — View Security Activity Summary
+
+**Feature:** PB-016 — Security audit investigation and reporting
+
+**Actor:** Security Auditor
+
+**Story:**
+> As a Security Auditor, I want to view a summary of security activity so that I can identify patterns and prioritize manual investigations.
+
+**Implementation scope:** Provide bounded deterministic security counts/charts and navigation to event evidence; reuse shared event persistence and filtered query contracts.
+
+**Acceptance criteria:**
+
+1. Select a reporting period using AUD-01 UTC normalization, labeled America/Bogota default, inclusive start/exclusive end and proposed configurable maximum 90-day query policy.
+2. Calculate aggregate statistics in the backend across the complete authorized filtered dataset, never only the current pagination page.
+3. Display successful logins (auth.login_success), failed logins (auth.login_failed), failed MFA attempts (auth.mfa_failed), denied access attempts (access.denied), successful account suspensions (account.suspended) and successful staff-role changes (role.changed). Document each event-type/outcome mapping.
+4. For admin/security_auditor, count a successful login only after password and MFA complete. auth.mfa_success is a factor event, not another completed login. Separate failed-login and failed-factor metrics; they are not an additive count of distinct people or attacks.
+5. Group event counts by type and date using the labeled reporting zone; date buckets and totals obey the selected period/filter scope.
+6. Include event-distribution and activity-over-time charts with equivalent readable labels/counts; no unsupported interpretation is attached to a chart.
+7. Navigate from a category/count to the matching AUD-01 filtered list, preserving period, type/outcome and applicable filter semantics. Newly arriving events may change a later live query; show the summary cutoff rather than claiming a frozen live dashboard.
+8. Authorize aggregate queries in FastAPI with the same all-system sanitized Auditor scope, active-role and MFA checks; aggregates must not bypass role restrictions.
+9. Handle zero-event periods accurately and distinguish a retrieval error or unavailable historical coverage from zero activity.
+10. All views are read-only. Do not automatically mark accounts compromised, classify users as attackers, perform AI threat detection or introduce advanced predictive analytics.
+11. Verify complete-dataset counts against known event fixtures, including pagination, MFA/login separation, outcome mappings, date boundaries, zero data and authorization.
+
+**Priority:** High
+
+**Dependencies:** AUD-01, SEC-01 and SEC-02; shared portal/chart presentation foundations. No duplicate logging implementation.
+
+**Authorization and validation:** Every operation requires an active security_auditor account and MFA-verified session; FastAPI rechecks current role and resource permission, including existing sessions and report delivery. Deny all other roles, suspended accounts, malformed/forged inputs and stale authority. Validate bounded IDs, dates, filter enums and pagination; safely encode output and parameterize queries. Return only allowlisted security metadata, never raw context or private financial/credential data. See [Auditor requirements](../aidlc-docs/inception/requirements/security-auditor-role.md) and [shared security contracts](../aidlc-docs/inception/requirements/shared-security-requirements.md).
+
+**Story points:** 5 — provisional Fibonacci estimate; not implementation hours.
+
+**Implementation status:** Not started — documentation approval is not implementation or acceptance evidence.
+
+**Mockup:** TBD
+
+---
+
+### AUD-04 — Generate and Export Security Audit Reports
+
+**Feature:** PB-016 — Security audit investigation and reporting
+
+**Actor:** Security Auditor
+
+**Story:**
+> As a Security Auditor, I want to generate and download structured PDF security reports so that I can document and communicate the results of an audit.
+
+**Implementation scope:** Produce an authorized read-only PDF from a consistent security-event dataset, reusing AUD-01 filters and AUD-03 metrics; generation is future implementation, not part of this documentation task.
+
+**Acceptance criteria:**
+
+1. Allow only an active MFA-verified security_auditor to generate and receive a report. Recheck current backend authority at delivery; existing sessions cannot retain access after suspension or role removal.
+2. Select a period and applicable AUD-01 filters; use UTC persistence, a labeled America/Bogota presentation default, inclusive start/exclusive end and the proposed configurable 90-day maximum query period.
+3. Generate a downloadable structured PDF with cover/reporting period, executive summary, security statistics, event-distribution and timeline charts, chronological event table, deterministic factual observations and report metadata.
+4. Derive summary text and observations through documented deterministic rules from recorded facts. Do not use AI conclusions, unsupported findings, attack labels or an investigation narrative editor.
+5. Read statistics, charts and event-table rows from one consistent database snapshot. Record the dataset cutoff; do not mix separately refreshed queries.
+6. Use timestamp and event ID for stable chronological table ordering. Include all matching events in that report snapshot within the permitted limit, not merely the visible browser page.
+7. Use a proposed configurable MVP maximum of 2,000 event records per PDF. Above the configured limit reject export with an actionable request for narrower filters; never silently truncate or label a partial report complete.
+8. Show report ID, actual reporting scope, applied sanitized filters, included-event count, generation timestamp and time zone. Statistics/charts/table must agree with that scope and count.
+9. Handle a period with no matching events with an accurate zero-event report and explicit empty-data presentation; never invent chart values or findings.
+10. Apply the same backend field allowlist to PDF content as lists/details/aggregates. Exclude credentials, private finances/receipts, disallowed raw context and secret URLs.
+11. Record audit.report_exported through the shared backend SEC-02 writer after authorized generation and preparation for delivery, with acting Auditor ID, UTC timestamp, outcome, report ID, reporting period, sanitized filters and number of included events.
+12. Do not log PDF contents, authentication credentials or secret download URLs; the Auditor does not gain audit-write/update/delete permission.
+13. Persist required successful-export evidence before exposing/delivering the PDF. If logging fails, block delivery, return a safe actionable failure and do not present an unrecorded success; design retry/cleanup to avoid bypass or ambiguous duplicate-success records.
+14. Keep the export event outside the report snapshot that produced it; do not change the report count by inserting its own export event. It may appear in later authorized reports.
+15. Handle generation failures safely with no partial download or fabricated success; any temporary artifacts remain protected and are cleaned up under the technical design.
+16. Verify readable PDF layout, multi-page table continuity, chart/text consistency, snapshot agreement, zero data, configured thresholds (2,000 allowed/2,001 rejected at the proposed default), sanitized content, current-role/MFA denials and export-audit failure paths.
+
+**Priority:** High
+
+**Dependencies:** AUD-01, AUD-03, SEC-01 and SEC-02 including audit.report_exported. Reuse shared MFA/audit/portal infrastructure; no new repository or external report service is selected.
+
+**Authorization and validation:** Every operation requires an active security_auditor account and MFA-verified session; FastAPI rechecks current role and resource permission, including existing sessions and report delivery. Deny all other roles, suspended accounts, malformed/forged inputs and stale authority. Validate bounded IDs, dates, filter enums and pagination; safely encode output and parameterize queries. Return only allowlisted security metadata, never raw context or private financial/credential data. See [Auditor requirements](../aidlc-docs/inception/requirements/security-auditor-role.md) and [shared security contracts](../aidlc-docs/inception/requirements/shared-security-requirements.md).
+
+**Story points:** 8 — provisional Fibonacci estimate; not implementation hours.
+
+**Implementation status:** Not started — documentation approval is not implementation or acceptance evidence.
+
+**Mockup:** TBD
+
+---
+
+### Auditor estimates and implementation ownership
+
+| Story | Provisional SP | Rationale |
+|---|---:|---|
+| AUD-01 | 5 | Web list/detail/filter UI and bounded authorized backend query/pagination with privacy tests |
+| AUD-02 | 5 | Historical actor/target matching, deduplication, correlation and detail across missing identity cases |
+| AUD-03 | 5 | Backend complete-dataset metrics, date/outcome mappings, accessible charts and evidence navigation |
+| AUD-04 | 8 | Reused queries/metrics plus PDF layout, consistent snapshot, bounded export and mandatory audit-failure safety |
+| Auditor subtotal | 23 | Exactly four role stories |
+| SEC-01 shared | 13 | Retained shared TOTP estimate; role coverage extends without another lifecycle/subsystem |
+| SEC-02 shared | 8 | Existing logging infrastructure estimate retained; history/export schema integration belongs here once |
+
+The Auditor subtotal adds 23 role points; do not add the 21 shared-security points or shared portal scaffolding again. Shared security remains 13+8 once for all consumers. Reevaluate SEC-01 only on demonstrated material design complexity, not simply another role using the same module. Existing HU, SUP, USR-SUP and ADM estimates remain unchanged. These are provisional relative estimates, not velocity or hours.
+
+The role owner coordinates backend query/report contracts with the SEC owner and frontend staff portal owner. A minimal implementation-agent task specifies one existing AUD ID, acceptance criteria, approved dependencies/contracts, allowed repository/files and test/review evidence. Deliver shared MFA/audit foundations before affected acceptance checks; this is an implementation dependency, not a renewed functional question. No Trello card or code is created by this documentation task.
