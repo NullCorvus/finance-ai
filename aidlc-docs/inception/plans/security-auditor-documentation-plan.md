@@ -21,9 +21,12 @@ Text workflow: inspect approved inputs and master; record requirements/stories a
 - [x] Extend shared MFA to admin/security_auditor and SEC-02 to historical identity/export contracts without duplicate infrastructure or estimates.
 - [x] Reconcile existing Admin/Support, decisions, architecture, stack and team guide references.
 - [x] Validate Markdown/links, inventory, estimates, preserved stories, final corrections and documentation-only scope.
-- [ ] Publish the branch and open/verify a PR against master; record delivery without merging.
+- [x] Publish the branch and open/verify a PR against master; record delivery without merging.
 
 ## Validation and extension scope
 Verify four AUD records and all required fields; retain 30 prior story IDs/estimates and the original HU/SUP/USR-SUP/ADM definitions. Only SEC-01/SEC-02 contracts change as approved. Validate active-role/MFA gating, historical identity independence and deduplication, UTC/Bogota inclusive-start/exclusive-end filtering, stable order, complete-dataset backend aggregates, one PDF snapshot, no silent truncation and export-audit failure safety. No application tests or runtime compliance claims.
 
 Security Baseline stays enabled; per-rule documentation coverage is recorded in the shared security specification. Partial PBT is inherited: executable function/serializer/test rules are N/A to Markdown-only artifacts. Full Resiliency Baseline is disabled and skipped. Do not reopen extension opt-ins.
+
+## Delivery record
+[PR #17](https://github.com/NullCorvus/finance-ai/pull/17) is open from codex/security-auditor-docs-20261107 to master. Verified twelve Markdown files only, MERGEABLE/CLEAN at delivery and no configured status checks. All story/link/content checks passed; no application tests for text-only changes. PR remains unmerged. No functional blocker was identified; shared foundation delivery and documented implementation mechanisms remain technical work.

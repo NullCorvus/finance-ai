@@ -489,7 +489,8 @@ still outstanding there.
 - [x] Workspace/rules/source review, approved input logging and scoped planning complete; existing architecture reused.
 - [x] Four canonical AUD stories and role persona/policy/traceability specification complete.
 - [x] Shared SEC contracts and relevant Admin/Support/decisions/architecture/stack/team references reconciled.
-- [ ] Documentation validation and master-targeted PR delivery complete.
+- [x] Documentation validation complete: twelve Markdown files, 34 stories/16 PB items, 117 local links/anchors, all prior IDs/estimates and 28 non-SEC definitions preserved; archived questions/diagrams and audit prefix retained. Whitespace checks pass with only verbatim raw-audit trailing spaces exempted.
+- [x] Published codex/security-auditor-docs-20261107 and verified [PR #17](https://github.com/NullCorvus/finance-ai/pull/17) against master: open/unmerged, twelve Markdown-only files, MERGEABLE/CLEAN at delivery and no configured checks. No application tests run.
 - **Skipped**: New reverse engineering, implementation design detail, units generation, Construction/code/migrations, application builds/tests, PDF generation, infrastructure and Operations: outside this approved documentation task.
 - **Dependencies**: Delivery of shared SEC-01/SEC-02, staff identity/session authorization and portal foundations; query/snapshot/index/PDF/retry mechanisms are technical design responsibilities. No additional functional blocker identified.
 - **Extensions**: Security Baseline documentation coverage per SECURITY-01–15 in the shared specification; partial PBT N/A to Markdown artifacts; disabled full Resiliency skipped. No deployed compliance or implementation completion claimed.
