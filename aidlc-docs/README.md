@@ -8,10 +8,11 @@ Start here to understand the product and this role. These are ordinary Markdown 
 3. [Architecture](../docs/ARCHITECTURE.md) and [code/layers guide](../docs/guides/code-architecture-guide.md): module responsibilities and request flow.
 4. [Authoritative backlog](../docs/BACKLOG-AND-STORIES.md#support-agent-extension--2026-11-04): six Support Agent stories and two customer dependencies, acceptance criteria and provisional points.
 5. [Support Agent requirements](inception/requirements/support-agent-role.md): permissions, workflow, code boundaries and pending decisions.
-6. [Documentation plan and role-owner handoff](inception/plans/support-agent-documentation-plan.md): shared prerequisites, future agent task boundaries and contribution status.
-7. [Corrected requirements decisions](inception/requirements/requirement-verification-questions.md): current decisions plus clearly archived earlier questions.
+6. [Administrator requirements](inception/requirements/administrator-role.md) and [shared security contracts](inception/requirements/shared-security-requirements.md): five ADM stories, two shared SEC stories, MFA/provisioning restrictions and the approved escalation return/visibility rules.
+7. [Support documentation plan and role-owner handoff](inception/plans/support-agent-documentation-plan.md), plus [Administrator/security execution plan](inception/plans/admin-security-documentation-plan.md): ownership, shared prerequisites, task boundaries and contribution status.
+8. [Corrected requirements decisions](inception/requirements/requirement-verification-questions.md): final functional decisions plus clearly archived earlier questions.
 
-The backlog owns story definitions. The role specification owns support policy and pending decisions. Architecture/stack own the shared technical map. The AI-DLC state and audit files are process history, not a substitute for acceptance criteria or proof of deployed functionality.
+The backlog owns story definitions. Role specifications own their policy boundaries; shared security requirements define SEC-01/SEC-02 once for all consumers. Architecture/stack own the shared technical map. The AI-DLC state and audit files are process history, not a substitute for acceptance criteria or proof of deployed functionality.
 
 ## Three repositories, portable paths
 | Repository | What a teammate gets |
@@ -22,7 +23,7 @@ The backlog owns story definitions. The role specification owns support policy a
 
 Clone the documentation repository as well as the code repository relevant to the assigned role. The code repositories are independent Git repositories, not submodules delivered by cloning the documentation repo. They can be adjacent folders or placed elsewhere. Paths in product requirements are relative to the named repository; local absolute paths in older process history are historical examples.
 
-For Support Agent, read both backend and frontend context: the staff UI is React + Vite + TypeScript + Tailwind CSS, the customer UI is existing Flutter at Settings → Help & Support, and both use the same FastAPI/PostgreSQL backend. The portal is planned; its implementation directories are not part of this documentation change.
+For staff roles, read both backend and frontend context: the web UI is React + Vite + TypeScript + Tailwind CSS, the customer support UI is existing Flutter at Settings → Help & Support, and both use the same FastAPI/PostgreSQL backend. Administrator screens are planned under staff-web/src/features/admin/; shared authentication is under features/auth/, and features/audit/ is reserved for later Auditor UI. The portal and new security capabilities are planned; no implementation directories are part of this documentation change.
 
 ## Shared files versus local setup
 AI-DLC names do not make files private. Git tracking and repository access control determine what collaborators can receive.

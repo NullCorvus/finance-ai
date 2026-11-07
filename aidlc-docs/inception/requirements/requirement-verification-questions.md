@@ -1,7 +1,7 @@
 # Access Model Decisions and Remaining Questions
 
 ## Current Support Agent decisions — 2026-11-04
-The latest supplied correction supersedes contradictory statements in the archived question sheet below. The shared authorization identifiers are `user`, `support_agent`, `admin` and `security_auditor`; initial accounts have one primary role. The inspected backend currently seeds only `user` and `admin`. This task documents Support Agent only; detailed Admin and Security Auditor backlogs are separate.
+The latest supplied correction supersedes contradictory statements in the archived question sheet below. The shared authorization identifiers are `user`, `support_agent`, `admin` and `security_auditor`; initial accounts have one primary role. The inspected backend currently seeds only `user` and `admin`. Support Agent requirements retain their own scope; Administrator and shared security requirements are now documented separately, while detailed Security Auditor interface stories remain separate future work.
 
 Free and Premium are subscription plans, not authorization roles. No plan-role synchronization or subscription-expiration behavior has been approved. Do not infer automatic downgrade, suspend accounts on expiry or implement billing/entitlements in this task.
 
@@ -21,7 +21,7 @@ See the [role requirements](support-agent-role.md) and [authoritative stories](.
 | 1 — Role combination | One primary authorization role per account confirmed; old plan-role names superseded |
 | 2 — Support model | Human support only confirmed; AI options superseded |
 | 3 — Support data | Limited metadata and authorized ticket information confirmed; private financial-record access excluded |
-| 4 — Admin access | Outside this role's detailed design; Support Agent remains prohibited from administrative actions |
+| 4 — Admin access | Finalized by ADM-01–ADM-05: allowlisted login-account metadata, safeguarded account/staff operations and escalated tickets under MFA; no financial-record access, billing or system configuration |
 | 5 — Premium scope | Outside Support Agent; plans are separate, with no entitlement implementation here |
 | 6 — Subscription expiration | Not finalized; no downgrade or suspension policy selected |
 | 7 — Staff provisioning | Authorized administrator provisioning, no public staff selection, planned admin MFA and assignment audit confirmed |
@@ -63,7 +63,7 @@ B) The originating agent remains assigned while administrators receive explicit 
 
 C) Other (please describe after [Answer]:)
 
-[Answer]: Pending
+[Answer]: A — Finalized 2026-11-07: administrator queue with authorized claim; originating active/authorized Support Agent retains read-only access. ADM-05 fixes the mandatory internal return reason and atomic return: eligible original support_agent with in_progress, otherwise clear assignment and use open in the unassigned queue. Backend hides escalation/return reasons from customers.
 
 ### Question SUP-Q4
 What is the policy after resolution?
@@ -76,7 +76,25 @@ C) Other (please describe after [Answer]:)
 
 [Answer]: Pending
 
-Creation status/assignment, other allowed transitions, lookup keys/disclosure, input bounds/categories, reply/resolution eligibility, internal-history visibility and shared session/audit contracts are also pending as listed in the [role requirements](support-agent-role.md#pending-decisions). None changes the confirmed role or technology scope.
+Unrelated Support creation/claim rules, lookup scope, input bounds and general non-escalated reply/resolution/reopening behavior remain as listed in the [Support requirements](support-agent-role.md#pending-decisions). They do not reopen the finalized escalation/return/visibility contract or the Administrator/security scope. Shared session/audit implementation details follow SEC-01/SEC-02.
+
+## Final Administrator and shared security decisions — 2026-11-07
+These are approved decisions, not a new questionnaire. The user's execution instruction explicitly replaces further general discovery/review gates for this documentation task.
+
+- Keep exactly ADM-01–ADM-05 and shared SEC-01/SEC-02, separate from the six existing SUP stories. Definitions/criteria/points live in the [canonical backlog](../../../docs/BACKLOG-AND-STORIES.md#administrator-and-shared-security-extension--2026-11-07).
+- ADM-01 searches customer/staff login accounts by exact email or ID with bounded results and an allowlisted metadata projection; no financial-record access.
+- ADM-02 allows an MFA-verified administrator to suspend another administrator with confirmation/reason, but never their own account or the last active administrator. Protect concurrent and equivalent deactivation paths; invalidate sessions permanently across reactivation.
+- ADM-03 creates only support_agent/security_auditor through expiring single-use activation. Recipients establish their passwords and gain no staff privileges before activation.
+- ADM-04 allows only support_agent/security_auditor transitions, with exactly one primary role, confirmation and immediate session/authority effects. No own-role change or portal admin grant/revoke.
+- Initial/additional admin provisioning is a separate controlled backend procedure. No super_admin or multi-administrator approval system.
+- ADM-05 administrator claim prevents conflicting case ownership. Originating authorized Support retains read-only access while escalated. Return requires a reason and atomic assignment/status update: eligible original active support_agent gets in_progress; otherwise unassign and use open in the support queue. Preserve history.
+- Escalation/return reasons are authorized-staff-only metadata; resolution summaries are customer-visible. Backend projections enforce this. Suspended customers cannot access protected support until reactivation. No general-purpose internal notes/private messaging.
+- SEC-01 uses password plus TOTP, verified enrollment, concurrent replay resistance, recovery/replacement, session invalidation and MFA gating on every ADM request, preserving opaque sessions and adding web compatibility through technical design.
+- SEC-02 includes both staff.created and staff.activated, with safe actor/target/time/outcome/context and no activation credentials. Security events and operational ticket history remain distinct; critical account/role changes cannot silently succeed without evidence.
+- Keep React/Vite/TypeScript/Tailwind at staff-web/ in the existing frontend repository and existing FastAPI/PostgreSQL. Only docs change here; no Trello actions.
+- Documentation branch/PR target is master in NullCorvus/finance-ai. Existing code repositories retain develop.
+
+See [Administrator policy](administrator-role.md) and [shared security contracts](shared-security-requirements.md). Technical design must select bounded lifetimes, recovery verification, storage/browser protection and persistence/concurrency mechanisms; no new user decision blocking the approved functional scope was identified.
 
 ## Archived question sheet — superseded where contradictory
 The original sheet is preserved for traceability. It is historical evidence only, not the current requirements or a request to revisit finalized choices.

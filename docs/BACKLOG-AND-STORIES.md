@@ -8,6 +8,8 @@
 > PB-001–PB-011 and their 15 original stories are **Done** on the board.
 > The Support Agent extension adds eight planned implementation stories under two new backlog
 > items; its implementation statuses and provisional estimates are separate from the completed core.
+> The approved Administrator/shared-security extension adds seven records under two further items;
+> the complete register has 30 stories under 15 product backlog items.
 > **Estimation scale:** Story Points — standard **Fibonacci** (1, 2, 3, 5, 8, 13…).
 > Card completion is project-tracking evidence; it does not assert a new runtime test or release.
 
@@ -356,7 +358,7 @@ The separately planned Support Agent extension has documentation completed but a
 
 **Tracking:** [Support Agent — ticket management MVP](https://trello.com/c/rCyuWwMB), created in Trello Backlog on 2026-11-04. Six role-story checklist items total 24 provisional points; the two customer dependencies are a separate checklist. The shared-prerequisite checklist was removed at the user's request. Card creation does not indicate implementation has started.
 
-This section adds planned work to the preserved historical register above. The six SUP stories and the two customer dependencies below are the authoritative story definitions; the [role specification](../aidlc-docs/inception/requirements/support-agent-role.md) supplies policy, source evidence and pending decisions without duplicating them. There are now 23 story records: 15 historical HU records and eight new support-related records. No historical HU is renumbered or re-estimated.
+This section adds planned work to the preserved historical register above. The six SUP stories and the two customer dependencies below are the authoritative story definitions; the [role specification](../aidlc-docs/inception/requirements/support-agent-role.md) supplies policy, source evidence and pending decisions without duplicating them. This dated extension brought the register to 23 records: 15 historical HU records and eight support-related records; later approved extensions are appended separately. No historical HU is renumbered or re-estimated.
 
 ### Planned product backlog additions
 
@@ -446,7 +448,7 @@ This section adds planned work to the preserved historical register above. The s
 
 **Acceptance criteria:**
 
-1. Allow the assigned agent to read and send messages only within an authorized assigned ticket and in approved reply-eligible states.
+1. Allow the assigned agent to read and send messages only within an authorized assigned ticket and in approved reply-eligible states. While escalated, the originating active/authorized Support Agent has read-only access under ADM-05.
 2. Allow the owning customer to read and reply through the existing Flutter application under USR-SUP-02; verify the staff/customer exchange as one integrated conversation.
 3. Derive each message author from the authenticated principal and record a server timestamp; clients cannot impersonate another author.
 4. Reject empty or oversized messages according to documented validation limits and render user text safely. Exact limits remain pending.
@@ -517,13 +519,13 @@ This section adds planned work to the preserved historical register above. The s
 1. Allow an authorized assigned agent to escalate an eligible ticket.
 2. Require a nonblank escalation reason with documented backend length bounds; exact bounds remain pending.
 3. Change the ticket status to escalated and record the actor, timestamp and reason as part of the case history.
-4. Make the escalated case available to the appropriate administrator workflow through the agreed backend contract; the responsible administrator/queue and ownership transfer policy are pending.
-5. Preserve previous messages and history for principals whose access remains authorized. Continued agent access after escalation must follow the approved ownership policy.
+4. Make the escalated case available for authorized administrator claim under ADM-05, preventing conflicting ownership. Preserve the originating Support Agent reference/history for the approved return workflow.
+5. Preserve previous messages and history for authorized principals; the originating active/authorized Support Agent retains read-only access while escalated. Escalation and return reasons are authorized-staff-only metadata; the backend excludes them from customer responses. ADM-05 defines the atomic return to that eligible agent with in_progress or to an unassigned open ticket otherwise.
 6. Deny the support agent administrative actions such as account suspension/reactivation, refunds, subscription changes, role changes and system configuration changes.
 
 **Priority:** High
 
-**Dependencies:** SUP-01, ticket activity/audit persistence and an agreed administrator escalation contract; ownership after escalation remains pending.
+**Dependencies:** SUP-01, ticket activity persistence, SEC-02 and ADM-05's approved administrator claim/return contract. Support-side escalation remains separate from administrator implementation.
 
 **Authorization and validation:** The criteria above are enforced by FastAPI for each operation, including direct requests that bypass the frontend. Apply the [role permission boundary](../aidlc-docs/inception/requirements/support-agent-role.md#permissions-and-data-boundary) and deny by default.
 
@@ -549,9 +551,9 @@ This section adds planned work to the preserved historical register above. The s
 **Acceptance criteria:**
 
 1. Display the authorized ticket's messages, relevant status changes and assignment history with recorded actors/timestamps.
-2. Allow the assigned agent to resolve only a ticket eligible under the approved transition policy. Eligibility and escalated-ticket resolution authority remain pending.
+2. Allow the assigned agent to resolve only a ticket eligible under the approved support transition policy. While escalated, the originating agent is read-only and administrative resolution/return is governed by ADM-05; general non-escalated Support eligibility remains outside that decision.
 3. Require a nonblank resolution summary with documented backend length bounds; exact bounds remain pending.
-4. Persist resolved status and resolution, and make them visible to the owning customer through USR-SUP-02. Customer visibility of internal history or escalation reasons is pending.
+4. Persist resolved status and resolution, and make them visible to the owning active customer through USR-SUP-02. Escalation/return reasons are internal workflow metadata excluded by the backend, including within activity payloads. Suspended customers cannot access support until reactivation.
 5. Preserve case history after resolution and record the resolution actor/timestamp. The Support Agent cannot modify or delete security audit records.
 6. Do not implement reopening or permit replies to resolved tickets until the reopening/reply-state policy is approved. Record that policy as pending, without assuming a business outcome.
 
@@ -619,7 +621,7 @@ This section adds planned work to the preserved historical register above. The s
 2. Show ticket status, authorized conversation and resolution when present.
 3. Allow replies only to eligible tickets using the agreed status policy and shared message validation.
 4. Prevent access to another customer's tickets or messages, including direct ID manipulation.
-5. Reflect staff replies and resolutions using ordinary request/refresh behavior; real-time chat and push notifications are excluded. Reply eligibility and customer-visible internal history remain pending.
+5. Reflect staff replies and resolutions using ordinary request/refresh behavior; real-time chat and push notifications are excluded. Backend projections exclude internal escalation/return reasons. Suspended customers have no protected support access until reactivation; general reply eligibility outside the approved escalation rules remains separate Support policy.
 
 **Priority:** High
 
@@ -656,3 +658,320 @@ The historical register uses Fibonacci: registration/session stories are 3, manu
 SUP-03 spans React, FastAPI and integration with Flutter. Its 5-point estimate assumes the Flutter implementation is counted once in USR-SUP-02; completion still requires the integrated customer exchange. Re-estimate if that ownership boundary changes. SUP-06 remains 5 because no support-history infrastructure was found; it reuses event capture delivered by earlier operations, not an assumed existing subsystem.
 
 Staff portal scaffolding, staff session/RBAC foundations, shared ticket persistence/contracts and audit integration are shared technical prerequisites. Assign and estimate them once before implementation; the 32 points are not a complete project estimate. No numerical estimates are claimed to come from Trello, and no board changes are made.
+
+## Administrator and shared security extension — 2026-11-07
+
+The approved scope adds exactly five Administrator stories and two shared security stories. The five final execution corrections govern ticket return, internal metadata visibility, suspension of other administrators, staff activation logging and the master documentation PR target. The role and security specifications link to these canonical definitions; they do not create parallel story registers.
+
+The complete register now contains 30 stories: 15 original HU records, six SUP records, two USR-SUP dependencies, five ADM records and two SEC records, under 15 product backlog items. There is no new Auditor-interface story, super_admin role, internal-notes system or portal-based administrator provisioning.
+
+### Planned product backlog additions
+
+| Code | Feature | Priority | Status | Ownership |
+|---|---|---|---|---|
+| PB-014 | Administrator account and escalation management | High | Not started | ADM-01–ADM-05; Administrator role owner |
+| PB-015 | Shared staff security | High | Not started | SEC-01–SEC-02; one shared-security owner, estimated once |
+
+### ADM-01 — Search and View User Accounts
+
+**Feature:** PB-014 — Administrator account and escalation management
+
+**Actor:** Administrator
+
+**Story:**
+> As an Administrator, I want to search for customer and staff accounts and inspect their authorized account information, so that I can identify users and manage administrative issues.
+
+**Implementation scope:** Provide exact account lookup and read-only metadata detail in the staff web portal. Login accounts are distinct from financial accounts; no financial-record inspection is included.
+
+**Acceptance criteria:**
+
+1. Search customer and staff login accounts using an exact email address or account ID.
+2. Return only authorized metadata: ID, email, assigned role, account status and registration date when available in the underlying model.
+3. Paginate or bound results to prevent unrestricted bulk disclosure; enforce the bound in the backend.
+4. Label login accounts distinctly from financial accounts.
+5. Never return private transactions, balances, receipts, passwords, password hashes, tokens or authentication credentials.
+6. Require an active admin principal, an MFA-verified session and resource authorization for every search/detail request.
+7. Reject unauthorized requests, validate lookup inputs and apply the shared safe-error/audit policy.
+
+**Priority:** High
+
+**Dependencies:** Existing identity/session models, shared staff portal and RBAC foundations, SEC-01 for MFA-verified administrative access. Apply SEC-02 to authorization failures.
+
+**Authorization and validation:** Every operation requires an active admin principal, an MFA-verified session and backend resource checks. Validate IDs, exact-email inputs where applicable, bounded text/reasons and allowed role/status values; reject forged fields and unauthorized requests. See [Administrator requirements](../aidlc-docs/inception/requirements/administrator-role.md) and [shared security requirements](../aidlc-docs/inception/requirements/shared-security-requirements.md).
+
+**Story points:** 3 — provisional Fibonacci estimate; not implementation hours.
+
+**Implementation status:** Not started — the complete new story has not been verified as implemented. Reuse of existing identity/session primitives does not establish completion.
+
+**Mockup:** TBD
+
+---
+
+### ADM-02 — Suspend and Reactivate User Accounts
+
+**Feature:** PB-014 — Administrator account and escalation management
+
+**Actor:** Administrator
+
+**Story:**
+> As an Administrator, I want to suspend and reactivate authorized accounts, so that I can restrict access when necessary and restore access when appropriate.
+
+**Implementation scope:** Manage login-account access status without deleting financial or support data. Permit suspension of another administrator under the approved self/last-administrator protections; this is separate from staff role assignment.
+
+**Acceptance criteria:**
+
+1. Allow an authorized administrator with an MFA-verified administrative session to suspend eligible customer and staff login accounts, including another admin.
+2. Require explicit confirmation and a nonblank suspension reason; validate the reason in the backend.
+3. Prevent suspended accounts from authenticating or accessing any protected functionality, including customer support.
+4. Immediately revoke or invalidate relevant existing sessions when suspension takes effect.
+5. Allow an authorized administrator to reactivate a suspended account.
+6. Never restore sessions issued before suspension on reactivation; the reactivated user must authenticate again and satisfy applicable MFA requirements.
+7. Preserve existing financial and support data.
+8. Reject attempts to suspend the acting administrator's own account or the last active administrator.
+9. Keep self/last-active-administrator protections effective under concurrent operations, including competing suspension/deactivation requests.
+10. Apply the last-active-administrator restriction to deactivation and every equivalent operation that could leave the system without an active administrator; alternate endpoints or the controlled backend procedure cannot bypass the invariant.
+11. Persist suspension/reactivation security events with actor, target, UTC timestamp, outcome and sanitized context under SEC-02; critical state changes must not silently succeed without audit evidence.
+12. Do not create or grant admin accounts through this functionality; initial/additional administrators remain restricted to the secure controlled backend-provisioning procedure.
+
+**Priority:** High
+
+**Dependencies:** ADM-01, shared account/session/RBAC foundations, SEC-01 and SEC-02.
+
+**Authorization and validation:** Every operation requires an active admin principal, an MFA-verified session and backend resource checks. Validate IDs, exact-email inputs where applicable, bounded text/reasons and allowed role/status values; reject forged fields and unauthorized requests. See [Administrator requirements](../aidlc-docs/inception/requirements/administrator-role.md) and [shared security requirements](../aidlc-docs/inception/requirements/shared-security-requirements.md).
+
+**Story points:** 5 — provisional Fibonacci estimate; not implementation hours.
+
+**Implementation status:** Not started — the complete new story has not been verified as implemented. Reuse of existing identity/session primitives does not establish completion.
+
+**Mockup:** TBD
+
+---
+
+### ADM-03 — Create Staff Accounts
+
+**Feature:** PB-014 — Administrator account and escalation management
+
+**Actor:** Administrator
+
+**Story:**
+> As an Administrator, I want to create staff accounts, so that authorized personnel can access customer support and security auditing functionality.
+
+**Implementation scope:** Create and activate support_agent/security_auditor accounts through a bounded, expiring, single-use invitation or activation flow. Reuse existing password/session controls; no portal path creates administrators.
+
+**Acceptance criteria:**
+
+1. Allow an authorized, MFA-verified administrator to create a staff login account with a unique email address.
+2. Allow only support_agent or security_auditor as its initial staff role.
+3. Reject attempts to create an admin account through the ordinary portal or its API, including forged role fields.
+4. Use an invitation or activation mechanism with expiration and single-use credentials.
+5. Require the new staff member to establish their own password through activation; preserve the existing password-policy and adaptive-hashing controls.
+6. Grant no staff privileges until activation completes successfully.
+7. Never allow administrators to view or retrieve staff passwords.
+8. Keep public registration restricted to ordinary user accounts; it cannot select a staff or privileged role.
+9. Reject duplicate accounts, invalid input, expired activation credentials and replayed invitations; concurrent activation attempts cannot consume a single-use credential twice.
+10. Record both staff.created and staff.activated through SEC-02 with server-derived available actor/target, UTC timestamp, outcome and sanitized context.
+11. Exclude invitation/activation credentials, passwords and other secrets from audit events, regular account responses and diagnostics.
+
+**Priority:** High
+
+**Dependencies:** Existing identity/password/session models and RBAC, shared staff portal, SEC-01 and SEC-02. Initial/additional admin accounts are provisioned separately through the controlled backend procedure.
+
+**Authorization and validation:** Every operation requires an active admin principal, an MFA-verified session and backend resource checks. Validate IDs, exact-email inputs where applicable, bounded text/reasons and allowed role/status values; reject forged fields and unauthorized requests. See [Administrator requirements](../aidlc-docs/inception/requirements/administrator-role.md) and [shared security requirements](../aidlc-docs/inception/requirements/shared-security-requirements.md).
+
+**Story points:** 5 — provisional Fibonacci estimate; not implementation hours.
+
+**Implementation status:** Not started — the complete new story has not been verified as implemented. Reuse of existing identity/session primitives does not establish completion.
+
+**Mockup:** TBD
+
+---
+
+### ADM-04 — Manage Staff Roles and Permissions
+
+**Feature:** PB-014 — Administrator account and escalation management
+
+**Actor:** Administrator
+
+**Story:**
+> As an Administrator, I want to change authorized staff roles, so that staff members have the appropriate access permissions.
+
+**Implementation scope:** Inspect and change fixed support_agent/security_auditor role assignments under the approved RBAC policy. This is not a custom permission editor, admin-grant/revoke interface or account deactivation operation.
+
+**Acceptance criteria:**
+
+1. Allow an authorized, MFA-verified administrator to inspect a staff account's existing primary role.
+2. Permit only authorized transitions between support_agent and security_auditor through the ordinary portal/API.
+3. Retain exactly one primary authorization role per account; do not create an empty/undefined role or convert staff into customers implicitly.
+4. Require explicit confirmation before a role change.
+5. Reject changes to the acting administrator's own role.
+6. Do not grant or revoke admin through the ordinary portal/API; controlled backend provisioning is the separate approved path for initial/additional administrators.
+7. Apply role changes immediately to subsequent backend authorization decisions, including requests made with existing sessions.
+8. Revoke existing sessions or securely revalidate them against current authority after the change; stale client state cannot retain revoked access.
+9. Reject invalid, forged or unauthorized role assignments server-side.
+10. Record actor, target, previous role, new role, UTC timestamp and outcome in the role.changed security event; apply SEC-02's consistent failure handling.
+11. Prevent Administrators and Support Agents from modifying or deleting the corresponding audit records.
+
+**Priority:** High
+
+**Dependencies:** ADM-03/shared staff identities, existing RBAC/session foundations, SEC-01 and SEC-02. Deactivation belongs to ADM-02.
+
+**Authorization and validation:** Every operation requires an active admin principal, an MFA-verified session and backend resource checks. Validate IDs, exact-email inputs where applicable, bounded text/reasons and allowed role/status values; reject forged fields and unauthorized requests. See [Administrator requirements](../aidlc-docs/inception/requirements/administrator-role.md) and [shared security requirements](../aidlc-docs/inception/requirements/shared-security-requirements.md).
+
+**Story points:** 3 — provisional Fibonacci estimate; not implementation hours.
+
+**Implementation status:** Not started — the complete new story has not been verified as implemented. Reuse of existing identity/session primitives does not establish completion.
+
+**Mockup:** TBD
+
+---
+
+### ADM-05 — Manage Escalated Support Tickets
+
+**Feature:** PB-014 — Administrator account and escalation management
+
+**Actor:** Administrator
+
+**Story:**
+> As an Administrator, I want to review and resolve support tickets escalated by Support Agents, so that issues requiring administrative privileges can be handled appropriately.
+
+**Implementation scope:** Deliver administrator escalation claim, authorized customer response, resolution and deterministic return to Support. Reuse existing ticket messages/history; retain only workflow reasons and summaries, with no general-purpose notes or private-messaging feature.
+
+**Acceptance criteria:**
+
+1. Allow authorized, MFA-verified administrators to view escalated tickets.
+2. Allow an authorized administrator to claim an escalated case while preventing conflicting simultaneous ownership; enforce resource authorization for subsequent mutations.
+3. Expose the escalation reason, allowed customer metadata and relevant case history only within the authorized administrative case context; preserve the originating Support Agent identity for return.
+4. Retain read-only case access for the originating Support Agent while the case is escalated, subject to the agent remaining active and authorized.
+5. Permit only administrative operations defined by this approved backlog; no billing, financial-record changes, infrastructure settings or portal-based admin grants are included.
+6. Allow an authorized administrator to send customer-visible responses through the existing ticket conversation when appropriate.
+7. Do not introduce general-purpose internal notes or private messaging. Retain only escalation reason, return-to-support reason, resolution summary, existing ticket messages and activity history.
+8. Require a resolution summary to resolve an escalated case, preserve history and expose the resolution to its owning active customer.
+9. Require a return reason. If the original Support Agent is active and still has support_agent, atomically return assignment to that agent and status to in_progress.
+10. Otherwise, atomically clear assignment and return the ticket to the unassigned support queue with status open. Status and assignment must never be partially updated; preserve ticket history and record the transition.
+11. Treat escalation and return reasons as staff-only workflow metadata visible only to authorized staff. Resolution summaries are customer-visible. Enforce these projections in the backend, including direct customer API requests; hiding fields in Flutter/React is insufficient.
+12. Record relevant status/assignment changes in ticket activity history and security-sensitive actions under SEC-02, without duplicating full conversations in security audit records.
+13. Allow customers to view their final resolution in Flutter only while their accounts are active. Suspended customers cannot access protected support functionality until reactivation.
+14. Never grant unrestricted access to private transactions, balances, receipts, passwords or credentials because a ticket was escalated.
+
+**Priority:** High
+
+**Dependencies:** SUP-03, SUP-05, SUP-06, USR-SUP-02, shared ticket persistence/contracts, SEC-01 and SEC-02. Reuse the Support metadata boundary.
+
+**Authorization and validation:** Every operation requires an active admin principal, an MFA-verified session and backend resource checks. Validate IDs, exact-email inputs where applicable, bounded text/reasons and allowed role/status values; reject forged fields and unauthorized requests. See [Administrator requirements](../aidlc-docs/inception/requirements/administrator-role.md) and [shared security requirements](../aidlc-docs/inception/requirements/shared-security-requirements.md).
+
+**Story points:** 5 — provisional Fibonacci estimate; not implementation hours.
+
+**Implementation status:** Not started — the complete new story has not been verified as implemented. Reuse of existing identity/session primitives does not establish completion.
+
+**Mockup:** TBD
+
+---
+
+### SEC-01 — Administrator TOTP MFA
+
+**Feature:** PB-015 — Shared staff security
+
+**Actor:** Administrator
+
+**Story:**
+> As an Administrator, I want to authenticate with my password and an authenticator application, so that my privileged account remains protected even if my password is compromised.
+
+**Implementation scope:** Implement shared password-plus-TOTP enrollment, authentication, recovery/replacement, replay protection and administrative session gating using the existing opaque, database-backed session architecture. This is one shared security story, not duplicated across ADM features.
+
+**Acceptance criteria:**
+
+1. Require every administrator to complete password plus TOTP MFA before accessing administrative functionality.
+2. Support initial authenticator enrollment using a QR code within the authorized enrollment context.
+3. Verify a valid TOTP code before activating enrollment.
+4. Verify the password before requesting the second factor.
+5. Do not issue a fully authorized administrative session until MFA succeeds; an incomplete/expired challenge conveys no administrative authority.
+6. Reject invalid, expired and previously accepted OTPs for the same authenticator and time step.
+7. Keep replay protection effective under concurrent requests.
+8. Rate-limit failed MFA attempts using documented bounded behavior.
+9. Protect TOTP secrets in backend storage; never expose them, verification codes, passwords or session credentials in logs or regular API responses.
+10. Provide a secure recovery and authenticator-replacement procedure with identity verification for lost devices.
+11. Revoke or invalidate relevant existing sessions after recovery and authenticator changes.
+12. Prevent accounts promoted to admin through controlled backend provisioning from using administrative privileges until MFA is completed, including previously issued sessions.
+13. Require backend verification of the current admin role and MFA-verified session for every ADM operation; frontend routing alone never grants authority.
+14. Record enrollment, successful/failed verification, recovery and replacement under SEC-02.
+15. Preserve the existing opaque session architecture and review the current login contract for web compatibility. Technical design must specify secret protection at rest, acceptable clock skew, short-lived challenges, administrative session lifetimes, recovery identity verification, safe invalidation and browser authentication integration.
+
+**Priority:** High
+
+**Dependencies:** Existing FastAPI password/session implementation, shared staff browser-authentication/RBAC foundation, SEC-02 event contract/persistence, and controlled backend admin provisioning. No additional administrator UI/provisioning story is created.
+
+**Authorization and validation:** Apply the shared security specification's authentication, event-schema, secret-exclusion and backend access boundaries; do not trust frontend checks. See [Administrator requirements](../aidlc-docs/inception/requirements/administrator-role.md) and [shared security requirements](../aidlc-docs/inception/requirements/shared-security-requirements.md).
+
+**Story points:** 13 — provisional Fibonacci estimate; not implementation hours.
+
+**Implementation status:** Not started — the complete new story has not been verified as implemented. Reuse of existing identity/session primitives does not establish completion.
+
+**Mockup:** TBD
+
+---
+
+### SEC-02 — Shared Security Audit Logging
+
+**Feature:** PB-015 — Shared staff security
+
+**Actor:** Security Auditor
+
+**Story:**
+> As a Security Auditor, I want FinanciAI to record authentication events, authorization failures and privileged actions, so that I can investigate suspicious activity and verify administrative operations.
+
+**Implementation scope:** Provide shared security-event persistence and access/integrity controls in existing PostgreSQL, plus application event integration and safe failure handling. Ticket activity history is separate. Auditor viewing/filtering/investigation UI remains separate future role work.
+
+**Acceptance criteria:**
+
+1. Record successful and failed login attempts. For admin, auth.login_success means both password and MFA succeeded; a correct password alone is not a completed administrative login.
+2. Record logout and security-related session revocations.
+3. Record successful and failed MFA verification.
+4. Record MFA enrollment, recovery and authenticator replacement.
+5. Record account suspension and reactivation.
+6. Record both staff.created and staff.activated, and record privileged-role changes. Use the appropriate available actor, target, timestamp, outcome and sanitized context; never record activation tokens, passwords or other credentials.
+7. Record support ticket escalation as a selected security-sensitive event.
+8. Record authorization failures for protected resources.
+9. Give each event a unique event ID, UTC timestamp, event type, outcome, actor when identifiable and applicable target identifier.
+10. Include request/correlation identifiers and sanitized context where appropriate, using a documented schema and server-derived identity rather than trusting client-supplied actor fields.
+11. Exclude passwords, authentication/activation tokens, MFA secrets/codes, financial balances/transaction amounts, receipt contents, sensitive request bodies and unnecessary personal data.
+12. Persist events in PostgreSQL with explicit read/write restrictions and an append-only application audit interface.
+13. Prevent Administrators, Support Agents and ordinary application roles from modifying or deleting existing audit records.
+14. Permit reading only to explicitly authorized principals; a product role does not receive unrestricted audit-record access implicitly.
+15. Do not allow critical account/role changes to succeed silently without audit evidence. Their persistence and audit records must follow a consistent failure-handling strategy that is tested.
+16. Handle authentication-event logging failures safely and observably, without bypassing authentication/authorization or causing an unnecessary system-wide outage.
+17. Verify event generation, access controls, sensitive-data exclusion and logging-failure behavior with automated tests during implementation.
+
+**Priority:** High
+
+**Dependencies:** FastAPI authentication/session/RBAC and PostgreSQL persistence, with shared identity/ticket event contracts and planned authorized Auditor access. Event capture does not wait for an Auditor frontend or AUD-01 implementation.
+
+**Authorization and validation:** Apply the shared security specification's authentication, event-schema, secret-exclusion and backend access boundaries; do not trust frontend checks. See [Administrator requirements](../aidlc-docs/inception/requirements/administrator-role.md) and [shared security requirements](../aidlc-docs/inception/requirements/shared-security-requirements.md).
+
+**Story points:** 8 — provisional Fibonacci estimate; not implementation hours.
+
+**Implementation status:** Not started — the complete new story has not been verified as implemented. Reuse of existing identity/session primitives does not establish completion.
+
+**Mockup:** TBD
+
+---
+
+### Provisional estimates and counting boundaries
+
+| Story | Provisional SP | Rationale |
+|---|---:|---|
+| ADM-01 | 3 | Exact lookup, bounded metadata UI/API and MFA/role/resource guards |
+| ADM-02 | 5 | Session invalidation, persistent suspension semantics, concurrent last-admin protections and audit integration |
+| ADM-03 | 5 | Expiring single-use activation, staff password establishment, race handling and activation audit |
+| ADM-04 | 3 | Two-role transitions with immediate session/authority effects, validation and audit |
+| ADM-05 | 5 | Reused case infrastructure with claim, resolution, atomic return/fallback and server-side visibility |
+| Administrator subtotal | 21 | Five functional role stories |
+| SEC-01 | 13 | Complete TOTP lifecycle, protected browser session integration, recovery/replacement and concurrent replay defenses |
+| SEC-02 | 8 | Cross-module security events, protected persistence, sensitive-data exclusions and failure-consistency tests |
+| Shared security subtotal | 21 | Two cross-cutting stories counted once |
+| New-story total | 42 | Does not include separately estimated shared technical prerequisites |
+
+The existing Fibonacci register has metadata/catalog work around 2–3 points, manual expense and correction at 5 and natural-text capture at 8. Preserve those historical estimates. ADM-01/04 are scoped extensions reusing shared security; suspension/activation/escalation add lifecycle and concurrency cases. SEC-01 is larger than the 8-point capture reference because it includes enrollment, recovery/replacement, browser-session integration and MFA enforcement across promotion/session paths. SEC-02 spans authentication, staff, account and ticket modules; it does not include Auditor UI or advanced analytics. These are provisional relative-complexity estimates, not time commitments or measured team velocity.
+
+Reuse existing password/session infrastructure. Estimate staff portal scaffolding and controlled backend administrator provisioning once as shared technical prerequisites. Staff activation belongs to ADM-03; Admin MFA/browser-session integration belongs to SEC-01; shared security audit infrastructure belongs to SEC-02. Do not charge those again to every ADM/SUP/Auditor story. SUP-05's 3 points still cover support-side escalation, not ADM-05's administrator return/resolution flow. SUP-06 and USR-SUP-02 retain their existing history/customer UI responsibilities; this patch does not re-estimate them.
+
+All seven new stories remain Not started. Requirements approval and publication do not establish endpoints, tables, MFA, audit persistence or staff interfaces. No Trello changes are part of this task.

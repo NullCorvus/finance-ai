@@ -49,6 +49,40 @@ staff shell supersedes that exclusion for this extension. Financial AI and the h
 optional AI-chat sketches do not authorize AI customer support.
 See the [team reading guide](../aidlc-docs/README.md) for portable context and Git boundaries.
 
+## Planned Administrator and shared security extension (2026-11-07)
+
+The [Administrator requirements](../aidlc-docs/inception/requirements/administrator-role.md)
+and [shared security contracts](../aidlc-docs/inception/requirements/shared-security-requirements.md)
+add the approved ADM-01–ADM-05 and SEC-01/SEC-02 scope to the same planned staff portal.
+Use `staff-web/src/features/admin/` for administrative screens and `features/auth/` for shared
+staff authentication/MFA. `features/audit/` is reserved for the future read-only Auditor interface;
+this task adds no Auditor-interface story or implementation directory. Existing `app/` and
+`shared/` portal locations are reused; Flutter's `web/` runner remains separate.
+
+The shared authorization model is user/support_agent/admin/security_auditor, with one primary
+role per account. Free/Premium are plans. The ordinary portal cannot create/grant/revoke admin;
+initial/additional administrators use a controlled backend procedure, without a fifth role or
+multi-administrator approval system. Every administrative request requires current backend
+role/resource authorization and MFA-verified session authority. Reuse opaque sessions and extend
+the browser/login contract; do not introduce JWTs, another backend or another database.
+
+Proposed backend administrative modules follow `src/finance_ai/admin/` and existing feature
+router/schema/policy/service/UoW conventions, sharing authentication in `auth/` and security-event
+services in a proposed `audit/` module. Existing PostgreSQL/model/adapter/migration/test conventions
+remain applicable when implementation is authorized. None of those code paths is scaffolded here.
+
+Administrator suspension protections cover self/last-active-admin and concurrent/equivalent
+deactivation paths. Staff invitation/activation is single-use and expiring, with both staff.created
+and staff.activated evidence. SEC-02 defines shared event privacy, append-only application access
+and consistent privileged-mutation/audit failure behavior, separately from ticket activity history.
+
+ADM-05 finalizes the Support escalation handoff: administrator claim, originating Support read-only
+access, and mandatory-reason atomic return to an eligible original support_agent with in_progress,
+or to an unassigned open ticket otherwise. Backend projections keep escalation/return reasons
+staff-only and resolution summaries customer-visible for active accounts. No general-purpose notes
+or private messaging is introduced. See the [canonical backlog](BACKLOG-AND-STORIES.md#administrator-and-shared-security-extension--2026-11-07)
+for exact story definitions, dependencies and separate provisional functional/security estimates.
+
 ## Academic decisions from the original plan
 
 - **Interface** — **Flutter app** is implemented. The original plan recorded professor confirmation
