@@ -5150,3 +5150,917 @@ If you want, I can point out the exact change needed in `.github/workflows/relea
 **Context**: Verificado en Chrome local (escenas 3, 12 y 13, sin errores ni desbordes nuevos); la guía se revisó en una vista previa de la página (cubierta y escenas 1 y 2). Se regeneran los PDF y se publica; sin commit hasta que lo pida. Versión de archivos 20261105s.
 
 ---
+## Support Agent — Initial Review Request (recorded after edit authorization)
+**Timestamp**: 2026-11-04T22:02:25Z
+**User Input**:
+
+I need you to check those user stories and adapt the docs to that like I need that docuemnted first tell me wehre are you gon to do it and then if those are good needs adjustment or what 
+and also the structure of where is goin to live that code ok ?? and also based on our previous US you should give each one story points also and also how are we goin to add that to the repo ?? 
+
+like with what minimal task for the agentsa but this time is different 
+because each one of us is going to do one role this one is one role ok ? 
+
+so maybe one card with user soimething and then with subtask each US?? 
+
+before making changes tell me pls
+
+**AI Response**: Read-only review completed before any change; proposed documentation locations, story points and role-owner handoff. Initial request to wait for edits was respected.
+**Context**: Support Agent documentation workflow; original task inputs retained verbatim. Earlier proposal is superseded by the corrected scope where contradictory.
+
+---
+
+## Support Agent — Initial Supplied Scope
+**Timestamp**: 2026-11-04T22:02:25Z
+**User Input**:
+
+Document the finalized **Support Agent role backlog and user stories** in the FinanciAI repository.
+
+## Objective
+
+Create or update the requirements documentation for the `support_agent` role, including its capabilities, permissions, user stories, acceptance criteria, priorities, and dependencies.
+
+This task is **documentation only**. Do not implement functionality, modify application code, create database migrations, or change the existing architecture.
+
+## 1. Review existing repository documentation
+
+Before making changes:
+
+- Inspect the repository's documentation structure, existing requirements, user stories, and naming conventions.
+- Identify the appropriate location for the Support Agent documentation.
+- Reuse existing formats and conventions rather than creating duplicate documentation.se existing formats and conventions rather than creating duplicate documentat
+- Reference the existing FinanciAI architecture where relevant.
+- Preserve all existing user stories and requirements.
+
+## 2. Finalized role definition
+
+**Role:** `support_agent`
+
+**Purpose:** Assist FinanciAI customers by managing support tickets, communicating with users, reviewing limited account information, resolving problems, and escalating cases requiring administrative privileges.
+
+### Authorized capabilities
+
+- View, filter, and claim support tickets.
+- Create tickets on behalf of identified customers.
+- Communicate with customers through ticket messages.
+- Access limited customer account information relevant to authorized cases.
+- Escalate cases to administrators with a documented reason.
+- Review ticket conversation and activity history.
+- Resolve tickets with a documented resolution.
+
+### Restrictions
+
+Support Agents must not:
+
+- Access customers' private transactions, balances, receipts, or financial credentials.
+- Modify customer account information, permissions, or subscriptions.
+- Suspend or reactivate accounts.
+- Execute refunds or administrative billing operations.
+- Modify system configuration.
+- Access tickets outside their authorization scope.
+- Modify or delete security audit records.
+
+Enforce authorization in the backend, not only through the frontend.
+
+## 3. Support Agent user stories
+
+Document these six user stories using the existing repository format.
+
+### SUP-01 — View and claim support tickets
+
+**As a** Support Agent,
+**I want** to view available support tickets and claim unassigned tickets,
+**so that** I can begin assisting customers.
+
+**Acceptance criteria:**
+
+1. Display tickets with ID, subject, status, creation date, and assignment.
+2. Allow filtering by status.
+3. Allow an agent to claim an unassigned ticket.
+4. Prevent conflicting simultaneous claims.
+5. Restrict access to authorized support staff.
+
+**Priority:** High.
+
+### SUP-02 — Create support tickets
+
+**As a** Support Agent,
+**I want** to create a ticket on behalf of an identified customer,
+**so that** issues reported through another support channel can be documented.
+
+**Acceptance criteria:**
+
+1. Identify an existing customer through an authorized account lookup.
+2. Enter a subject, category, and description.
+3. Link the ticket to the identified customer.
+4. Record its creation timestamp and the responsible agent.
+5. Prevent unauthorized customer-data access.
+
+**Priority:** High.
+
+### SUP-03 — Communicate with customers
+
+**As a** Support Agent,
+**I want** to exchange messages with customers through assigned tickets,
+**so that** I can investigate and resolve their problems.
+
+**Acceptance criteria:**
+
+1. Read and send messages within assigned tickets.
+2. Customers can read and reply through the existing Flutter application.
+3. Messages record their author and timestamp.
+4. Unauthorized agents cannot access restricted conversations.
+
+**Priority:** High.
+
+### SUP-04 — View limited customer information
+
+**As a** Support Agent,
+**I want** to inspect relevant customer account information,
+**so that** I can identify customers and provide appropriate assistance.
+
+**Acceptance criteria:**
+
+1. Display the customer's name, email, account identifier, account status, and subscription status within an authorized support context.
+2. Exclude private financial transactions, balances, receipts, passwords, and credentials.
+3. Prevent agents from modifying account details or subscription entitlements.
+4. Enforce permissions through backend authorization.
+
+**Priority:** High.
+
+### SUP-05 — Escalate tickets to administrators
+
+**As a** Support Agent,
+**I want** to escalate cases requiring administrative privileges,
+**so that** an authorized administrator can resolve them.
+
+**Acceptance criteria:**
+
+1. Allow escalation of an assigned ticket.
+2. Require an escalation reason.
+3. Change the ticket status to `escalated`.
+4. Make the case accessible to the appropriate administrator workflow.
+5. Preserve authorized access to previous messages and case history.
+6. Prevent the support agent from executing restricted administrative actions.
+
+**Priority:** High.
+
+### SUP-06 — Review case history and resolve tickets
+
+**As a** Support Agent,
+**I want** to review ticket history and document resolutions,
+**so that** support outcomes remain traceable.
+
+**Acceptance criteria:**
+
+1. Display the ticket's messages, relevant status changes, and assignment history.
+2. Allow an assigned agent to resolve an eligible ticket.
+3. Require a resolution summary.
+4. Make the resolved status and resolution visible to the customer.
+5. Preserve case history after resolution.
+
+**Priority:** High.
+
+## 4. Required customer-side dependencies
+
+Document these as dependencies of the Support Agent functionality, not as Support Agent stories.
+
+### USR-SUP-01 — Create a support request
+
+As an authenticated FinanciAI User, I want to create a support ticket from the Flutter mobile application so that I can request assistance.
+
+**Acceptance criteria:**
+
+- Accessible through Settings → Help & Support.
+- Requires authentication.
+- Accepts subject, category, and description.
+- Associates the ticket with the authenticated user.
+- Prevents creating tickets on behalf of other customers.
+
+### USR-SUP-02 — Track and respond to support requests
+
+As a FinanciAI User, I want to view my tickets and respond to support messages so that I can track the resolution of my problems.
+
+**Acceptance criteria:**
+
+- Display only tickets belonging to the authenticated user.
+- Show ticket status, conversation, and resolution.
+- Allow replies to eligible tickets.
+- Prevent access to other users' tickets.
+
+## 5. Functional workflow and architecture
+
+Document these decisions:
+
+- **Staff frontend:** React + Vite + TypeScript + Tailwind CSS.
+- **Customer frontend:** Existing Flutter mobile application.
+- **Backend:** Existing FastAPI service.
+- **Database:** Existing PostgreSQL database.
+- **Authentication:** Reuse the existing authentication architecture, extending it for staff access as necessary.
+- **Authorization:** Role-based and resource-level backend enforcement.
+- **Staff interface:** A separate web portal, reusable for future Admin and Security Auditor roles.
+- **Customer interface:** Settings → Help & Support within the mobile application.
+
+**Ticket statuses:**
+
+- `open`
+- `in_progress`
+- `escalated`
+- `resolved`
+
+Document ticket transitions, assignment rules, escalation ownership, and reopening behavior. Where these were not explicitly finalized, identify the decisions as pending instead of inventing business rules.
+
+Important ticket actions should generate audit events compatible with the project's future security-auditing functionality.
+
+## 6. Explicit exclusions
+
+Do not add the following to the implementation backlog:
+
+- AI support assistants or AI-generated responses.
+- Knowledge base or response templates.
+- Agent performance analytics.
+- Individual agent work-history dashboards.
+- Complex ticket routing or SLA management.
+- Push notifications or real-time chat infrastructure.
+- File attachments.
+- A public anonymous ticket portal.
+
+These features are outside the approved scope.
+
+## 7. Documentation quality
+
+For each story, include:
+
+- Unique ID.
+- Descriptive title.
+- Actor.
+- User story in the As a / I want / So that format.
+- Functional description.
+- Testable acceptance criteria.
+- Priority.
+- Dependencies.
+- Relevant authorization and validation requirements.
+- Implementation status: **Not started**, unless repository evidence establishes otherwise.
+
+Keep the documentation consistent with the existing requirements specification and backlog.
+
+Do not create redundant stories or silently expand the agreed scope.
+
+## 8. Final verification
+
+After making the documentation changes:
+
+1. Verify that all six Support Agent stories are present.
+2. Verify that both customer-side dependency stories are documented or appropriately referenced.
+3. Confirm that excluded capabilities were not added.
+4. Check that permissions, architecture, and acceptance criteria are consistent.
+5. List the files created or modified.
+6. Summarize the final backlog and flag any contradictions discovered in the existing repository.
+
+**Do not implement the stories yet. Only document the finalized requirements and backlog.**
+
+
+**AI Response**: Preserve the six supplied Support Agent stories and two customer dependency stories as the baseline.
+**Context**: Support Agent documentation workflow; original task inputs retained verbatim. Earlier proposal is superseded by the corrected scope where contradictory.
+
+---
+
+## Support Agent — Corrected Scope and Documentation Authorization
+**Timestamp**: 2026-11-04T22:02:25Z
+**User Input**:
+
+Continue the documentation-only Support Agent task using the corrections below. These decisions come from our latest FinanciAI requirements discussions and supersede contradictory or outdated proposals found in the repository.
+
+## 1. Correct the authorization model
+
+We have finalized **four authorization roles**:
+
+1. `user` — existing customer role for personal financial management.
+2. `support_agent` — manages customer support requests with limited, authorized access.
+3. `admin` — manages accounts, staff permissions, configurations and escalated cases.
+4. `security_auditor` — independently reviews audit records and privileged activity without modification permissions.
+
+**Free and Premium are subscription plans, not authorization roles.**
+
+Do not introduce `free_user` or `premium_user` as authorization roles.
+
+The backend currently has `user` and `admin`. The other roles are planned additions, not implemented functionality.
+
+For the initial design, use one primary authorization role per account. Keep plan and entitlement modeling separate from security roles.
+
+### Subscription decisions
+
+Subscription expiration behavior has NOT been finalized.
+
+- Do not specify automatic downgrade to Free.
+- Do not introduce subscription expiration workflows.
+- Do not implement billing or entitlement changes.
+- Do not make subscription behavior a blocker for Support Agent documentation.
+- Refer to subscription status in support requirements only where the underlying model supports it; otherwise mark it as a dependency.
+
+Do not assume unimplemented subscription functionality already exists.
+
+### Staff account creation
+
+- Staff accounts are provisioned by authorized administrators.
+- Public registration creates ordinary customer accounts only.
+- Users cannot self-select privileged roles.
+- Admin access requires MFA in the planned security design.
+- Privileged-role assignments must be audited.
+
+The Security Auditor is confirmed as the fourth role. Its detailed user stories will be designed separately.
+
+## 2. Preserve the approved Support Agent scope
+
+We have approved exactly six Support Agent stories:
+
+- SUP-01 — View and claim support tickets.
+- SUP-02 — Create support tickets on behalf of identified customers.
+- SUP-03 — Communicate with customers.
+- SUP-04 — View limited customer information.
+- SUP-05 — Escalate tickets to administrators.
+- SUP-06 — Review case history and resolve tickets.
+
+There are also two customer-side dependencies:
+
+- USR-SUP-01 — Create support requests from Flutter.
+- USR-SUP-02 — Track support requests and reply to messages from Flutter.
+
+Keep the previously supplied descriptions and acceptance criteria as the baseline.
+
+**Important: SUP-04 already defines customer-information permissions. Do not create another story for this requirement.**
+
+Support Agents may inspect limited, authorized account metadata and ticket information. They must not access private transactions, balances, receipts, passwords or financial credentials by default.
+
+SUP-02 requires a narrowly scoped customer lookup to create a ticket. Do not permit unrestricted customer browsing.
+
+If a field such as customer name or subscription status doesn't exist in the current backend, document that dependency rather than assuming the field already exists.
+
+### Additional workflow rules
+
+Refine the existing acceptance criteria to cover:
+
+- Limited information visible in unassigned ticket queues.
+- Full authorized ticket access after assignment.
+- Prevention of simultaneous conflicting ticket claims.
+- Backend authorization for every ticket operation.
+- Ticket states: `open`, `in_progress`, `escalated`, `resolved`.
+- Status transitions and escalation ownership.
+- Message history, timestamps and resolution summaries.
+- Protection of customer data and audit events.
+
+Where a workflow decision has not yet been approved, clearly mark it as pending rather than inventing requirements.
+
+### Explicit exclusions
+
+Do not include:
+
+- AI customer support or AI-generated responses.
+- Knowledge bases or response templates.
+- Agent performance dashboards or analytics.
+- Personal agent work-history dashboards.
+- Complex ticket routing or SLAs.
+- Public anonymous ticket portals.
+- File attachments.
+- Real-time chat infrastructure or push notifications.
+
+The approved scope is human-operated ticket management.
+
+## 3. Confirm the repository architecture
+
+We have decided **not to create a fourth repository**.
+
+Use these existing repositories:
+
+### A. Product documentation
+
+Repository: `NullCorvus/finance-ai`
+
+Maintain the authoritative backlog in:
+
+`docs/BACKLOG-AND-STORIES.md`
+
+Create the detailed role specification in the existing AI-DLC requirements structure, following repository conventions.
+
+Update relevant architectural and requirements references without duplicating the story definitions.
+
+### B. Staff web portal and customer frontend
+
+Repository: `Maicol2363/finance-ai-frontend`
+
+The new staff portal will be a separate React application inside the existing frontend repository:
+
+```text
+finance-ai-frontend/
+├── lib/
+│   └── features/
+│       └── support/          # Planned Flutter customer UI
+├── web/                      # Existing Flutter web runner
+└── staff-web/                # Planned React application
+    ├── src/
+    │   ├── app/
+    │   ├── features/
+    │   │   ├── auth/
+    │   │   └── support/
+    │   └── shared/
+    ├── package.json
+    └── vite.config.ts
+```
+
+Staff frontend technology:
+
+- React
+- Vite
+- TypeScript
+- Tailwind CSS
+
+The portal must be reusable for the future Admin and Security Auditor interfaces, with role-specific routes and backend permissions.
+
+Do not put the React application inside Flutter's existing `web/` directory.
+
+### C. Backend
+
+Repository: `Maicol2363/finance-ai-backend`
+
+Continue using:
+
+- Existing FastAPI backend.
+- Existing PostgreSQL database.
+- Existing authentication infrastructure, extended appropriately.
+- Backend-enforced role and resource authorization.
+
+Plan a Support module under:
+
+`src/finance_ai/support/`
+
+Follow actual backend patterns for services, schemas, persistence, API routes, migrations and tests.
+
+Do not create a separate backend or database for the portal.
+
+These paths are planned architectural locations. Do not create implementation directories during this documentation-only task.
+
+## 4. Story points and Trello consistency
+
+The current FinanciAI Trello board contains the RBAC requirements and implementation cards, but does not establish numerical story-point estimates for these new stories.
+
+The historical GitHub backlog uses Fibonacci estimation.
+
+The proposed Support Agent estimates were:
+
+| Story | Provisional points |
+|---|---:|
+| SUP-01 | 5 |
+| SUP-02 | 3 |
+| SUP-03 | 5 |
+| SUP-04 | 3 |
+| SUP-05 | 3 |
+| SUP-06 | 5 |
+| USR-SUP-01 | 3 |
+| USR-SUP-02 | 5 |
+| Total | 32 |
+
+Treat these as provisional, not confirmed.
+
+Review their relative complexity against comparable existing user stories, accounting for authorization, backend, frontend, persistence and testing.
+
+Pay particular attention to SUP-03, which spans Flutter, React and FastAPI, and SUP-06, which may reuse existing ticket-history infrastructure.
+
+Document shared dependencies separately, including staff portal scaffolding, staff authentication, RBAC foundations and audit integration. Avoid counting shared work multiple times.
+
+Do not modify Trello or create Trello cards as part of this task.
+
+## 5. Documentation changes
+
+Proceed with the documentation-only changes in `NullCorvus/finance-ai`.
+
+- Update the existing authoritative backlog with SUP-01 through SUP-06 and the two customer dependency stories.
+- Create a detailed Support Agent requirements document using existing AI-DLC conventions.
+- Update existing requirements questions to reflect our decisions and identify superseded assumptions.
+- Update architecture and technology documentation to describe the planned staff portal.
+- Preserve historical requirements and existing story records.
+- Follow mandatory repository documentation procedures, including AI-DLC state and audit updates where required.
+- Avoid redundant planning documents unless mandatory under repository conventions.
+
+Use the existing `develop`-based contribution workflow, creating a documentation branch and PR where appropriate. Do not directly change unrelated repositories.
+
+## 6. Final verification
+
+After editing, report:
+
+1. Files created or modified.
+2. Final Support Agent story inventory and acceptance criteria.
+3. Updated permission boundaries.
+4. Architecture and repository-structure decisions.
+5. Revised or retained provisional story-point estimates, with reasoning.
+6. Remaining genuine blockers or pending decisions.
+
+Do not reopen already finalized role, technology, or Support Agent scope decisions.
+
+**Authorization: Proceed with documentation-only changes. Do not implement application code, create database migrations, scaffold React, or modify Trello.**
+
+**AI Response**: Proceed with documentation only. Supersede plan-as-role assumptions and the proposed fourth repository. Scope remains Support Agent; other role backlogs are not generated.
+**Context**: Support Agent documentation workflow; original task inputs retained verbatim. Earlier proposal is superseded by the corrected scope where contradictory.
+
+---
+
+## Support Agent — Shared Team Context
+**Timestamp**: 2026-11-04T22:02:25Z
+**User Input**:
+
+\- `premium_user` — Free features plus the AI and other premium features that the product explicitly includes.
+
+this one is not a role add information only about the current role
+
+`/home/d3ad/codigos/finance-ai/aidlc-docs/inception/requirements/support-agent-role.md`New role specification: permissions, restrictions, workflow, dependencies, exclusions, and pending decisions.
+
+some friends not have configure the repo like that like I have but ai dlc is private or should be shared ?? also what actully is uploaded to the repo ??
+
+also my friends should have all the context stack etc&#x20;
+
+**AI Response**: Verified tracked versus ignored files and selected an isolated worktree to preserve unrelated local changes. Shared Markdown requires no AI-DLC installation; team guide and support specification will use portable links. The documentation remote lacks develop, so publication remains pending.
+**Context**: Support Agent documentation workflow; original task inputs retained verbatim. Earlier proposal is superseded by the corrected scope where contradictory.
+
+---
+
+## Support Agent — Documentation Execution
+**Timestamp**: 2026-11-04T22:06:58Z
+**AI Response**: Added the authoritative six Support Agent stories and two customer dependencies with provisional points, role requirements, corrected questions with preserved archive, portable team reading guide and planned architecture/stack placement. Prepared an isolated documentation branch from verified master because the docs remote lacks develop. No application directories or Trello changes were made.
+**Context**: Security Baseline requirements evaluated per rule; partial PBT N/A for documentation; disabled Resiliency Baseline skipped. Documentation verification follows.
+
+---
+
+## Support Agent — Documentation Verification and Publication Boundary
+**Timestamp**: 2026-11-04T22:08:03Z
+**AI Response**: Verified eight unique stories and required fields, 24+8 provisional points, 15 unchanged historical HU records, preserved archived questions, append-only audit, 25 portable links/anchors and successful Markdown parsing for all ten changed documents. Whitespace checks pass outside audit; audit trailing spaces are retained exactly as supplied and checked with only blank-at-eol disabled. No application code or tests were changed. Preparing a local review commit only; no push or PR because the requested documentation develop target does not exist.
+**Context**: Support documentation complete with explicitly pending implementation policies. Security requirements coverage recorded; partial PBT N/A; disabled Resiliency skipped. Source checkout and unrelated local changes preserved.
+
+---
+
+## Backlog Status Refresh — User Request
+**Timestamp**: 2026-11-04T22:13:41Z
+**User Input**: "that is done wtf check trello why is in procces or what is that actualize that "
+
+**Attached User Input**:
+
+Product Backlog & User Stories — Finance AI Tracker
+
+> **Source:** supplied backlog and user-story register, 2026-09-13.
+> The historical register below preserves **15 user-story rows** under
+> **11 product backlog items**. The supplied register does not include HU-007.
+> The planned Support Agent extension adds eight records under two new backlog items;
+> its estimates and implementation statuses are explicitly provisional/planned.
+> Product backlog names, priorities, statuses, notes, story wording, implementation scope,
+> acceptance criteria, and points below are the supplied values.
+> **Estimation scale:** Story Points — standard **Fibonacci** (1, 2, 3, 5, 8, 13…).
+> **Historical register:** the Status column reflects the supplied 2026-09-13 snapshot, not the
+> current implementation state. Use `docs/ARCHITECTURE.md` and `docs/STACK.md` for verified
+> technical behavior; preserve story scope and acceptance criteria independently of code progress.
+
+---
+
+## Product Backlog
+
+| Code | Feature | Priority | Status | Notes |
+|---|---|---|---|---|
+| PB-001 | Identity and access | High | Done | HU-001 registration and HU-002 secure renewable sessions are implemented. |
+| PB-002 | Accounts and currencies | High | Done | HU-003 complete. Owned accounts, derived balances, deactivate/reactivate, and safe permanent deletion are merged into develop for backend and frontend. |
+| PB-003 | User-owned catalogs | High | In progress | HU-004 categories and HU-005 income sources. Accounts replace payment methods; subcategories and payment methods are outside the product model. Catalog deletion is confirmed and permanent rather than archived. |
+| PB-004 | Expenses and optional receipt detail | High | Not started | HU-006–HU-008. Fast manual expense, optional evidence/items, correction and permanent deletion. |
+| PB-005 | Income | High | Not started | HU-009. Manual income lifecycle tied to an owned account. |
+| PB-006 | Transfers | High | Not started | HU-010. Atomic movement between owned accounts; never income or expense. |
+| PB-007 | Transaction history and filters | High | Not started | HU-011. Search and inspect expenses, income and transfers together before AI is introduced. |
+| PB-008 | Basic financial dashboard | High | Not started | HU-012. Deterministic balances, recent movements, income/expense and period/category views before AI. |
+| PB-009 | AI capture from natural text and audio | High | Not started | HU-013–HU-014. Written and spoken language share one conversational capture capability, with separate stories for text and microphone behavior. |
+| PB-010 | AI capture from receipt photo | High | Not started | HU-015. Receipt images produce a fast editable expense proposal with printed-total and item extraction. |
+| PB-011 | Spending budgets | Medium | Not started | HU-016. Weekly/monthly category or subcategory targets and dashboard progress after the AI speed layer. |
+
+---
+
+## User Stories
+
+### HU-001 — Registration
+
+**Feature:** PB-001 — Identity and access
+
+**Story:**
+> As a new user, I want to create an account so that I can begin managing my finances.
+
+**Implementation scope:** Validate and normalize email; enforce password policy; hash password adaptively; create user and default catalogs atomically; build accessible registration states; test duplicates, validation, rollback and safe diagnostics.
+
+**Acceptance criteria:** A valid unused normalized email and matching valid passwords create one account and defaults; success redirects to Login without automatic login; duplicate/invalid input gives field-level feedback; duplicate submissions are blocked; passwords and internals are never exposed.
+
+**Story points:** 3
+
+**Mockup:** TBD
+
+---
+
+### HU-002 — Secure renewable sessions
+
+**Feature:** PB-001 — Identity and access
+
+**Story:**
+> As a returning user, I want a secure renewable session so that I can access my data without signing in on every app launch.
+
+**Implementation scope:** Implement login, short-lived access credentials, rotating renewable credentials, restoration, replay protection, logout revocation, secure Android/Windows storage, protected routing and end-to-end tests.
+
+**Acceptance criteria:** Valid credentials open the authenticated home; invalid credentials use one generic error; restart restores a valid session; invalid/expired/revoked renewal returns to Login and clears authority; logout revokes the current renewable credential and removes protected access.
+
+**Story points:** 3
+
+**Mockup:** TBD
+
+---
+
+### HU-003 — Accounts and currencies
+
+**Feature:** PB-002 — Accounts and currencies
+
+**Story:**
+> As a user, I want accounts for cash, banks, wallets, or savings products so that I know where my money is held.
+
+**Implementation scope:** Implement owned account create/list/detail/edit/deactivate/reactivate/safe-delete API and UI; validate unique name, type, currency and opening balance; derive balances from movements; suggest COP or the last-used currency without a separate preference record; allow permanent deletion only before movements; enforce ownership and test currency, inactive-account and deletion rules.
+
+**Acceptance criteria:** I can create and edit an account with name, type, explicit currency and opening balance; its balance is derived consistently; inactive accounts remain visible in history but cannot receive new movements; unused accounts can be permanently deleted while used accounts retain history; suggestions never change existing records; I cannot access another user's account.
+
+**Story points:** 2
+
+**Mockup:** TBD
+
+---
+
+### HU-004 — Categories
+
+**Feature:** PB-003 — User-owned catalogs
+
+**Story:**
+> As a user, I want to manage my categories so that classifications match how I understand my spending.
+
+**Implementation scope:** Implement owned category create/list/detail/edit/reorder/permanent-delete API and UI; replace archive flags through Alembic; support required name, optional color and icon, and manual order; validate trimmed case-insensitive unique names and ownership; keep editable Needs/Wants/Other defaults; confirm deletion; refresh selectors; document that future expense forms require a valid category, deleted historical references display Category deleted, and dependent category budgets cascade without prebuilding those features; test rollback and isolation.
+
+**Acceptance criteria:** I can create, rename, recolor, re-icon, reorder and permanently delete only my categories; starter categories are editable; deletion asks for confirmation; deleted names can be reused; no Uncategorized option is offered for new records; future dependency rules preserve expenses and remove category budgets; only my data changes.
+
+**Story points:** 3
+
+**Mockup:** TBD
+
+---
+
+### HU-005 — Income sources
+
+**Feature:** PB-003 — User-owned catalogs
+
+**Story:**
+> As a user, I want to manage my income sources so that income entries use terms that match my finances.
+
+**Implementation scope:** Implement owned income-source CRUD, editable Salary/Other defaults and migration away from archive flags; validate trimmed case-insensitive unique names; confirm permanent deletion; clear future optional historical references before deletion; refresh selectors; test ownership and rollback.
+
+**Acceptance criteria:** I receive editable income-source defaults; I can add, rename and permanently delete my values; deleted values disappear from new forms while future historical transactions remain and show Source deleted for a missing optional source; another user's data is unaffected.
+
+**Story points:** 2
+
+**Mockup:** TBD
+
+---
+
+### HU-006 — Manual expense
+
+**Feature:** PB-004 — Expenses and optional receipt detail
+
+**Story:**
+> As a user, I want to record an expense with only essential information so that manual capture remains fast without AI or a receipt.
+
+**Implementation scope:** Define one expense request contract; implement authenticated create API and a short form; require active owned account, positive amount, date and merchant/description; default date to today and allow Uncategorized; collapse optional fields; avoid duplicate typing for one optional item; save atomically and test ownership/currency.
+
+**Acceptance criteria:** A simple expense needs only account, amount and merchant/description because date defaults to today, account supplies currency and category may be Uncategorized; optional fields stay out of the way; one item can reuse the merchant text; AI, receipt and item rows are not required; invalid references save nothing.
+
+**Story points:** 5
+
+**Mockup:** TBD
+
+---
+
+### HU-008 — Expense correction and permanent deletion
+
+**Feature:** PB-004 — Expenses and optional receipt detail
+
+**Story:**
+> As a user, I want to view, correct, and permanently delete my expenses so that my records stay accurate and under my control.
+
+**Implementation scope:** Implement owned list/detail/edit/delete API and UI; recalculate balances, history, budgets and summaries once; confirm deletion; remove items and owned attachment atomically; test unauthorized access and rollback.
+
+**Acceptance criteria:** I can view and edit only my expenses; valid edits update derived results exactly once; permanent deletion requires confirmation and removes the expense, item details and receipt file together; failure preserves the prior record; another user's expense is never exposed.
+
+**Story points:** 5
+
+**Mockup:** TBD
+
+---
+
+### HU-009 — Income lifecycle
+
+**Feature:** PB-005 — Income
+
+**Story:**
+> As a user, I want to record and manage income in an account so that balances and summaries are complete.
+
+**Implementation scope:** Implement owned income create/list/detail/edit/delete API and UI; validate active account, positive amount/date and optional owned source; update balance/history; confirm deletion; test ownership and rollback.
+
+**Acceptance criteria:** Valid income increases the selected account balance and appears in history; description/source follow their optionality rules; edits recalculate once; confirmed deletion removes the income and reverses its effect; foreign-owned resources are rejected.
+
+**Story points:** 2
+
+**Mockup:** TBD
+
+---
+
+### HU-010 — Transfers
+
+**Feature:** PB-006 — Transfers
+
+**Story:**
+> As a user, I want to transfer money between my accounts so that internal movements do not look like income or spending.
+
+**Implementation scope:** Implement atomic transfer API and form; validate distinct active owned accounts and positive amounts; preserve source/destination values for cross-currency transfers; update both balances/history; test rollback and analytics neutrality.
+
+**Acceptance criteria:** A same-currency transfer moves the same amount between distinct owned accounts; a cross-currency transfer stores both actual amounts; both sides commit or neither does; transfers affect balances but never income/expense totals; foreign or invalid accounts save nothing.
+
+**Story points:** 2
+
+**Mockup:** TBD
+
+---
+
+### HU-011 — Transaction history and filters
+
+**Feature:** PB-007 — Transaction history and filters
+
+**Story:**
+> As a user, I want one searchable, filterable transaction history so that I can find and inspect any expense, income, or transfer.
+
+**Implementation scope:** Implement one ordered history query and UI; distinguish movement types; add live text search plus weekly/monthly/custom, account, type and category filters; search merchant, description and item text case-insensitively; preserve currency labels; paginate; test combined filters and isolation.
+
+**Acceptance criteria:** I see only my expenses, income and transfers, newest first; text and filters combine correctly; every amount shows currency; unlike currencies are not combined; Uncategorized expenses remain visible; a clear no-results state appears when nothing matches.
+
+**Story points:** 2
+
+**Mockup:** TBD
+
+---
+
+### HU-012 — Basic financial dashboard
+
+**Feature:** PB-008 — Basic financial dashboard
+
+**Story:**
+> As a user, I want a basic dashboard of balances, recent movements, spending, and income so that I understand my financial position before and after every capture.
+
+**Implementation scope:** Implement deterministic aggregation API and dashboard UI; add Today/This week/This month/custom periods; show balances, income/expense, recent movements and category totals; allow subcategory breakdown; separate currencies; test transfer neutrality, ownership and empty/error states.
+
+**Acceptance criteria:** For the selected period I see owned balances, income, expenses, recent movements and categories ordered by spending; I can inspect subcategory detail; transfers affect balances only; totals remain separated by currency; the same stored data produces the same result without AI; empty/error states never fabricate values.
+
+**Story points:** 3
+
+**Mockup:** TBD
+
+---
+
+### HU-013 — Natural-text capture
+
+**Feature:** PB-009 — AI capture from natural text and audio
+
+**Story:**
+> As a user, I want to write what happened in my own words so that the assistant identifies the financial operation and prepares it for quick review.
+
+**Implementation scope:** Implement natural-text input, intent classification for expense/income/transfer, structured proposal/confidence, account/catalog grounding, compact review, focused clarification, in-place edit, retry/discard, latency/error UX and tests.
+
+**Acceptance criteria:** Natural text proposes the correct operation without saving; transfers are not misclassified as spending; complete high-confidence proposals need one-tap acceptance; only ambiguity triggers a short clarification; corrections preserve the original text; Accept uses the normal validated atomic operation; manual forms remain available.
+
+**Story points:** 8
+
+**Mockup:** TBD
+
+---
+
+### HU-014 — Voice capture
+
+**Feature:** PB-009 — AI capture from natural text and audio
+
+**Story:**
+> As a user, I want to describe a financial operation by voice so that the assistant prepares it while I avoid typing.
+
+**Implementation scope:** Reuse the HU-013 proposal/review flow; implement microphone permission, visible recording state, automatic stop at 60 seconds, temporary M4A/WAV handling, speech plus intent extraction, partial/unintelligible/timeout recovery, edit/retry/type/manual actions, cleanup and tests.
+
+**Acceptance criteria:** Voice proposes an expense, income or transfer without saving; recording visibly stops by 60 seconds; denied permission links to settings; high-confidence results need one-tap acceptance; partial/unintelligible/timeouts preserve useful context and offer retry or text/manual fallback; Accept uses the normal save path; temporary audio is cleaned.
+
+**Story points:** 3
+
+**Mockup:** TBD
+
+---
+
+### HU-015 — Receipt-photo capture
+
+**Feature:** PB-010 — AI capture from receipt photo
+
+**Story:**
+> As a user, I want a receipt photo to produce a proposed expense so that I can verify it at a glance and accept it instead of typing every value.
+
+**Implementation scope:** Reuse the shared proposal/review flow; implement temporary JPEG/PNG/HEIC upload up to 10 MB, resize/compression, structured extraction status/confidence, printed-total preservation, mapping to the expense form, focused uncertainty, edit/retry/discard, cleanup and provider-failure tests.
+
+**Acceptance criteria:** A supported photo produces “This is what I understood” without saving; merchant, date, printed total, currency, payment method, classification and items are editable; a high-confidence proposal is accepted with one tap; partial/unreadable/error states offer focused recovery; Accept uses the normal save path; temporary media is cleaned.
+
+**Story points:** Not provided in supplied register
+
+**Mockup:** TBD
+
+---
+
+### HU-016 — Spending budgets
+
+**Feature:** PB-011 — Spending budgets
+
+**Story:**
+> As a user, I want a category or subcategory budget so that I can compare actual spending with a weekly or monthly target.
+
+**Implementation scope:** Implement owned budget CRUD; require positive amount, currency, period and exactly one target; calculate progress from qualifying expenses; delete dependent budgets with deleted classifications; add progress to the existing dashboard; test period, currency and ownership rules.
+
+**Acceptance criteria:** I can create a weekly/monthly budget for exactly one owned category or subcategory; progress is derived, not manually stored, and appears on the dashboard; only matching period/currency expenses count; deleting its classification removes the budget after confirmation; ownership is enforced.
+
+**Story points:** 1
+
+**Mockup:** TBD
+
+---
+
+## Register consistency
+
+- HU-001 through HU-006, HU-008 through HU-016 are present in the supplied register.
+- HU-007 is intentionally absent from the supplied register; no replacement story was invented.
+- Product backlog status belongs to the PB row. Individual HU completion must be verified against its acceptance criteria and implementation evidence.
+
+
+**AI Response**: Verified the active Trello board, its complete list/card collections including archives, all 15 matching completed HU cards and full checklist records. The old product backlog statuses are stale. Will synchronize the document to explicit completed card flags and preserve the separate planned Support Agent implementation. No Trello write is needed.
+**Context**: Follow-up to the Support Agent documentation. Legacy checklist flags and historical card wording are distinguished from card completion. Exact pasted duplicate in a customer support criterion will be removed with a pre-edit backup.
+
+---
+
+## Backlog Status Refresh — Evidence and Correction
+**Timestamp**: 2026-11-04T22:15:50Z
+**AI Response**: Trello already marks all 15 original story cards complete=true and closed=true in Deploy. Updated all 11 original PB rows to Done, added status/card citations to each HU and replaced the stale historical-status warning with a dated current-status source. Preserved the entire eight-story Support Agent extension byte-for-byte. Removed only the exact accidental pasted duplicate; pre-edit backup retained in /tmp/finance-ai-backlog-before-sync-ir2wrh8f/BACKLOG-AND-STORIES.md. Four cards have unmarked legacy checklist items despite completion; the discrepancy is recorded without altering the board or importing obsolete architecture text.
+**Context**: Documentation status reconciliation only. No Trello mutations, application changes, acceptance-test execution or remote publication. Security Baseline N/A to metadata-only follow-up; partial PBT N/A; disabled Resiliency skipped. Verification and local commit follow.
+
+---
+
+## Backlog Status Refresh — Verification Complete
+**Timestamp**: 2026-11-04T22:16:03Z
+**AI Response**: Validation passed for 11 Done product rows, 15 original HU statuses with direct verified Trello links, unchanged original story content/criteria/points, unchanged eight-story support extension, exact duplicate removal, append-only audit and Markdown parsing for four modified documentation files. Whitespace checks pass with only verbatim audit-input trailing spaces exempted. Prepared a local review commit; no push or Trello write.
+**Context**: Completed user-requested status refresh on the existing documentation branch.
+
+---
+
+## Support Agent Trello Card — User Authorization
+**Timestamp**: 2026-11-04T22:20:11Z
+**User Input**: "and did you create the trello card ?? "
+**AI Response**: "No. I only checked Trello and updated the docs. The Support Agent parent card and six story subtasks have not been created."
+
+**User Input**: "create it "
+**AI Response**: Prepared the authorized Support Agent parent card, six story checklist subtasks and separate customer/foundation dependency checklists using the approved repository scope. Refreshed the active board and confirmed no existing matching parent card. All estimates remain provisional, implementation remains not started, and unpublished repository documents are identified as local.
+**Context**: Explicit creation authorization supersedes the prior no-Trello-write boundary for this card only. No messages to team members, implementation or repository publication are requested.
+
+---
+
+## Support Agent Trello Card — Created and Verified
+**Timestamp**: 2026-11-04T22:21:49Z
+**AI Response**: Created https://trello.com/c/rCyuWwMB in Backlog on the active Finance AI board. Added three ordered checklists: six Support Agent story subtasks with 24 provisional points, two customer dependencies with 8 provisional points, and four shared prerequisites estimated separately. Full card/checklist readback confirms exact IDs/order, all 12 check items incomplete, and the parent open/not complete. The description includes all six story narratives and acceptance criteria, stack/repository boundaries, authorization restrictions, exclusions, pending decisions and the fact that new repository documentation is not yet pushed. No owner/date was guessed. Updated local backlog/state/plan with the card link; preparing a local traceability commit only.
+**Context**: User explicitly requested creation. No other Trello cards, team messages, application files, migrations or remote Git branches changed. Security handoff preserved; partial PBT N/A; disabled Resiliency skipped.
+
+---
+
+## Support Agent Trello Card — User Correction
+**Timestamp**: 2026-11-04T22:29:14Z
+**User Input**: "que es esto quita eso 
+y agregaste en la taejta el stack ?? y que va a ser web ??"
+**Attachment**: Screenshot identifies the Shared prerequisites — estimate once checklist and its four items.
+**AI Response**: Removed the named checklist and its four items using Trello UI because the connector exposes no deletion action. Removed the corresponding prerequisite section from the description. Added an explicit Interface line at the top: web staff portal using React, Vite, TypeScript and Tailwind CSS; retained the existing frontend staff-web location and FastAPI/PostgreSQL backend context. Full checklist readback verifies exactly two remaining checklists with six role-story items and two customer dependencies. The six stories and their acceptance criteria remain intact; implementation remains not started.
+**Context**: User explicitly requested removal of the pictured checklist. No other cards, stories or application code changed. Local tracking text updated; no Git push.
+
+---
+
+## Support Agent Documentation — Master Publication Authorization
+**Timestamp**: 2026-11-07T19:55:48Z
+**User Input**: "Una duda yo estoy en otra bvranch pero una pregunta eso esta en master ?? "
+**User Input**: "o solo trelllo ?? "
+**AI Response**: Verified the remote master backlog and confirmed that the new Support Agent requirements remained local, while the card already existed in Trello.
+
+**User Input**: "Ok deberia agrear eso pasarlo a master esa documentacion "
+**AI Response**: User explicitly authorizes publishing and integrating the scoped documentation into master. Fetched current origin/master 5ce25d6 and created isolated integration branch codex/support-agent-publish-20261107. Merged the original Support Agent work; preserved the full master audit prefix and all Support Agent audit additions, retained master CI/presentation updates and archived the complete original role-question sheet inside the corrected decisions. No application or presentation implementation files are changed by this publication.
+**Context**: Current publication target is master, superseding the earlier pending-develop-target limitation. Keep the original user checkout and source Support Agent worktree intact. Validation precedes push/PR/merge.
+
+---
+
+## Support Agent Documentation — Publication Validation
+**Timestamp**: 2026-11-07T19:56:46Z
+**AI Response**: Resolved all three merge conflicts while preserving the full current-master audit prefix, the full Support Agent audit addition and the original question sheet in its historical archive. Ten Markdown files parse; all 15 original HU records and eight support/customer records remain, all 11 original PB statuses are Done, provisional points remain 24+8, and 25 local links/anchors resolve. Only the ten scoped documentation files differ from master; application and presentation files are unchanged. Whitespace checks pass, with only raw user-input trailing spaces exempted in the append-only audit. No application tests are required for documentation-only publication.
+**Context**: Preparing the authorized master PR. Security Baseline requirements coverage preserved; no secrets detected by targeted credential-pattern checks. Partial PBT N/A and disabled Resiliency skipped.
+
+---

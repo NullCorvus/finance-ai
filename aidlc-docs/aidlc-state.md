@@ -2,7 +2,7 @@
 
 ## Project Information
 - **Project Type**: Brownfield (FastAPI backend + Flutter frontend already implemented)
-- **Current Stage**: OPERATIONS (Complete) - Feature Complete
+- **Current Stage**: Support Agent documentation approved for publication to master; application implementation not started
 
 ## Workspace State
 - **Existing Code**: Yes — `finance-ai-backend/` (FastAPI, Alembic, uv) and `finance-ai-frontend/` (Flutter)
@@ -373,6 +373,7 @@ still outstanding there.
 - [x] Publicación documental en `origin/master`; commit de diagramas `9fa14f2`.
 
 ## Active Workflow — Access Roles and Subscription Entitlements (2026-11-02)
+- **Historical checkpoint**: The plan-as-role direction below was superseded by the 2026-11-04 corrected decisions. The shared roles are user, support_agent, admin and security_auditor; Free/Premium are plans. This retains the older checkpoint without making its proposed role names current requirements.
 - **Stage**: Requirements Analysis — clarification pending.
 - **Current question file**: `aidlc-docs/inception/requirements/requirement-verification-questions.md`.
 - **Observed implementation**: Backend roles are `user` and `admin`; public registration assigns `user`. No support role or subscription-entitlement model was found in the inspected source.
@@ -396,3 +397,51 @@ still outstanding there.
 - **Emulator runner correction (2026-11-03)**: Run `41638154067` had transient `adb: device offline` messages, but the emulator later booted. The job failed before test assertions because `android-emulator-runner` splits its multiline `script` input into separate shell invocations. The release workflow now calls `.github/scripts/run-release-android-journeys.sh` on one line; the helper runs authentication and financial suites independently and returns failure if either suite fails. Shell syntax, workflow YAML, and failure-handling smoke validation pass. Hosted Android journeys must be rerun before claiming device-test success.
 - **Follow-up branch**: Commit `44b8e3c` was pushed to `codex/ci-script-runner-fix-20261103` and PR #49 merged into `develop` as `e6e9d4656b9f9dd1c50d1a3292de8b7fc86c3298`. PR #50's commit `96bf7f2` on `codex/ci-emulator-stability-20261104` was merged into `develop` as `b7df33f` on 2026-11-05; hosted device-journey verification remains unconfirmed.
 - **Emulator stability implementation (2026-11-04)**: The release job now selects `-gpu software`, runs the auth and financial integration test files together with `--no-pub`, and has a 60-minute timeout. Bash syntax, YAML and release-gate assertions, Flutter integration-target selection (expected no-device exit locally), and `git diff --check` passed. `actionlint` and a local Android emulator are unavailable. No production credentials, backend deploy triggers, branch protections, or paid services changed.
+## Active Workflow — Support Agent documentation (2026-11-04)
+
+- **Scope**: Documentation only; six Support Agent stories plus two customer dependencies. No code, migrations, scaffolding, Trello, deployment or other-role backlogs.
+- **Source of truth**: [Backlog](../docs/BACKLOG-AND-STORIES.md#support-agent-extension--2026-11-04); [role requirements](inception/requirements/support-agent-role.md); [team reading guide](README.md).
+- **Plan**: [Documentation checklist and role-owner handoff](inception/plans/support-agent-documentation-plan.md).
+- **Authorization**: Latest supplied correction explicitly authorizes documentation edits and supersedes the earlier plan-as-role and fourth-repository proposals. Existing unrelated work is preserved in the original checkout.
+- **Shared model correction**: Plans and entitlements are separate from authorization roles; one primary role per account. Support Agent is planned, not implemented. Subscription expiration remains undecided and is not a documentation blocker.
+- **Repository placement**: React portal planned at frontend staff-web/; customer support at Flutter lib/features/support/; support backend at src/finance_ai/support/ in the existing service/database. These paths are not scaffolded.
+- **Estimates**: 24 provisional Support Agent points plus 8 customer dependency points; shared foundations estimated separately, once.
+- **Pending implementation decisions**: Queue/lookup scope, lifecycle transitions, escalation ownership, reply/resolution/reopening policies, validation bounds, unsupported metadata fields and shared staff session/audit contracts. Confirmed scope and technology choices are not reopened.
+- **Contribution boundary**: Isolated local branch codex/support-agent-backlog from origin/master 16b3361. Remote docs repository has no develop branch; no remote branch, PR target or branch policy is created implicitly. Code repositories are unchanged.
+- [x] Workspace detection and focused source review complete; existing architecture/code guide reused.
+- [x] Supplied requirements/story scope and corrected decisions documented; historical records preserved.
+- [x] Workflow planning and role-owner handoff documented in one scoped plan.
+- [x] Shared architecture, stack and portable team context updated.
+- [x] Documentation verification and local review evidence complete.
+- **Verification**: Ten Markdown files parsed; eight unique support story records with all required fields and 24+8 provisional points; all 15 historical HU records unchanged; original role questions archived; audit history append-only; 25 new-document local links/anchors valid. Normal whitespace check passes outside audit; audit passes with trailing-space checks disabled solely to retain verbatim raw user input. No application tests run for this documentation-only change.
+- **Skipped**: Application design implementation details, units generation, code generation, application build/test and Operations — no implementation is authorized.
+- **Extensions**: Security Baseline requirements coverage evaluated per rule in the role specification; no deployed compliance claimed. Partial PBT N/A to documentation-only changes. Disabled full Resiliency Baseline skipped.
+
+## Backlog status reconciliation — 2026-11-04
+
+- [x] Read the active Trello board and all six lists, including archived cards; all list/card/checklist pagination exhausted.
+- [x] Verified 15 matching original HU cards are explicitly complete and archived in Deploy.
+- [x] Updated PB-001–PB-011 to Done and added per-story Done status with direct card links.
+- [x] Removed the exact accidental pasted backlog insertion from USR-SUP-01 after preserving a local pre-edit backup.
+- [x] Kept historical story definitions/acceptance criteria/points and the eight Support Agent/customer-dependency implementation records unchanged.
+- **Evidence distinction**: Card completion is synchronized; no new application acceptance test or production-release verification is claimed. Four completed cards retain unmarked legacy checklist items, recorded in the backlog. Older duplicate Backlog cards and obsolete JWT/subcategory/PB text are not imported.
+- **Trello boundary**: Read-only inspection; no board changes were necessary because the original cards already carry completion. Shared RBAC cards remain open and separate from the completed core.
+- **Publication**: Local documentation follow-up on codex/support-agent-backlog; no push or PR.
+- **Extensions**: Security Baseline N/A to status-only metadata edits; prior Support Agent requirements coverage unchanged. Partial PBT N/A; disabled full Resiliency skipped.
+
+## Support Agent Trello tracking — 2026-11-04
+
+- [x] Created [Support Agent — ticket management MVP](https://trello.com/c/rCyuWwMB) on the active Finance AI board in Backlog, under the user's explicit creation authorization.
+- [x] Read back the card and full checklists: six ordered SUP-01–SUP-06 story items (24 provisional SP), two separate customer dependencies (8 provisional SP) and four shared prerequisites. All 12 items remain incomplete; card is open and not complete.
+- [x] Included self-contained story acceptance criteria, code locations, permission boundaries, exclusions, pending implementation decisions and related RBAC links.
+- [x] Added the card link to the authoritative backlog and updated the role-owner handoff.
+- **Ownership**: One accountable role owner must be assigned; none was assigned implicitly. No deadline was invented.
+- **Scope**: One parent card with checklist subtasks; no extra role/customer cards, messages, code, migrations or repository publication. Canonical new documentation remains local until separately published.
+- **Extensions**: Existing security requirements preserved in the shared handoff; no secrets/customer records included. Partial PBT N/A; disabled full Resiliency skipped.
+
+## Support Agent Trello card correction — 2026-11-04
+
+- [x] Removed the user-selected shared-prerequisite checklist and four items; the card now has six role-story items and two customer dependencies in two checklists.
+- [x] Removed the corresponding description section and explicitly stated the web staff portal and React/Vite/TypeScript/Tailwind stack at the top.
+- [x] Verified through connector readback and the visible Trello UI. Existing FastAPI/PostgreSQL integration and planned staff-web repository location remain described.
+- **Boundary**: Card presentation correction only; shared architectural dependencies remain requirements, not additional role stories. No implementation, other-card changes or repository publication.
