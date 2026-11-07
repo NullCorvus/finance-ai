@@ -483,5 +483,5 @@ still outstanding there.
 - [x] Created and read back [Administrator — account and escalation management MVP](https://trello.com/c/BrAHthwr) in Backlog on the active Finance AI board.
 - [x] Verified five ordered ADM subtasks (21 provisional SP) and two separate shared SEC subtasks (21 provisional SP counted once), all incomplete; card is open/not complete.
 - [x] Included full canonical criteria, web stack, planned code boundaries, Support dependencies, minimal agent handoff and published master/merged PR #15 references. No prerequisite checklist, invented owner/deadline or other-card change.
-- **Publication**: PR #15 was independently merged as 6f1d133 before this follow-up. Tracking references use a new codex/admin-trello-tracking-20261107 branch from master and a separate master-targeted PR; no merge or application implementation by this follow-up.
+- **Publication**: PR #15 was independently merged as 6f1d133 before this follow-up. Tracking references use a new codex/admin-trello-tracking-20261107 branch from master and [PR #16](https://github.com/NullCorvus/finance-ai/pull/16) against master, open/unmerged; no merge or application implementation by this follow-up.
 - **Extensions**: Security scope preserved; no credentials/private records included. Partial PBT N/A to text/tracking changes; disabled Resiliency skipped.

@@ -52,6 +52,8 @@ The user's subsequent explicit request authorizes one Administrator parent card 
 - [x] Create one Backlog card with web stack, repository boundaries, approved criteria and published master/merged PR references.
 - [x] Add five ordered ADM subtasks (21 provisional SP) and two separate shared SEC subtasks (21 provisional SP, counted once).
 - [x] Read back the full card/checklists and verify status, content, ordering and estimates.
-- [ ] Add tracking references, validate documentation and publish the follow-up on the existing PR branch.
+- [x] Add tracking references, validate documentation and publish the follow-up on a fresh master-based branch (PR #15 was already merged).
 
 **Follow-up card:** [Administrator — account and escalation management MVP](https://trello.com/c/BrAHthwr), verified open/incomplete in Backlog, with exactly two ordered checklists (five ADM and two shared SEC items). All criteria match the canonical backlog. PR #15 merged as 6f1d133 before this follow-up; card links were corrected to master after live verification. Tracking branch: codex/admin-trello-tracking-20261107, based on that master commit. No prerequisite checklist, owner/deadline, other-card edits or code changes.
+
+**Follow-up publication:** [PR #16](https://github.com/NullCorvus/finance-ai/pull/16) from codex/admin-trello-tracking-20261107 to master, open/unmerged. Four tracking-only Markdown files; no functional changes.
