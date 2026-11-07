@@ -13,6 +13,8 @@ Document the human-operated Support Agent capability before implementation: hand
 
 The detailed requirements in this document concern Support Agent. Other role backlogs are separate work. An account has one primary authorization role in the initial design; Free/Premium are subscription plans, not security roles. Subscription-expiration behavior remains undecided and is outside this task. Staff is provisioned by authorized administrators, public registration creates ordinary customers, and users cannot self-select privileged roles. Privileged assignments must be audited. Planned administrator MFA and staff provisioning/RBAC are shared dependencies, not implemented features.
 
+The 2026-11-07 approved [Administrator requirements](administrator-role.md) finalize the escalation claim/return and customer/staff visibility contract below. [SEC-01/SEC-02](shared-security-requirements.md) supply shared MFA/audit requirements. These are consistency refinements to the same six SUP stories, not new Support capabilities or an implementation claim.
+
 ## Sources and implementation evidence
 The supplied six-story baseline and 2026-11-04 corrections govern this scope. The [backlog](../../../docs/BACKLOG-AND-STORIES.md), [architecture](../../../docs/ARCHITECTURE.md), [stack](../../../docs/STACK.md) and [code guide](../../../docs/guides/code-architecture-guide.md) provide product and technical context.
 
@@ -50,7 +52,7 @@ Story descriptions, acceptance criteria, priorities, provisional points and stat
 | Customer identification before ticket creation | Narrow lookup for an identified customer | Approved lookup keys/result limits pending; no unrestricted customer directory |
 | Customer metadata | Read only supported name/email/ID/account-status/subscription-status fields | Allowlisted response; authorized case context or narrowly approved lookup |
 | Create ticket for a customer | Subject/category/description linked to verified customer | Server validates target and records acting agent |
-| Escalation | Assigned case plus documented reason | Restricted action; retain history; ownership after escalation pending |
+| Escalation | Assigned case plus internal escalation reason | Authorized administrator can claim; originating active/authorized agent retains read-only access while escalated |
 | Resolution | Assigned eligible ticket plus summary | Approved transition policy; preserve history and customer-visible outcome |
 | Audit evidence | Generate action metadata | No permission to change or delete security audit records |
 
@@ -70,13 +72,18 @@ Text journey: authenticated customer or authorized agent creates a ticket; an ag
 | Customer creates ticket | Belongs to authenticated customer | Initial status and assignment |
 | Agent creates ticket | Existing identified customer; acting agent/timestamp recorded | Initial status and automatic assignment |
 | Claim | Only unassigned authorized ticket; atomic single winner | Whether claim changes open to in_progress; eligible source states |
-| Message | Assigned authorized agent and owning customer; author/time retained | Reply-eligible statuses; behavior during escalation/after resolution |
-| Escalate | Assigned eligible ticket; reason required; target status escalated | Eligible source states; admin queue/person ownership; continuing agent write access |
-| Resolve | Assigned eligible ticket; summary required; target status resolved | Eligible source states; whether agents can resolve escalated cases |
-| Reassign/unassign | No approved business behavior | Who may perform it and how ownership/history change |
+| Message | Authorized assignee and owning active customer; author/time retained; originating Support Agent read-only while escalated | General reply eligibility outside the approved escalation flow and after resolution |
+| Escalate | Assigned eligible ticket; internal reason required; status escalated; administrator claim prevents conflicting ownership | General eligible source states outside the finalized Admin contract |
+| Administrator return | Mandatory internal reason; eligible original active support_agent receives in_progress; otherwise clear assignment and use open in unassigned queue; assignment/status atomic with recorded history | None for this approved return contract |
+| Resolve | Summary required; status resolved; escalated cases managed by authorized administrator under ADM-05; summary visible to owning active customer | General non-escalated Support resolution eligibility |
+| General reassign/unassign | Approved Admin return branch above is fixed | Manual reassignment outside that approved flow remains separate Support policy |
 | Reopen | No approved business behavior | Who may reopen, target state, assignment and reply behavior |
 
 Do not infer that every pair of statuses is a legal transition. Reject disallowed mutations; unresolved policies must be approved before implementing the affected operation.
+
+For the current escalation, preserve the originating Support Agent reference/history while administrative assignment changes. On return, check whether that agent is active and still support_agent as part of the atomic status/assignment operation. Record the return reason and retain all case history.
+
+Escalation and return reasons are staff-only workflow metadata. Resolution summaries and ordinary conversation messages are customer-visible through authorized active-customer access. Backend projections must exclude internal reasons, including nested activity data; hiding fields in Flutter/React is insufficient. All protected customer support access is blocked during account suspension, and reactivation does not restore old sessions. No general-purpose internal notes or private-messaging feature is introduced.
 
 ## Validation and audit requirements
 The backend must validate types/IDs, nonblank required text, allowed categories and explicit text/payload bounds. Exact category vocabulary, lookup inputs and numeric limits remain pending. Render ticket text as safe content in React and Flutter; prevent script/markup injection and parameterize database queries.
@@ -90,7 +97,7 @@ remains a shared design dependency; this document does not replace the existing 
 
 Every important successful action must produce compatible activity/audit evidence: creation, claim/assignment, messages, escalation and resolution. Restricted lookup/access and privileged-role events must follow the shared audit contract. Include actor identifier, ticket/resource identifier, action, server timestamp, outcome and correlation identifier where applicable. Keep credentials, full customer metadata, message bodies and financial records out of security log payloads.
 
-The independent audit contract, durability/failure behavior, retention policy and customer visibility of internal events remain pending with the shared security/audit owner. Do not claim tamper-proof storage or an existing auditor interface. Security-relevant failures deny access and avoid partial unauthorized mutation; response errors expose no internal details.
+The shared event, privacy and critical-write consistency requirements are defined in [SEC-02](shared-security-requirements.md); concrete persistence, failure handling and retention implementation follow that design responsibility. Internal escalation/return reasons are not customer-visible. Do not claim tamper-proof storage or an existing auditor interface. Security-relevant failures deny access and avoid partial unauthorized mutation; response errors expose no internal details.
 
 ## Planned architecture and code locations
 Keep the existing three repositories. No fourth repository, separate support backend or separate database is introduced.
@@ -119,8 +126,8 @@ All paths above are plans relative to the named repository, portable across team
 - Ticket persistence, message/event contracts and atomic claim behavior: Support Agent owner, coordinated with backend foundations.
 - Customer mobile stories: customer-role owner, linked by the two existing dependency IDs.
 - Account-name/subscription-status availability: account/plan owner; show no invented status. No billing or expiration workflow is added.
-- Audit contract/integration: security/audit owner; implement action evidence once and reuse it.
-- Escalation acceptance/ownership: Admin owner; agree handoff before completing SUP-05.
+- Audit contract/integration: shared SEC-02 owner; implement action evidence once and reuse it, without double-counting it as a second Support infrastructure story.
+- Escalation acceptance/ownership: Admin owner under the approved ADM-05 claim/read-only/atomic-return contract; no renewed handoff-policy discovery is required for those settled rules.
 
 Foundation work is estimated once separately; backlog story estimates do not double-count Flutter UI or shared authentication. Follow the [role-owner handoff](../plans/support-agent-documentation-plan.md#role-owner-handoff).
 
@@ -129,10 +136,9 @@ Documentation can be completed with these explicitly open. Resolve each before i
 1. Queue authorization scope and what constitutes a restricted case.
 2. Approved lookup identifiers, disclosure/result limits and pre-ticket authorization.
 3. Creation/claim status rules, eligible transitions and reassignment/unassignment authority.
-4. Ownership and agent access after escalation; administrator acceptance contract.
-5. Reply eligibility, resolution eligibility, customer-visible history and reopening.
-6. Category values, text/payload length bounds and unavailable-profile-field presentation.
-7. Shared staff browser-session design, audit event contract, retention and audit failure behavior.
+4. General non-escalated reply/resolution eligibility, other customer-visible activity and reopening; the escalated-case ownership, read-only Support access, atomic return and internal-reason visibility rules are finalized by ADM-05.
+5. Category values, text/payload length bounds and unavailable-profile-field presentation.
+6. Shared implementation details for staff browser sessions, event persistence/retention and safe audit failure handling under the approved SEC-01/SEC-02 contracts.
 
 Subscription-expiration behavior is outside this scope and is not a documentation blocker. The confirmed human-support scope, stack, repository placement and separation of plans from roles are not open questions.
 

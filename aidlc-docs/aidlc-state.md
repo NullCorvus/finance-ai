@@ -2,7 +2,7 @@
 
 ## Project Information
 - **Project Type**: Brownfield (FastAPI backend + Flutter frontend already implemented)
-- **Current Stage**: Support Agent documentation published to master; implementation is a separate workflow
+- **Current Stage**: Administrator and shared security documentation complete; PR #15 open against master, implementation not started
 
 ## Workspace State
 - **Existing Code**: Yes — `finance-ai-backend/` (FastAPI, Alembic, uv) and `finance-ai-frontend/` (Flutter)
@@ -456,3 +456,23 @@ still outstanding there.
 - **User checkout**: docs/presentation-fusagasuga remained clean and unchanged; the original codex/support-agent-backlog worktree is preserved.
 - **Scope**: Documentation only. No application code, migrations, React scaffolding, deployment, messages to team members or other repository changes. Original backlog completion reflects its dated Trello snapshot, not a new application acceptance run.
 - **Extensions**: Security requirements coverage retained; no runtime/infrastructure controls changed. Partial PBT N/A; disabled Resiliency skipped.
+
+## Active workflow — Administrator and shared security documentation (2026-11-07)
+
+- **Authorization**: Explicit execution request approves the complete Administrator task with five final corrections; no new general discovery/review gate.
+- **Branch/base**: codex/admin-security-docs-20261107 from master 616bec3df2b07f517ba579ccf9cc89220df93888, in an isolated worktree. Documentation PR targets master; code repositories retain develop. No merge is authorized by this task.
+- **Canonical backlog**: [ADM-01–ADM-05 and SEC-01/SEC-02](../docs/BACKLOG-AND-STORIES.md#administrator-and-shared-security-extension--2026-11-07). The register now has 30 story records under 15 PB items.
+- **Specifications**: [Administrator](inception/requirements/administrator-role.md), [shared security](inception/requirements/shared-security-requirements.md), and the existing [Support specification](inception/requirements/support-agent-role.md) with limited consistency amendments.
+- **Plan**: [Administrator/security documentation checklist](inception/plans/admin-security-documentation-plan.md).
+- **Estimates**: ADM 3+5+5+3+5 = 21 provisional SP; SEC-01 13 and SEC-02 8 = 21 shared SP, counted once. New-story total 42; shared portal/provisioning prerequisites estimated once separately, not implementation hours. Existing 23 story estimates retained.
+- **Final contracts**: Atomic administrator return to eligible original support_agent/in_progress or unassigned open; mandatory internal return reason/history; staff-only escalation/return metadata and customer-visible resolution; no general internal notes/private messaging.
+- **Admin protections**: MFA-verified administrative requests, no own-account suspension/own-role changes, concurrent last-active-admin invariant across deactivation/equivalent paths, permanent session invalidation across reactivation, and backend-only initial/additional admin provisioning without a fifth role/approval quorum.
+- **Audit**: staff.created and staff.activated are mandatory, with safe server-derived context and no activation credentials. SEC-01/SEC-02 are shared requirements, not implemented controls or a new Auditor UI story.
+- [x] Workspace/source/rule review complete; existing architecture reused and approved decisions recorded.
+- [x] Five ADM and two SEC stories documented with complete criteria, dependencies and Not started status.
+- [x] Administrator/shared security specifications, Support consistency, questions, architecture, stack and team context updated.
+- [x] Documentation validation complete: eleven Markdown files parse; exactly five ADM plus two SEC; 30 total stories; all 23 previous narratives/scopes/points retained and all 15 HU bodies unchanged; 88 local links/anchors valid; original question archive preserved and audit append-only. Whitespace checks pass with only verbatim audit-input trailing spaces exempted. No application tests run for documentation-only changes.
+- [x] Branch published and [PR #15](https://github.com/NullCorvus/finance-ai/pull/15) opened/verified against master, with exactly eleven documentation files. The PR is open and not merged; no Trello changes or application implementation.
+- **Skipped**: Application design implementation details, units generation, code generation, migrations, application build/test, deployment and Operations: documentation-only authorization.
+- **Blockers**: No additional functional decision blocking the approved scope identified. Technical design parameters and delivery of shared foundations are implementation responsibilities, not new requirements-discovery questions.
+- **Extensions**: Security Baseline documentation coverage recorded per rule in shared-security-requirements.md; partial PBT N/A to text-only changes; disabled full Resiliency skipped. No Trello action, application code or infrastructure change.

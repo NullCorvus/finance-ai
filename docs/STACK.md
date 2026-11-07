@@ -40,6 +40,27 @@ See [Support Agent requirements](../aidlc-docs/inception/requirements/support-ag
 and the [team reading guide](../aidlc-docs/README.md). Existing stack evidence above remains
 the historical implemented snapshot; this section is an approved plan, not a deployment report.
 
+## Planned Administrator and shared security scope (2026-11-07)
+
+Extend the same planned React + Vite + TypeScript + Tailwind CSS staff application with
+`staff-web/src/features/admin/`, reusing `features/auth/`, `app/` and `shared/`. Reserve
+`features/audit/` for future authorized read-only Auditor work; no Auditor UI is implemented here.
+The customer remains in Flutter and the portal remains outside Flutter's `web/` runner.
+
+SEC-01 adds approved password-plus-TOTP requirements to existing opaque sessions: verified
+enrollment, replay/rate-limit controls, recovery/replacement, invalidation and MFA gating for
+every ADM request. Web login compatibility, browser credential protection and concrete lifetimes
+are technical design responsibilities. SEC-02 uses existing PostgreSQL for shared security events,
+including staff.created/staff.activated and safe audit access/failure handling. No new provider,
+dependency version, key-management service, deployment topology or infrastructure is selected here.
+
+Administrator provisioning is a controlled backend procedure, not a portal role-selection feature.
+No fifth role, billing, private financial access or general-purpose internal notes is added.
+The [Administrator](../aidlc-docs/inception/requirements/administrator-role.md) and
+[shared security](../aidlc-docs/inception/requirements/shared-security-requirements.md)
+specifications describe approved planned requirements; existing runtime evidence remains a separate
+snapshot. New ADM/SEC implementation status is Not started until verified.
+
 ## Core rule (unchanged from architecture)
 
 - AI extraction is part of the backend; provider retries and fallback mean the number of external
