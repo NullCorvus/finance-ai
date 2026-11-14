@@ -8,6 +8,12 @@ plantillas de la asignatura (ver [`../plantillas`](../plantillas)). Cada documen
 | Manual de usuario | [docx](Manual%20de%20usuario%20-%20Finance%20AI.docx) | [pdf](Manual%20de%20usuario%20-%20Finance%20AI.pdf) |
 | Manual técnico | [docx](Manual%20tecnico%20-%20Finance%20AI.docx) | [pdf](Manual%20tecnico%20-%20Finance%20AI.pdf) |
 | Diccionario de datos | [docx](Diccionario%20de%20datos%20-%20Finance%20AI.docx) | [pdf](Diccionario%20de%20datos%20-%20Finance%20AI.pdf) |
+| Tablero de seguimiento | [docx](Tablero%20de%20seguimiento%20-%20Finance%20AI.docx) | [pdf](Tablero%20de%20seguimiento%20-%20Finance%20AI.pdf) |
+
+Archivos del tablero de seguimiento (tablero de Trello: https://trello.com/b/jv4JziIh):
+
+- [Product Backlog y HU - Finance AI.xlsx](Product%20Backlog%20y%20HU%20-%20Finance%20AI.xlsx): Product Backlog e historias de usuario, sobre la plantilla de la asignatura.
+- [Velocidad Scrum - Finance AI.xlsx](Velocidad%20Scrum%20-%20Finance%20AI.xlsx): velocidad real por sprint, calculada con los puntos de historia del tablero.
 
 Archivos del diccionario de datos:
 
