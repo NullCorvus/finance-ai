@@ -7323,3 +7323,17 @@ Proceed with these corrections without expanding the approved four-story scope.
 **Context**: Plan/state delivery complete. No merge, code, migration, frontend, generated PDF, infrastructure or Trello change. Original user branch and unrelated audit edit remain untouched. Security Baseline documentation coverage recorded; partial PBT N/A; disabled Resiliency skipped.
 
 ---
+
+## 2026-11-14 — PB-012 implementación autónoma
+
+Solicitud: completar SUP-02–SUP-06 y dependencias Flutter USR-SUP-01/02, extendiendo
+los PR existentes cuando pertenezcan al solicitante, con pruebas PostgreSQL reales,
+entorno ficticio reproducible, documentación y revisión final sin merge/despliegue.
+El usuario autoriza expresamente continuar entre historias y decisiones técnicas
+ordinarias sin gates intermedios. Este mandato prevalece sobre el flujo de aprobación
+por etapa del AGENTS.md. Alcance y discrepancias se registran en
+`construction/pb012-support/implementation.md`.
+
+Se verificaron ramas, PR, código, documentación canónica y Trello antes de implementar.
+Se reutiliza STAFF-01/SUP-01. El entorno usa una base/volúmenes exclusivos y no expone
+acceso administrativo artificial. La aceptación funcional no se presume.
