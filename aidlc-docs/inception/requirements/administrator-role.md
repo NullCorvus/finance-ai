@@ -173,7 +173,9 @@ Database routines (2 triggers, 2 stored procedures): [DB-ROUTINES-ADMIN](../../.
 * The Flutter customer app (Windows debug build) was exercised against the same backend: ticket list
   and detail, the administrator's reply and resolution appearing, no staff-only reasons, lockout after
   suspension, a generic refusal at sign-in, access restored by reactivation, and the same generic
-  refusal for an administrator account.
+  refusal for an administrator account. The same walkthrough was repeated on a real Android phone
+  (Samsung SM-A315G, Android 12, debug APK reaching the local backend through `adb reverse`) with the
+  same results; the test app was uninstalled afterwards.
 
 ### Known limits and follow-ups
 
@@ -189,4 +191,4 @@ Database routines (2 triggers, 2 stored procedures): [DB-ROUTINES-ADMIN](../../.
 * Pre-existing failures unrelated to this work: two backend tests (`test_text_capture_persistence`
   retry date), one Flutter golden image (`dashboard_spending_summary_390x844.png`, 3.99% of pixels) and
   one native Windows smoke step (`protects Home and clears on Logout`, a tap that does not reach the
-  button). No Flutter code differs on these branches. Android was not run.
+  button). No Flutter code differs on these branches.
