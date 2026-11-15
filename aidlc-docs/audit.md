@@ -7332,3 +7332,11 @@ Proceed with these corrections without expanding the approved four-story scope.
 **Context**: No merge, push, pull request or Trello change. Open decisions D1–D9 were implemented with the defaults in the plan and recorded in `administrator-role.md`. Known limits recorded there (tickets of a switched role holder, in-process limiters, no Playwright journey, deployment-level audit table privileges).
 
 ---
+
+## Administrator — Verification Pass (real stack, lifetimes, accessibility, Windows client)
+**Timestamp**: 2026-11-15
+**User Input**: "go ahead with all that pls do not let anything outside" / "i think flutter is installed here, go ahead and test it out deeply with the screens and workin on windows" / "yeah, you can of course go ahea"
+**AI Response**: Ran 10 serial Playwright journeys with two real administrators, shortened-lifetime session checks, an axe-core audit of 22 screen states, the Flutter shared verification and native Windows smoke test, and a hands-on walkthrough of the Windows customer app against the real backend. Fixed a P1 deadlock (actor/target lock order), administrator session re-confirmation on 401/403 and WCAG AA contrast and markup; updated DB-ROUTINES-ADMIN, the plan outcome and the implementation record.
+**Context**: Local only: nothing pushed, merged or written to Trello. Existing failures recorded (two backend tests, one Flutter golden, one Windows smoke step); Android not run.
+
+---

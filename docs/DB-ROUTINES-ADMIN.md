@@ -101,13 +101,18 @@ FOR EACH ROW EXECUTE FUNCTION app_user_last_admin_guard();
 reach the trigger takes the lock and sees the other active, so it proceeds. The second blocks on the
 lock; when the first commits, the second counts again, finds nobody left and is rejected. A stale
 count can never pass because the count is taken *after* the lock. Exactly one administrator survives.
+(This is the guarantee for any writer that reaches the trigger directly, such as the operator script or
+plain SQL. Through P1 the second caller is stopped even earlier: it queues on the row locks and is then
+refused as no longer authorized, see section 5.)
 
 **Fail-closed on other isolation levels.** Under `REPEATABLE READ`/`SERIALIZABLE` a fixed snapshot
 could miss the other transaction's commit, so the trigger refuses (`feature_not_supported`) instead of
 guessing. The application uses the PostgreSQL default.
 
-**No deadlock by design.** It reads, it does not lock other administrator rows; only the advisory lock
-is contended.
+**No deadlock by design.** The trigger itself only reads other administrator rows and contends on the
+advisory lock. The row locks that could form a cycle with it are taken by P1 in a fixed order *before*
+the trigger runs (section 5), so no transaction holds the advisory lock while waiting for a row that
+another holder of the advisory lock needs.
 
 **Observed result codes.** `23514 check_violation`, constraint `last_active_admin` (P1 translates this
 into the `last_admin` result).
@@ -186,6 +191,10 @@ DECLARE
     v_reason text;
     v_constraint text;
 BEGIN
+    -- Lock the actor and the target together, in ascending id order, whichever role each plays
+    -- in this call ...
+    PERFORM 1 FROM app_user WHERE id IN (p_actor_id, p_target_id) ORDER BY id FOR NO KEY UPDATE;
+    -- ... and judge the actor only afterwards, on the latest committed state.
     IF NOT EXISTS (
         SELECT 1 FROM app_user u JOIN role r ON r.id = u.role_id
         WHERE u.id = p_actor_id AND u.is_active AND r.name = 'admin'
@@ -197,7 +206,7 @@ BEGIN
         p_result := 'self_target';
         RETURN;
     END IF;
-    SELECT * INTO v_target FROM app_user WHERE id = p_target_id FOR UPDATE;
+    SELECT * INTO v_target FROM app_user WHERE id = p_target_id;
     IF NOT FOUND THEN
         p_result := 'not_found';
         RETURN;
@@ -255,7 +264,25 @@ $$;
 | `already_in_state` | Already suspended / already active | 409 |
 | `last_admin` | Trigger T1 refused (caught here) | 409 `last_active_admin_protected` (audited as `denied`) |
 
-**Atomicity.** The target row is locked `FOR UPDATE`; the flag change, the history row and (through T2)
+**Locking and deadlock freedom.** The first statement locks the actor row and the target row together,
+sorted by id, with `FOR NO KEY UPDATE`. Two properties matter:
+
+1. *One global order.* Every call acquires its (at most two) account rows in ascending id order, so two
+   calls can never each hold the row the other wants. Administrators A and B suspending each other
+   queue on the lower id; the loser holds nothing while it waits.
+2. *No conflict with foreign keys.* The inserts that follow (`account_suspension.suspended_by_user_id`)
+   take `FOR KEY SHARE` on the actor row. The first version locked the target with `FOR UPDATE`, which
+   does conflict with `FOR KEY SHARE`: A held B and waited for A's key, B held A and waited for B's key,
+   and PostgreSQL aborted one of them with `deadlock detected` after `deadlock_timeout` (1 s), which the
+   API reported as a 503. It was found by driving two real administrators against the running stack;
+   `FOR NO KEY UPDATE` does not conflict with `FOR KEY SHARE`, so the cycle cannot form.
+
+After the winner commits, the loser's lock is granted and the actor is re-read on the latest committed
+state: it is now suspended, so the loser receives `actor_not_authorized` (403) and changes nothing.
+`last_admin` remains as defence in depth for a caller whose actor check passes but whose removal would
+still empty the invariant; T1 enforces it independently of this procedure.
+
+**Atomicity.** The flag change, the history row and (through T2)
 the session revocation happen in one transaction. The `EXCEPTION` block around the update uses a
 sub-transaction so a T1 refusal rolls back only that statement and is reported as `last_admin` instead
 of aborting the caller's transaction (which still has to write the audit event).
@@ -273,8 +300,12 @@ CALL sp_admin_set_account_suspension(
 row and keeps old sessions revoked; blank/oversized reasons change nothing; self-suspension, unknown
 target and repeated state rejected; non-administrator actors (customer, support agent, auditor) and a
 *suspended* administrator are refused; an administrator can suspend another administrator but never the
-last one; two administrators suspending each other concurrently → the second receives `last_admin`
-and exactly one stays active; at most one open suspension per account.
+last one; two administrators suspending each other concurrently → the second is refused as
+`actor_not_authorized` and exactly one stays active, with no deadlock over 30 simultaneous rounds
+(a `Barrier` releases both calls at the same instant; this test fails with `DeadlockDetected` against the
+first version of the procedure), at service level too (15 rounds, `staff_access_denied`, never a 503);
+two administrators suspending the same customer at once → one `ok`, one `already_in_state`; at most one
+open suspension per account.
 
 ## 6. Stored procedure P2: `sp_admin_return_escalated_ticket`
 

@@ -88,7 +88,7 @@ Services own the transaction; repositories only stage. Every critical write and 
 
 | Story | Method + path | Notes |
 |---|---|---|
-| ADM-01 | `GET /accounts/lookup?email=` or `?id=` | exact match, allowlisted projection, labelled "login account" |
+| ADM-01 | `POST /accounts/lookup` `{email}` or `{id}` | exact match, allowlisted projection, labelled "login account"; the email travels in the body, never in the URL (changed from `GET ?email=` during the security review so it stays out of access logs) |
 | ADM-01 | `GET /accounts/{id}` | same projection |
 | ADM-02 | `POST /accounts/{id}/suspend` `{reason, confirm}` | calls procedure P1 |
 | ADM-02 | `POST /accounts/{id}/reactivate` `{confirm}` | calls procedure P1 |
@@ -260,11 +260,13 @@ Executed 2026-11-15 following this plan. Nothing was pushed, merged or written t
 | 2 ADM-01/02 | Lookup and suspend/reactivate; triggers T1 and T2 and procedure P1 with concurrency tests on PostgreSQL. |
 | 3 ADM-03/04 | Invitation, public activation (single use under concurrency), staff role changes. |
 | 4 ADM-05 | Escalation queue, claim, reply, resolve, return via procedure P2; customer projection tests. |
-| 5 Frontend | Administración workspace, `/activate`, `/recover`, recovery codes; 224 tests, 91 % coverage. |
-| 6 Verification and docs | Backend 913 passed / 2 pre-existing failures / 92 % coverage, Ruff, mypy, Alembic drift, OpenAPI drift and `pip-audit` clean; staff-web lint, typecheck and build clean; this documentation; [DB-ROUTINES-ADMIN](../../../docs/DB-ROUTINES-ADMIN.md). |
+| 5 Frontend | Administración workspace, `/activate`, `/recover`, recovery codes; 229 tests, 94.9 % line coverage after the review and accessibility fixes. |
+| 6 Verification and docs | Backend 924 passed / 2 pre-existing failures / 92 % coverage, Ruff, mypy, Alembic drift, OpenAPI drift and `pip-audit` clean; 10 real-stack Playwright journeys, session-lifetime and axe-core checks, production-mode TLS check (32/32) and a Windows customer-app walkthrough; staff-web lint, typecheck and build clean; this documentation; [DB-ROUTINES-ADMIN](../../../docs/DB-ROUTINES-ADMIN.md). |
 
 Differences from the plan (details in [administrator-role.md](../requirements/administrator-role.md#implementation-record--2026-11-15)):
 branch name suffixes; no `TRUNCATE` guard (deployment-level privilege separation instead); staff authority
 no longer ties the invitation role to the current role; silent background session revalidation in staff-web;
-no automated Playwright journey (the flows were driven manually against the real API instead).
-Two defects that unit tests could not see were found and fixed by that real run.
+P1 locks actor and target together in id order (added after a real two-administrator run deadlocked
+the first version); administrator failures re-confirm the session; shared colour tokens darkened for
+contrast. The Playwright journeys exist but are opt-in. Three defects that unit tests could not see
+were found and fixed by the real runs.

@@ -149,15 +149,44 @@ Database routines (2 triggers, 2 stored procedures): [DB-ROUTINES-ADMIN](../../.
   otherwise ADM-04 role changes would lock staff out. The invitation still proves portal provisioning.
 * `staff-web` background session revalidation is now silent for a confirmed session; the old
   behaviour unmounted the workspace every 30 s and discarded open forms and one-time secrets.
-* Verified by driving the real portal against the real API (provisioned admin, TOTP enrollment,
-  invitation + activation, escalated ticket claim/reply/return, suspension of a customer, recovery
-  codes and lost-device recovery). That run found and fixed a PostgreSQL row-lock defect that unit
-  tests on SQLite could not see.
+* Verified by driving the real portal against the real API and PostgreSQL (provisioned admin, TOTP
+  enrollment, invitation + activation, escalated ticket claim/reply/return, suspension of a customer,
+  recovery codes and lost-device recovery), first by hand and then as 10 serial Playwright journeys
+  with two real administrators (`staff-web/e2e/adminReal.spec.ts`, opt-in). Those runs found three
+  defects that unit tests on SQLite could not see, all fixed:
+  1. A `FOR UPDATE` on rows with joined relationships failed on PostgreSQL (activation, recovery).
+  2. Two administrators suspending each other at the same instant deadlocked in PostgreSQL (target
+     row `FOR UPDATE` against the foreign-key share lock on the actor, plus the T1 advisory lock) and
+     the loser received a 503. P1 now locks actor and target in ascending id order with
+     `FOR NO KEY UPDATE`; barrier-driven simultaneous-race tests fail against the earlier version
+     ([DB-ROUTINES-ADMIN](../../../docs/DB-ROUTINES-ADMIN.md#5-stored-procedure-p1-sp_admin_set_account_suspension)).
+  3. The administrator workspace did not ask the session coordinator to re-confirm after a 401/403
+     (the Auditor workspace already did), so an access credential that expired between two
+     revalidations told the person to sign in again. Failures now go through one hook; the message
+     says the session is renewing and the form keeps what was typed.
+* An axe-core audit of 22 administrator screen states (light and dark) found insufficient contrast in
+  error text (3.55:1) and muted text (4.36:1), an `article` with `role="listitem"` and a nested
+  complementary landmark. The shared error and muted colour tokens were darkened (`--discard-text`,
+  `--muted`, `--nav`), the escalated-case list and context panel markup were corrected, and the audit
+  now reports 0 violations. The Support workspace still has the same two markup patterns (not changed:
+  outside this story).
+* The Flutter customer app (Windows debug build) was exercised against the same backend: ticket list
+  and detail, the administrator's reply and resolution appearing, no staff-only reasons, lockout after
+  suspension, a generic refusal at sign-in, access restored by reactivation, and the same generic
+  refusal for an administrator account.
 
 ### Known limits and follow-ups
 
 * Support tickets in progress that belong to a person whose role is switched are not reassigned.
 * Rate limits are in-process per instance, like the existing limiters.
-* No automated Playwright journey was added for the admin screens.
-* Two pre-existing backend tests (`test_text_capture_persistence` retry date) fail on this machine
-  independently of this work.
+* The Playwright journeys are opt-in (they need the isolated demo database and a running API) and are
+  not part of a default CI run.
+* A staff account can hold only one live session: signing in from another browser is refused with
+  `staff_session_exists` until the other session ends (sign-out or 15 minutes idle for administrators).
+  This is the existing portal behaviour.
+* The 4-hour absolute administrator session limit is covered by unit tests only; the 1-minute access and
+  5-minute idle limits were exercised against the real stack with shortened settings.
+* Pre-existing failures unrelated to this work: two backend tests (`test_text_capture_persistence`
+  retry date), one Flutter golden image (`dashboard_spending_summary_390x844.png`, 3.99% of pixels) and
+  one native Windows smoke step (`protects Home and clears on Logout`, a tap that does not reach the
+  button). No Flutter code differs on these branches. Android was not run.

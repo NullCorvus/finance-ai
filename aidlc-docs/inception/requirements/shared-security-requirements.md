@@ -146,8 +146,10 @@ in [administrator-role.md](administrator-role.md#implementation-record--2026-11-
   code or current authenticator code); the operator path `scripts/admin_ops.py reset-mfa` covers lost codes.
   Every path revokes sessions and records `auth.mfa_recovered` or `auth.mfa_replaced`.
 * **Event catalog added to the writer:** `account.suspended`, `account.reactivated`, `staff.created`,
-  `staff.activated`, `role.changed`, `auth.mfa_recovered`, `auth.mfa_replaced`, `session.revoked`,
+  `staff.activated`, `role.changed`, `auth.mfa_recovered`, `auth.mfa_replaced`,
   `support.ticket_returned`, with a per-event context allowlist and target type `staff_invitation`.
+  `session.revoked` stays in the approved catalog but is not written by this feature: trigger T2 revokes the
+  sessions inside the same transaction as the change that causes it, and that change already has its event.
 * **Failure handling:** critical writes (suspension, staff, role, ticket return) share one transaction with their
   event, so an unavailable audit store rolls the change back with a safe 503; authentication-event failures never
   grant access.
