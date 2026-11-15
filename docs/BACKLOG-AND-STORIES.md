@@ -670,8 +670,8 @@ The Administrator/shared-security checkpoint contained 30 stories: 15 original H
 
 | Code | Feature | Priority | Status | Ownership |
 |---|---|---|---|---|
-| PB-014 | Administrator account and escalation management | High | Not started | ADM-01–ADM-05; Administrator role owner |
-| PB-015 | Shared staff security | High | Not started | SEC-01–SEC-02; one shared-security owner, estimated once |
+| PB-014 | Administrator account and escalation management | High | In review (feature branches) | ADM-01–ADM-05; Administrator role owner |
+| PB-015 | Shared staff security | High | In review (feature branches) | SEC-01–SEC-02; one shared-security owner, estimated once |
 
 ### ADM-01 — Search and View User Accounts
 
@@ -702,7 +702,7 @@ The Administrator/shared-security checkpoint contained 30 stories: 15 original H
 
 **Story points:** 3 — provisional Fibonacci estimate; not implementation hours.
 
-**Implementation status:** Not started — the complete new story has not been verified as implemented. Reuse of existing identity/session primitives does not establish completion.
+**Implementation status:** In review — Implemented on feature branches and pending review/merge (2026-11-15): backend `feat/admin-adm-sec-backend`, staff-web `feat/admin-adm-sec-frontend` (both stacked on `feat/security-auditor-aud`), docs `docs/admin-implementation-20261115`. Not claimed: merge to `develop`, deployment, or Trello completion, which belong to the role owner after review. Evidence and decisions: [Administrator implementation record](../aidlc-docs/inception/requirements/administrator-role.md#implementation-record--2026-11-15) and [database routines](./DB-ROUTINES-ADMIN.md). All seven criteria are covered: exact email/ID lookup only, allowlisted projection (ID, email, role, status, registration date) labelled as a login account, backend-enforced bound (one match, hard cap 25) plus 60 lookups/minute per administrator, no financial or credential fields, current admin + MFA-verified session checked on every request, validated input and `access.denied` events.
 
 **Mockup:** TBD
 
@@ -742,7 +742,7 @@ The Administrator/shared-security checkpoint contained 30 stories: 15 original H
 
 **Story points:** 5 — provisional Fibonacci estimate; not implementation hours.
 
-**Implementation status:** Not started — the complete new story has not been verified as implemented. Reuse of existing identity/session primitives does not establish completion.
+**Implementation status:** In review — Implemented on feature branches and pending review/merge (2026-11-15): backend `feat/admin-adm-sec-backend`, staff-web `feat/admin-adm-sec-frontend` (both stacked on `feat/security-auditor-aud`), docs `docs/admin-implementation-20261115`. Not claimed: merge to `develop`, deployment, or Trello completion, which belong to the role owner after review. Evidence and decisions: [Administrator implementation record](../aidlc-docs/inception/requirements/administrator-role.md#implementation-record--2026-11-15) and [database routines](./DB-ROUTINES-ADMIN.md). All twelve criteria are covered. Suspension and reactivation run as stored procedure `sp_admin_set_account_suspension`; trigger `app_user_last_admin_guard` protects the last active administrator under concurrency for every writer; trigger `app_user_revoke_sessions_on_authority_change` revokes live sessions and reactivation never restores them; each change commits with its SEC-02 event or rolls back.
 
 **Mockup:** TBD
 
@@ -781,7 +781,7 @@ The Administrator/shared-security checkpoint contained 30 stories: 15 original H
 
 **Story points:** 5 — provisional Fibonacci estimate; not implementation hours.
 
-**Implementation status:** Not started — the complete new story has not been verified as implemented. Reuse of existing identity/session primitives does not establish completion.
+**Implementation status:** In review — Implemented on feature branches and pending review/merge (2026-11-15): backend `feat/admin-adm-sec-backend`, staff-web `feat/admin-adm-sec-frontend` (both stacked on `feat/security-auditor-aud`), docs `docs/admin-implementation-20261115`. Not claimed: merge to `develop`, deployment, or Trello completion, which belong to the role owner after review. Evidence and decisions: [Administrator implementation record](../aidlc-docs/inception/requirements/administrator-role.md#implementation-record--2026-11-15) and [database routines](./DB-ROUTINES-ADMIN.md). Invitation (256-bit token, only its hash stored, 48 h expiry, single use under concurrency) and activation (own password under the registration policy and Argon2) are covered, with `staff.created`/`staff.activated` free of secrets. Delivery decision: no email provider is approved, so the one-time link is shown once to the administrator (URL fragment) for manual handoff; email delivery remains a separate card.
 
 **Mockup:** TBD
 
@@ -820,7 +820,7 @@ The Administrator/shared-security checkpoint contained 30 stories: 15 original H
 
 **Story points:** 3 — provisional Fibonacci estimate; not implementation hours.
 
-**Implementation status:** Not started — the complete new story has not been verified as implemented. Reuse of existing identity/session primitives does not establish completion.
+**Implementation status:** In review — Implemented on feature branches and pending review/merge (2026-11-15): backend `feat/admin-adm-sec-backend`, staff-web `feat/admin-adm-sec-frontend` (both stacked on `feat/security-auditor-aud`), docs `docs/admin-implementation-20261115`. Not claimed: merge to `develop`, deployment, or Trello completion, which belong to the role owner after review. Evidence and decisions: [Administrator implementation record](../aidlc-docs/inception/requirements/administrator-role.md#implementation-record--2026-11-15) and [database routines](./DB-ROUTINES-ADMIN.md). Confirmed switches between support_agent and security_auditor only; own role, administrators and customers are refused; one primary role; sessions revoked; `role.changed` with previous/new role. Known limit outside the approved criteria: tickets in progress that are assigned to a person whose role changes are not reassigned automatically.
 
 **Mockup:** TBD
 
@@ -862,7 +862,7 @@ The Administrator/shared-security checkpoint contained 30 stories: 15 original H
 
 **Story points:** 5 — provisional Fibonacci estimate; not implementation hours.
 
-**Implementation status:** Not started — the complete new story has not been verified as implemented. Reuse of existing identity/session primitives does not establish completion.
+**Implementation status:** In review — Implemented on feature branches and pending review/merge (2026-11-15): backend `feat/admin-adm-sec-backend`, staff-web `feat/admin-adm-sec-frontend` (both stacked on `feat/security-auditor-aud`), docs `docs/admin-implementation-20261115`. Not claimed: merge to `develop`, deployment, or Trello completion, which belong to the role owner after review. Evidence and decisions: [Administrator implementation record](../aidlc-docs/inception/requirements/administrator-role.md#implementation-record--2026-11-15) and [database routines](./DB-ROUTINES-ADMIN.md). Queue, claim (one winner under concurrency), case context, customer-visible reply, resolution summary and atomic return (stored procedure `sp_admin_return_escalated_ticket`) are covered, and staff-only reasons are proven absent from customer responses on the live API. Criterion 13 is enforced by the backend (suspended customers are denied); the Flutter client was not changed or re-verified.
 
 **Mockup:** TBD
 
@@ -905,7 +905,7 @@ The Administrator/shared-security checkpoint contained 30 stories: 15 original H
 
 **Story points:** 13 — provisional Fibonacci estimate; retained after Auditor extension because the same enrollment, challenge, replay, recovery and browser-session infrastructure is reused. Only role coverage and guard/test consumers expand; no second MFA lifecycle or subsystem. Reevaluate during design only if material extra complexity is demonstrated; not implementation hours.
 
-**Implementation status:** Not started — the complete new story has not been verified as implemented. Reuse of existing identity/session primitives does not establish completion.
+**Implementation status:** In review — Implemented on feature branches and pending review/merge (2026-11-15): backend `feat/admin-adm-sec-backend`, staff-web `feat/admin-adm-sec-frontend` (both stacked on `feat/security-auditor-aud`), docs `docs/admin-implementation-20261115`. Not claimed: merge to `develop`, deployment, or Trello completion, which belong to the role owner after review. Evidence and decisions: [Administrator implementation record](../aidlc-docs/inception/requirements/administrator-role.md#implementation-record--2026-11-15) and [database routines](./DB-ROUTINES-ADMIN.md). Password plus TOTP for admin and auditor (auditor part from the auditor branch), QR enrollment, replay protection, bounded attempts, single-use recovery codes, authenticator replacement, operator reset (`scripts/admin_ops.py`), controlled admin provisioning, 10/15 min and 4 h admin session lifetimes, and sessions bound to the role they were issued for so a role change never carries MFA assurance over.
 
 **Mockup:** TBD
 
@@ -953,7 +953,7 @@ The Administrator/shared-security checkpoint contained 30 stories: 15 original H
 
 **Story points:** 8 — provisional Fibonacci estimate; not implementation hours.
 
-**Implementation status:** Not started — the complete new story has not been verified as implemented. Reuse of existing identity/session primitives does not establish completion.
+**Implementation status:** In review — Implemented on feature branches and pending review/merge (2026-11-15): backend `feat/admin-adm-sec-backend`, staff-web `feat/admin-adm-sec-frontend` (both stacked on `feat/security-auditor-aud`), docs `docs/admin-implementation-20261115`. Not claimed: merge to `develop`, deployment, or Trello completion, which belong to the role owner after review. Evidence and decisions: [Administrator implementation record](../aidlc-docs/inception/requirements/administrator-role.md#implementation-record--2026-11-15) and [database routines](./DB-ROUTINES-ADMIN.md). Event catalog extended for suspension, reactivation, staff creation/activation, role change, MFA recovery/replacement and ticket return, with per-event context allowlists; critical changes roll back when audit evidence cannot be written. Known gap (deployment): the append-only trigger blocks row UPDATE/DELETE, but TRUNCATE/DROP by the table owner and database-role separation are not enforced by application code.
 
 **Mockup:** TBD
 

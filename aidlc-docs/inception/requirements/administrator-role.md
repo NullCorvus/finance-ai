@@ -4,7 +4,7 @@
 
 **Decision date:** 2026-11-07
 
-**Status:** Approved functional scope; application implementation Not started.
+**Status:** Approved functional scope; implemented 2026-11-15 on feature branches and in review (see [Implementation record](#implementation-record--2026-11-15)). Not merged or deployed.
 
 **Canonical stories:** [ADM-01–ADM-05](../../../docs/BACKLOG-AND-STORIES.md#administrator-and-shared-security-extension--2026-11-07). Shared security is defined once by [SEC-01/SEC-02](shared-security-requirements.md).
 
@@ -117,3 +117,47 @@ Existing shared foundations must be delivered/coordinated; their planned status 
 Exclude subscription/refund/billing/expiration workflows, general system settings, infrastructure/cloud/API-key management, private financial-record access/modification, audit edits/deletion, portal admin creation/grants/revocations, a fifth role or multi-administrator approval system, general internal notes/private messaging, AI support and advanced security analytics. Preserve all earlier Support exclusions.
 
 Apply the enabled security baseline's MFA, deny-by-default role/resource control, bounded inputs, safe rendering/errors, protected secrets and structured audit requirements. The [shared security specification](shared-security-requirements.md#security-baseline-coverage) records rule-by-rule documentation coverage; no deployed security compliance is claimed.
+
+## Implementation record — 2026-11-15
+
+**Branches (not merged):** backend `feat/admin-adm-sec-backend`, staff-web `feat/admin-adm-sec-frontend`
+(both created from `feat/security-auditor-aud` because SEC-01 MFA already existed there), docs
+`docs/admin-implementation-20261115`. Plan: [admin-implementation-plan](../plans/admin-implementation-plan.md).
+Database routines (2 triggers, 2 stored procedures): [DB-ROUTINES-ADMIN](../../../docs/DB-ROUTINES-ADMIN.md).
+
+### Technical-design decisions closed by the implementation
+
+| # | Topic | Decision implemented |
+|---|---|---|
+| D1 | Activation delivery | No email provider is approved. The create-invitation response returns the one-time activation token once; the portal builds `/activate#token=…` (URL fragment, stripped from the address bar on load). Only SHA-256 of a 256-bit token is stored; 48 h expiry; never logged or audited. |
+| D2 | Admin session | Existing opaque `staff_browser` cookie sessions; 10 min access, 15 min idle, 4 h absolute (`FINANCE_AI_STAFF_ADMIN_*`). `mfa_verified_at` is set only by TOTP success. |
+| D3 | Authority source | Current role `admin` + active account + active authenticator + MFA-verified session, re-checked on every request. Sessions also record the role they were issued for (`user_session.issued_role_id`); a role change invalidates them. |
+| D4 | Provisioning | `scripts/admin_ops.py create-admin | promote | reset-mfa`; password by prompt only; promotion revokes sessions and authenticators; audited as `role.changed` with no actor. |
+| D5 | Recovery | 10 single-use recovery codes (80 bits, hashed); `POST /staff/auth/mfa/reset` verifies password + recovery code or current TOTP, then disables authenticators, burns codes, revokes sessions and opens an enrollment challenge. Operator reset otherwise. |
+| D6 | Suspension reason | Stored in `account_suspension` (staff-visible, ≤ 500 chars); audit context carries only a fixed marker. |
+| D7 | Lookup bounds | Exact email or ID, one match, hard cap 25, 60/min per administrator (in-process limiter). |
+| D8 | Customer API | `admin` joins the roles denied on the customer API. |
+| D9 | New staff currency | `COP`. |
+
+### Deviations from the plan, found during implementation
+
+* Branch names carry a `-backend`/`-frontend` suffix: the three working copies share one Git ref
+  namespace, so the same name could not be used in both repositories.
+* A `TRUNCATE` guard on `security_audit_event` was **not** added: existing integration tests rely on
+  `TRUNCATE`, and real protection is database-role separation in deployment (documented).
+* Staff authority no longer requires the invitation's role to equal the account's current role;
+  otherwise ADM-04 role changes would lock staff out. The invitation still proves portal provisioning.
+* `staff-web` background session revalidation is now silent for a confirmed session; the old
+  behaviour unmounted the workspace every 30 s and discarded open forms and one-time secrets.
+* Verified by driving the real portal against the real API (provisioned admin, TOTP enrollment,
+  invitation + activation, escalated ticket claim/reply/return, suspension of a customer, recovery
+  codes and lost-device recovery). That run found and fixed a PostgreSQL row-lock defect that unit
+  tests on SQLite could not see.
+
+### Known limits and follow-ups
+
+* Support tickets in progress that belong to a person whose role is switched are not reassigned.
+* Rate limits are in-process per instance, like the existing limiters.
+* No automated Playwright journey was added for the admin screens.
+* Two pre-existing backend tests (`test_text_capture_persistence` retry date) fail on this machine
+  independently of this work.

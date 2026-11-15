@@ -2,7 +2,7 @@
 
 ## Project Information
 - **Project Type**: Brownfield (FastAPI backend + Flutter frontend already implemented)
-- **Current Stage**: Administrator and shared security documentation complete; PR #15 open against master, implementation not started
+- **Current Stage**: Administrator and shared security (ADM-01–ADM-05, SEC-01/02) implemented on feature branches (backend/frontend `feat/admin-adm-sec-*`, docs `docs/admin-implementation-20261115`) and in review; not merged
 
 ## Workspace State
 - **Existing Code**: Yes — `finance-ai-backend/` (FastAPI, Alembic, uv) and `finance-ai-frontend/` (Flutter)
