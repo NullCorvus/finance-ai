@@ -51,6 +51,7 @@ Features organized by build phase. Phase 1 is the foundation and must ship first
 |---|---------|-------------|
 | 10 | Spending limits | User sets preferences ("keep eating out under $50/month"), system tracks and reports. Created via settings UI. |
 | 12 | Export | Download expenses as CSV or PDF. |
+| 22 | Email notifications (HTML) | Verified opt-in by a 6-digit code, then branded HTML emails (with a plain-text version) when a budget reaches 80 % and 100 % of its limit; switches for budget alerts and for showing amounts; test email; unsubscribe link. Implemented as v1 (2026-11-16, in review); ticket updates and a monthly PDF/Excel summary are planned later. See BACKLOG PB-017 (EML-01–EML-04). |
 | 5 | Reason/context tracking | Each expense can include *why* it was made. Enables behavioral analysis later. |
 
 ## Phase 3 — Optional ideas (agent features — may be skipped)

@@ -7348,3 +7348,20 @@ Proceed with these corrections without expanding the approved four-story scope.
 **Context**: Merge into develop (master for this repository) is authorized by the user's message and is done only after the branches are pushed and CI is green; this entry is written before that merge.
 
 ---
+
+## Email notifications — Proposal and plan (planning only)
+**Timestamp**: 2026-11-16T15:40:26Z
+**User Input**: "now, idl ike to work on this, the email notification
+we need to send an email about somethign that happens on the app, give me proposal for a normal user, one interesting is when a limit in budget is hit, do you think it's good, how can we do that? create a plan so it responds great pls" (with two screenshots: the rubric section "F. Notificaciones por Correo y Generación de Reportes" and the Trello card "Notificaciones — Correo electrónico HTML"). Then, after the proposal: "v1 as proposed"
+**AI Response**: Read the budget, expense, deploy and settings code on backend `develop` and the product docs; found no email code and no email verification; proposed budget-limit alerts (80 % and 100 %) behind a verified, opt-in email, a transactional outbox with a scheduled dispatcher, branded HTML templates, and a Flutter settings screen; showed a mockup of the alert emails; wrote [email-notifications-plan](inception/plans/email-notifications-plan.md) with decisions D1-D10, data model, API, work breakdown EML-01..EML-04 (29 provisional SP), test matrix, risks and Trello evidence.
+**Context**: Planning stage only on the side branch `docs/email-notifications-plan-20261116` from master. No code, migration, provider account, DNS change, push, pull request or Trello write. The user's earlier instruction to hold this topic until the Administrator pull requests were merged was respected (merged 2026-11-16T15:24Z).
+
+---
+
+## Email notifications — Implementation, reviews, PRs and product documentation
+**Timestamp**: 2026-11-16T20:30:00Z
+**User Input**: "v1 as proposed"; "Sandbox first"; "Run the checks"; "Yes, open PRs"; "Turn on Auto-fix"; "Yes, update docs" (plus the user's own inbox and phone screenshots as test evidence)
+**AI Response**: Built EML-01–EML-03 (backend) and the Notificaciones screen (Flutter); verified them in tests, on the Windows app and on an Android phone with real Gmail delivery to the user's inbox; ran an independent security review (no high-confidence finding) and an independent correctness review (seven defects confirmed and fixed with tests); opened PRs backend #48, Flutter #61 and documentation #26 after the user's go-ahead; added the PB-017 stories (EML-01–EML-04) with a trigger table to the backlog and updated FEATURES, ALCANCE and SCHEMA.
+**Context**: The user approved the PR step explicitly. Auto-fix could not be enabled by the assistant (the app could not match the repositories to the session folders) and was left for the user to switch on. No Trello write, merge, deployment, provider account or DNS change was made.
+
+---

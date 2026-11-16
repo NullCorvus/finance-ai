@@ -44,6 +44,20 @@ Added on the Administrator feature branch (in review, not merged). Executable de
 
 Full definitions, concurrency analysis and tests: [DB-ROUTINES-ADMIN.md](../aidlc-docs/construction/administrator/code/DB-ROUTINES-ADMIN.md).
 
+## Email notifications extension (migration `0021_email_notifications`)
+
+Added on the email notifications feature branch (in review, not merged). Executable definition:
+`finance-ai-backend/migrations/versions/0021_email_notifications.py`. All three tables are deleted with the account (`ON DELETE CASCADE`).
+
+| Object | Kind | Notes |
+|---|---|---|
+| `app_user.email_verified_at` | column (nullable) | Null until the person proves they can read mail sent to the address; no existing account is marked verified |
+| `notification_preference` | table | One row per account: `email_enabled` (default false), `budget_alerts` (default true), `show_amounts` (default true); created on first use |
+| `email_verification` | table | Verification code as a keyed hash (never the code), expiry, attempt counter and consumption time; a partial unique index allows one open code per account |
+| `notification_outbox` | table | Decided notifications: `kind` (`budget_alert` or `test`), unique `dedupe_key`, `status` (`pending`, `sending`, `sent`, `failed`, `skipped`), attempts, next attempt, claim time, provider message id and a stable failure code; the payload never holds an address or a secret; a CHECK ties `status = 'sent'` to `sent_at` |
+
+Behaviour, triggers and rationale: [email-notifications-plan.md](../aidlc-docs/inception/plans/email-notifications-plan.md) and the trigger table in [BACKLOG-AND-STORIES.md](BACKLOG-AND-STORIES.md).
+
 ---
 
 ## 1. Domain Overview & Entity Groups (original design)

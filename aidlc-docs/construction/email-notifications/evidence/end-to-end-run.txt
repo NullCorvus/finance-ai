@@ -1,0 +1,44 @@
+
+== 1. Before verifying: preferences and what happens on a big expense
+hint=p***@example.com verified=False enabled=False
+outbox after a 10.000 expense (not opted in): []
+
+== 2. Verify the address with the emailed code
+code sent to p***@example.com, expires in 900s
+stored hash is not the code: [(True,)]
+verified=True enabled=True
+
+== 3. Spending crosses 80 % (10.000 + 300.000 + 200.000 = 510.000 of 600.000 = 85 %)
+outbox: []
+outbox: [(1, 'budget_alert', 'pending', '80', None)]
+
+== 4. Dispatch: the 80 % alert goes out
+DispatchSummary(sent=1, skipped=0, retried=0, failed=0)
+
+== 5. A 150.000 expense reaches the limit (660.000 of 600.000)
+outbox: [(1, 'budget_alert', 'sent', '80', None), (2, 'budget_alert', 'pending', '100', None)]
+DispatchSummary(sent=1, skipped=0, retried=0, failed=0)
+
+== 6. Test email button
+TestEmailResult(status='sent')
+
+== 7. Unsubscribe link (GET shows a button, POST turns email off)
+GET status: 200
+still enabled: True
+POST status: 200
+enabled after unsubscribe: False
+outbox after unsubscribe + new expense: [(1, 'budget_alert', 'sent', '80', None), (2, 'budget_alert', 'sent', '100', None), (4, 'test', 'sent', None, None)]
+
+== Files written by the console sender
+20261116T172903-1ce45413-logo.png
+20261116T172903-1ce45413.eml
+20261116T172903-1ce45413.html
+20261116T172903-3fd9146c-logo.png
+20261116T172903-3fd9146c.eml
+20261116T172903-3fd9146c.html
+20261116T172903-4bf24027-logo.png
+20261116T172903-4bf24027.eml
+20261116T172903-4bf24027.html
+20261116T172903-8f7de053-logo.png
+20261116T172903-8f7de053.eml
+20261116T172903-8f7de053.html
