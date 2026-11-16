@@ -231,6 +231,20 @@ BEGIN
             END IF;
             RAISE;
         END;
+        -- A suspended administrator can no longer act on the escalated cases they own and no
+        -- other administrator could take them over: release them in this transaction.
+        WITH released AS (
+            UPDATE support_ticket
+            SET admin_owner_user_id = NULL
+            WHERE admin_owner_user_id = p_target_id AND status = 'escalated'
+            RETURNING id
+        )
+        INSERT INTO support_ticket_activity (
+            ticket_id, actor_user_id, event_type, previous_status, new_status,
+            previous_assignee_user_id, new_assignee_user_id
+        )
+        SELECT id, p_actor_id, 'ticket_admin_released', 'escalated', 'escalated', p_target_id, NULL
+        FROM released;
         INSERT INTO account_suspension (user_id, suspended_by_user_id, reason)
         VALUES (p_target_id, p_actor_id, v_reason);
     ELSE
@@ -282,7 +296,14 @@ state: it is now suspended, so the loser receives `actor_not_authorized` (403) a
 `last_admin` remains as defence in depth for a caller whose actor check passes but whose removal would
 still empty the invariant; T1 enforces it independently of this procedure.
 
-**Atomicity.** The flag change, the history row and (through T2)
+**Cases owned by a suspended administrator.** An administrator who is suspended can no longer reply, resolve or
+return the escalated cases they own (`_lock_owned` and P2 require current ownership by an active administrator),
+and the claim predicate refuses cases that already have an owner, so without a release such a case could not
+progress. P1 therefore clears `admin_owner_user_id` on every escalated case owned by the target and writes one
+`ticket_admin_released` activity row per case (actor: the administrator who suspended), all in the same
+transaction. The cases stay `escalated` and reappear in the unclaimed queue; reactivation does not give them back.
+
+**Atomicity.** The flag change, the case release, the history row and (through T2)
 the session revocation happen in one transaction. The `EXCEPTION` block around the update uses a
 sub-transaction so a T1 refusal rolls back only that statement and is reported as `last_admin` instead
 of aborting the caller's transaction (which still has to write the audit event).
@@ -305,7 +326,8 @@ last one; two administrators suspending each other concurrently → the second i
 (a `Barrier` releases both calls at the same instant; this test fails with `DeadlockDetected` against the
 first version of the procedure), at service level too (15 rounds, `staff_access_denied`, never a 503);
 two administrators suspending the same customer at once → one `ok`, one `already_in_state`; at most one
-open suspension per account.
+open suspension per account; suspending the owner of an escalated case releases it to the queue with an
+activity row and another administrator can claim it, while cases owned by someone else are left alone.
 
 ## 6. Stored procedure P2: `sp_admin_return_escalated_ticket`
 

@@ -123,7 +123,7 @@ Apply the enabled security baseline's MFA, deny-by-default role/resource control
 **Branches (not merged):** backend `feat/admin-adm-sec-backend`, staff-web `feat/admin-adm-sec-frontend`
 (both created from `feat/security-auditor-aud` because SEC-01 MFA already existed there), docs
 `docs/admin-implementation-20261115`. Plan: [admin-implementation-plan](../plans/admin-implementation-plan.md).
-Database routines (2 triggers, 2 stored procedures): [DB-ROUTINES-ADMIN](../../../docs/DB-ROUTINES-ADMIN.md).
+Database routines (2 triggers, 2 stored procedures): [DB-ROUTINES-ADMIN](../../construction/administrator/code/DB-ROUTINES-ADMIN.md).
 
 ### Technical-design decisions closed by the implementation
 
@@ -159,7 +159,7 @@ Database routines (2 triggers, 2 stored procedures): [DB-ROUTINES-ADMIN](../../.
      row `FOR UPDATE` against the foreign-key share lock on the actor, plus the T1 advisory lock) and
      the loser received a 503. P1 now locks actor and target in ascending id order with
      `FOR NO KEY UPDATE`; barrier-driven simultaneous-race tests fail against the earlier version
-     ([DB-ROUTINES-ADMIN](../../../docs/DB-ROUTINES-ADMIN.md#5-stored-procedure-p1-sp_admin_set_account_suspension)).
+     ([DB-ROUTINES-ADMIN](../../construction/administrator/code/DB-ROUTINES-ADMIN.md#5-stored-procedure-p1-sp_admin_set_account_suspension)).
   3. The administrator workspace did not ask the session coordinator to re-confirm after a 401/403
      (the Auditor workspace already did), so an access credential that expired between two
      revalidations told the person to sign in again. Failures now go through one hook; the message

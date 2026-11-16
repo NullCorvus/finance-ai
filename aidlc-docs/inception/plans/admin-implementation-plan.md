@@ -154,53 +154,59 @@ Atomic return to support (ADM-05 #9-10): locks the ticket, requires `status='esc
 Each task = one commit (conventional message), tests first or alongside, no task starts until the previous gate is green.
 
 ### Phase 0 — Preflight (no code)
-1. Create the three worktrees/branches from section 2.
-2. Run baselines on a `_test` database: backend `uv sync --all-groups --frozen`, ruff, mypy, pytest with PostgreSQL; frontend `npm ci`, lint, typecheck, vitest. Record the numbers; red baselines are reported, not fixed silently.
-3. Confirm open points by reading code: how `repo.ticket(staff=True)` lets the originating agent read an escalated ticket owned by an admin; customer auth path rejects `is_active=false`; runtime DB role name for the REVOKE grants.
+- [x] 1. Create the three worktrees/branches from section 2. *(Done.)*
+- [x] 2. Run baselines on a `_test` database: backend `uv sync --all-groups --frozen`, ruff, mypy, pytest with PostgreSQL; frontend `npm ci`, lint, typecheck, vitest. Record the numbers; red baselines are reported, not fixed silently. *(Done.)*
+- [x] 3. Confirm open points by reading code: how `repo.ticket(staff=True)` lets the originating agent read an escalated ticket owned by an admin; customer auth path rejects `is_active=false`; runtime DB role name for the REVOKE grants. *(Done: confirmed by reading the code and by the PostgreSQL integration tests.)*
 
 ### Phase 1 — Shared foundation (SEC-01, SEC-02, provisioning)
-4. Migration 0020 skeleton: tables and columns from 4.4, models, `migrations/env.py` imports, drift check.
-5. `core/roles.py`: admin in `STAFF_PORTAL_ROLES`, `MFA_REQUIRED_ROLES`, `CUSTOMER_API_DENIED_ROLES`; remove the hardcoded `support_agent` checks from `StaffSessionService`; admin authority rule D3.
-6. `require_admin_principal` dependency + unit tests for every denial reason (inactive, wrong role, no factor, no `mfa_verified_at`, expired session, role changed mid-session).
-7. SEC-01 wiring for admin: enrollment with QR, activation of the factor only after a valid code, challenge expiry, attempt rate limit, replay rejection under concurrency, admin session lifetimes (D2).
-8. SEC-01 recovery and authenticator replacement (D5) + session revocation + events.
-9. `scripts/admin_ops.py` (D4) + tests: promotion revokes old sessions, no powers before MFA, no secrets in output.
-10. SEC-02: extend allowed events (`account.suspended`, `account.reactivated`, `staff.created`, `staff.activated`, `role.changed`, `auth.logout`, `auth.mfa_recovered`, `auth.mfa_replaced`, `auth.mfa_failed`) with **per-event context allowlists**, new target types (`account`, `staff_invitation`), failure policy: critical writes roll back with the state change and return `AuditUnavailableError`; authentication-event failures log a counter and never grant access. Add TRUNCATE guard and grants.
+- [x] 4. Migration 0020 skeleton: tables and columns from 4.4, models, `migrations/env.py` imports, drift check. *(Done.)*
+- [x] 5. `core/roles.py`: admin in `STAFF_PORTAL_ROLES`, `MFA_REQUIRED_ROLES`, `CUSTOMER_API_DENIED_ROLES`; remove the hardcoded `support_agent` checks from `StaffSessionService`; admin authority rule D3. *(Done: `staff_activation_is_authoritative` no longer ties the invitation role to the current role (see the implementation record).)*
+- [x] 6. `require_admin_principal` dependency + unit tests for every denial reason (inactive, wrong role, no factor, no `mfa_verified_at`, expired session, role changed mid-session). *(Done.)*
+- [x] 7. SEC-01 wiring for admin: enrollment with QR, activation of the factor only after a valid code, challenge expiry, attempt rate limit, replay rejection under concurrency, admin session lifetimes (D2). *(Done.)*
+- [x] 8. SEC-01 recovery and authenticator replacement (D5) + session revocation + events. *(Done.)*
+- [x] 9. `scripts/admin_ops.py` (D4) + tests: promotion revokes old sessions, no powers before MFA, no secrets in output. *(Done.)*
+- [x] 10. SEC-02: extend allowed events (`account.suspended`, `account.reactivated`, `staff.created`, `staff.activated`, `role.changed`, `auth.logout`, `auth.mfa_recovered`, `auth.mfa_replaced`, `auth.mfa_failed`) with **per-event context allowlists**, new target types (`account`, `staff_invitation`), failure policy: critical writes roll back with the state change and return `AuditUnavailableError`; authentication-event failures log a counter and never grant access. Add TRUNCATE guard and grants. *(Done: `auth.logout` and `auth.mfa_failed` already existed; `session.revoked` stays in the catalog but is not written (trigger T2 revokes inside the causing transaction).)*
 
 ### Phase 2 — ADM-01, ADM-02
-11. ADM-01 service/router/schemas/tests (bounds, allowlisted projection, no financial or credential fields, `access.denied`, lookup rate limit, input validation).
-12. T1 + T2 + P1 in migration 0020; PostgreSQL tests: self-suspend, last admin, two admins suspending each other concurrently (exactly one succeeds), session revocation, reactivation does not restore, support/financial data preserved.
-13. ADM-02 service/router on top of P1, confirmation + reason validation, audit in the same transaction, suspended customer blocked from customer API and support.
+- [x] 11. ADM-01 service/router/schemas/tests (bounds, allowlisted projection, no financial or credential fields, `access.denied`, lookup rate limit, input validation). *(Done.)*
+- [x] 12. T1 + T2 + P1 in migration 0020; PostgreSQL tests: self-suspend, last admin, two admins suspending each other concurrently (exactly one succeeds), session revocation, reactivation does not restore, support/financial data preserved. *(Done: P1's lock order was revised after a real two-administrator run deadlocked the first version; barrier-driven tests now prove it.)*
+- [x] 13. ADM-02 service/router on top of P1, confirmation + reason validation, audit in the same transaction, suspended customer blocked from customer API and support. *(Done.)*
 
 ### Phase 3 — ADM-03, ADM-04
-14. ADM-03: create invitation (unique email, role allowlist, forged-role rejection via `extra="forbid"`), activation endpoint (atomic `UPDATE ... WHERE consumed_at IS NULL AND expires_at > now`), password policy reuse, `staff.created` / `staff.activated`, concurrent activation test (one winner), replay/expiry tests, secrets absent from audit and logs.
-15. ADM-04: read role, confirmed transition support_agent ↔ security_auditor only, own-role and admin-grant rejection, one-role invariant, T2 revokes sessions, `role.changed` with previous/new role.
-16. Verify auditors created here need MFA before any read (hand-off with the auditor branch).
+- [x] 14. ADM-03: create invitation (unique email, role allowlist, forged-role rejection via `extra="forbid"`), activation endpoint (atomic `UPDATE ... WHERE consumed_at IS NULL AND expires_at > now`), password policy reuse, `staff.created` / `staff.activated`, concurrent activation test (one winner), replay/expiry tests, secrets absent from audit and logs. *(Done.)*
+- [x] 15. ADM-04: read role, confirmed transition support_agent ↔ security_auditor only, own-role and admin-grant rejection, one-role invariant, T2 revokes sessions, `role.changed` with previous/new role. *(Done.)*
+- [x] 16. Verify auditors created here need MFA before any read (hand-off with the auditor branch). *(Done.)*
 
 ### Phase 4 — ADM-05
-17. Claim (conditional UPDATE on `admin_owner_user_id`), escalated queue, admin conversation projection (escalation reason staff-only, no private finance data), reply through the existing message flow.
-18. Resolve with summary (customer-visible), P2 return, activity rows, `ticket.escalated` unchanged, no conversation copies in audit.
-19. Backend projection tests including **direct customer API calls**: `internal_reason` and escalation/return reasons never appear; suspended customer gets denied.
-20. Originating agent keeps read-only access while escalated; concurrent claim test.
+- [x] 17. Claim (conditional UPDATE on `admin_owner_user_id`), escalated queue, admin conversation projection (escalation reason staff-only, no private finance data), reply through the existing message flow. *(Done: P1 also releases the cases owned by a suspended administrator (added after review, with tests).)*
+- [x] 18. Resolve with summary (customer-visible), P2 return, activity rows, `ticket.escalated` unchanged, no conversation copies in audit. *(Done.)*
+- [x] 19. Backend projection tests including **direct customer API calls**: `internal_reason` and escalation/return reasons never appear; suspended customer gets denied. *(Done.)*
+- [x] 20. Originating agent keeps read-only access while escalated; concurrent claim test. *(Done.)*
 
 ### Phase 5 — Frontend (`staff-web/src/features/admin/`)
 Can start after step 11 once `openapi.json` is regenerated; backend and frontend slices can run in parallel with the contract as the handshake.
-21. Router: `RequireStaffRole role="admin"`, `roleHome`, admin nav, `admin/*` routes.
-22. Auth: admin MFA step and QR enrollment (reuse `MfaStep`), recovery screens, `/activate?token=` public page that strips the token from the URL after reading it.
-23. `AccountsPage` (lookup, detail card labelled as login account, suspend/reactivate dialogs with reason and confirmation).
-24. `StaffPage` (create invitation, one-time activation link with copy-once state, role change dialog).
-25. `EscalatedTicketsPage` (queue, case view with history, claim, reply, resolve, return with reason).
-26. `adminApi.ts` with safe diagnostic handling following `staff-web/AGENTS.md`; no secrets in console or storage; accessible dialogs (WCAG AA like the existing shell).
-27. Vitest component tests for every screen and error code, Playwright e2e for the three journeys against the demo seed.
-28. Flutter (`lib/features/support/`): confirm a suspended customer sees a clear safe message and the final resolution displays; change only if a gap shows (verified in step 3).
+- [x] 21. Router: `RequireStaffRole role="admin"`, `roleHome`, admin nav, `admin/*` routes. *(Done.)*
+- [x] 22. Auth: admin MFA step and QR enrollment (reuse `MfaStep`), recovery screens, `/activate?token=` public page that strips the token from the URL after reading it. *(Done: the public page reads `/activate#token=` (URL fragment, not a query parameter) and removes it from the address bar.)*
+- [x] 23. `AccountsPage` (lookup, detail card labelled as login account, suspend/reactivate dialogs with reason and confirmation). *(Done.)*
+- [x] 24. `StaffPage` (create invitation, one-time activation link with copy-once state, role change dialog). *(Done.)*
+- [x] 25. `EscalatedTicketsPage` (queue, case view with history, claim, reply, resolve, return with reason). *(Done.)*
+- [x] 26. `adminApi.ts` with safe diagnostic handling following `staff-web/AGENTS.md`; no secrets in console or storage; accessible dialogs (WCAG AA like the existing shell). *(Done.)*
+- [x] 27. Vitest component tests for every screen and error code, Playwright e2e for the three journeys against the demo seed. *(Done: 10 serial Playwright journeys with two real administrators against the demo seed (opt-in, not part of default CI).)*
+- [x] 28. Flutter (`lib/features/support/`): confirm a suspended customer sees a clear safe message and the final resolution displays; change only if a gap shows (verified in step 3). *(Done: verified by walking the Flutter customer app on Windows and on a real Android phone; no Flutter change was needed.)*
 
 ### Phase 6 — Verification, docs, hand-off
-29. Backend gates: `ruff format --check`, `ruff check`, `mypy`, migration/seed drift, OpenAPI drift, pytest ≥ 80% line coverage, real PostgreSQL integration tests, `pip-audit`. Frontend gates: lint, typecheck, vitest coverage, build, Playwright.
-30. Security review pass of the diff (authorization, injection, secrets in logs, timing, CSRF/CORS) plus a code review.
-31. Demo seed (`scripts/seed_admin_demo.py`) and a review guide, following the support demo.
-32. Docs (section 9), then ask before pushing and opening PRs.
+- [x] 29. Backend gates: `ruff format --check`, `ruff check`, `mypy`, migration/seed drift, OpenAPI drift, pytest ≥ 80% line coverage, real PostgreSQL integration tests, `pip-audit`. Frontend gates: lint, typecheck, vitest coverage, build, Playwright. *(Done: backend 925 passed with the two pre-existing failures, 92 % coverage; staff-web 236 passed, 94.9 % lines.)*
+- [x] 30. Security review pass of the diff (authorization, injection, secrets in logs, timing, CSRF/CORS) plus a code review. *(Done: done; findings fixed (lookup email in a POST body, separate rate-limit buckets, downgrade guard, release of owned cases, ticket customer projection).)*
+- [x] 31. Demo seed (`scripts/seed_admin_demo.py`) and a review guide, following the support demo. *(Done: `scripts/seed_admin_demo.py` and the demo section of `docs/ADMINISTRATOR-MVP.md` in the backend.)*
+- [x] 32. Docs (section 9), then ask before pushing and opening PRs. *(Done: the PRs were opened only after an explicit go-ahead.)*
 
 ---
+
+**Deferred or superseded (not checked off):**
+
+- [ ] `TRUNCATE`/`DROP` guard on `security_audit_event`: deferred to deployment. Existing integration tests rely on `TRUNCATE`; the real protection is a database role without those privileges.
+- [ ] Trello checklist ticks and card move (section 9, item 5): not done; they need an explicit go-ahead and only for items with evidence.
+- [ ] `docs/schema.sql` and `docs/schema.dbml` (section 9, item 2): not extended. Both predate the staff foundation (they hold no support or audit tables), so the new tables are documented in `docs/SCHEMA.md` and the routines document instead.
 
 ## 7. Test matrix (must exist before a story is called done)
 
@@ -231,11 +237,11 @@ Can start after step 11 once `openapi.json` is regenerated; backend and frontend
 
 ## 9. Documentation, repo and tracker updates (done last)
 
-1. **Routine documentation:** new `docs/DB-ROUTINES-ADMIN.md` in the docs repo covering, for each of T1, T2, P1, P2: purpose and story, trigger event or call signature, the DDL as shipped, locking and concurrency behavior, error codes, the tests that prove it, and the downgrade path. Link it from `docs/SCHEMA.md`.
-2. Update `docs/SCHEMA.md`, `docs/schema.sql`, `docs/schema.dbml` (new tables and columns; triggers and procedures listed in the note, since DBML does not model them) and keep `tests/unit/test_dbml_schema.py` green in the backend.
-3. Update `BACKLOG-AND-STORIES.md` status per story with evidence links, `administrator-role.md` and `shared-security-requirements.md` where implementation decisions D1-D9 now close technical-design items, `aidlc-state.md`, and append to `audit.md`.
-4. Backend: `AGENTS.md` and `aidlc-docs/.../foundation-schema-mapping.md` get the new modules, routines and the MFA/admin rules; `README` notes the provisioning CLI.
-5. Trello (only with your explicit go-ahead, and only for items with evidence): tick checklist items story by story, add a comment with branch and test results, move the card when appropriate.
+- [x] 1. **Routine documentation:** new `aidlc-docs/construction/administrator/code/DB-ROUTINES-ADMIN.md` in the docs repo covering, for each of T1, T2, P1, P2: purpose and story, trigger event or call signature, the DDL as shipped, locking and concurrency behavior, error codes, the tests that prove it, and the downgrade path. Link it from `docs/SCHEMA.md`.
+- [~] 2. (partly, see deferred list) Update `docs/SCHEMA.md`, `docs/schema.sql`, `docs/schema.dbml` (new tables and columns; triggers and procedures listed in the note, since DBML does not model them) and keep `tests/unit/test_dbml_schema.py` green in the backend.
+- [x] 3. Update `BACKLOG-AND-STORIES.md` status per story with evidence links, `administrator-role.md` and `shared-security-requirements.md` where implementation decisions D1-D9 now close technical-design items, `aidlc-state.md`, and append to `audit.md`.
+- [x] 4. Backend: `AGENTS.md` and `aidlc-docs/.../foundation-schema-mapping.md` get the new modules, routines and the MFA/admin rules; `README` notes the provisioning CLI.
+- [ ] 5. Trello (only with your explicit go-ahead, and only for items with evidence): tick checklist items story by story, add a comment with branch and test results, move the card when appropriate.
 
 ---
 
@@ -261,7 +267,7 @@ Executed 2026-11-15 following this plan. Nothing was pushed, merged or written t
 | 3 ADM-03/04 | Invitation, public activation (single use under concurrency), staff role changes. |
 | 4 ADM-05 | Escalation queue, claim, reply, resolve, return via procedure P2; customer projection tests. |
 | 5 Frontend | Administración workspace, `/activate`, `/recover`, recovery codes; 229 tests, 94.9 % line coverage after the review and accessibility fixes. |
-| 6 Verification and docs | Backend 924 passed / 2 pre-existing failures / 92 % coverage, Ruff, mypy, Alembic drift, OpenAPI drift and `pip-audit` clean; 10 real-stack Playwright journeys, session-lifetime and axe-core checks, production-mode TLS check (32/32) and a Windows customer-app walkthrough; staff-web lint, typecheck and build clean; this documentation; [DB-ROUTINES-ADMIN](../../../docs/DB-ROUTINES-ADMIN.md). |
+| 6 Verification and docs | Backend 924 passed / 2 pre-existing failures / 92 % coverage, Ruff, mypy, Alembic drift, OpenAPI drift and `pip-audit` clean; 10 real-stack Playwright journeys, session-lifetime and axe-core checks, production-mode TLS check (32/32) and a Windows customer-app walkthrough; staff-web lint, typecheck and build clean; this documentation; [DB-ROUTINES-ADMIN](../../construction/administrator/code/DB-ROUTINES-ADMIN.md). |
 
 Differences from the plan (details in [administrator-role.md](../requirements/administrator-role.md#implementation-record--2026-11-15)):
 branch name suffixes; no `TRUNCATE` guard (deployment-level privilege separation instead); staff authority

@@ -42,7 +42,7 @@ Added on the Administrator feature branch (in review, not merged). Executable de
 | `sp_admin_set_account_suspension` | stored procedure P1 | Atomic suspend/reactivate |
 | `sp_admin_return_escalated_ticket` | stored procedure P2 | Atomic return of an escalated ticket to Support |
 
-Full definitions, concurrency analysis and tests: [DB-ROUTINES-ADMIN.md](./DB-ROUTINES-ADMIN.md).
+Full definitions, concurrency analysis and tests: [DB-ROUTINES-ADMIN.md](../aidlc-docs/construction/administrator/code/DB-ROUTINES-ADMIN.md).
 
 ---
 
