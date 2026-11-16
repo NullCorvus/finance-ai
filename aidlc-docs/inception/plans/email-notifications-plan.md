@@ -139,7 +139,7 @@ Settings gets a **Notificaciones** row opening one screen: email status (not ver
 ### EML-04 — Hardening, documentation and evidence (5 SP)
 - [ ] 17. Daily per-user cap, bounce and complaint handling for the chosen provider (suppression list), metrics for sent, failed and skipped.
 - [x] 18. Runbook: provider setup, Secret Manager entries, Cloud Scheduler job, DNS records (SPF, DKIM, DMARC), how to rotate the key and how to read the outbox.
-- [ ] 19. Security and privacy review of the diff (no PII in logs or payloads, injection and header injection, token handling, rate limits), then a code review.
+- [x] 19. Security and privacy review of the diff (no PII in logs or payloads, injection and header injection, token handling, rate limits), then a code review.
 - [ ] 20. Product docs updated (scope, features, backlog statuses with evidence, shared decisions), evidence attached to the Trello card only with the user's go-ahead.
 
 ## 9b. Status and deviations from this plan (recorded 2026-11-16)
@@ -160,6 +160,8 @@ Deviations, each one deliberate:
 10. **Found, not fixed (outside this scope):** two simultaneous first expenses with the same new merchant name collide on `uq_store_user_normalized_name` and return a server error. Reproduced while testing; the alert tests use distinct merchants.
 
 Frontend: branch `feat/email-notifications-frontend` in `finance-ai-frontend-email`, commit 5d90a0b (Notificaciones screen, 26 tests; format and analyze clean; whole suite passes except the dashboard spending-summary golden, which fails identically on an untouched worktree on this machine). Runbook: backend `docs/EMAIL-NOTIFICATIONS.md`. Evidence of the sandbox run: `aidlc-docs/construction/email-notifications/evidence/`. Steps still open: 1 (backlog stories), 2 (baseline record), 8 (a real send; the evidence run used the console sender), 14 (copy review), 17 (bounce handling and metrics need a provider), 19 (formal security review and code review), 20 (product docs and Trello, with the user's go-ahead).
+
+Review before the PRs (2026-11-16): an independent security review of the backend and frontend diffs found no high-confidence vulnerability (one low note: uvicorn's access log records the `?token=` of the unsubscribe URL; consider `--no-access-log` or log filtering at deployment). An independent correctness review found 7 real defects, all confirmed in the code and fixed with tests that failed before: SMTP temporary 4xx replies treated as permanent; whole-message long-line policy mangling accented subjects; duplicate `Auto-Submitted`; a failed resend destroying the previous valid code; the test email reporting "queued" for final failures; an 80 % alert rounding to "100 %"; the dispatch rate limit counting unauthenticated hits; plus, in the app, notification state surviving logout and the verification flow not recovering from a cooldown or a lost reply. Fix commits: backend `16a7db8`, frontend `b794639`. Final backend gates after the fixes: format, lint, mypy, Alembic check, OpenAPI no drift, build and audit clean; 1177 tests pass; the only failures are the 2 `test_text_capture_persistence` tests that fail on an unrelated date mismatch.
 
 Not done yet: provider account, domain and DNS (SPF, DKIM, DMARC), Cloud Scheduler job, bounce handling, runbook, a real send to a sandbox inbox with screenshots, and Trello updates.
 
