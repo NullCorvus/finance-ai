@@ -2,7 +2,7 @@
 
 ## Project Information
 - **Project Type**: Brownfield (FastAPI backend + Flutter frontend already implemented)
-- **Current Stage**: Administrator and shared security (ADM-01–ADM-05, SEC-01/02) implemented on feature branches (backend/frontend `feat/admin-adm-sec-*`, docs `docs/admin-implementation-20261115`) and in review; not merged
+- **Current Stage**: Email notifications (EML-01–EML-04) planned (v1 scope approved 2026-11-16, awaiting the execution go-ahead); Administrator and shared security (ADM-01–ADM-05, SEC-01/02) merged on 2026-11-16 (backend #45 and staff portal #59 into `develop`, docs #25 into `master`)
 
 ## Workspace State
 - **Existing Code**: Yes — `finance-ai-backend/` (FastAPI, Alembic, uv) and `finance-ai-frontend/` (Flutter)
@@ -494,3 +494,15 @@ still outstanding there.
 - **Skipped**: New reverse engineering, implementation design detail, units generation, Construction/code/migrations, application builds/tests, PDF generation, infrastructure and Operations: outside this approved documentation task.
 - **Dependencies**: Delivery of shared SEC-01/SEC-02, staff identity/session authorization and portal foundations; query/snapshot/index/PDF/retry mechanisms are technical design responsibilities. No additional functional blocker identified.
 - **Extensions**: Security Baseline documentation coverage per SECURITY-01–15 in the shared specification; partial PBT N/A to Markdown artifacts; disabled full Resiliency skipped. No deployed compliance or implementation completion claimed.
+
+## Active workflow — Email notifications planning (2026-11-16)
+
+- **Authorization**: The user asked for a proposal and a plan, then approved the v1 scope ("v1 as proposed"). Planning only; execution needs a separate go-ahead.
+- **Branch/base**: `docs/email-notifications-plan-20261116` from master 38ce050 in its own worktree. Code branches, when authorized, start from `develop` in each repository. No push or pull request.
+- **Plan**: [email-notifications-plan](inception/plans/email-notifications-plan.md): v1 is the email foundation with branded HTML templates, email verification and preferences, budget alerts at 80 % and 100 %, unsubscribe, and hardening/evidence (EML-01..EML-04, 29 provisional SP). v1.1 (ticket and account-status notices) and v2 (monthly summary with PDF/Excel report, on-device notifications) are listed and not estimated.
+- **Canonical backlog**: EML-01..EML-04 are provisional and must be added to `docs/BACKLOG-AND-STORIES.md` as the first execution step.
+- [x] Workspace/rules/source review (backend `develop`, product docs) and proposal complete; existing architecture reused (units of work, problem contract, outbox pattern new).
+- [x] Written plan with decisions D1-D10, data model, API, work breakdown, test matrix, risks and evidence list.
+- **Skipped**: Reverse engineering, units generation, Construction/code/migrations, provider account creation, DNS and infrastructure, Operations: outside this approved planning task.
+- **Dependencies**: Provider choice (D1) and sender domain (D2) before real sending; offline-first work may change migration numbering and adds the on-device channel later.
+- **Extensions**: Security Baseline considered for the plan (verification, rate limits, no PII in logs, secrets in Secret Manager); partial PBT N/A to a planning document; no compliance claimed.
