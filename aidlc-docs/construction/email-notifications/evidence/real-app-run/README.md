@@ -21,3 +21,11 @@ Unlike `../README.md` (console sender), this run **delivered real email**. Setup
 3. The Gmail connector available to the assistant could not see this mailbox, so the code was read by the developer and passed on; arrival was confirmed by the developer's screenshots.
 
 The unsubscribe link in these emails points to `http://localhost:8000` (the local backend), so it only works while that backend runs on the same machine.
+
+## Second round: after marking the sender as not spam
+
+The two alerts and the in-app test email of the first round also sat in spam with the logo blocked (`09`, `10`, `11`). The developer then clicked "Report not spam" on them and created a Gmail filter "never send to spam" for the sender. A new in-app test email and a new verification code were sent through the app and both arrived in the **Inbox with the logo displayed** (`12`, `13`).
+
+Read this result honestly: the filter alone guarantees inbox placement for this one recipient, so it shows the layout and logo render correctly once Gmail stops blocking images, not that the sender's reputation recovered. Placement for other recipients still depends on a sending domain with SPF, DKIM and DMARC. Findings 1 and 2 above stay open as a production task, with the cause now confirmed as spam classification and not the template.
+
+Also sent in this round, through the same scheduler loop: a second budget ("Ahorro mensual", 400.000 COP) crossed 80 % and then 100 % and produced two more alerts (outbox: `80 sent`, `100 sent`); the first budget kept going over its limit without a duplicate alert.
