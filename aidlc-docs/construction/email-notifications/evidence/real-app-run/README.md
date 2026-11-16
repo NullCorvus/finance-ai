@@ -29,3 +29,18 @@ The two alerts and the in-app test email of the first round also sat in spam wit
 Read this result honestly: the filter alone guarantees inbox placement for this one recipient, so it shows the layout and logo render correctly once Gmail stops blocking images, not that the sender's reputation recovered. Placement for other recipients still depends on a sending domain with SPF, DKIM and DMARC. Findings 1 and 2 above stay open as a production task, with the cause now confirmed as spam classification and not the template.
 
 Also sent in this round, through the same scheduler loop: a second budget ("Ahorro mensual", 400.000 COP) crossed 80 % and then 100 % and produced two more alerts (outbox: `80 sent`, `100 sent`); the first budget kept going over its limit without a duplicate alert.
+
+## Third round: the same flow on a real Android phone
+
+A Samsung SM-A315G (Android 12) ran the Android debug build of `feat/email-notifications-frontend`, reaching the backend on the PC through `adb reverse tcp:8000 tcp:8000`, with Gmail SMTP and the 15-second dispatch loop as before (`phone/`).
+
+| Step | Evidence |
+|---|---|
+| Signed in, Ajustes > Notificaciones, unverified address with "Enviar código" | `phone/01-unverified-send-code.png` |
+| Code typed (it was read from the developer's open Gmail window: it arrived in the inbox) | `phone/02-code-typed.png` |
+| Code accepted: switches for email, budget alerts and amounts, and the test button | `phone/03-verified-switches.png` |
+| "Enviarme un correo de prueba" sent from the phone (outbox row `test sent`) | `phone/04-test-email-sent.png` |
+| "Mostrar montos en el correo" switched off on the phone; the server stored `show_amounts = false` | `phone/05-amounts-switch-off.png` |
+| Budget of 200.000 COP and expenses of 100.000, 70.000 (85 %) and 40.000 (105 %): both alerts sent (`80`, `100`) and all four emails (code, test, two alerts) arrived in the inbox | `phone/dispatch-loop-phone-run.log`, outbox rows |
+
+Not verified here: that the two alert emails really omit the amounts. Their list previews show no amounts, but the message bodies were not opened; the behaviour itself is covered by the rendering and dispatcher tests (`show_amounts=False`).
