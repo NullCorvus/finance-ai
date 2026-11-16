@@ -195,7 +195,7 @@ Can start after step 11 once `openapi.json` is regenerated; backend and frontend
 - [x] 28. Flutter (`lib/features/support/`): confirm a suspended customer sees a clear safe message and the final resolution displays; change only if a gap shows (verified in step 3). *(Done: verified by walking the Flutter customer app on Windows and on a real Android phone; no Flutter change was needed.)*
 
 ### Phase 6 — Verification, docs, hand-off
-- [x] 29. Backend gates: `ruff format --check`, `ruff check`, `mypy`, migration/seed drift, OpenAPI drift, pytest ≥ 80% line coverage, real PostgreSQL integration tests, `pip-audit`. Frontend gates: lint, typecheck, vitest coverage, build, Playwright. *(Done: backend 925 passed with the two pre-existing failures, 92 % coverage; staff-web 236 passed, 94.9 % lines.)*
+- [x] 29. Backend gates: `ruff format --check`, `ruff check`, `mypy`, migration/seed drift, OpenAPI drift, pytest ≥ 80% line coverage, real PostgreSQL integration tests, `pip-audit`. Frontend gates: lint, typecheck, vitest coverage, build, Playwright. *(Done: backend 932 passed with the two pre-existing failures, 92 % coverage; staff-web 254 passed, 95.0 % lines.)*
 - [x] 30. Security review pass of the diff (authorization, injection, secrets in logs, timing, CSRF/CORS) plus a code review. *(Done: done; findings fixed (lookup email in a POST body, separate rate-limit buckets, downgrade guard, release of owned cases, ticket customer projection).)*
 - [x] 31. Demo seed (`scripts/seed_admin_demo.py`) and a review guide, following the support demo. *(Done: `scripts/seed_admin_demo.py` and the demo section of `docs/ADMINISTRATOR-MVP.md` in the backend.)*
 - [x] 32. Docs (section 9), then ask before pushing and opening PRs. *(Done: the PRs were opened only after an explicit go-ahead.)*
@@ -266,8 +266,8 @@ Executed 2026-11-15 following this plan. Nothing was pushed, merged or written t
 | 2 ADM-01/02 | Lookup and suspend/reactivate; triggers T1 and T2 and procedure P1 with concurrency tests on PostgreSQL. |
 | 3 ADM-03/04 | Invitation, public activation (single use under concurrency), staff role changes. |
 | 4 ADM-05 | Escalation queue, claim, reply, resolve, return via procedure P2; customer projection tests. |
-| 5 Frontend | Administración workspace, `/activate`, `/recover`, recovery codes; 229 tests, 94.9 % line coverage after the review and accessibility fixes. |
-| 6 Verification and docs | Backend 924 passed / 2 pre-existing failures / 92 % coverage, Ruff, mypy, Alembic drift, OpenAPI drift and `pip-audit` clean; 10 real-stack Playwright journeys, session-lifetime and axe-core checks, production-mode TLS check (32/32) and a Windows customer-app walkthrough; staff-web lint, typecheck and build clean; this documentation; [DB-ROUTINES-ADMIN](../../construction/administrator/code/DB-ROUTINES-ADMIN.md). |
+| 5 Frontend | Administración workspace, `/activate`, `/recover`, recovery codes; 254 tests, 95.0 % line coverage after the review, accessibility and PR-review fixes. |
+| 6 Verification and docs | Backend 932 passed / 2 pre-existing failures / 92 % coverage, Ruff, mypy, Alembic drift, OpenAPI drift and `pip-audit` clean; 10 real-stack Playwright journeys, session-lifetime and axe-core checks, production-mode TLS check (32/32) and a Windows customer-app walkthrough; staff-web lint, typecheck and build clean; this documentation; [DB-ROUTINES-ADMIN](../../construction/administrator/code/DB-ROUTINES-ADMIN.md). |
 
 Differences from the plan (details in [administrator-role.md](../requirements/administrator-role.md#implementation-record--2026-11-15)):
 branch name suffixes; no `TRUNCATE` guard (deployment-level privilege separation instead); staff authority

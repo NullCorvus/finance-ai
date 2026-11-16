@@ -7340,3 +7340,11 @@ Proceed with these corrections without expanding the approved four-story scope.
 **Context**: Local only: nothing pushed, merged or written to Trello. Existing failures recorded (two backend tests, one Flutter golden, one Windows smoke step). Android: built and walked through on a connected Samsung SM-A315G (user offered the phone), app uninstalled afterwards.
 
 ---
+
+## Administrator — Pull Request Review Follow-up
+**Timestamp**: 2026-11-16T15:16:17Z
+**User Input**: "are the PR's accepted? if not acept them yourself and merge with develop, update the repo of course with the last updates"
+**AI Response**: The three PRs (backend #45, staff portal #59, docs #25) had no human approval, only an automated Codex review with unresolved findings, and the portal PR had a failing "Staff web CI" workflow. All findings were judged valid and fixed: cases owned by a suspended administrator are released to the queue by the suspension procedure; the case projection finds a ticket's customer by id; activation checks the password policy before the token; the session revalidation rule (protected content hidden while unresolved) was restored with a hold-and-keep-mounted gate and the last confirmed session kept meanwhile; copyable diagnostics for administrator, activation and recovery-code failures; a guard against stale account results; the routines document moved under aidlc-docs; the plan records per-step completion and deferred items; audit timestamps use full ISO 8601 UTC. Verified locally: backend 932 passed (2 existing failures), staff-web 254 passed, Playwright specs and the 10 real-stack journeys.
+**Context**: Merge into develop (master for this repository) is authorized by the user's message and is done only after the branches are pushed and CI is green; this entry is written before that merge.
+
+---
