@@ -10,7 +10,8 @@
 > items; its implementation statuses and provisional estimates are separate from the completed core.
 > The approved Administrator/shared-security extension adds seven records under two further items;
 > the approved Security Auditor extension adds four more records under PB-016;
-> the complete register has 34 stories under 16 product backlog items.
+> the Email notifications extension (2026-11-16) adds four provisional records under PB-017;
+> the complete register has 38 stories under 17 product backlog items.
 > **Estimation scale:** Story Points — standard **Fibonacci** (1, 2, 3, 5, 8, 13…).
 > Card completion is project-tracking evidence; it does not assert a new runtime test or release.
 
@@ -1166,3 +1167,125 @@ The complete register contains 34 stories under 16 product backlog items. SEC-01
 The Auditor subtotal adds 23 role points; do not add the 21 shared-security points or shared portal scaffolding again. Shared security remains 13+8 once for all consumers. Reevaluate SEC-01 only on demonstrated material design complexity, not simply another role using the same module. Existing HU, SUP, USR-SUP and ADM estimates remain unchanged. These are provisional relative estimates, not velocity or hours.
 
 The role owner coordinates backend query/report contracts with the SEC owner and frontend staff portal owner. A minimal implementation-agent task specifies one existing AUD ID, acceptance criteria, approved dependencies/contracts, allowed repository/files and test/review evidence. Deliver shared MFA/audit foundations before affected acceptance checks; this is an implementation dependency, not a renewed functional question. No Trello card or code is created by this documentation task.
+
+---
+
+## Email notifications extension — 2026-11-16
+
+The Trello card "Notificaciones — Correo electrónico HTML" (rubric section F: an automatic email that works and is not plain text) is split into four implementation stories. Version 1 (approved on 2026-11-16: "v1 as proposed", "sandbox first") sends branded HTML emails for verification codes and for budget-limit alerts to users who verified their address and opted in. Local-only users never reach the server, so email is an account channel; detecting that something happened stays separate from delivering it, so a future on-device channel can reuse the rules. The code PB-017 and the estimates are provisional until the board assigns its own.
+
+Plan, decisions and deviations: [email-notifications-plan.md](../aidlc-docs/inception/plans/email-notifications-plan.md). Operations runbook: `docs/EMAIL-NOTIFICATIONS.md` in the backend repository. Evidence: [sandbox run](../aidlc-docs/construction/email-notifications/evidence/README.md) and [real app, inbox and phone run](../aidlc-docs/construction/email-notifications/evidence/real-app-run/README.md).
+
+### Planned product backlog additions
+
+| Code | Feature | Priority | Status | Ownership |
+|---|---|---|---|---|
+| PB-017 | Email notifications | Medium | In review (feature branches) | EML-01–EML-04 |
+
+### EML-01 — HTML email foundation and reliable delivery
+
+**Feature:** PB-017 — Email notifications
+
+**Actor:** System (product team and operators)
+
+**Story:**
+> As the product team, I want branded HTML emails sent through a reliable queue so that users receive automatic messages that work and are not plain text.
+
+**Implementation scope:** Sender interface with a console sender (writes `.eml` and `.html` files, delivers nothing) and an SMTP sender; Jinja2 templates with autoescape (table layout, inline styles, inline logo, dark-mode rules, preheader and a plain-text alternative) for the verification code, the test email and the budget alert; transactional outbox with a unique dedupe key; dispatcher that claims rows with `FOR UPDATE SKIP LOCKED`, sends outside any transaction, re-checks consent at send time, retries with backoff, recovers stale claims and applies a per-user daily cap; internal dispatch endpoint for a scheduler, protected by a shared secret; migration `0021`; scripts to send a test email and to dispatch.
+
+**Acceptance criteria:** Every email ships an HTML and a plain-text version with the logo and styles; a notification decided inside a transaction commits or rolls back with it and is never queued twice; two dispatchers never send the same row; failures become stable codes and no address or provider text is stored or logged; temporary failures (4xx replies, timeouts) are retried and final ones are not; production without a real sender reports `notifications_unavailable` and the app hides the feature; the dispatch endpoint refuses a missing or wrong secret and is not part of the public API contract.
+
+**Story points:** 8 (provisional)
+
+**Implementation status:** In review — implemented on feature branches (2026-11-16): backend `feat/email-notifications-backend` (PR #48). Not claimed: merge to `develop`, deployment or a sending domain.
+
+**Mockup:** TBD (the emails are shown in the evidence screenshots)
+
+---
+
+### EML-02 — Verified opt-in, preferences and unsubscribe
+
+**Feature:** PB-017 — Email notifications
+
+**Actor:** User
+
+**Story:**
+> As a user, I want to verify my email address and choose which emails I receive so that notifications reach me only when I want them.
+
+**Implementation scope:** Endpoints to request and confirm a 6-digit code, to read and change preferences and to send a test email; signed unsubscribe page and `List-Unsubscribe` headers; Flutter "Notificaciones" screen in Settings with code entry, resend countdown, switches and test button, using the shared copyable diagnostics.
+
+**Acceptance criteria:** Email cannot be turned on for an unverified address; the code is sent to the account's own address, stored only as a keyed hash, expires after 15 minutes, works once and is burned after 5 wrong guesses (counted exactly under concurrency); at most one code per 60 seconds and five per hour; verifying turns email on; there are switches for budget alerts and for showing amounts; the test email button (three per hour) says whether the message was sent or queued and reports a final failure as a failure; every email has an unsubscribe link and one-click headers, opening the link changes nothing and confirming turns email off; the address is only ever shown masked; the screen state is cleared on logout.
+
+**Story points:** 8 (provisional)
+
+**Implementation status:** In review — implemented on feature branches (2026-11-16): backend (PR #48), Flutter `feat/email-notifications-frontend` (PR #61). Run for real on Windows and on an Android phone against the backend with Gmail delivery (see the evidence). Not claimed: merge, deployment or a sending domain.
+
+**Mockup:** TBD (see the screenshots in the evidence)
+
+---
+
+### EML-03 — Budget alerts
+
+**Feature:** PB-017 — Email notifications
+
+**Actor:** User
+
+**Story:**
+> As a user, I want an email when my spending reaches 80 % and 100 % of a budget so that I notice both when I am close to the limit and when I pass it.
+
+**Implementation scope:** Evaluator that runs inside the expense transaction (create, receipt confirmation, edit) and records at most one outbox row per budget, period, threshold and limit; the same "spent in period" calculation as the budgets screen; row lock so simultaneous expenses cannot miss a crossing; templates for the two thresholds that honour the "show amounts" switch.
+
+**Acceptance criteria:** An alert is queued when an expense brings the spending of an active budget, in its current period, to 80 % or 100 % of its limit; category budgets count only their category and currency; one email per budget, period, threshold and limit; an expense that passes both thresholds sends only the 100 % email; changing the limit or starting a new period re-arms the alert; editing a budget or deleting an expense sends nothing; only users who verified their address and enabled both email and budget alerts are evaluated; amounts can be hidden; a failure while deciding never prevents the expense from being saved; the number in the email equals the number on the budgets screen.
+
+**Story points:** 8 (provisional)
+
+**Implementation status:** In review — implemented on the same feature branches (PR #48 backend). Delivered for real to an inbox at 80 % and at 100 % (see the evidence). Not claimed: merge, deployment or the scheduler running in a deployed environment.
+
+**Mockup:** TBD (see the screenshots in the evidence)
+
+---
+
+### EML-04 — Hardening, documentation and evidence
+
+**Feature:** PB-017 — Email notifications
+
+**Actor:** Team and operators
+
+**Story:**
+> As the team, I want the email channel documented, reviewed and demonstrated so that it can be deployed and defended in review.
+
+**Implementation scope:** Runbook; independent security and correctness reviews; evidence of delivery; bounce and complaint handling and metrics once a provider is chosen.
+
+**Acceptance criteria:** A runbook covers settings, provider, DNS records (SPF, DKIM, DMARC), Secret Manager entries, the Cloud Scheduler job, outbox queries and secret rotation; the change passed an independent security review and a correctness review, with the confirmed findings fixed and tested; evidence shows real delivery to an inbox from the Windows app and from an Android phone; bounce handling and metrics exist once a provider is chosen.
+
+**Story points:** 5 (provisional)
+
+**Implementation status:** Partly done — runbook, reviews and evidence are done (PR #26 documentation). Open: sending domain and provider, DNS records, deployed scheduler, bounce and complaint handling, metrics, review of the Spanish alert wording, and Trello completion.
+
+**Mockup:** N/A
+
+---
+
+### When an email is sent (triggers)
+
+| Trigger | Who or what causes it | Condition | Email | Limits and duplicates | Delivery |
+|---|---|---|---|---|---|
+| Verification requested | The user taps "Enviar código" | Address not yet verified; delivery configured | Verification code | One per 60 s, five per hour; a new code replaces the previous one | Sent directly in the request; never queued or stored in plain text |
+| Test email requested | The user taps "Enviarme un correo de prueba" | Verified address | Test email | Three per hour | Queued in the outbox and dispatched immediately for that user |
+| Budget reaches 80 % | An expense is created, confirmed from a receipt or edited | Active budget, spending in its current period at least 80 % and below 100 % of the limit; email and budget alerts on | Budget alert (amber) | Once per budget, period, threshold and limit | Queued in the same transaction; sent by the dispatcher |
+| Budget reaches 100 % | Same events | Spending at or above the limit | Budget alert (red) | As above; if one expense passes both thresholds only this one is sent | As above |
+| Scheduler sweep | Cloud Scheduler calls `POST /internal/notifications/dispatch` every minute with a secret header | Rows due in the outbox | Whatever is queued | Retries after 1, 5, 15 and 60 minutes (four retries by default); daily cap per user | Re-checks verification, consent, account status and the cap at send time |
+
+Not triggers in v1: editing a budget, deleting an expense, unsubscribing (it only turns email off). Planned later and not implemented: ticket answered or resolved and account suspended or reactivated (v1.1); monthly summary with PDF or Excel and on-device notifications for the offline-first direction (v2).
+
+### Provisional estimates and counting boundaries
+
+| Story | Provisional SP | Rationale |
+|---|---:|---|
+| EML-01 | 8 | Senders, templates, outbox, dispatcher with concurrency guarantees, migration and scheduled endpoint |
+| EML-02 | 8 | Verification flow with limits, preferences, unsubscribe and the Flutter screen with diagnostics |
+| EML-03 | 8 | Alert rules, shared budget calculation, race-safe evaluation and PostgreSQL concurrency tests |
+| EML-04 | 5 | Runbook, reviews and evidence; provider-specific work still to come |
+| Email subtotal | 29 | Four stories under PB-017 |
+
+The register now counts 38 stories under 17 product backlog items once these four are included; shared SEC-01 and SEC-02 stay counted once.

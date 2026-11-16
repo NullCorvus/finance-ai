@@ -112,7 +112,7 @@ Settings gets a **Notificaciones** row opening one screen: email status (not ver
 ## 9. Work breakdown (execution order; tick each step when it is verified)
 
 ### EML-01 — Email foundation (8 SP, backend)
-- [ ] 1. Add the story records to `docs/BACKLOG-AND-STORIES.md` (EML-01..EML-04 with acceptance criteria from this plan) and confirm decisions D1, D2 and D5 with the user.
+- [x] 1. Add the story records to `docs/BACKLOG-AND-STORIES.md` (EML-01..EML-04 with acceptance criteria from this plan) and confirm decisions D1, D2 and D5 with the user.
 - [ ] 2. Branch `feat/email-notifications-backend` from `develop`; baselines (ruff, mypy, Alembic drift, OpenAPI drift, pytest with PostgreSQL) recorded before any change.
 - [x] 3. Settings and production validators (`FINANCE_AI_EMAIL_*`, `FINANCE_AI_PUBLIC_BASE_URL`, dispatch token), `.env.example` and README entries; add `jinja2` and refresh `uv.lock`.
 - [x] 4. `EmailMessage`/`EmailSender` interface, console sender, SMTP sender, first provider adapter chosen in D1; error mapping to stable codes.
@@ -140,7 +140,7 @@ Settings gets a **Notificaciones** row opening one screen: email status (not ver
 - [ ] 17. Daily per-user cap, bounce and complaint handling for the chosen provider (suppression list), metrics for sent, failed and skipped.
 - [x] 18. Runbook: provider setup, Secret Manager entries, Cloud Scheduler job, DNS records (SPF, DKIM, DMARC), how to rotate the key and how to read the outbox.
 - [x] 19. Security and privacy review of the diff (no PII in logs or payloads, injection and header injection, token handling, rate limits), then a code review.
-- [ ] 20. Product docs updated (scope, features, backlog statuses with evidence, shared decisions), evidence attached to the Trello card only with the user's go-ahead.
+- [ ] 20. (Product docs done 2026-11-16: BACKLOG PB-017 with EML-01..04 and the trigger table, FEATURES 22, ALCANCE, SCHEMA; the Trello card still waits for the user's go-ahead.) Product docs updated (scope, features, backlog statuses with evidence, shared decisions), evidence attached to the Trello card only with the user's go-ahead.
 
 ## 9b. Status and deviations from this plan (recorded 2026-11-16)
 

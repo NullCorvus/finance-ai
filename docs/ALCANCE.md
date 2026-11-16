@@ -82,6 +82,14 @@ User input → AI extracts structured data (JSON) → Preview → [Confirm] [Edi
 - When AI-assisted input is audio/natural-language text, only the total + description is stored; the manual form may contain multiple receipt items
 - Analytics work at the expense level (total × category), items are bonus drill-down detail
 
+### Email Notifications
+- Email is an account channel: only verified, opted-in users receive it, and only for events they chose (budget alerts at 80 % and 100 % of a limit; the verification code and a test email on request)
+- Opt-in is verified by a 6-digit code sent to the account's own address; email cannot be turned on for an unverified address
+- A notification is decided inside the transaction of the event that causes it and delivered afterwards (transactional outbox), so it is never lost or sent twice; deciding stays separate from delivering so another channel (on-device, for the offline-first direction) can reuse the rules
+- Every email is HTML with a plain-text alternative and carries an unsubscribe link; users can hide amounts so the message only states the percentage used
+- Addresses, codes and secrets never appear in logs or in queued payloads; the app only ever shows the address masked
+- Later, not in v1: ticket and suspension emails, a monthly summary with PDF/Excel export
+
 ## Interface Approach
 **Flutter app** (thin client) + **backend API** (stack: see `docs/STACK.md`):
 
@@ -136,6 +144,7 @@ The original scope considered two roles; only the regular user is part of the cu
 - Investment / debt tracking
 - Bill splitting
 - Recurring subscription auto-detection
+- Marketing or bulk email; email beyond account verification and budget alerts in v1 (ticket updates and a monthly summary are planned later)
 - Agent/chat features in the core (Phase 3 optional only)
 - Offline mode for the app (it needs internet; caching last-loaded data is a possible future idea)
 - VM provisioning / deployment in the pre-semester phase (design targets a VM, but setup is post-semester)

@@ -2,7 +2,7 @@
 
 ## Project Information
 - **Project Type**: Brownfield (FastAPI backend + Flutter frontend already implemented)
-- **Current Stage**: Email notifications (EML-01–EML-04) planned (v1 scope approved 2026-11-16, awaiting the execution go-ahead); Administrator and shared security (ADM-01–ADM-05, SEC-01/02) merged on 2026-11-16 (backend #45 and staff portal #59 into `develop`, docs #25 into `master`)
+- **Current Stage**: Email notifications (EML-01–EML-04) implemented on feature branches and in review (v1 approved 2026-11-16; backend PR #48, Flutter PR #61, documentation PR #26; not merged, not deployed, no sending domain yet); Administrator and shared security (ADM-01–ADM-05, SEC-01/02) merged on 2026-11-16 (backend #45 and staff portal #59 into `develop`, docs #25 into `master`)
 
 ## Workspace State
 - **Existing Code**: Yes — `finance-ai-backend/` (FastAPI, Alembic, uv) and `finance-ai-frontend/` (Flutter)
