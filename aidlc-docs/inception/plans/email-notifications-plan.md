@@ -114,33 +114,54 @@ Settings gets a **Notificaciones** row opening one screen: email status (not ver
 ### EML-01 — Email foundation (8 SP, backend)
 - [ ] 1. Add the story records to `docs/BACKLOG-AND-STORIES.md` (EML-01..EML-04 with acceptance criteria from this plan) and confirm decisions D1, D2 and D5 with the user.
 - [ ] 2. Branch `feat/email-notifications-backend` from `develop`; baselines (ruff, mypy, Alembic drift, OpenAPI drift, pytest with PostgreSQL) recorded before any change.
-- [ ] 3. Settings and production validators (`FINANCE_AI_EMAIL_*`, `FINANCE_AI_PUBLIC_BASE_URL`, dispatch token), `.env.example` and README entries; add `jinja2` and refresh `uv.lock`.
-- [ ] 4. `EmailMessage`/`EmailSender` interface, console sender, SMTP sender, first provider adapter chosen in D1; error mapping to stable codes.
-- [ ] 5. Templates (base, verification code, test email, budget alert) in HTML and text; rendering tests; a preview script that writes the HTML files for review.
-- [ ] 6. Migration `0021` for the four objects in section 5; models; schema mapping document updated; downgrade guard like migration 0020.
-- [ ] 7. Outbox repository and dispatcher (claim with `SKIP LOCKED`, retry and backoff, stale `sending` recovery), internal endpoint with the secret header.
+- [x] 3. Settings and production validators (`FINANCE_AI_EMAIL_*`, `FINANCE_AI_PUBLIC_BASE_URL`, dispatch token), `.env.example` and README entries; add `jinja2` and refresh `uv.lock`.
+- [x] 4. `EmailMessage`/`EmailSender` interface, console sender, SMTP sender, first provider adapter chosen in D1; error mapping to stable codes.
+- [x] 5. Templates (base, verification code, test email, budget alert) in HTML and text; rendering tests; a preview script that writes the HTML files for review.
+- [x] 6. Migration `0021` for the four objects in section 5; models; schema mapping document updated; downgrade guard like migration 0020.
+- [x] 7. Outbox repository and dispatcher (claim with `SKIP LOCKED`, retry and backoff, stale `sending` recovery), internal endpoint with the secret header.
 - [ ] 8. `scripts/send_test_email.py` sends a real message to an address given on the command line; capture the evidence (section 12).
 - **Acceptance:** a real HTML email with logo and styles reaches a test inbox; the same run through the console sender produces identical HTML; production start-up fails without a configured sender; no address appears in logs.
 
 ### EML-02 — Opt-in, verification and preferences (8 SP, backend + Flutter)
-- [ ] 9. Verification service (code generation, hash, expiry, attempts, resend limits), preference service, endpoints, API tests.
-- [ ] 10. Signed unsubscribe (public endpoint, one-click POST, `List-Unsubscribe` headers), tamper and replay tests.
-- [ ] 11. Branch `feat/email-notifications-frontend` from `develop`; Notificaciones screen, repository, state, diagnostics, tests, analysis and coverage.
-- [ ] 12. Test email button wired to `POST /me/notifications/test`.
+- [x] 9. Verification service (code generation, hash, expiry, attempts, resend limits), preference service, endpoints, API tests.
+- [x] 10. Signed unsubscribe (public endpoint, one-click POST, `List-Unsubscribe` headers), tamper and replay tests.
+- [x] 11. Branch `feat/email-notifications-frontend` from `develop`; Notificaciones screen, repository, state, diagnostics, tests, analysis and coverage.
+- [x] 12. Test email button wired to `POST /me/notifications/test`.
 - **Acceptance:** a user can verify an address, turn alerts on and off, receive the test email and unsubscribe from the email itself; an unverified address can never be enabled.
 
 ### EML-03 — Budget alerts (8 SP, backend)
-- [ ] 13. `BudgetAlertEvaluator` and the hook in the expense create, receipt-confirm, update and delete paths inside the same transaction.
+- [x] 13. `BudgetAlertEvaluator` and the hook in the expense create, receipt-confirm, update and delete paths inside the same transaction.
 - [ ] 14. Alert templates for 80 % and 100 %, amounts switch honoured, Spanish copy reviewed.
-- [ ] 15. Tests: threshold table (below, exactly at, above, jump over two thresholds), category and all-expenses budgets, recurring and one-time periods, expenses outside the current period, limit change re-arms, new period resets, preferences off or unverified, suspended user, idempotent retry.
-- [ ] 16. PostgreSQL concurrency tests: two simultaneous expenses cross the same threshold and exactly one email is queued; two dispatchers never send the same row.
+- [x] 15. Tests: threshold table (below, exactly at, above, jump over two thresholds), category and all-expenses budgets, recurring and one-time periods, expenses outside the current period, limit change re-arms, new period resets, preferences off or unverified, suspended user, idempotent retry.
+- [x] 16. PostgreSQL concurrency tests: two simultaneous expenses cross the same threshold and exactly one email is queued; two dispatchers never send the same row.
 - **Acceptance:** saving an expense that crosses a threshold produces exactly one email within the dispatch interval; the figures match the budgets screen to the cent.
 
 ### EML-04 — Hardening, documentation and evidence (5 SP)
 - [ ] 17. Daily per-user cap, bounce and complaint handling for the chosen provider (suppression list), metrics for sent, failed and skipped.
-- [ ] 18. Runbook: provider setup, Secret Manager entries, Cloud Scheduler job, DNS records (SPF, DKIM, DMARC), how to rotate the key and how to read the outbox.
+- [x] 18. Runbook: provider setup, Secret Manager entries, Cloud Scheduler job, DNS records (SPF, DKIM, DMARC), how to rotate the key and how to read the outbox.
 - [ ] 19. Security and privacy review of the diff (no PII in logs or payloads, injection and header injection, token handling, rate limits), then a code review.
 - [ ] 20. Product docs updated (scope, features, backlog statuses with evidence, shared decisions), evidence attached to the Trello card only with the user's go-ahead.
+
+## 9b. Status and deviations from this plan (recorded 2026-11-16)
+
+Built and verified locally in the sandbox-first order the user chose (console and SMTP-sandbox senders; no provider account, no DNS, nothing pushed). Backend branch `feat/email-notifications-backend`, commits 6aef2e9, 21fd8d2 and 4f6a3d1 (EML-01 and EML-02); EML-03 is commit 22606f6 (hook runs after create, receipt confirmation and edit; deleting an expense can only lower spending, so it does not evaluate). Step 14 stays open until the Spanish alert copy is reviewed by the user. Full backend gates green at that commit: 1163 tests, 93 % coverage; the only failures are the 2 `test_text_capture_persistence` tests that fail on an unrelated date mismatch.
+
+Deviations, each one deliberate:
+
+1. **The verification code is not queued.** It is sent straight from the request, so it is never stored in plain text. The outbox `kind` is therefore limited to `budget_alert` and `test` (CHECK constraint), and the plan's four objects became three tables plus `app_user.email_verified_at`.
+2. **Outbox gains `claimed_at`.** Needed to recover a row whose instance died while sending (stale `sending` rows go back to `pending` after 10 minutes).
+3. **No "Abrir Finance AI" button in v1.** There is no app link to open yet, and a button that does nothing is worse than none.
+4. **Preferences use `PATCH`, not `PUT`.** Only the fields sent change, so two switches can never overwrite each other. Values must be real JSON booleans (`"yes"` is rejected).
+5. **Verifying the code also turns email on.** The person went through the flow to opt in; one fewer call and no inconsistent state.
+6. **Production fails closed at use, not at start-up.** A deployment without a real sender still starts; notification features report `notifications_unavailable` and the app hides them (`delivery_available: false`).
+7. **Unsubscribe token and code hashes are derived from `FINANCE_AI_SESSION_LIMITER_SECRET`** (purpose-labelled HMAC) instead of a new secret. Rotating it invalidates open codes and old unsubscribe links; the in-app switch still works. Revisit if a dedicated secret is preferred.
+8. **Alert decisions are state based**, not "crossing" based: for each budget whose current period contains today, the highest threshold reached is recorded once (`budget:{id}:{period start}:{threshold}:{limit}`). Budget edits do not send mail by themselves, only expense changes evaluate, and deleting an expense does not.
+9. **Found and fixed by the evidence run:** `List-Unsubscribe` was being encoded as an RFC 2047 word because a real link has no spaces to fold at; fixed in commit bbb13bc with a regression test.
+10. **Found, not fixed (outside this scope):** two simultaneous first expenses with the same new merchant name collide on `uq_store_user_normalized_name` and return a server error. Reproduced while testing; the alert tests use distinct merchants.
+
+Frontend: branch `feat/email-notifications-frontend` in `finance-ai-frontend-email`, commit 5d90a0b (Notificaciones screen, 26 tests; format and analyze clean; whole suite passes except the dashboard spending-summary golden, which fails identically on an untouched worktree on this machine). Runbook: backend `docs/EMAIL-NOTIFICATIONS.md`. Evidence of the sandbox run: `aidlc-docs/construction/email-notifications/evidence/`. Steps still open: 1 (backlog stories), 2 (baseline record), 8 (a real send; the evidence run used the console sender), 14 (copy review), 17 (bounce handling and metrics need a provider), 19 (formal security review and code review), 20 (product docs and Trello, with the user's go-ahead).
+
+Not done yet: provider account, domain and DNS (SPF, DKIM, DMARC), Cloud Scheduler job, bounce handling, runbook, a real send to a sandbox inbox with screenshots, and Trello updates.
 
 ## 10. Test matrix (must exist before a story is called done)
 
