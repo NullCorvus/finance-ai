@@ -7323,3 +7323,28 @@ Proceed with these corrections without expanding the approved four-story scope.
 **Context**: Plan/state delivery complete. No merge, code, migration, frontend, generated PDF, infrastructure or Trello change. Original user branch and unrelated audit edit remain untouched. Security Baseline documentation coverage recorded; partial PBT N/A; disabled Resiliency skipped.
 
 ---
+
+---
+
+## Administrator — Implementation Complete (branches, in review)
+**Timestamp**: 2026-11-15T16:56:32Z
+**AI Response**: Implemented ADM-01–ADM-05 and the shared SEC-01/SEC-02 work on `feat/admin-adm-sec-backend`, `feat/admin-adm-sec-frontend` (both from `feat/security-auditor-aud`) and `docs/admin-implementation-20261115`. Backend: admin package under `/api/v1/staff/admin`, MFA recovery and controlled provisioning, migration 0020 with two triggers (`app_user_last_admin_guard`, `app_user_revoke_sessions_on_authority_change`) and two stored procedures (`sp_admin_set_account_suspension`, `sp_admin_return_escalated_ticket`), documented in `docs/DB-ROUTINES-ADMIN.md`. Staff-web: Administración workspace, `/activate` and `/recover`. Verification: backend 913 tests passed with 2 pre-existing unrelated failures (text-capture retry date), 92% coverage, Ruff/mypy/Alembic drift/OpenAPI drift clean; frontend 224 tests, 91% coverage, lint/typecheck/build clean; real browser run against the real API found and fixed a PostgreSQL row-lock defect and a session-gate remounting defect.
+**Context**: No merge, push, pull request or Trello change. Open decisions D1–D9 were implemented with the defaults in the plan and recorded in `administrator-role.md`. Known limits recorded there (tickets of a switched role holder, in-process limiters, no Playwright journey, deployment-level audit table privileges).
+
+---
+
+## Administrator — Verification Pass (real stack, lifetimes, accessibility, Windows client)
+**Timestamp**: 2026-11-15T19:18:10Z (Android walkthrough added 2026-11-15T19:36:52Z)
+**User Input**: "go ahead with all that pls do not let anything outside" / "i think flutter is installed here, go ahead and test it out deeply with the screens and workin on windows" / "yeah, you can of course go ahea"
+**AI Response**: Ran 10 serial Playwright journeys with two real administrators, shortened-lifetime session checks, an axe-core audit of 22 screen states, the Flutter shared verification and native Windows smoke test, and a hands-on walkthrough of the Windows customer app against the real backend. Fixed a P1 deadlock (actor/target lock order), administrator session re-confirmation on 401/403 and WCAG AA contrast and markup; updated DB-ROUTINES-ADMIN, the plan outcome and the implementation record.
+**Context**: Local only: nothing pushed, merged or written to Trello. Existing failures recorded (two backend tests, one Flutter golden, one Windows smoke step). Android: built and walked through on a connected Samsung SM-A315G (user offered the phone), app uninstalled afterwards.
+
+---
+
+## Administrator — Pull Request Review Follow-up
+**Timestamp**: 2026-11-16T15:16:17Z
+**User Input**: "are the PR's accepted? if not acept them yourself and merge with develop, update the repo of course with the last updates"
+**AI Response**: The three PRs (backend #45, staff portal #59, docs #25) had no human approval, only an automated Codex review with unresolved findings, and the portal PR had a failing "Staff web CI" workflow. All findings were judged valid and fixed: cases owned by a suspended administrator are released to the queue by the suspension procedure; the case projection finds a ticket's customer by id; activation checks the password policy before the token; the session revalidation rule (protected content hidden while unresolved) was restored with a hold-and-keep-mounted gate and the last confirmed session kept meanwhile; copyable diagnostics for administrator, activation and recovery-code failures; a guard against stale account results; the routines document moved under aidlc-docs; the plan records per-step completion and deferred items; audit timestamps use full ISO 8601 UTC. Verified locally: backend 932 passed (2 existing failures), staff-web 254 passed, Playwright specs and the 10 real-stack journeys.
+**Context**: Merge into develop (master for this repository) is authorized by the user's message and is done only after the branches are pushed and CI is green; this entry is written before that merge.
+
+---

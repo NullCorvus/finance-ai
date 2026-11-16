@@ -25,6 +25,25 @@ In particular:
 This table describes verified differences, not an exhaustive migration audit. A role table does not
 imply that the future Admin UI or permissions in `docs/ALCANCE.md` are implemented.
 
+
+## Administrator extension (migration `0020_admin_account_management`)
+
+Added on the Administrator feature branch (in review, not merged). Executable definition:
+`finance-ai-backend/migrations/versions/0020_admin_account_management.py`.
+
+| Object | Kind | Notes |
+|---|---|---|
+| `account_suspension` | table | Suspension history; one open row per account (partial unique index); foreign keys `RESTRICT` |
+| `staff_mfa_recovery_code` | table | Hashed single-use MFA recovery codes |
+| `user_session.issued_role_id` | column | Role the staff session was issued for |
+| `support_ticket.admin_owner_user_id` | column + CHECK + partial index | Administrator owning an escalated case |
+| `app_user_last_admin_guard` | trigger T1 | Never leave the system without an active administrator |
+| `app_user_revoke_sessions_on_authority_change` | trigger T2 | Revoke live sessions on suspension or role change |
+| `sp_admin_set_account_suspension` | stored procedure P1 | Atomic suspend/reactivate |
+| `sp_admin_return_escalated_ticket` | stored procedure P2 | Atomic return of an escalated ticket to Support |
+
+Full definitions, concurrency analysis and tests: [DB-ROUTINES-ADMIN.md](../aidlc-docs/construction/administrator/code/DB-ROUTINES-ADMIN.md).
+
 ---
 
 ## 1. Domain Overview & Entity Groups (original design)

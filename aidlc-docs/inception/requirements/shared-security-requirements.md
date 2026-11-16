@@ -133,3 +133,25 @@ No non-compliant applicable documentation control was identified. Partial PBT ru
 
 ## Implementation responsibilities and blockers
 Technical design must select protection/key handling, challenge/session/invitation lifetimes, recovery verification, browser integration, schema/transaction/concurrency mechanisms and event failure/retention/observability configuration. These normal implementation responsibilities do not reopen the final functional decisions. No additional functional clarification preventing work on the approved scope was identified.
+
+## Implementation record — 2026-11-15
+
+SEC-01 and SEC-02 are implemented once for Administrator and Auditor on the feature branches described
+in [administrator-role.md](administrator-role.md#implementation-record--2026-11-15); they are in review, not merged.
+
+* **MFA lifecycle:** TOTP (RFC 6238, SHA-1, 6 digits, 30 s step, ±1 step skew) with secrets protected by
+  AES-256-GCM bound to the account; replay rejected per authenticator and time step, also under concurrency;
+  5-minute enrollment/verification challenge with a bounded attempt counter plus a per-client limit.
+* **Recovery and replacement:** single-use recovery codes and an identity-verified reset (password plus recovery
+  code or current authenticator code); the operator path `scripts/admin_ops.py reset-mfa` covers lost codes.
+  Every path revokes sessions and records `auth.mfa_recovered` or `auth.mfa_replaced`.
+* **Event catalog added to the writer:** `account.suspended`, `account.reactivated`, `staff.created`,
+  `staff.activated`, `role.changed`, `auth.mfa_recovered`, `auth.mfa_replaced`,
+  `support.ticket_returned`, with a per-event context allowlist and target type `staff_invitation`.
+  `session.revoked` stays in the approved catalog but is not written by this feature: trigger T2 revokes the
+  sessions inside the same transaction as the change that causes it, and that change already has its event.
+* **Failure handling:** critical writes (suspension, staff, role, ticket return) share one transaction with their
+  event, so an unavailable audit store rolls the change back with a safe 503; authentication-event failures never
+  grant access.
+* **Known gap:** the append-only trigger does not stop `TRUNCATE`/`DROP` by the table owner; run the API under a
+  role without those privileges (deployment).
