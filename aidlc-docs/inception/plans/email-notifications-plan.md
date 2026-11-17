@@ -58,7 +58,7 @@
 
 Email addresses are never copied into the outbox or logs: the dispatcher reads the current address from `app_user` at send time, and logs carry only the user id, notification id and a stable result code (backend privacy rule).
 
-## 5. Data model (migration `0021_email_notifications`, revises `0020_admin_account_management`)
+## 5. Data model (migration `0025_email_notifications`, revises `0024_support_attachments`; first drafted as `0021`, renumbered on 2026-11-17 after `develop` gained `0021`-`0024`)
 
 ```
 app_user.email_verified_at            timestamptz NULL
@@ -117,7 +117,7 @@ Settings gets a **Notificaciones** row opening one screen: email status (not ver
 - [x] 3. Settings and production validators (`FINANCE_AI_EMAIL_*`, `FINANCE_AI_PUBLIC_BASE_URL`, dispatch token), `.env.example` and README entries; add `jinja2` and refresh `uv.lock`.
 - [x] 4. `EmailMessage`/`EmailSender` interface, console sender, SMTP sender, first provider adapter chosen in D1; error mapping to stable codes.
 - [x] 5. Templates (base, verification code, test email, budget alert) in HTML and text; rendering tests; a preview script that writes the HTML files for review.
-- [x] 6. Migration `0021` for the four objects in section 5; models; schema mapping document updated; downgrade guard like migration 0020.
+- [x] 6. Migration `0025` (first drafted as `0021`) for the four objects in section 5; models; schema mapping document updated; downgrade guard like migration 0020.
 - [x] 7. Outbox repository and dispatcher (claim with `SKIP LOCKED`, retry and backoff, stale `sending` recovery), internal endpoint with the secret header.
 - [ ] 8. `scripts/send_test_email.py` sends a real message to an address given on the command line; capture the evidence (section 12).
 - **Acceptance:** a real HTML email with logo and styles reaches a test inbox; the same run through the console sender produces identical HTML; production start-up fails without a configured sender; no address appears in logs.

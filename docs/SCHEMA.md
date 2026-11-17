@@ -44,10 +44,10 @@ Added on the Administrator feature branch (in review, not merged). Executable de
 
 Full definitions, concurrency analysis and tests: [DB-ROUTINES-ADMIN.md](../aidlc-docs/construction/administrator/code/DB-ROUTINES-ADMIN.md).
 
-## Email notifications extension (migration `0021_email_notifications`)
+## Email notifications extension (migration `0025_email_notifications`)
 
 Added on the email notifications feature branch (in review, not merged). Executable definition:
-`finance-ai-backend/migrations/versions/0021_email_notifications.py`. All three tables are deleted with the account (`ON DELETE CASCADE`).
+`finance-ai-backend/migrations/versions/0025_email_notifications.py` (first drafted as `0021`; renumbered after `develop` gained `0021`-`0024`). All three tables are deleted with the account (`ON DELETE CASCADE`).
 
 | Object | Kind | Notes |
 |---|---|---|

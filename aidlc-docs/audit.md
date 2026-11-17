@@ -7365,3 +7365,11 @@ we need to send an email about somethign that happens on the app, give me propos
 **Context**: The user approved the PR step explicitly. Auto-fix could not be enabled by the assistant (the app could not match the repositories to the session folders) and was left for the user to switch on. No Trello write, merge, deployment, provider account or DNS change was made.
 
 ---
+
+## Email notifications: migration renumbered to 0025 and docs corrected
+**Timestamp**: 2026-11-17T14:06:38Z
+**User Input**: "Yes, fix it" (the email PR's migration conflict), then "Yes, push docs".
+**AI Response**: Found that `develop` gained migrations 0021 to 0024 while the email PR was in review, so `0021_email_notifications` would have created a second Alembic head. Merged `develop` into the backend branch (pushed non-force as 6aa05f5), renumbered the migration to `0025_email_notifications` (revises `0024_support_attachments`), re-ran the gates (1205 passed and the same 2 pre-existing `test_text_capture_persistence` failures, 93 % coverage, Alembic single head, OpenAPI no drift) and corrected the number in the plan, SCHEMA and the EML-01 story.
+**Context**: Documentation repository change pushed to master without a pull request, as the user directed. The backend and frontend PRs remain open and unmerged.
+
+---
