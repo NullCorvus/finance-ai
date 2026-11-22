@@ -47,15 +47,28 @@
   details { margin-top: .9rem; }
   pre { white-space: pre-wrap; overflow-wrap: anywhere; padding: .9rem; border-radius: .55rem; background: #0c1211; }
   .qr-grid { margin: 1rem 0 1.5rem; }
-  .auth-diagram { margin: 1rem 0; }
-  .auth-diagram iframe { display: block; width: 100%; height: clamp(28rem, 78vh, 52rem); border: 1px solid var(--line); border-radius: .6rem; background: var(--bg); }
-  .auth-diagram figcaption { margin-top: .6rem; }
   .domains { padding-left: 1.3rem; overflow-wrap: anywhere; }
   #probar { scroll-margin-top: 7rem; }
   figure { margin: 0; text-align: center; }
   figure img { display: block; width: 100%; max-width: 15rem; height: auto; border-radius: .6rem; margin: 0 auto .5rem; }
   footer { color: var(--muted); padding: .7rem 0 2.5rem; }
   @media (max-width: 40rem) { .nav { gap: .4rem .8rem; } td, th { padding: .4rem .32rem; } }
+  .auth-flow { margin: 1.25rem 0; }
+  .auth-flow .flow-controls { display: flex; flex-wrap: wrap; gap: .45rem; margin: 0 0 1.15rem; }
+  .flow-controls button[aria-pressed="true"] { background: var(--accent); border-color: var(--accent); color: #0b251a; }
+  .auth-lane { --lane: #9aefc7; margin: 1rem 0; padding: 1.1rem; background: var(--panel); border: 1px solid var(--line); border-left: 4px solid var(--lane); border-radius: .7rem; }
+  .auth-lane[data-lane="web"] { --lane: #a9ccff; }
+  .auth-lane h4 { margin: 0 0 .8rem; color: var(--lane); font-size: 1.24rem; }
+  .auth-steps { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 1.55rem; margin: 0; padding: 0; list-style: none; counter-reset: auth-step; }
+  .auth-steps li { position: relative; margin: 0; padding: .85rem; background: var(--bg); border: 1px solid var(--line); border-radius: .55rem; }
+  .auth-steps li::before { display: inline-grid; place-items: center; margin-right: .35rem; width: 1.6rem; height: 1.6rem; border-radius: 50%; background: var(--lane); color: #14201f; font-weight: 800; counter-increment: auth-step; content: counter(auth-step); }
+  .auth-steps li:not(:last-child)::after { position: absolute; top: calc(50% - .8rem); right: -1.39rem; color: var(--lane); font-size: 1.15rem; line-height: 1.6rem; content: "→"; }
+  .auth-steps p { margin: .55rem 0 0; }
+  .auth-steps strong { display: inline; }
+  @media (max-width: 42rem) {
+    .auth-steps { grid-template-columns: minmax(0, 1fr); gap: 1.45rem; }
+    .auth-steps li:not(:last-child)::after { top: auto; bottom: -1.53rem; right: calc(50% - .4rem); content: "↓"; }
+  }
 </style>
 </head>
 <body>
@@ -173,34 +186,34 @@ end</code></pre>
     <section id="autenticacion" class="cors">
       <h3>Contraseñas, inicio de sesión y renovación</h3>
       <p><strong>Contraseñas.</strong> Tanto la app como el portal envían el correo y la contraseña por HTTPS. FastAPI verifica la contraseña con <strong>Argon2id</strong> contra el hash guardado en PostgreSQL. La contraseña se protege en tránsito con HTTPS y en la base de datos se conserva su hash.</p>
-      <figure class="auth-diagram">
-        <iframe src="./autenticacion.html" title="Diagrama interactivo de inicio de sesión y renovación en Flutter y el portal" loading="lazy"></iframe>
-        <figcaption><a target="_blank" rel="noopener" href="./autenticacion.html">Abrir el diagrama de autenticación en una pestaña</a></figcaption>
-      </figure>
-      <details>
-        <summary>Flujos de autenticación en texto</summary>
-      <div class="grid">
-        <article class="result">
-          <h3>App Android · Flutter</h3>
-          <ol>
-            <li>Envía <code>POST /api/v1/auth/login</code> a la API. Si las credenciales son correctas, recibe una credencial de acceso y otra de renovación.</li>
-            <li>Mantiene la de acceso en memoria y la envía como <code>Authorization: Bearer &lt;credencial&gt;</code>. Guarda la de renovación en el almacenamiento seguro del dispositivo.</li>
-            <li>Para renovar, usa <code>POST /api/v1/auth/refresh</code>. FastAPI reemplaza las credenciales de la sesión.</li>
+      <div class="auth-flow" data-auth-flow>
+        <div class="flow-controls" role="group" aria-label="Flujos de autenticación">
+          <button type="button" data-flow-view="both" aria-pressed="true">Ver ambos</button>
+          <button type="button" data-flow-view="android" aria-pressed="false">Solo Android</button>
+          <button type="button" data-flow-view="web" aria-pressed="false">Solo portal web</button>
+        </div>
+        <div class="auth-lane" data-lane="android">
+          <h4>Android · Flutter</h4>
+          <ol class="auth-steps">
+            <li><strong>Inicia sesión</strong><p>La app envía el correo y la contraseña a <code>POST /auth/login</code>. FastAPI devuelve dos credenciales.</p></li>
+            <li><strong>Usa la sesión</strong><p>Flutter envía la credencial de acceso como <strong>Bearer</strong> en cada petición protegida.</p></li>
+            <li><strong>Renueva</strong><p>Flutter envía la credencial guardada en el almacenamiento seguro a <code>POST /auth/refresh</code> y recibe un nuevo par.</p></li>
           </ol>
-        </article>
-        <article class="result">
-          <h3>Portal web · React</h3>
-          <ol>
-            <li>Envía <code>POST /api/v1/staff/auth/login</code>. Soporte entra con contraseña. Administrador y Auditor completan además el código temporal de seis dígitos del autenticador (TOTP).</li>
-            <li>El navegador recibe dos cookies, de acceso y de renovación, con <code>HttpOnly</code>, <code>Secure</code> y <code>SameSite=Strict</code> en producción.</li>
-            <li>Al recargar, React consulta <code>GET /api/v1/staff/auth/session</code>. Si corresponde renovar, llama a <code>POST /api/v1/staff/auth/refresh</code> y el backend actualiza las cookies.</li>
+        </div>
+        <div class="auth-lane" data-lane="web">
+          <h4>Portal web · React</h4>
+          <ol class="auth-steps">
+            <li><strong>Inicia sesión</strong><p>El portal envía el correo y la contraseña a <code>POST /staff/auth/login</code>. Administración y Auditoría también verifican un código.</p></li>
+            <li><strong>Usa la sesión</strong><p>La API entrega dos <strong>cookies</strong>. El navegador adjunta la de acceso al pedir tickets u otros datos.</p></li>
+            <li><strong>Renueva</strong><p>El navegador envía la cookie de renovación a <code>POST /staff/auth/refresh</code> y recibe cookies nuevas.</p></li>
           </ol>
-        </article>
+        </div>
+        <p class="muted">Las rutas del diagrama comparten el prefijo <code>/api/v1</code>.</p>
       </div>
-      </details>
       <p><strong>Una sesión, dos credenciales.</strong> La de acceso sirve para las peticiones normales. La de renovación obtiene credenciales nuevas. Son valores aleatorios opacos. La API guarda sus hashes SHA-256 y comprueba la vigencia y revocación de la sesión al recibirlas. Al cerrar sesión se revoca en el servidor.</p>
       <details>
         <summary>Vigencia y protección del autenticador</summary>
+        <p>Flutter mantiene la credencial de acceso en memoria. Las cookies del portal llevan <code>HttpOnly</code>, <code>Secure</code> y <code>SameSite=Strict</code> en producción.</p>
         <table>
           <thead><tr><th scope="col">Sesión</th><th scope="col">Acceso</th><th scope="col">Plazo para renovar</th><th scope="col">Máximo desde el login</th></tr></thead>
           <tbody>
@@ -350,6 +363,23 @@ node staff-web/deploy/verify-browser.mjs "$url"</code></pre>
       corsButton.disabled = false;
     }
   });
+</script>
+<script id="auth-flow-filter">
+  for (const flow of document.querySelectorAll('[data-auth-flow]')) {
+    const buttons = flow.querySelectorAll('[data-flow-view]');
+    const lanes = flow.querySelectorAll('[data-lane]');
+    for (const button of buttons) {
+      button.addEventListener('click', () => {
+        const selection = button.dataset.flowView;
+        for (const item of buttons) {
+          item.setAttribute('aria-pressed', String(item === button));
+        }
+        for (const lane of lanes) {
+          lane.hidden = selection !== 'both' && lane.dataset.lane !== selection;
+        }
+      });
+    }
+  }
 </script>
 </body>
 </html>
