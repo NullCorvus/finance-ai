@@ -46,7 +46,12 @@
   summary { cursor: pointer; color: var(--accent); }
   details { margin-top: .9rem; }
   pre { white-space: pre-wrap; overflow-wrap: anywhere; padding: .9rem; border-radius: .55rem; background: #0c1211; }
-  .qr-grid { margin-top: 1rem; }
+  .qr-grid { margin: 1rem 0 1.5rem; }
+  .account-grid { margin: .7rem 0; }
+  .account-grid label { display: grid; gap: .3rem; }
+  .account-grid input { width: 100%; padding: .55rem; color: var(--fg); background: var(--bg); border: 1px solid var(--line); border-radius: .4rem; font: inherit; }
+  .domains { padding-left: 1.3rem; overflow-wrap: anywhere; }
+  #probar { scroll-margin-top: 7rem; }
   figure { margin: 0; text-align: center; }
   figure img { display: block; width: 100%; max-width: 15rem; height: auto; border-radius: .6rem; margin: 0 auto .5rem; }
   footer { color: var(--muted); padding: .7rem 0 2.5rem; }
@@ -56,7 +61,7 @@
 <body>
 <header><nav class="nav" aria-label="Puntos de la presentación">
   <span class="brand">FinanciAI</span>
-  <a href="#roles">B · Roles</a><a href="#cors">D · API y CORS</a><a href="#swagger">E · Swagger</a><a href="#deploy">K · Despliegue</a><a href="#actions">GitHub Actions</a>
+  <a href="#roles">B · Roles</a><a href="#cors">D · API y CORS</a><a href="#swagger">E · Swagger</a><a href="#probar">Probar la app</a><a href="#deploy">K · Despliegue</a><a href="#actions">GitHub Actions</a>
 </nav></header>
 <main>
   <div class="intro">
@@ -74,11 +79,29 @@
       <thead><tr><th scope="col">Rol</th><th scope="col">Interfaz</th><th scope="col">Funciones principales</th></tr></thead>
       <tbody>
         <tr><th scope="row">Cliente</th><td>App Android</td><td>Consulta y gestiona sus propias cuentas y movimientos.</td></tr>
-        <tr><th scope="row">Soporte</th><td><code>/support</code></td><td>Consulta y atiende tickets.</td></tr>
-        <tr><th scope="row">Auditor</th><td><code>/audit</code></td><td>Consulta eventos y genera reportes de seguridad.</td></tr>
-        <tr><th scope="row">Administrador</th><td><code>/admin</code></td><td>Gestiona cuentas, personal y tickets escalados.</td></tr>
+        <tr><th scope="row">Soporte</th><td><a target="_blank" rel="noopener" href="https://financiai-portal-demo-1006444199777.southamerica-east1.run.app/support">Abrir Soporte <code>/support</code></a></td><td>Consulta y atiende tickets.</td></tr>
+        <tr><th scope="row">Auditor</th><td><a target="_blank" rel="noopener" href="https://financiai-portal-demo-1006444199777.southamerica-east1.run.app/audit">Abrir Auditoría <code>/audit</code></a></td><td>Consulta eventos y genera reportes de seguridad.</td></tr>
+        <tr><th scope="row">Administrador</th><td><a target="_blank" rel="noopener" href="https://financiai-portal-demo-1006444199777.southamerica-east1.run.app/admin">Abrir Administración <code>/admin</code></a></td><td>Gestiona cuentas, personal y tickets escalados.</td></tr>
       </tbody>
     </table>
+    <h3>Dominios y accesos</h3>
+    <ul class="domains">
+      <li>Portal de sustentación · <a target="_blank" rel="noopener" href="https://financiai-portal-demo-1006444199777.southamerica-east1.run.app/login"><code>https://financiai-portal-demo-1006444199777.southamerica-east1.run.app</code></a></li>
+      <li>Portal oficial · <a target="_blank" rel="noopener" href="https://finance-staff-web-7caahuohmq-rj.a.run.app/login"><code>https://finance-staff-web-7caahuohmq-rj.a.run.app</code></a></li>
+      <li>API de producción · <a target="_blank" rel="noopener" href="https://finance-api-7caahuohmq-rj.a.run.app/docs"><code>https://finance-api-7caahuohmq-rj.a.run.app</code></a></li>
+    </ul>
+    <p>Si la sesión está cerrada, la ruta del rol lleva al inicio de sesión. Soporte autentica con contraseña. Auditoría y Administración también requieren el código del autenticador.</p>
+    <details open>
+      <summary>Cuentas para la demostración</summary>
+      <p>Cliente Android · <code>test@gamil.com</code></p>
+      <p>El portal de sustentación utiliza las cuentas asignadas en producción. Los correos ingresados aquí se guardan solo en este navegador. Usa el formulario de cada portal para ingresar la contraseña y el código.</p>
+      <div class="grid account-grid">
+        <label>Correo de Soporte<input type="email" data-account="soporte" autocomplete="off" placeholder="Correo asignado"></label>
+        <label>Correo de Auditoría<input type="email" data-account="auditoria" autocomplete="off" placeholder="Correo asignado"></label>
+        <label>Correo de Administración<input type="email" data-account="administracion" autocomplete="off" placeholder="Correo asignado"></label>
+      </div>
+      <p class="muted" id="account-status" role="status"></p>
+    </details>
     <details>
       <summary>Secuencia de demostración de roles y auditoría</summary>
     <ol>
@@ -183,19 +206,33 @@ end</code></pre>
 
   <section id="swagger">
     <h2>E · Estructura y documentación de la API</h2>
-    <p><strong>¿Qué es el contrato de la API?</strong> Es la especificación que le dice al cliente qué ruta y método usar, qué datos enviar, si necesita credenciales y qué respuestas puede recibir. FastAPI publica esa especificación en <code>/openapi.json</code>. Swagger la presenta como una pantalla interactiva. Por ejemplo, en <strong>Reintentar recibo</strong> el contrato indica que hay que enviar un <code>POST</code> y poner <code>proposal_id</code> en la ruta.</p>
-    <div class="actions">
-      <a class="button primary" target="_blank" rel="noopener" href="https://finance-api-7caahuohmq-rj.a.run.app/docs#/Receipt%20Intelligence/retry_receipt_proposal_api_v1_receipts_proposal__proposal_id__retry_post">Abrir Swagger en Reintentar recibo</a>
-      <a class="button" target="_blank" rel="noopener" href="https://finance-api-7caahuohmq-rj.a.run.app/openapi.json">Ver contrato OpenAPI</a>
+    <p><strong>El contrato de la API es el acuerdo técnico entre el cliente y el servidor.</strong> Dice a qué URL llamar, con qué método, qué datos y credenciales enviar y cómo interpretar la respuesta. OpenAPI lo expresa en JSON. Swagger presenta ese mismo documento y permite ejecutar peticiones.</p>
+    <div class="grid">
+      <article class="result">
+        <h3>Ejemplo · Consultar cuentas</h3>
+        <p>Flutter llama a <code>GET /api/v1/accounts</code> con una credencial Bearer. Si la petición es válida, recibe <code>200</code> y los datos de sus cuentas en JSON. Si falta una credencial válida, recibe <code>401</code>.</p>
+        <p><a target="_blank" rel="noopener" href="https://finance-api-7caahuohmq-rj.a.run.app/docs#/Accounts/list_accounts_api_v1_accounts_get">Probar GET de cuentas en Swagger</a></p>
+      </article>
+      <article class="result">
+        <h3>Ejemplo · Reintentar recibo</h3>
+        <p>El contrato de <code>POST /api/v1/receipts/proposal/{proposal_id}/retry</code> pide el ID de la propuesta en la URL, admite un parámetro opcional <code>rotation</code> y exige Bearer. Documenta un <code>200</code> para el resultado y un <code>422</code> para un error de validación.</p>
+        <p><a target="_blank" rel="noopener" href="https://finance-api-7caahuohmq-rj.a.run.app/docs#/Receipt%20Intelligence/retry_receipt_proposal_api_v1_receipts_proposal__proposal_id__retry_post">Ver Reintentar recibo en Swagger</a></p>
+      </article>
     </div>
-    <ul>
-      <li><strong>Ejemplo del contrato.</strong> <code>POST /api/v1/receipts/proposal/{proposal_id}/retry</code> documenta el parámetro <code>proposal_id</code> y las respuestas posibles.</li>
-      <li><strong>Prueba interactiva.</strong> <a target="_blank" rel="noopener" href="https://finance-api-7caahuohmq-rj.a.run.app/docs#/Accounts/list_accounts_api_v1_accounts_get"><code>GET /api/v1/accounts</code></a> se puede ejecutar con <strong>Try it out → Execute</strong> para revisar la respuesta HTTP.</li>
-    </ul>
+    <p><a target="_blank" rel="noopener" href="https://finance-api-7caahuohmq-rj.a.run.app/openapi.json">Ver la especificación OpenAPI en JSON</a></p>
   </section>
 
   <section id="deploy">
     <h2>K · Despliegue</h2>
+    <h3 id="probar">Probar FinanciAI</h3>
+    <p>El QR web abre el portal de sustentación. El QR Android abre la descarga del APK.</p>
+    <div class="grid qr-grid">
+      <figure><a target="_blank" rel="noopener" href="https://financiai-portal-demo-1006444199777.southamerica-east1.run.app/login"><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAcIAAAHCAQAAAABUY/ToAAADjElEQVR4nO2czY3bMBCF34QCfJSBFLClSB2kpNSUDqRStoAA5NGAhJcDOSIlJ5fNOv7Jm4PXWvqDJOBhOD8kjfiYzV8+CAIiRYoUKVKkSJGPR1qxDjam8g2zmdmYOmC2DkDyX413flqRD0kOJMkIAD0JYDWgX/KgjfkjkCS5Jz9+T5EvQiLLYogAhhhYlUP6Jad6icAsuOm53lPkvyPdGS3AfF6NEwAbe9LGm91T5HOT3eHa8p90og1cO0MfaMOPbvnEe4p8LdI11BNAAgisHedxNQCBQDLkCa2M3vVpRT4wOZuZ2RmwMZ1o32MgkDrYiPptzWnZ/Z9W5EOR2Q9V/0JgAYGLcT6XmY3z2wLuvdCzvafI25Gel7EGPIFkDCS5gOSyJWxb/qa8TGRrXvJxlRQLWS9ZQ+irmgohDYm8IlfjlMzc51wM8xuZS9TDe4dcsQaCZ/lP+p4iP50sXoUxkFPPbQYrvqnMannUpzvNZSJ3ttMLkCOjgQs8KCKzbxoiwKmn6tQiD9bE1OWD9ACoDHACjgPSkMjNiiIQmKWSVRJL1yMPMAsplIhbfkjkzppWfJnBXD7NNOaZv0tKGhLZWNFQf5CPO54hAj5aC0fSkMhrMp1oY7/A7I00s1NJ8NGTnFIHG3O+vxzJezytyEciPR7a/FDOvOrSoeajpGSKh0TurUxNtRwd4YlYUxriFnFLQyKP5n6oJGd5+dkQPU3Ljif6rweXnDQk0i337Q0wEH30f+dQ6GcHpDMILB3z79JXD4ie6z1F3o5s4qFifVtUzANbodEv5YdENublaG+VTbVEHUv/ow4Aqg+JvLImL5uA3eqOflvsEetSEMXUIo9WZVGmLM/ja7e+zmC5XCQ/JHJnTZ16wm5XWcn32VaKSmtfGhLZWOOHtpYGDusYmxWw2qMo8spq/Fx7Y14k2pr3dfmZ+mUir4x7a5bel/ltW4hWczVpSOQVWc/9wBDLDmlOqQMGXsoAUgegv+jcD5G/JXN9KAKYz4E2Yls15MppDnOY7v20Ih+STH6u0PBetk/bmE6ezEfkrbBl4JPuKfI1yOOZDdXnlM2uI8B5BACEBbMF2t/eU+RrkUcNEekMzhYWzGOgDfEMQ/+z4/wtwpq27HO9p8jbkcdzP/K3gauVNn4eOPkG2ORHNjzZe4q8Hdmuyd8qi9i2J9ZkXvvLRP7BTGecixQpUqRIkSL/c/IX16JvPMLwWxkAAAAASUVORK5CYII=" width="280" height="280" alt="Código QR del portal de sustentación de FinanciAI"></a><figcaption>Portal web de sustentación</figcaption></figure>
+      <figure><a target="_blank" rel="noopener" href="https://drive.google.com/file/d/1z__jJblXcb8MC2PZvE1tJzy3Kkh2GFgs/view?usp=drivesdk"><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAZUAAAGVAQMAAAAMlf54AAAABlBMVEUAAAD///+l2Z/dAAAAAnRSTlP//8i138cAAAAJcEhZcwAACxIAAAsSAdLdfvwAAAK8SURBVHic7Zo9juswDIQZpEiZI/goe7TkaDmKj+DSRWA9iTO0HTsPi+1EYFgJlj434p9GsvJ3MzFixIgRI0bMmZkMNky396V9GM2ui9mjjPf5Whc9XlzxEJOFufn+vsg8bcB+VwuGX8TkYd5tj9tEHZTnz3gvBX7A7a+/M7uISchMXGF2K9h+X+ouIiYnwwCug9ncIYoPfvEdMV0yvthj2/O1sQa3DL5Ole85XkyfDLIy+yosPQy4QkwWZrXolWtIR4t8QzHem5gEjOfrFtK1M16MFRcNloVDlPm62DHHi+mWCeMJdrOf0f9SBwVt9Nl3xHTKeBcVNdiX7oqxl97RB2KSMeiM/bRj94Lumf7wKDElJgkz8QRrlCe8M142pqlRkx1zvJieGRxct+xcDafcaKMd9vIsJgsTu36PxD1FizwxX7P3EpOHebsf7PN1gUPcfZF7Ril7nUJM3wz0RF8RByEOBuqJa5CLycKwDx59s1uDBbm/XeoglVe4vMVkYlp2Zosc6uEV8Kb738SkYtaDK+AmWBglJ7ca7TElJgfjpbcFMGVEY4PV/IDleQzBQkwSJvoqpmnD+YePJGjz8fwjpmfGNQi0U2VBOwVh0c2vz/ECRkwehvUVu77TnngTgP9+fU8hpmvGPKQ5Ma/Z+TQlJgODFbjCce2JXdSTVdlr8HahLiYF8yE5PZjBKU/wRPStVxbTLTNRnojzz+vYVzWHEJOKoa4UL4AhI17i7T5vd053OWL6ZmiIZNvL/bu7nM8aLKZr5vP9KBM3mubI11/0RDFdM/GYm00z5f7Py9fT/ZyYvhnm63gKzO0HfNmCHCYmE8MLAB+s9+gLwv707klMEsbwoDCinQojgvx/fiCmSwYrhgKNeFMlRncGPxHF78TkYAw2RKHdS8MxOGhPYvpm/mhixIgRI0aMmE/7B7ES7FZjgrxUAAAAAElFTkSuQmCC" width="280" height="280" alt="Código QR que abre el APK de Android en Google Drive"></a><figcaption>Descarga Android en Google Drive<br><small>Release arm64 · 0.8.1 (2010)</small></figcaption></figure>
+    </div>
+    <div class="actions">
+      <a class="button" target="_blank" rel="noopener" href="https://finance-api-7caahuohmq-rj.a.run.app/health/ready">Estado público de la API</a>
+    </div>
     <p>Los servicios corren en <strong>Google Cloud Run</strong>, en el proyecto <code>finance-ai-api</code> y la región <code>southamerica-east1</code> (São Paulo). La base de datos de producción es <strong>PostgreSQL en Neon</strong>.</p>
     <h3>Cómo se comunican</h3>
     <ol>
@@ -221,45 +258,81 @@ end</code></pre>
       <p><strong>Push a <code>main</code> → CI exitoso → imagen Docker en Artifact Registry → nueva revisión en Cloud Run → verificación.</strong> Las comprobaciones de CI también se ejecutan en <code>develop</code>. El despliegue automático de producción se activa tras el CI exitoso de un <strong>push a <code>main</code></strong>.</p>
       <div class="grid">
         <article class="result">
-          <h3>Backend · <code>finance-api</code></h3>
-          <p>Backend CI revisa formato y tipos, ejecuta pruebas y valida migraciones y OpenAPI. Después, el workflow de despliegue construye la imagen del commit probado, la sube a Artifact Registry, aplica las migraciones de Neon y carga datos de referencia. Actualiza Cloud Run y comprueba <code>/health/ready</code>.</p>
+          <h3>Backend · despliega FastAPI en <code>finance-api</code></h3>
+          <p>El workflow <code>deploy.yml</code> recupera el mismo commit que aprobó Backend CI. <code>docker build</code> empaqueta el backend en la imagen <code>backend:&lt;SHA&gt;</code> y <code>docker push</code> la sube a Artifact Registry.</p>
+          <p>La imagen se usa primero para ejecutar <code>alembic upgrade head</code> y cargar datos de referencia en la base de Neon existente. Después, <code>gcloud run services update</code> cambia la imagen del servicio <code>finance-api</code>. Cloud Run crea una revisión. El workflow consulta <code>/health/ready</code> para verificarla.</p>
+          <details>
+            <summary>Comandos clave del backend</summary>
+            <pre><code>docker push "$IMAGE"
+docker run --rm --env FINANCE_AI_DATABASE_URL "$IMAGE" alembic upgrade head
+docker run --rm --env FINANCE_AI_DATABASE_URL "$IMAGE" python -m finance_ai.db.seeds
+gcloud run services update "$SERVICE_NAME" --image="$IMAGE"
+curl --fail "$URL/health/ready"</code></pre>
+            <p>Fragmento abreviado. El YAML incluye el proyecto, la región y las referencias de configuración.</p>
+          </details>
           <ul>
-            <li><a target="_blank" rel="noopener" href="https://github.com/Maicol2363/finance-ai-backend/blob/30663d2ec40970ae8c160ab75eee8bea53b30b03/.github/workflows/ci.yml#L43">Código de Backend CI</a></li>
-            <li><a target="_blank" rel="noopener" href="https://github.com/Maicol2363/finance-ai-backend/blob/30663d2ec40970ae8c160ab75eee8bea53b30b03/.github/workflows/deploy.yml#L8">Workflow <code>deploy.yml</code></a></li>
-            <li><a target="_blank" rel="noopener" href="https://github.com/Maicol2363/finance-ai-backend/actions/runs/45072292431">Ejecución exitosa del backend</a></li>
+            <li><a target="_blank" rel="noopener" href="https://github.com/Maicol2363/finance-ai-backend/blob/30663d2ec40970ae8c160ab75eee8bea53b30b03/.github/workflows/deploy.yml#L8">Disparador y condiciones de deploy.yml</a></li>
+            <li><a target="_blank" rel="noopener" href="https://github.com/Maicol2363/finance-ai-backend/blob/30663d2ec40970ae8c160ab75eee8bea53b30b03/.github/workflows/deploy.yml#L148">Publicación, migraciones, actualización y health check</a></li>
+            <li><a target="_blank" rel="noopener" href="https://github.com/Maicol2363/finance-ai-backend/blob/30663d2ec40970ae8c160ab75eee8bea53b30b03/.github/workflows/ci.yml#L43">Validaciones de Backend CI</a></li>
           </ul>
         </article>
         <article class="result">
-          <h3>Portal oficial · <code>finance-staff-web</code></h3>
-          <p>Staff web CI ejecuta lint, revisión de tipos, pruebas y build. El workflow de despliegue comprueba la compatibilidad con la API, sube la imagen de React y Nginx y actualiza Cloud Run usando su digest. Después verifica la revisión y prueba el portal en un navegador.</p>
+          <h3>Portal oficial · despliega React y Nginx en <code>finance-staff-web</code></h3>
+          <p>El workflow <code>deploy-staff-web.yml</code> recupera el commit probado por Staff web CI. El Dockerfile utiliza Node para compilar React y copia el resultado a una imagen de Nginx. Esa imagen sirve la interfaz y reenvía las llamadas <code>/api/</code> al backend configurado.</p>
+          <p>El workflow comprueba la compatibilidad con FastAPI, sube la imagen a Artifact Registry y obtiene su digest SHA-256, que identifica ese contenido exacto. <code>gcloud run services update</code> instala ese digest en <code>finance-staff-web</code>. Luego se verifica que la revisión esté lista y se prueba el portal desde un navegador.</p>
+          <details>
+            <summary>Comandos clave del portal</summary>
+            <pre><code>docker build --tag "$image" staff-web
+docker push "$IMAGE"
+digest=$(gcloud artifacts docker images describe "$IMAGE" --format='value(image_summary.digest)')
+deployed_image="${IMAGE%:*}@$digest"
+gcloud run services update "$SERVICE" --image "$deployed_image"
+node staff-web/deploy/verify-browser.mjs "$url"</code></pre>
+            <p>Fragmento abreviado. <code>SERVICE</code> es <code>finance-staff-web</code>.</p>
+          </details>
           <ul>
-            <li><a target="_blank" rel="noopener" href="https://github.com/Maicol2363/finance-ai-frontend/blob/22ebbadf84535d1bc17b6c765854c96c7dc0d46b/.github/workflows/staff-web-ci.yml#L31">Código de Staff web CI</a></li>
-            <li><a target="_blank" rel="noopener" href="https://github.com/Maicol2363/finance-ai-frontend/blob/22ebbadf84535d1bc17b6c765854c96c7dc0d46b/.github/workflows/deploy-staff-web.yml#L4">Workflow <code>deploy-staff-web.yml</code></a></li>
-            <li><a target="_blank" rel="noopener" href="https://github.com/Maicol2363/finance-ai-frontend/actions/runs/43961583394">Ejecución exitosa del portal</a></li>
+            <li><a target="_blank" rel="noopener" href="https://github.com/Maicol2363/finance-ai-frontend/blob/22ebbadf84535d1bc17b6c765854c96c7dc0d46b/.github/workflows/deploy-staff-web.yml#L4">Disparador y condiciones de deploy-staff-web.yml</a></li>
+            <li><a target="_blank" rel="noopener" href="https://github.com/Maicol2363/finance-ai-frontend/blob/22ebbadf84535d1bc17b6c765854c96c7dc0d46b/staff-web/Dockerfile">Dockerfile de React y Nginx</a></li>
+            <li><a target="_blank" rel="noopener" href="https://github.com/Maicol2363/finance-ai-frontend/blob/22ebbadf84535d1bc17b6c765854c96c7dc0d46b/.github/workflows/deploy-staff-web.yml#L69">Compatibilidad, publicación por digest y verificación</a></li>
           </ul>
         </article>
       </div>
       <details>
-        <summary>Código del disparador y de la actualización</summary>
-        <p>En el backend, <code>workflow_run</code> escucha cuando termina Backend CI. La condición <code>if</code> del job comprueba que el resultado sea exitoso y que provenga de un push del repositorio. <code>SOURCE_SHA</code> selecciona el commit que pasó CI. Antes de desplegar se verifica que ese commit siga siendo el último de <code>main</code>.</p>
-        <pre><code>on:
-  workflow_run:
-    workflows: ["Backend CI"]
-    types: [completed]
-    branches: [main]</code></pre>
-        <p><a target="_blank" rel="noopener" href="https://github.com/Maicol2363/finance-ai-backend/blob/30663d2ec40970ae8c160ab75eee8bea53b30b03/.github/workflows/deploy.yml#L162">Ver la migración de Neon, <code>gcloud run services update</code> y la comprobación de salud en el YAML</a>.</p>
+        <summary>Evidencia de ejecuciones</summary>
+        <ul>
+          <li><a target="_blank" rel="noopener" href="https://github.com/Maicol2363/finance-ai-backend/actions/runs/45072292431">Despliegue exitoso del backend</a></li>
+          <li><a target="_blank" rel="noopener" href="https://github.com/Maicol2363/finance-ai-frontend/actions/runs/43961583394">Despliegue exitoso del portal oficial</a></li>
+        </ul>
       </details>
-      <p>Estos dos workflows actualizan el backend y el portal oficial. El portal de sustentación es un servicio adicional que apunta a la misma API. El APK se distribuye por separado en Drive.</p>
+      <p>El portal de sustentación es un servicio adicional conectado a <code>finance-api</code>. El APK de Android se distribuye por separado en Drive.</p>
     </section>
-    <div class="grid qr-grid">
-      <figure><a target="_blank" rel="noopener" href="https://financiai-portal-demo-1006444199777.southamerica-east1.run.app/login"><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAcIAAAHCAQAAAABUY/ToAAADjElEQVR4nO2czY3bMBCF34QCfJSBFLClSB2kpNSUDqRStoAA5NGAhJcDOSIlJ5fNOv7Jm4PXWvqDJOBhOD8kjfiYzV8+CAIiRYoUKVKkSJGPR1qxDjam8g2zmdmYOmC2DkDyX413flqRD0kOJMkIAD0JYDWgX/KgjfkjkCS5Jz9+T5EvQiLLYogAhhhYlUP6Jad6icAsuOm53lPkvyPdGS3AfF6NEwAbe9LGm91T5HOT3eHa8p90og1cO0MfaMOPbvnEe4p8LdI11BNAAgisHedxNQCBQDLkCa2M3vVpRT4wOZuZ2RmwMZ1o32MgkDrYiPptzWnZ/Z9W5EOR2Q9V/0JgAYGLcT6XmY3z2wLuvdCzvafI25Gel7EGPIFkDCS5gOSyJWxb/qa8TGRrXvJxlRQLWS9ZQ+irmgohDYm8IlfjlMzc51wM8xuZS9TDe4dcsQaCZ/lP+p4iP50sXoUxkFPPbQYrvqnMannUpzvNZSJ3ttMLkCOjgQs8KCKzbxoiwKmn6tQiD9bE1OWD9ACoDHACjgPSkMjNiiIQmKWSVRJL1yMPMAsplIhbfkjkzppWfJnBXD7NNOaZv0tKGhLZWNFQf5CPO54hAj5aC0fSkMhrMp1oY7/A7I00s1NJ8NGTnFIHG3O+vxzJezytyEciPR7a/FDOvOrSoeajpGSKh0TurUxNtRwd4YlYUxriFnFLQyKP5n6oJGd5+dkQPU3Ljif6rweXnDQk0i337Q0wEH30f+dQ6GcHpDMILB3z79JXD4ie6z1F3o5s4qFifVtUzANbodEv5YdENublaG+VTbVEHUv/ow4Aqg+JvLImL5uA3eqOflvsEetSEMXUIo9WZVGmLM/ja7e+zmC5XCQ/JHJnTZ16wm5XWcn32VaKSmtfGhLZWOOHtpYGDusYmxWw2qMo8spq/Fx7Y14k2pr3dfmZ+mUir4x7a5bel/ltW4hWczVpSOQVWc/9wBDLDmlOqQMGXsoAUgegv+jcD5G/JXN9KAKYz4E2Yls15MppDnOY7v20Ih+STH6u0PBetk/bmE6ezEfkrbBl4JPuKfI1yOOZDdXnlM2uI8B5BACEBbMF2t/eU+RrkUcNEekMzhYWzGOgDfEMQ/+z4/wtwpq27HO9p8jbkcdzP/K3gauVNn4eOPkG2ORHNjzZe4q8Hdmuyd8qi9i2J9ZkXvvLRP7BTGecixQpUqRIkSL/c/IX16JvPMLwWxkAAAAASUVORK5CYII=" width="280" height="280" alt="Código QR del portal de sustentación de FinanciAI"></a><figcaption>Portal web de sustentación</figcaption></figure>
-      <figure><a target="_blank" rel="noopener" href="https://drive.google.com/file/d/1z__jJblXcb8MC2PZvE1tJzy3Kkh2GFgs/view?usp=drivesdk"><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAZUAAAGVAQMAAAAMlf54AAAABlBMVEUAAAD///+l2Z/dAAAAAnRSTlP//8i138cAAAAJcEhZcwAACxIAAAsSAdLdfvwAAAK8SURBVHic7Zo9juswDIQZpEiZI/goe7TkaDmKj+DSRWA9iTO0HTsPi+1EYFgJlj434p9GsvJ3MzFixIgRI0bMmZkMNky396V9GM2ui9mjjPf5Whc9XlzxEJOFufn+vsg8bcB+VwuGX8TkYd5tj9tEHZTnz3gvBX7A7a+/M7uISchMXGF2K9h+X+ouIiYnwwCug9ncIYoPfvEdMV0yvthj2/O1sQa3DL5Ole85XkyfDLIy+yosPQy4QkwWZrXolWtIR4t8QzHem5gEjOfrFtK1M16MFRcNloVDlPm62DHHi+mWCeMJdrOf0f9SBwVt9Nl3xHTKeBcVNdiX7oqxl97RB2KSMeiM/bRj94Lumf7wKDElJgkz8QRrlCe8M142pqlRkx1zvJieGRxct+xcDafcaKMd9vIsJgsTu36PxD1FizwxX7P3EpOHebsf7PN1gUPcfZF7Ril7nUJM3wz0RF8RByEOBuqJa5CLycKwDx59s1uDBbm/XeoglVe4vMVkYlp2Zosc6uEV8Kb738SkYtaDK+AmWBglJ7ca7TElJgfjpbcFMGVEY4PV/IDleQzBQkwSJvoqpmnD+YePJGjz8fwjpmfGNQi0U2VBOwVh0c2vz/ECRkwehvUVu77TnngTgP9+fU8hpmvGPKQ5Ma/Z+TQlJgODFbjCce2JXdSTVdlr8HahLiYF8yE5PZjBKU/wRPStVxbTLTNRnojzz+vYVzWHEJOKoa4UL4AhI17i7T5vd053OWL6ZmiIZNvL/bu7nM8aLKZr5vP9KBM3mubI11/0RDFdM/GYm00z5f7Py9fT/ZyYvhnm63gKzO0HfNmCHCYmE8MLAB+s9+gLwv707klMEsbwoDCinQojgvx/fiCmSwYrhgKNeFMlRncGPxHF78TkYAw2RKHdS8MxOGhPYvpm/mhixIgRI0aMmE/7B7ES7FZjgrxUAAAAAElFTkSuQmCC" width="280" height="280" alt="Código QR que abre el APK de Android en Google Drive"></a><figcaption>Descarga Android en Google Drive<br><small>Release arm64 · 0.8.1 (2010)</small></figcaption></figure>
-    </div>
-    <div class="actions">
-      <a class="button" target="_blank" rel="noopener" href="https://finance-api-7caahuohmq-rj.a.run.app/health/ready">Estado público de la API</a>
-    </div>
   </section>
 
 </main>
+<script id="account-notes">
+  const accountStatus = document.getElementById('account-status');
+  for (const field of document.querySelectorAll('[data-account]')) {
+    const key = 'financiai-presentacion-correo-' + field.dataset.account;
+    try {
+      field.value = localStorage.getItem(key) || '';
+    } catch {
+      accountStatus.textContent = 'El almacenamiento local de este navegador está deshabilitado.';
+    }
+    field.addEventListener('change', () => {
+      try {
+        const email = field.value.trim();
+        if (email && !field.validity.valid) {
+          accountStatus.textContent = 'Escribe un correo válido.';
+          return;
+        }
+        if (email) localStorage.setItem(key, email);
+        else localStorage.removeItem(key);
+        accountStatus.textContent = email ? 'Correo guardado en este navegador.' : 'Correo eliminado de este navegador.';
+      } catch {
+        accountStatus.textContent = 'No se pudo guardar el correo en este navegador.';
+      }
+    });
+  }
+</script>
 </body>
 </html>
