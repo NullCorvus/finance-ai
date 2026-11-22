@@ -1,0 +1,265 @@
+<!doctype html>
+<html lang="es-CO">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>FinanciAI · Sustentación técnica</title>
+<style>
+  :root { color-scheme: dark; --bg: #101817; --panel: #182523; --line: #354944; --fg: #f0f8f4; --muted: #b5c9c0; --accent: #9aefc7; --fail: #ffbaac; }
+  * { box-sizing: border-box; }
+  body { margin: 0; font: 1rem/1.6 system-ui, sans-serif; background: var(--bg); color: var(--fg); }
+  main, .nav { width: min(100% - 2rem, 74rem); margin-inline: auto; }
+  header { position: sticky; top: 0; z-index: 1; background: var(--bg); border-bottom: 1px solid var(--line); }
+  .nav { display: flex; align-items: center; gap: .75rem 1.4rem; flex-wrap: wrap; padding-block: .75rem; }
+  .brand { margin-right: auto; font-weight: 800; }
+  a { color: var(--accent); text-underline-offset: .2em; }
+  a:hover { color: white; }
+  :focus-visible { outline: 3px solid var(--accent); outline-offset: 4px; }
+  .intro { padding: clamp(2.5rem, 6vw, 5rem) 0 1.3rem; }
+  h1, h2, h3, p { margin: 0 0 .7rem; }
+  h1 { font-size: clamp(2.4rem, 7vw, 5.4rem); letter-spacing: -.065em; line-height: .99; }
+  h2 { font-size: clamp(1.65rem, 4vw, 2.7rem); letter-spacing: -.045em; line-height: 1.1; }
+  h3 { font-size: 1.15rem; }
+  .intro p, .muted, small { color: var(--muted); }
+  section { scroll-margin-top: 7rem; padding: clamp(1rem, 3vw, 2rem); margin: 1.25rem 0; border: 1px solid var(--line); border-radius: 1.1rem; background: var(--panel); }
+  .actions { display: flex; flex-wrap: wrap; gap: .6rem; margin: 1rem 0; }
+  button, .button { display: inline-block; border: 1px solid var(--line); padding: .55rem .85rem; border-radius: .55rem; background: var(--bg); color: var(--accent); font: inherit; font-weight: 700; text-decoration: none; cursor: pointer; }
+  button:hover, .button:hover { border-color: var(--accent); }
+  button:disabled { cursor: wait; opacity: .65; }
+  .primary { background: var(--accent); color: #0b251a; border-color: var(--accent); }
+  .primary:hover { color: #0b251a; background: #bcfadd; }
+  table { border-collapse: collapse; width: 100%; margin: .8rem 0; }
+  th, td { text-align: left; border-bottom: 1px solid var(--line); padding: .5rem .55rem; overflow-wrap: anywhere; }
+  th { color: var(--muted); }
+  code { font: .94em ui-monospace, monospace; overflow-wrap: anywhere; }
+  ol { padding-left: 1.45rem; }
+  li + li { margin-top: .35rem; }
+  blockquote { padding-left: 1rem; border-left: 3px solid var(--accent); margin: .9rem 0 0; }
+  .cors { margin-block: 1.35rem; background: var(--bg); }
+  .grid { display: grid; gap: .7rem; grid-template-columns: repeat(auto-fit, minmax(min(100%, 15rem), 1fr)); }
+  .result { border: 1px solid var(--line); padding: .85rem; border-radius: .65rem; min-width: 0; background: var(--panel); }
+  .result code { display: block; margin-bottom: .65rem; color: var(--muted); }
+  .result strong { display: block; font-size: 1.55rem; line-height: 1.25; }
+  .allow { color: var(--accent); }
+  .deny { color: var(--fail); }
+  .result p { margin: .45rem 0 0; font-size: .92rem; overflow-wrap: anywhere; }
+  summary { cursor: pointer; color: var(--accent); }
+  details { margin-top: .9rem; }
+  pre { white-space: pre-wrap; overflow-wrap: anywhere; padding: .9rem; border-radius: .55rem; background: #0c1211; }
+  .qr-grid { margin-top: 1rem; }
+  figure { margin: 0; text-align: center; }
+  figure img { display: block; width: 100%; max-width: 15rem; height: auto; border-radius: .6rem; margin: 0 auto .5rem; }
+  footer { color: var(--muted); padding: .7rem 0 2.5rem; }
+  @media (max-width: 40rem) { .nav { gap: .4rem .8rem; } td, th { padding: .4rem .32rem; } }
+</style>
+</head>
+<body>
+<header><nav class="nav" aria-label="Puntos de la presentación">
+  <span class="brand">FinanciAI</span>
+  <a href="#roles">B · Roles</a><a href="#cors">D · API y CORS</a><a href="#swagger">E · Swagger</a><a href="#deploy">K · Despliegue</a><a href="#actions">GitHub Actions</a>
+</nav></header>
+<main>
+  <div class="intro">
+    <h1>FinanciAI</h1>
+    <p>Sustentación técnica · Roles, integración con la API y despliegue en la nube</p>
+  </div>
+
+  <section id="roles">
+    <h2>B · Manejo de roles</h2>
+    <div class="actions">
+      <a class="button primary" target="_blank" rel="noopener" href="https://financiai-portal-demo-1006444199777.southamerica-east1.run.app/login">Abrir portal de sustentación</a>
+    </div>
+    <p>React habilita el espacio de trabajo de cada rol. FastAPI comprueba la sesión y el permiso en las rutas protegidas. En Android, la API comprueba también que la cuenta financiera pertenezca al cliente autenticado.</p>
+    <table>
+      <thead><tr><th scope="col">Rol</th><th scope="col">Interfaz</th><th scope="col">Funciones principales</th></tr></thead>
+      <tbody>
+        <tr><th scope="row">Cliente</th><td>App Android</td><td>Consulta y gestiona sus propias cuentas y movimientos.</td></tr>
+        <tr><th scope="row">Soporte</th><td><code>/support</code></td><td>Consulta y atiende tickets.</td></tr>
+        <tr><th scope="row">Auditor</th><td><code>/audit</code></td><td>Consulta eventos y genera reportes de seguridad.</td></tr>
+        <tr><th scope="row">Administrador</th><td><code>/admin</code></td><td>Gestiona cuentas, personal y tickets escalados.</td></tr>
+      </tbody>
+    </table>
+    <details>
+      <summary>Secuencia de demostración de roles y auditoría</summary>
+    <ol>
+      <li>Antes de la sustentación, inicia sesión como Auditor en un perfil de navegador separado y completa el autenticador.</li>
+      <li>En otro perfil, inicia sesión como Soporte en el mismo portal. Abre la cola y muestra solo información de prueba.</li>
+      <li>Inicia sesión en la app Android con el cliente de prueba y anota la hora. En Auditoría, filtra por <code>auth.login_success</code>, la hora y el ID del actor de prueba. Abre el evento y comprueba que el contexto indique <code>platform: android</code>.</li>
+    </ol>
+    </details>
+  </section>
+
+  <section id="api">
+    <h2>D · Consumo de API, CORS y autenticación</h2>
+    <p>El portal de Soporte ejecuta <code>GET /api/v1/staff/support/tickets</code>. FastAPI valida la sesión, devuelve los tickets en JSON y React los muestra en la cola.</p>
+    <details>
+      <summary>Demostración de la petición en el navegador</summary>
+      <p>En la sesión de Soporte, abrir <strong>F12 → Red</strong> y recargar. La petición de tickets muestra el estado <code>200</code> y los datos que alimentan la interfaz.</p>
+    </details>
+
+    <section id="cors" class="cors">
+      <h3>Resultados de la prueba de CORS</h3>
+      <p><code>OPTIONS</code> es el método HTTP que usa el navegador para consultar si la API permite determinadas peticiones desde otro origen. La prueba comparó tres orígenes para el mismo <code>POST</code> con JSON al endpoint de registro. Se ejecutó únicamente la consulta previa.</p>
+      <p class="muted">Resultado verificado en producción el 22/11/2026 a las 17:38 (hora de Colombia).</p>
+      <div class="grid" aria-label="Resultados de la prueba de CORS">
+        <article class="result">
+          <h4>Portal de producción</h4>
+          <code>https://finance-staff-web-7caahuohmq-rj.a.run.app</code>
+          <strong class="allow">200 · Permitido</strong>
+          <p>Access-Control-Allow-Origin: https://finance-staff-web-7caahuohmq-rj.a.run.app</p>
+        </article>
+        <article class="result">
+          <h4>Portal de sustentación</h4>
+          <code>https://financiai-portal-demo-1006444199777.southamerica-east1.run.app</code>
+          <strong class="allow">200 · Permitido</strong>
+          <p>Access-Control-Allow-Origin: https://financiai-portal-demo-1006444199777.southamerica-east1.run.app</p>
+        </article>
+        <article class="result">
+          <h4>Dominio de ejemplo</h4>
+          <code>https://ensayo.example</code>
+          <strong class="deny">400 · Rechazado</strong>
+          <p>Sin Access-Control-Allow-Origin</p>
+        </article>
+      </div>
+      <p><strong>¿Qué debe verse?</strong> La API permite el origen exacto del portal oficial y el del portal de sustentación. El dominio de ejemplo queda fuera de la lista. En el flujo habitual, el navegador llama a <code>/api/</code> en el mismo dominio del portal y su proxy reenvía la solicitud a <code>finance-api</code>.</p>
+
+      <details>
+        <summary>Comando de Fish para repetir la prueba</summary>
+        <p>Portal oficial y portal de sustentación <code>200</code> con el origen exacto en <code>Access-Control-Allow-Origin</code>. Dominio de ejemplo <code>400</code> sin esa cabecera.</p>
+        <pre><code>for origen in https://finance-staff-web-7caahuohmq-rj.a.run.app https://financiai-portal-demo-1006444199777.southamerica-east1.run.app https://ensayo.example
+    echo "Probando origen: $origen"
+    curl -si --max-time 10 -X OPTIONS 'https://finance-api-7caahuohmq-rj.a.run.app/api/v1/auth/register' \
+        -H "Origin: $origen" \
+        -H 'Access-Control-Request-Method: POST' \
+        -H 'Access-Control-Request-Headers: content-type' \
+        | grep -Ei '^HTTP/|^access-control-allow-origin:'
+end</code></pre>
+        <ul>
+          <li><code>for origen in … end</code> repite la prueba una vez por cada dominio. <code>echo</code> imprime el nombre del que se está probando.</li>
+          <li><code>curl -si --max-time 10 -X OPTIONS URL</code> envía la consulta previa a producción. <code>-s</code> oculta el progreso, <code>-i</code> muestra las cabeceras y <code>--max-time 10</code> limita la espera a diez segundos.</li>
+          <li><code>-H "Origin: $origen"</code> simula qué página haría la llamada. Los otros <code>-H</code> indican que el navegador querría enviar un <code>POST</code> con la cabecera <code>Content-Type</code>, como ocurre al enviar JSON.</li>
+          <li>La barra invertida <code>\</code> continúa el comando en la línea siguiente. <code>| grep -Ei …</code> filtra la salida para mostrar el estado HTTP y, cuando existe, <code>Access-Control-Allow-Origin</code>.</li>
+        </ul>
+      </details>
+    </section>
+
+    <section id="autenticacion" class="cors">
+      <h3>Contraseñas, inicio de sesión y renovación</h3>
+      <p><strong>Contraseñas.</strong> Tanto la app como el portal envían el correo y la contraseña por HTTPS. FastAPI verifica la contraseña con <strong>Argon2id</strong> contra el hash guardado en PostgreSQL. La contraseña se protege en tránsito con HTTPS y en la base de datos se conserva su hash.</p>
+      <div class="grid">
+        <article class="result">
+          <h3>App Android · Flutter</h3>
+          <ol>
+            <li>Envía <code>POST /api/v1/auth/login</code> a la API. Si las credenciales son correctas, recibe una credencial de acceso y otra de renovación.</li>
+            <li>Mantiene la de acceso en memoria y la envía como <code>Authorization: Bearer &lt;credencial&gt;</code>. Guarda la de renovación en el almacenamiento seguro del dispositivo.</li>
+            <li>Para renovar, usa <code>POST /api/v1/auth/refresh</code>. FastAPI reemplaza las credenciales de la sesión.</li>
+          </ol>
+        </article>
+        <article class="result">
+          <h3>Portal web · React</h3>
+          <ol>
+            <li>Envía <code>POST /api/v1/staff/auth/login</code>. Soporte entra con contraseña. Administrador y Auditor completan además el código temporal de seis dígitos del autenticador (TOTP).</li>
+            <li>El navegador recibe dos cookies, de acceso y de renovación, con <code>HttpOnly</code>, <code>Secure</code> y <code>SameSite=Strict</code> en producción.</li>
+            <li>Al recargar, React consulta <code>GET /api/v1/staff/auth/session</code>. Si corresponde renovar, llama a <code>POST /api/v1/staff/auth/refresh</code> y el backend actualiza las cookies.</li>
+          </ol>
+        </article>
+      </div>
+      <p><strong>Una sesión, dos credenciales.</strong> La de acceso sirve para las peticiones normales. La de renovación obtiene credenciales nuevas. Son valores aleatorios opacos. La API guarda sus hashes SHA-256 y comprueba la vigencia y revocación de la sesión al recibirlas. Al cerrar sesión se revoca en el servidor.</p>
+      <details>
+        <summary>Vigencia y protección del autenticador</summary>
+        <table>
+          <thead><tr><th scope="col">Sesión</th><th scope="col">Acceso</th><th scope="col">Plazo para renovar</th><th scope="col">Máximo desde el login</th></tr></thead>
+          <tbody>
+            <tr><th scope="row">App Android</th><td>15 min</td><td>30 días</td><td>90 días</td></tr>
+            <tr><th scope="row">Soporte y Auditor</th><td>15 min</td><td>30 min</td><td>8 h</td></tr>
+            <tr><th scope="row">Administrador</th><td>10 min</td><td>15 min</td><td>4 h</td></tr>
+          </tbody>
+        </table>
+        <p>El plazo para renovar se vuelve a contar al renovar, sujeto al máximo desde el login. El secreto del autenticador TOTP se cifra con <strong>AES-256-GCM</strong>.</p>
+      </details>
+    </section>
+    <p><strong>Validación de acceso.</strong> <a target="_blank" rel="noopener" href="https://finance-api-7caahuohmq-rj.a.run.app/docs#/Accounts/list_accounts_api_v1_accounts_get"><code>GET /api/v1/accounts</code></a> devuelve <code>401</code> sin una credencial válida.</p>
+  </section>
+
+  <section id="swagger">
+    <h2>E · Estructura y documentación de la API</h2>
+    <p><strong>¿Qué es el contrato de la API?</strong> Es la especificación que le dice al cliente qué ruta y método usar, qué datos enviar, si necesita credenciales y qué respuestas puede recibir. FastAPI publica esa especificación en <code>/openapi.json</code>. Swagger la presenta como una pantalla interactiva. Por ejemplo, en <strong>Reintentar recibo</strong> el contrato indica que hay que enviar un <code>POST</code> y poner <code>proposal_id</code> en la ruta.</p>
+    <div class="actions">
+      <a class="button primary" target="_blank" rel="noopener" href="https://finance-api-7caahuohmq-rj.a.run.app/docs#/Receipt%20Intelligence/retry_receipt_proposal_api_v1_receipts_proposal__proposal_id__retry_post">Abrir Swagger en Reintentar recibo</a>
+      <a class="button" target="_blank" rel="noopener" href="https://finance-api-7caahuohmq-rj.a.run.app/openapi.json">Ver contrato OpenAPI</a>
+    </div>
+    <ul>
+      <li><strong>Ejemplo del contrato.</strong> <code>POST /api/v1/receipts/proposal/{proposal_id}/retry</code> documenta el parámetro <code>proposal_id</code> y las respuestas posibles.</li>
+      <li><strong>Prueba interactiva.</strong> <a target="_blank" rel="noopener" href="https://finance-api-7caahuohmq-rj.a.run.app/docs#/Accounts/list_accounts_api_v1_accounts_get"><code>GET /api/v1/accounts</code></a> se puede ejecutar con <strong>Try it out → Execute</strong> para revisar la respuesta HTTP.</li>
+    </ul>
+  </section>
+
+  <section id="deploy">
+    <h2>K · Despliegue</h2>
+    <p>Los servicios corren en <strong>Google Cloud Run</strong>, en el proyecto <code>finance-ai-api</code> y la región <code>southamerica-east1</code> (São Paulo). La base de datos de producción es <strong>PostgreSQL en Neon</strong>.</p>
+    <h3>Cómo se comunican</h3>
+    <ol>
+      <li><strong>Android</strong> → HTTPS directo a <code>finance-api</code>. Flutter envía la credencial Bearer en la cabecera <code>Authorization</code>.</li>
+      <li><strong>Navegador</strong> → HTTPS al portal. React llama a <code>/api/</code> en ese mismo dominio. Nginx sirve la interfaz y reenvía esas llamadas por HTTPS a <code>finance-api</code>. El portal oficial y el de sustentación apuntan a la misma API.</li>
+      <li><strong>FastAPI</strong> → PostgreSQL en Neon. La API consulta las cuentas, sesiones y eventos de auditoría. Cloud Run carga la conexión de la base de datos y la clave de cifrado del autenticador desde Secret Manager.</li>
+    </ol>
+    <details>
+      <summary>Configuración de Cloud Run para la defensa técnica</summary>
+      <table>
+        <thead><tr><th scope="col">Servicio</th><th scope="col">Contenedor</th><th scope="col">Recursos por instancia</th><th scope="col">Concurrencia</th><th scope="col">Máximo por revisión</th></tr></thead>
+        <tbody>
+          <tr><th scope="row"><code>finance-api</code></th><td>FastAPI en puerto 8000</td><td>1 vCPU · 512 MiB</td><td>80</td><td>3</td></tr>
+          <tr><th scope="row"><code>finance-staff-web</code></th><td>React y Nginx en puerto 8080</td><td>1 vCPU · 256 MiB</td><td>40</td><td>3</td></tr>
+          <tr><th scope="row"><code>financiai-portal-demo</code></th><td>React y Nginx en puerto 8080</td><td>1 vCPU · 256 MiB</td><td>80</td><td>2</td></tr>
+        </tbody>
+      </table>
+      <p>La concurrencia es el máximo de solicitudes simultáneas por instancia. <code>finance-api</code> tiene un límite de 300 s por solicitud y un máximo global de 20 instancias a nivel de servicio.</p>
+      <p><code>/health/ready</code> responde <code>200</code> cuando pasan las comprobaciones, incluida la conexión a PostgreSQL.</p>
+    </details>
+    <section id="actions" class="cors">
+      <h3>Despliegue automático con GitHub Actions</h3>
+      <p><strong>Push a <code>main</code> → CI exitoso → imagen Docker en Artifact Registry → nueva revisión en Cloud Run → verificación.</strong> Las comprobaciones de CI también se ejecutan en <code>develop</code>. El despliegue automático de producción se activa tras el CI exitoso de un <strong>push a <code>main</code></strong>.</p>
+      <div class="grid">
+        <article class="result">
+          <h3>Backend · <code>finance-api</code></h3>
+          <p>Backend CI revisa formato y tipos, ejecuta pruebas y valida migraciones y OpenAPI. Después, el workflow de despliegue construye la imagen del commit probado, la sube a Artifact Registry, aplica las migraciones de Neon y carga datos de referencia. Actualiza Cloud Run y comprueba <code>/health/ready</code>.</p>
+          <ul>
+            <li><a target="_blank" rel="noopener" href="https://github.com/Maicol2363/finance-ai-backend/blob/30663d2ec40970ae8c160ab75eee8bea53b30b03/.github/workflows/ci.yml#L43">Código de Backend CI</a></li>
+            <li><a target="_blank" rel="noopener" href="https://github.com/Maicol2363/finance-ai-backend/blob/30663d2ec40970ae8c160ab75eee8bea53b30b03/.github/workflows/deploy.yml#L8">Workflow <code>deploy.yml</code></a></li>
+            <li><a target="_blank" rel="noopener" href="https://github.com/Maicol2363/finance-ai-backend/actions/runs/45072292431">Ejecución exitosa del backend</a></li>
+          </ul>
+        </article>
+        <article class="result">
+          <h3>Portal oficial · <code>finance-staff-web</code></h3>
+          <p>Staff web CI ejecuta lint, revisión de tipos, pruebas y build. El workflow de despliegue comprueba la compatibilidad con la API, sube la imagen de React y Nginx y actualiza Cloud Run usando su digest. Después verifica la revisión y prueba el portal en un navegador.</p>
+          <ul>
+            <li><a target="_blank" rel="noopener" href="https://github.com/Maicol2363/finance-ai-frontend/blob/22ebbadf84535d1bc17b6c765854c96c7dc0d46b/.github/workflows/staff-web-ci.yml#L31">Código de Staff web CI</a></li>
+            <li><a target="_blank" rel="noopener" href="https://github.com/Maicol2363/finance-ai-frontend/blob/22ebbadf84535d1bc17b6c765854c96c7dc0d46b/.github/workflows/deploy-staff-web.yml#L4">Workflow <code>deploy-staff-web.yml</code></a></li>
+            <li><a target="_blank" rel="noopener" href="https://github.com/Maicol2363/finance-ai-frontend/actions/runs/43961583394">Ejecución exitosa del portal</a></li>
+          </ul>
+        </article>
+      </div>
+      <details>
+        <summary>Código del disparador y de la actualización</summary>
+        <p>En el backend, <code>workflow_run</code> escucha cuando termina Backend CI. La condición <code>if</code> del job comprueba que el resultado sea exitoso y que provenga de un push del repositorio. <code>SOURCE_SHA</code> selecciona el commit que pasó CI. Antes de desplegar se verifica que ese commit siga siendo el último de <code>main</code>.</p>
+        <pre><code>on:
+  workflow_run:
+    workflows: ["Backend CI"]
+    types: [completed]
+    branches: [main]</code></pre>
+        <p><a target="_blank" rel="noopener" href="https://github.com/Maicol2363/finance-ai-backend/blob/30663d2ec40970ae8c160ab75eee8bea53b30b03/.github/workflows/deploy.yml#L162">Ver la migración de Neon, <code>gcloud run services update</code> y la comprobación de salud en el YAML</a>.</p>
+      </details>
+      <p>Estos dos workflows actualizan el backend y el portal oficial. El portal de sustentación es un servicio adicional que apunta a la misma API. El APK se distribuye por separado en Drive.</p>
+    </section>
+    <div class="grid qr-grid">
+      <figure><a target="_blank" rel="noopener" href="https://financiai-portal-demo-1006444199777.southamerica-east1.run.app/login"><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAcIAAAHCAQAAAABUY/ToAAADjElEQVR4nO2czY3bMBCF34QCfJSBFLClSB2kpNSUDqRStoAA5NGAhJcDOSIlJ5fNOv7Jm4PXWvqDJOBhOD8kjfiYzV8+CAIiRYoUKVKkSJGPR1qxDjam8g2zmdmYOmC2DkDyX413flqRD0kOJMkIAD0JYDWgX/KgjfkjkCS5Jz9+T5EvQiLLYogAhhhYlUP6Jad6icAsuOm53lPkvyPdGS3AfF6NEwAbe9LGm91T5HOT3eHa8p90og1cO0MfaMOPbvnEe4p8LdI11BNAAgisHedxNQCBQDLkCa2M3vVpRT4wOZuZ2RmwMZ1o32MgkDrYiPptzWnZ/Z9W5EOR2Q9V/0JgAYGLcT6XmY3z2wLuvdCzvafI25Gel7EGPIFkDCS5gOSyJWxb/qa8TGRrXvJxlRQLWS9ZQ+irmgohDYm8IlfjlMzc51wM8xuZS9TDe4dcsQaCZ/lP+p4iP50sXoUxkFPPbQYrvqnMannUpzvNZSJ3ttMLkCOjgQs8KCKzbxoiwKmn6tQiD9bE1OWD9ACoDHACjgPSkMjNiiIQmKWSVRJL1yMPMAsplIhbfkjkzppWfJnBXD7NNOaZv0tKGhLZWNFQf5CPO54hAj5aC0fSkMhrMp1oY7/A7I00s1NJ8NGTnFIHG3O+vxzJezytyEciPR7a/FDOvOrSoeajpGSKh0TurUxNtRwd4YlYUxriFnFLQyKP5n6oJGd5+dkQPU3Ljif6rweXnDQk0i337Q0wEH30f+dQ6GcHpDMILB3z79JXD4ie6z1F3o5s4qFifVtUzANbodEv5YdENublaG+VTbVEHUv/ow4Aqg+JvLImL5uA3eqOflvsEetSEMXUIo9WZVGmLM/ja7e+zmC5XCQ/JHJnTZ16wm5XWcn32VaKSmtfGhLZWOOHtpYGDusYmxWw2qMo8spq/Fx7Y14k2pr3dfmZ+mUir4x7a5bel/ltW4hWczVpSOQVWc/9wBDLDmlOqQMGXsoAUgegv+jcD5G/JXN9KAKYz4E2Yls15MppDnOY7v20Ih+STH6u0PBetk/bmE6ezEfkrbBl4JPuKfI1yOOZDdXnlM2uI8B5BACEBbMF2t/eU+RrkUcNEekMzhYWzGOgDfEMQ/+z4/wtwpq27HO9p8jbkcdzP/K3gauVNn4eOPkG2ORHNjzZe4q8Hdmuyd8qi9i2J9ZkXvvLRP7BTGecixQpUqRIkSL/c/IX16JvPMLwWxkAAAAASUVORK5CYII=" width="280" height="280" alt="Código QR del portal de sustentación de FinanciAI"></a><figcaption>Portal web de sustentación</figcaption></figure>
+      <figure><a target="_blank" rel="noopener" href="https://drive.google.com/file/d/1z__jJblXcb8MC2PZvE1tJzy3Kkh2GFgs/view?usp=drivesdk"><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAZUAAAGVAQMAAAAMlf54AAAABlBMVEUAAAD///+l2Z/dAAAAAnRSTlP//8i138cAAAAJcEhZcwAACxIAAAsSAdLdfvwAAAK8SURBVHic7Zo9juswDIQZpEiZI/goe7TkaDmKj+DSRWA9iTO0HTsPi+1EYFgJlj434p9GsvJ3MzFixIgRI0bMmZkMNky396V9GM2ui9mjjPf5Whc9XlzxEJOFufn+vsg8bcB+VwuGX8TkYd5tj9tEHZTnz3gvBX7A7a+/M7uISchMXGF2K9h+X+ouIiYnwwCug9ncIYoPfvEdMV0yvthj2/O1sQa3DL5Ole85XkyfDLIy+yosPQy4QkwWZrXolWtIR4t8QzHem5gEjOfrFtK1M16MFRcNloVDlPm62DHHi+mWCeMJdrOf0f9SBwVt9Nl3xHTKeBcVNdiX7oqxl97RB2KSMeiM/bRj94Lumf7wKDElJgkz8QRrlCe8M142pqlRkx1zvJieGRxct+xcDafcaKMd9vIsJgsTu36PxD1FizwxX7P3EpOHebsf7PN1gUPcfZF7Ril7nUJM3wz0RF8RByEOBuqJa5CLycKwDx59s1uDBbm/XeoglVe4vMVkYlp2Zosc6uEV8Kb738SkYtaDK+AmWBglJ7ca7TElJgfjpbcFMGVEY4PV/IDleQzBQkwSJvoqpmnD+YePJGjz8fwjpmfGNQi0U2VBOwVh0c2vz/ECRkwehvUVu77TnngTgP9+fU8hpmvGPKQ5Ma/Z+TQlJgODFbjCce2JXdSTVdlr8HahLiYF8yE5PZjBKU/wRPStVxbTLTNRnojzz+vYVzWHEJOKoa4UL4AhI17i7T5vd053OWL6ZmiIZNvL/bu7nM8aLKZr5vP9KBM3mubI11/0RDFdM/GYm00z5f7Py9fT/ZyYvhnm63gKzO0HfNmCHCYmE8MLAB+s9+gLwv707klMEsbwoDCinQojgvx/fiCmSwYrhgKNeFMlRncGPxHF78TkYAw2RKHdS8MxOGhPYvpm/mhixIgRI0aMmE/7B7ES7FZjgrxUAAAAAElFTkSuQmCC" width="280" height="280" alt="Código QR que abre el APK de Android en Google Drive"></a><figcaption>Descarga Android en Google Drive<br><small>Release arm64 · 0.8.1 (2010)</small></figcaption></figure>
+    </div>
+    <div class="actions">
+      <a class="button" target="_blank" rel="noopener" href="https://finance-api-7caahuohmq-rj.a.run.app/health/ready">Estado público de la API</a>
+    </div>
+  </section>
+
+</main>
+</body>
+</html>
