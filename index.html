@@ -47,9 +47,9 @@
   details { margin-top: .9rem; }
   pre { white-space: pre-wrap; overflow-wrap: anywhere; padding: .9rem; border-radius: .55rem; background: #0c1211; }
   .qr-grid { margin: 1rem 0 1.5rem; }
-  .account-grid { margin: .7rem 0; }
-  .account-grid label { display: grid; gap: .3rem; }
-  .account-grid input { width: 100%; padding: .55rem; color: var(--fg); background: var(--bg); border: 1px solid var(--line); border-radius: .4rem; font: inherit; }
+  .auth-diagram { margin: 1rem 0; }
+  .auth-diagram iframe { display: block; width: 100%; height: clamp(28rem, 78vh, 52rem); border: 1px solid var(--line); border-radius: .6rem; background: var(--bg); }
+  .auth-diagram figcaption { margin-top: .6rem; }
   .domains { padding-left: 1.3rem; overflow-wrap: anywhere; }
   #probar { scroll-margin-top: 7rem; }
   figure { margin: 0; text-align: center; }
@@ -91,17 +91,18 @@
       <li>API de producción · <a target="_blank" rel="noopener" href="https://finance-api-7caahuohmq-rj.a.run.app/docs"><code>https://finance-api-7caahuohmq-rj.a.run.app</code></a></li>
     </ul>
     <p>Si la sesión está cerrada, la ruta del rol lleva al inicio de sesión. Soporte autentica con contraseña. Auditoría y Administración también requieren el código del autenticador.</p>
-    <details open>
-      <summary>Cuentas para la demostración</summary>
-      <p>Cliente Android · <code>test@gamil.com</code></p>
-      <p>El portal de sustentación utiliza las cuentas asignadas en producción. Los correos ingresados aquí se guardan solo en este navegador. Usa el formulario de cada portal para ingresar la contraseña y el código.</p>
-      <div class="grid account-grid">
-        <label>Correo de Soporte<input type="email" data-account="soporte" autocomplete="off" placeholder="Correo asignado"></label>
-        <label>Correo de Auditoría<input type="email" data-account="auditoria" autocomplete="off" placeholder="Correo asignado"></label>
-        <label>Correo de Administración<input type="email" data-account="administracion" autocomplete="off" placeholder="Correo asignado"></label>
-      </div>
-      <p class="muted" id="account-status" role="status"></p>
-    </details>
+    <h3>Cuentas para la demostración</h3>
+    <table>
+      <thead><tr><th scope="col">Rol</th><th scope="col">Correo</th><th scope="col">Dónde se usa</th></tr></thead>
+      <tbody>
+        <tr><th scope="row">Cliente</th><td><code>test@gamil.com</code></td><td>App Android</td></tr>
+        <tr><th scope="row">Soporte</th><td><code>agente.demo@example.com</code></td><td>Portal de ensayo anterior</td></tr>
+        <tr><th scope="row">Auditoría</th><td><code>auditor.demo@example.com</code></td><td>Portal de ensayo anterior</td></tr>
+        <tr><th scope="row">Administración</th><td><code>admin.demo@example.com</code></td><td>Portal de ensayo anterior</td></tr>
+      </tbody>
+    </table>
+    <p>Los tres correos de personal corresponden a las demos con base aislada. El portal de sustentación enlazado arriba usa las cuentas habilitadas en producción.</p>
+    <p class="muted">Accesos de ensayo anteriores · <a target="_blank" rel="noopener" href="https://financiai-demo-clave-1006444199777.southamerica-east1.run.app/login">Solo contraseña</a> · <a target="_blank" rel="noopener" href="https://financiai-demo-mfa-1006444199777.southamerica-east1.run.app/login">Con autenticador</a></p>
     <details>
       <summary>Secuencia de demostración de roles y auditoría</summary>
     <ol>
@@ -123,6 +124,9 @@
     <section id="cors" class="cors">
       <h3>Resultados de la prueba de CORS</h3>
       <p><code>OPTIONS</code> es el método HTTP que usa el navegador para consultar si la API permite determinadas peticiones desde otro origen. La prueba comparó tres orígenes para el mismo <code>POST</code> con JSON al endpoint de registro. Se ejecutó únicamente la consulta previa.</p>
+      <div class="actions"><button type="button" id="cors-browser" class="primary">Probar CORS en vivo desde GitHub Pages</button></div>
+      <p>El navegador prueba <code>GET /health/ready</code> con una cabecera adicional que activa la consulta previa. Usa el origen real de esta página, <code>https://nullcorvus.github.io</code>. La comparación histórica de los tres orígenes de registro está debajo.</p>
+      <p id="cors-browser-status" class="muted" role="status"></p>
       <p class="muted">Resultado verificado en producción el 22/11/2026 a las 17:38 (hora de Colombia).</p>
       <div class="grid" aria-label="Resultados de la prueba de CORS">
         <article class="result">
@@ -169,6 +173,12 @@ end</code></pre>
     <section id="autenticacion" class="cors">
       <h3>Contraseñas, inicio de sesión y renovación</h3>
       <p><strong>Contraseñas.</strong> Tanto la app como el portal envían el correo y la contraseña por HTTPS. FastAPI verifica la contraseña con <strong>Argon2id</strong> contra el hash guardado en PostgreSQL. La contraseña se protege en tránsito con HTTPS y en la base de datos se conserva su hash.</p>
+      <figure class="auth-diagram">
+        <iframe src="./autenticacion.html" title="Diagrama interactivo de inicio de sesión y renovación en Flutter y el portal" loading="lazy"></iframe>
+        <figcaption><a target="_blank" rel="noopener" href="./autenticacion.html">Abrir el diagrama de autenticación en una pestaña</a></figcaption>
+      </figure>
+      <details>
+        <summary>Flujos de autenticación en texto</summary>
       <div class="grid">
         <article class="result">
           <h3>App Android · Flutter</h3>
@@ -187,6 +197,7 @@ end</code></pre>
           </ol>
         </article>
       </div>
+      </details>
       <p><strong>Una sesión, dos credenciales.</strong> La de acceso sirve para las peticiones normales. La de renovación obtiene credenciales nuevas. Son valores aleatorios opacos. La API guarda sus hashes SHA-256 y comprueba la vigencia y revocación de la sesión al recibirlas. Al cerrar sesión se revoca en el servidor.</p>
       <details>
         <summary>Vigencia y protección del autenticador</summary>
@@ -309,30 +320,36 @@ node staff-web/deploy/verify-browser.mjs "$url"</code></pre>
   </section>
 
 </main>
-<script id="account-notes">
-  const accountStatus = document.getElementById('account-status');
-  for (const field of document.querySelectorAll('[data-account]')) {
-    const key = 'financiai-presentacion-correo-' + field.dataset.account;
+<script id="cors-browser-probe">
+  const corsButton = document.getElementById('cors-browser');
+  const corsMessage = document.getElementById('cors-browser-status');
+  const readiness = 'https://finance-api-7caahuohmq-rj.a.run.app/health/ready';
+  corsButton.addEventListener('click', async () => {
+    corsButton.disabled = true;
+    corsMessage.textContent = 'Enviando la petición desde ' + location.origin + '…';
     try {
-      field.value = localStorage.getItem(key) || '';
+      const response = await fetch(readiness, {
+        credentials: 'omit',
+        headers: { 'X-Correlation-ID': crypto.randomUUID() },
+        signal: AbortSignal.timeout(8000)
+      });
+      corsMessage.textContent = 'El navegador recibió la respuesta · HTTP ' + response.status + '.';
     } catch {
-      accountStatus.textContent = 'El almacenamiento local de este navegador está deshabilitado.';
-    }
-    field.addEventListener('change', () => {
       try {
-        const email = field.value.trim();
-        if (email && !field.validity.valid) {
-          accountStatus.textContent = 'Escribe un correo válido.';
-          return;
-        }
-        if (email) localStorage.setItem(key, email);
-        else localStorage.removeItem(key);
-        accountStatus.textContent = email ? 'Correo guardado en este navegador.' : 'Correo eliminado de este navegador.';
+        await fetch(readiness, {
+          mode: 'no-cors',
+          credentials: 'omit',
+          cache: 'no-store',
+          signal: AbortSignal.timeout(5000)
+        });
+        corsMessage.textContent = 'El servidor es accesible. El navegador bloqueó la petición con la cabecera adicional. En F12 → Red se puede inspeccionar el OPTIONS y su respuesta.';
       } catch {
-        accountStatus.textContent = 'No se pudo guardar el correo en este navegador.';
+        corsMessage.textContent = 'La API no respondió a la comprobación de conectividad. Intenta de nuevo.';
       }
-    });
-  }
+    } finally {
+      corsButton.disabled = false;
+    }
+  });
 </script>
 </body>
 </html>
